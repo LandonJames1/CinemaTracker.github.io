@@ -1392,13 +1392,21 @@
 
             toggleUpdateOptions() {
                 const opts = document.getElementById('update-options');
-                if(opts.classList.contains('hidden')) {
+                const updateBtn = document.getElementById('update-existing-btn');
+                if (!opts) return;
+
+                if (opts.classList.contains('hidden')) {
                     opts.classList.remove('hidden');
                     opts.classList.add('grid');
-                } else {
-                    opts.classList.add('hidden');
-                    opts.classList.remove('grid');
+                    // Once expanded, hide the "Update Existing" button so only the two options remain.
+                    if (updateBtn) updateBtn.style.display = 'none';
+                    return;
                 }
+
+                // If we ever collapse programmatically, restore the button.
+                opts.classList.add('hidden');
+                opts.classList.remove('grid');
+                if (updateBtn) updateBtn.style.display = '';
             },
 
             renderHome() {
