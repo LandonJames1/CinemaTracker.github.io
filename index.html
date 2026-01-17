@@ -901,6 +901,24 @@
         </div>
     </div>
 
+    <div id="prior-watches-overlay" class="auth-overlay" onclick="if(event.target === this) closePriorWatchesModal(null);" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="prior-watches-title">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="prior-watches-title">Add Previous Watches</div>
+                <button class="auth-modal-close" type="button" onclick="closePriorWatchesModal(null)">Close</button>
+            </div>
+
+            <div class="text-sm" id="prior-watches-message" style="color: var(--text-muted); margin-top: 0.5rem;"></div>
+
+            <div id="prior-watches-fields" style="margin-top: 0.85rem; display:flex; flex-direction: column; gap: 0.75rem;"></div>
+
+            <div class="auth-modal-actions" style="margin-top: 1rem; display:flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline" style="flex:1;" onclick="closePriorWatchesModal({ skipped: true })">Skip</button>
+                <button type="button" class="btn btn-primary" style="flex:1;" onclick="submitPriorWatchesModal()">Save Previous Watches</button>
+            </div>
+        </div>
+    </div>
+
     <div id="loading-overlay" class="auth-overlay" style="display:none;">
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="loading-title">
             <div class="auth-modal-header">
@@ -1237,12 +1255,18 @@
                     showToast(`Added another watch for ${m.title}!`);
 
                     // Reset
-                    document.getElementById('movie-search-input').value = '';
-                    document.getElementById('movie-actions').classList.add('hidden');
-                    document.getElementById('movie-actions').classList.remove('flex');
-                    document.getElementById('update-options').classList.add('hidden');
-                    document.getElementById('update-options').classList.remove('grid');
+                    const input = document.getElementById('movie-search-input');
+                    if (input) input.value = '';
+                    const results = document.getElementById('search-results');
+                    if (results) {
+                        results.classList.add('hidden');
+                        results.innerHTML = '';
+                    }
                     this.selectedMovie = null;
+                    setHomeActionsVisible(false);
+                    setUpdateOptionsHidden();
+                    const updateBtn = document.getElementById('update-existing-btn');
+                    if (updateBtn) updateBtn.style.display = '';
                 } catch (err) {
                     showToast(`Quick Watch failed: ${String(err.message || err)}`);
                 }
@@ -1791,14 +1815,14 @@
                                     <div class="grid grid-2 gap-6">
                                         ${scoreOrder.map(key => `
                                             <div style="${key === 'overall' ? 'grid-column: span 2; padding: 1rem; border-radius: 0.75rem; background: var(--brand-light); border: 1px solid rgba(20,184,166,0.22);' : ''}">
-                                                <label class="text-sm ${key === 'overall' ? 'text-white' : 'text-white'} font-bold mb-2 label-gap submit-label block capitalize" style="${key === 'overall' ? 'display:flex; align-items:center; gap:0.5rem;' : ''}">${key === 'overall' ? `<span class=\"text-brand\">${icons.star}</span><span>Overall</span>` : key}</label>
+                                                <label class="text-sm ${key === 'overall' ? 'text-white' : 'text-white'} font-bold mb-2 label-gap submit-label block capitalize" style="${key === 'overall' ? 'display:flex; align-items:center; gap:0.5rem;' : ''}">${key === 'overall' ? `<span class=\"text-brand\">${icons.star}</span><span>Overall</span>` : key === 'sound' ? 'Score - Sound Design' : key === 'imagery' ? 'Imagery - CGI - Animation' : key === 'acting' ? 'Acting - Character Animation' : key}</label>
                                                 <div class="slider-container">
                                                     <input type="range" min="0" max="100" value="${scores[key]}" oninput="document.getElementById('num-${key}').value = this.value">
                                                     <div class="relative" style="width: 140px;">
                                                         <input
                                                             type="number"
                                                             id="num-${key}"
-                                                            name="${key === 'overall' ? 'Overall' : key === 'sound' ? 'Score - Sound Design' : key === 'pace' ? 'Pace' : key === 'imagery' ? 'Imagery' : key === 'plot' ? 'Plot - Writting' : key === 'acting' ? 'Acting - Char Animation' : key === 'dialogue' ? 'Dialogue' : key}"
+                                                            name="${key === 'overall' ? 'Overall' : key === 'sound' ? 'Score - Sound Design' : key === 'pace' ? 'Pace' : key === 'imagery' ? 'Imagery - CGI - Animation' : key === 'plot' ? 'Plot - Writting' : key === 'acting' ? 'Acting - Character Animation' : key === 'dialogue' ? 'Dialogue' : key}"
                                                             value="${scores[key]}"
                                                             min="0"
                                                             max="100"
@@ -3713,9 +3737,17 @@
                 const fav_quote = String(document.getElementById('fld-quote')?.value || '').trim() || null;
                 const watch_method = String(document.getElementById('fld-watchmethod')?.value || '').trim() || null;
                 const watch_date_from_form = String(document.getElementById('fld-datewatch')?.value || '').trim();
+                const times_watched_raw = toNumberOrNull(document.getElementById('fld-timeswatch')?.value);
+                const times_watched = Number.isFinite(times_watched_raw)
+                    ? Math.max(1, Math.floor(Number(times_watched_raw)))
+                    : 1;
 
                 if (!watch_date_from_form) {
                     throw new Error('Date Watched is required.');
+                }
+
+                if (!Number.isFinite(times_watched) || times_watched < 1) {
+                    throw new Error('Times Watched must be at least 1.');
                 }
 
                 const insertRow = {
@@ -3803,7 +3835,27 @@
                     });
                 }
 
-                showToast('Entry saved successfully!');
+                {
+                    const savedTitle = String(router?.selectedMovie?.title || '').trim();
+                    showToast(savedTitle ? `${savedTitle} entry saved successfully` : 'Entry saved successfully!');
+                }
+
+                // If user says they've watched this movie multiple times, collect the prior watches now.
+                // We treat the current save as 1 watch, and ask for the previous (times_watched - 1) entries.
+                if (entryType === 'new' && times_watched > 1) {
+                    const priorCount = times_watched - 1;
+                    const prior = await promptPriorWatches(priorCount);
+                    if (prior && Array.isArray(prior.entries) && prior.entries.length > 0) {
+                        await insertWatchLogsBulk({
+                            user_id: authedUser.id,
+                            movie_id,
+                            entries: prior.entries,
+                        });
+                        showToast(`Added ${prior.entries.length} previous watch${prior.entries.length === 1 ? '' : 'es'}!`);
+                    } else if (prior?.skipped) {
+                        showToast('Skipped adding previous watches.', { level: 'warn' });
+                    }
+                }
                 return;
             } catch (err) {
                 showToast(`Save failed: ${String(err.message || err)}`);
@@ -3817,6 +3869,8 @@
         let updateWatchChoiceResolver = null;
         let watchMethodChoiceResolver = null;
         let watchMethodPendingSelection = null;
+        let priorWatchesChoiceResolver = null;
+        let priorWatchesPendingCount = 0;
 
         function openUpdateWatchModal() {
             const overlay = document.getElementById('update-watch-overlay');
@@ -3855,7 +3909,7 @@
             const overlay = document.getElementById('watch-method-overlay');
             if (!overlay) return;
             const dateEl = document.getElementById('watch-method-date');
-            if (dateEl && !String(dateEl.value || '').trim()) {
+            if (dateEl) {
                 dateEl.value = new Date().toISOString().split('T')[0];
             }
 
@@ -3939,6 +3993,88 @@
             return new Promise((resolve) => {
                 watchMethodChoiceResolver = resolve;
                 openWatchMethodModal();
+            });
+        }
+
+        function openPriorWatchesModal(count) {
+            priorWatchesPendingCount = Math.max(0, Math.floor(Number(count || 0)));
+            const overlay = document.getElementById('prior-watches-overlay');
+            const msg = document.getElementById('prior-watches-message');
+            const fields = document.getElementById('prior-watches-fields');
+            if (!overlay || !fields) return;
+
+            if (msg) {
+                msg.textContent = `It looks like you've seen this movie multiple times; please tell us about the first ${priorWatchesPendingCount} time${priorWatchesPendingCount === 1 ? '' : 's'} you've seen this movie.`;
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            fields.innerHTML = Array.from({ length: priorWatchesPendingCount }).map((_, i) => {
+                const n = i + 1;
+                return `
+                    <div style="border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 0.85rem; background: rgba(255,255,255,0.03);">
+                        <div class="text-sm text-white font-semibold" style="margin-bottom: 0.5rem;">Previous viewing #${n}</div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <div>
+                                <label class="text-xs text-gray" style="display:block; margin-bottom: 0.35rem;">Date</label>
+                                <input id="prior-watch-date-${n}" type="date" class="input-field" max="${today}" required>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray" style="display:block; margin-bottom: 0.35rem;">Watch Method</label>
+                                <select id="prior-watch-method-${n}" class="input-field">
+                                    <option value="At Home">At Home</option>
+                                    <option value="In Theater">In Theater</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            overlay.style.display = 'flex';
+            overlay.classList.add('open');
+        }
+
+        function closePriorWatchesModal(result) {
+            const overlay = document.getElementById('prior-watches-overlay');
+            if (overlay) {
+                overlay.classList.remove('open');
+                overlay.style.display = 'none';
+            }
+
+            try {
+                if (typeof priorWatchesChoiceResolver === 'function') {
+                    const resolve = priorWatchesChoiceResolver;
+                    priorWatchesChoiceResolver = null;
+                    resolve(result);
+                }
+            } catch (_) {
+                priorWatchesChoiceResolver = null;
+            }
+        }
+
+        function submitPriorWatchesModal() {
+            const entries = [];
+            for (let i = 1; i <= priorWatchesPendingCount; i++) {
+                const dateEl = document.getElementById(`prior-watch-date-${i}`);
+                const methodEl = document.getElementById(`prior-watch-method-${i}`);
+                const watch_date = String(dateEl?.value || '').trim();
+                const watch_method = String(methodEl?.value || '').trim() || null;
+                if (!watch_date) {
+                    showToast(`Please select a date for previous viewing #${i}.`, { level: 'warn' });
+                    try { dateEl?.focus?.(); } catch (_) {}
+                    return;
+                }
+                entries.push({ watch_date, watch_method });
+            }
+
+            closePriorWatchesModal({ entries });
+        }
+
+        function promptPriorWatches(count) {
+            // Returns: { entries: Array<{watch_date, watch_method}> } | { skipped: true } | null
+            return new Promise((resolve) => {
+                priorWatchesChoiceResolver = resolve;
+                openPriorWatchesModal(count);
             });
         }
 
@@ -4071,6 +4207,30 @@
             if (Array.isArray(existing) && existing.length > 0) return;
 
             await insertWatchLog({ user_id, movie_id, watch_method, watch_date: wd });
+        }
+
+        async function insertWatchLogsBulk({ user_id, movie_id, entries }) {
+            if (!supabaseClient) throw new Error('Supabase client not initialized.');
+            if (!user_id) throw new Error('Missing user_id.');
+            if (!movie_id) throw new Error('Missing movie_id.');
+            if (!Array.isArray(entries) || entries.length === 0) return;
+
+            const rows = entries.map((e) => {
+                const wd = String(e?.watch_date || '').trim();
+                if (!wd) throw new Error('Missing watch_date.');
+                return {
+                    user_id,
+                    movie_id,
+                    watch_method: (e?.watch_method ?? null),
+                    [COL_WATCH_DATE]: wd,
+                };
+            });
+
+            const { error } = await supabaseClient
+                .from('Watch Logs')
+                .insert(rows);
+
+            if (error) throw error;
         }
 
         function isUuidLike(v) {
