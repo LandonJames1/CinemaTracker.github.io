@@ -491,8 +491,6 @@
             margin-top: 0.75rem;
         }
 
-        /* Auth modal is optional; app remains accessible without login (DoNotChange parity) */
-
         .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
         .nav-auth-btn {
             padding: 0.5rem 0.9rem;
@@ -505,7 +503,6 @@
         }
         .nav-auth-btn:hover { background: rgba(255,255,255,0.10); }
 
-        /* Message Log (persistent toast history) */
         .log-fab {
             position: fixed;
             bottom: 1.5rem;
@@ -799,6 +796,18 @@
         <span id="toast-message" class="font-semibold">Action successful!</span>
     </div>
 
+    <div id="ratings-success-overlay" class="auth-overlay" onclick="if(event.target === this) closeRatingsSuccessModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="ratings-success-title" style="max-width: 420px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="ratings-success-title">Movie Ratings Saved</div>
+                <button class="auth-modal-close" type="button" onclick="closeRatingsSuccessModal()">Close</button>
+            </div>
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Your diary has been updated.
+            </div>
+        </div>
+    </div>
+
     <div id="auth-overlay" class="auth-overlay" onclick="if(event.target === this) closeAuthModal();">
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
             <div class="auth-modal-header">
@@ -857,6 +866,24 @@
             <div class="auth-modal-actions" style="margin-top: 1rem; display:flex; gap: 0.75rem;">
                 <button type="button" id="btn-update-only" class="btn btn-outline" style="flex:1;" onclick="closeUpdateWatchModal('update_only')">Only Update Rating</button>
                 <button type="button" id="btn-update-and-watch" class="btn btn-primary" style="flex:1;" onclick="closeUpdateWatchModal('update_and_watch')">Update and +1 to Watch Logs</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="duplicate-rating-overlay" class="auth-overlay" onclick="if(event.target === this) closeDuplicateRatingModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="duplicate-rating-title">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="duplicate-rating-title">Already Rated</div>
+                <button class="auth-modal-close" type="button" onclick="closeDuplicateRatingModal()">Close</button>
+            </div>
+
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.5rem;">
+                You have already rated <span id="duplicate-rating-movie" class="text-white font-semibold">this movie</span>. Would you like to update your ratings?
+            </div>
+
+            <div class="auth-modal-actions" style="margin-top: 1rem; display:flex; gap: 0.75rem;">
+                <button type="button" class="btn btn-primary" style="flex:1;" onclick="proceedDuplicateUpdateRatings()">Update Ratings</button>
+                <button type="button" class="btn btn-outline" style="flex:1;" onclick="proceedDuplicateReturnHome()">Return Home</button>
             </div>
         </div>
     </div>
@@ -1037,6 +1064,7 @@
                     root.innerHTML = this.renderHome();
                     this.selectedMovie = null;
                     this.pendingTitle = '';
+                    resetHomeSearchAndFilters();
                     loadTrendingNow();
                 } else if (page === 'submit') {
                     root.innerHTML = this.renderSubmit();
@@ -1451,10 +1479,42 @@
                                     <p class="text-xl text-gray mb-4">Search for a movie to add it to your diary.</p>
                                     
                                     <!-- Search -->
-                                    <div class="input-group mb-4">
-                                        <div class="input-icon">${icons.search}</div>
-                                        <input type="text" id="movie-search-input" oninput="handleSearch(this.value)" autocomplete="off" placeholder="Type a movie title..." class="input-field glass-input">
-                                        <div id="search-results" class="search-dropdown hidden"></div>
+                                    <div style="position: relative;">
+                                        <div class="input-group mb-4">
+                                            <div class="input-icon">${icons.search}</div>
+                                            <input type="text" id="movie-search-input" oninput="handleSearch(this.value)" autocomplete="off" placeholder="Type a movie title..." class="input-field glass-input" style="border-radius: 0.85rem;">
+                                            <div id="search-results" class="search-dropdown hidden"></div>
+                                        </div>
+                                        <button type="button" id="movie-search-filters-toggle" class="btn btn-glass" onclick="toggleSearchFiltersPanel()" style="position:absolute; right: 0; top: -36px; height: 30px; padding: 0 0.75rem; border-radius: 0.85rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.02em;">Use Filters</button>
+                                    </div>
+
+                                    <!-- Optional Filters -->
+                                    <div id="movie-search-filters" class="hidden" style="margin-top: -0.25rem; margin-bottom: 1rem; width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.75rem; align-items: stretch;">
+                                        <input
+                                            type="text"
+                                            id="movie-search-year"
+                                            inputmode="numeric"
+                                            placeholder="Year"
+                                            class="input-field glass-input"
+                                            style="width: 100%; padding-left: 0.9rem; height: 46px; border-radius: 0.85rem;"
+                                            oninput="markSearchFiltersDirty()"
+                                        />
+                                        <select
+                                            id="movie-search-mpa"
+                                            class="select-field"
+                                            style="width: 100%; height: 46px; border-radius: 0.85rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: white; padding: 0 0.75rem;"
+                                            onchange="markSearchFiltersDirty()"
+                                        >
+                                            <option value="">MPA</option>
+                                            <option value="G">G</option>
+                                            <option value="PG">PG</option>
+                                            <option value="PG-13">PG-13</option>
+                                            <option value="R">R</option>
+                                            <option value="NC-17">NC-17</option>
+                                            <option value="NR">NR / Unrated</option>
+                                        </select>
+                                        <button type="button" class="btn btn-glass" style="width: 100%; height:46px; padding: 0 1rem; border-radius: 0.85rem;" onclick="applySearchFilters()">Apply Filters</button>
+                                        <button type="button" class="btn btn-glass" style="width: 100%; height:46px; padding: 0 1rem; border-radius: 0.85rem;" onclick="clearSearchFilters()">Clear</button>
                                     </div>
 
                                     <!-- Action Slot (fixed space so the search UI doesn't jump) -->
@@ -1516,6 +1576,10 @@
                 const detailsReadonly = hasDbMovie || Boolean(prefill?.detailsReadonly);
                 const defaultDate = new Date().toISOString().split('T')[0];
                 const allowEditMissingDetails = detailsReadonly && !hasDbMovie;
+
+                const formAccent = isUpdate
+                    ? { rgb: '168, 85, 247', hex: '#a855f7', name: 'Update Ratings' }
+                    : { rgb: '20, 184, 166', hex: '#14b8a6', name: 'Log New Entry' };
 
                 const u = (isUpdate && prefill.mockUserReview) ? prefill.mockUserReview : {
                     date: defaultDate, tier: "", scores: { overall: 50, sound: 50, pace: 50, imagery: 50, acting: 50, plot: 50, dialogue: 50 },
@@ -1617,7 +1681,7 @@
                     <div class="fade-in">
                         <!-- Background -->
                         <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?q=80&w=2076&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.15; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
+                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, rgba(${formAccent.rgb}, 0.14), transparent 22%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
                         
                         <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
                         <div class="flex items-center gap-4 mb-8">
@@ -1625,19 +1689,23 @@
                                 ${icons.arrowLeft}
                             </button>
                             <div>
-                                <h1 class="text-3xl font-bold text-white">${isUpdate ? 'Update Entry' : 'Log New Entry'}</h1>
-                                ${isUpdate ? '<span class="text-brand text-sm">Editing existing record</span>' : ''}
+                                <div class="flex items-center gap-2" style="flex-wrap: wrap;">
+                                    <h1 class="text-3xl font-bold text-white">${isUpdate ? 'Update Ratings' : 'Log New Entry'}</h1>
+                                    <span style="display:inline-flex; align-items:center; height: 28px; padding: 0 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.95); background: rgba(${formAccent.rgb}, 0.16); border: 1px solid rgba(${formAccent.rgb}, 0.35);">
+                                        ${formAccent.name}
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
-                        <form onsubmit="handleFormSubmit(event)" class="grid grid-3 gap-6">
+                        <form onsubmit="handleFormSubmit(event)" class="grid grid-3 gap-6" style="border: 1px solid rgba(${formAccent.rgb}, 0.14); border-radius: 1.2rem; padding: 0.75rem; background: rgba(0,0,0,0.12);">
                             <input type="hidden" name="entryType" value="${isUpdate ? 'update' : 'new'}">
                             <input type="hidden" id="fld-movie-id" value="${hasDbMovie ? String(prefill.id) : ''}">
                             <input type="hidden" id="fld-tmdb-id" value="${Number.isFinite(Number(prefill?.tmdb_id)) ? String(Number(prefill.tmdb_id)) : ''}">
                             <!-- Read Only Section -->
-                            <div class="glass-panel" style="padding: 1.5rem; border-radius: 1rem; background: var(--brand-light); border: 1px solid rgba(20,184,166,0.2);">
+                            <div class="glass-panel" style="padding: 1.5rem; border-radius: 1rem; background: rgba(${formAccent.rgb}, 0.10); border: 1px solid rgba(${formAccent.rgb}, 0.22);">
                                 <div class="flex items-center gap-3 mb-4">
-                                    <span class="text-brand">${icons.database}</span>
+                                    <span style="color: ${formAccent.hex};">${icons.database}</span>
                                     <h2 class="text-xl font-semibold text-white">Movie Details</h2>
                                 </div>
                                 <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1.5rem;" class="text-sm flex items-center gap-2">
@@ -1782,10 +1850,10 @@
                             </div>
 
                             <!-- User Input Section -->
-                            <div class="glass-panel col-span-2" style="padding: 2rem; padding-bottom: calc(2rem - 10px); border-radius: 1rem;">
+                            <div class="glass-panel col-span-2" style="padding: 2rem; padding-bottom: calc(2rem - 10px); border-radius: 1rem; border: 1px solid rgba(${formAccent.rgb}, 0.14);">
                                 <div class="flex justify-between items-center mb-6" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; margin-bottom: 10px;">
                                     <div class="flex items-center gap-3">
-                                        <span class="text-brand">${icons.edit3}</span>
+                                        <span style="color: ${formAccent.hex};">${icons.edit3}</span>
                                         <h2 class="text-xl font-semibold text-white">Your Review</h2>
                                     </div>
                                 </div>
@@ -3294,7 +3362,9 @@
 
         async function callSwiftApiSearchMovies({ query, page = 1, signal }) {
             try {
-                return await callSwiftApiPublic({ action: 'search', query, page }, { signal });
+                const year = homeSearchAppliedYear;
+                const mpa = homeSearchAppliedMpa;
+                return await callSwiftApiPublic({ action: 'search', query, page, year, mpa, limit: 8 }, { signal });
             } catch (err) {
                 throw new Error(`Search failed: ${String(err?.message || err)}`);
             }
@@ -3491,7 +3561,142 @@
                 .replaceAll("'", '&#39;');
         }
 
-        function handleSearch(query) {
+        let homeSearchAppliedYear = '';
+        let homeSearchAppliedMpa = '';
+        let homeSearchFiltersDirty = false;
+
+        function resetHomeSearchAndFilters() {
+            // Clear applied filter state (so nothing is accidentally carried over).
+            homeSearchAppliedYear = '';
+            homeSearchAppliedMpa = '';
+            homeSearchFiltersDirty = false;
+
+            const input = document.getElementById('movie-search-input');
+            if (input) input.value = '';
+
+            const yearEl = document.getElementById('movie-search-year');
+            const mpaEl = document.getElementById('movie-search-mpa');
+            if (yearEl) yearEl.value = '';
+            if (mpaEl) mpaEl.value = '';
+
+            const panel = document.getElementById('movie-search-filters');
+            if (panel) panel.classList.add('hidden');
+
+            const btn = document.getElementById('movie-search-filters-toggle');
+            if (btn) btn.textContent = 'Use Filters';
+
+            // Clear any results/actions from prior home interactions.
+            try { clearHomeSearchUI(); } catch (_) {}
+        }
+
+        function toggleSearchFiltersPanel() {
+            const panel = document.getElementById('movie-search-filters');
+            if (!panel) return;
+            const btn = document.getElementById('movie-search-filters-toggle');
+            const isHidden = panel.classList.contains('hidden');
+            if (isHidden) {
+                panel.classList.remove('hidden');
+                if (btn) btn.textContent = 'Hide Filters';
+            } else {
+                panel.classList.add('hidden');
+                if (btn) btn.textContent = 'Use Filters';
+            }
+        }
+
+        function markSearchFiltersDirty() {
+            homeSearchFiltersDirty = true;
+        }
+
+        function applySearchFilters() {
+            const yearEl = document.getElementById('movie-search-year');
+            const mpaEl = document.getElementById('movie-search-mpa');
+            const yearRaw = yearEl ? String(yearEl.value || '').trim() : '';
+            const year = yearRaw && /^\d{4}$/.test(yearRaw) ? yearRaw : '';
+            const mpa = mpaEl ? String(mpaEl.value || '').trim() : '';
+
+            homeSearchAppliedYear = year;
+            homeSearchAppliedMpa = mpa;
+            homeSearchFiltersDirty = false;
+
+            const input = document.getElementById('movie-search-input');
+            const q = String(input?.value || '').trim();
+            if (q.length < 3) {
+                showToast('Type at least 3 characters, then apply filters.', { level: 'warn' });
+                return;
+            }
+            handleSearch(q, { force: true });
+        }
+
+        function clearSearchFilters() {
+            const yearEl = document.getElementById('movie-search-year');
+            const mpaEl = document.getElementById('movie-search-mpa');
+            if (yearEl) yearEl.value = '';
+            if (mpaEl) mpaEl.value = '';
+            homeSearchAppliedYear = '';
+            homeSearchAppliedMpa = '';
+            homeSearchFiltersDirty = false;
+            const input = document.getElementById('movie-search-input');
+            const q = String(input?.value || '').trim();
+            if (!q) {
+                clearHomeSearchUI();
+                return;
+            }
+            handleSearch(q, { force: true });
+        }
+
+        let duplicateRatingContext = null;
+
+        function openDuplicateRatingModal({ movie_id, tmdb_id, title } = {}) {
+            duplicateRatingContext = {
+                movie_id: movie_id || null,
+                tmdb_id: tmdb_id || null,
+                title: String(title || '').trim(),
+            };
+
+            const overlay = document.getElementById('duplicate-rating-overlay');
+            const label = document.getElementById('duplicate-rating-movie');
+            if (label) label.textContent = duplicateRatingContext.title || 'this movie';
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+            overlay.classList.add('open');
+        }
+
+        function closeDuplicateRatingModal() {
+            const overlay = document.getElementById('duplicate-rating-overlay');
+            if (overlay) {
+                overlay.classList.remove('open');
+                overlay.style.display = 'none';
+            }
+            duplicateRatingContext = null;
+        }
+
+        function proceedDuplicateUpdateRatings() {
+            const ctx = duplicateRatingContext;
+            closeDuplicateRatingModal();
+
+            const movieId = String(ctx?.movie_id || '').trim();
+            if (!isUuidLike(movieId)) {
+                showToast('Could not determine this movie record. Please search and select it again.', { level: 'warn' });
+                router.navigate('home');
+                return;
+            }
+
+            router.selectedMovie = {
+                id: movieId,
+                tmdb_id: Number.isFinite(Number(ctx?.tmdb_id)) ? Number(ctx.tmdb_id) : null,
+                title: String(ctx?.title || '').trim(),
+                detailsReadonly: true,
+            };
+            router.pendingTitle = router.selectedMovie.title || '';
+            router.navigate('submit', 'update');
+        }
+
+        function proceedDuplicateReturnHome() {
+            closeDuplicateRatingModal();
+            router.navigate('home');
+        }
+
+        function handleSearch(query, opts = {}) {
             const results = document.getElementById('search-results');
 
             const q = String(query || '').trim();
@@ -3520,6 +3725,7 @@
                 return;
             }
 
+            const debounceMs = opts?.force ? 0 : 320;
             homeSearchDebounceTimer = setTimeout(async () => {
                 try {
                     setHomeSearchLoading();
@@ -3549,7 +3755,7 @@
                     setHomeActionsVisible(false);
                     setUpdateOptionsHidden();
                 }
-            }, 320);
+            }, debounceMs);
         }
 
         function toggleMobileMenu() {
@@ -3631,12 +3837,18 @@
             btn.disabled = true;
             btn.style.opacity = 0.7;
 
+            let lastKnownMovieId = null;
+            let lastKnownTmdbId = null;
+            let lastKnownTitle = '';
+            let lastKnownEntryType = '';
+
             try {
                 if (!supabaseClient) {
                     throw new Error('Supabase SDK failed to load. Check the Supabase <script> include and your network.');
                 }
                 const { user: authedUser, accessToken } = await requireAuthOrThrow();
                 const entryType = String(e.target.querySelector('input[name="entryType"]')?.value || '').trim().toLowerCase();
+                lastKnownEntryType = entryType;
 
                 const toNumberOrNull = (v) => {
                     const n = Number(v);
@@ -3663,6 +3875,9 @@
                 const selectedId = window.router?.selectedMovie?.id;
                 const hiddenMovieId = String(document.getElementById('fld-movie-id')?.value || '').trim();
                 const hiddenTmdbId = String(document.getElementById('fld-tmdb-id')?.value || '').trim();
+
+                lastKnownTmdbId = hiddenTmdbId || String(window.router?.selectedMovie?.tmdb_id || '').trim();
+                lastKnownTitle = String(document.getElementById('fld-title')?.value || window.router?.selectedMovie?.title || '').trim();
 
                 let movie_id = uuidLike(hiddenMovieId)
                     ? hiddenMovieId
@@ -3709,23 +3924,6 @@
                             ? `${tmdbData.people_sync.message} (${tmdbData.people_sync.details})`
                             : `${tmdbData.people_sync.message}`;
                         showToast(`Cast sync warning: ${msg}`);
-
-                        // Debug: dump Movie Crew preview rows into the Message Log
-                        try {
-                            const crew = tmdbData?.people_sync?.crew_sync;
-                            const preview = Array.isArray(crew?.preview) ? crew.preview : [];
-                            if (preview.length > 0) {
-                                const lines = preview.map((r) =>
-                                    `movie_id=${r.movie_id} person_id=${r.person_id} name=${r.name} job=${r.job}`
-                                );
-                                showToast(`Movie Crew preview (${preview.length} rows):\n${lines.join('\n')}`, { level: 'warn', durationMs: 15000 });
-                            }
-                            const dups = Array.isArray(crew?.duplicates_by_person) ? crew.duplicates_by_person : [];
-                            if (dups.length > 0) {
-                                const lines = dups.map((d) => `person_id=${d.person_id} count=${d.count}`);
-                                showToast(`Movie Crew potential duplicates by person_id:\n${lines.join('\n')}`, { level: 'warn', durationMs: 15000 });
-                            }
-                        } catch (_) {}
                     }
                 }
 
@@ -3739,23 +3937,6 @@
                                 ? `${peopleRes.people_sync.message} (${peopleRes.people_sync.details})`
                                 : `${peopleRes.people_sync.message}`;
                             showToast(`Cast sync warning: ${msg}`);
-
-                            // Debug: dump Movie Crew preview rows into the Message Log
-                            try {
-                                const crew = peopleRes?.people_sync?.crew_sync;
-                                const preview = Array.isArray(crew?.preview) ? crew.preview : [];
-                                if (preview.length > 0) {
-                                    const lines = preview.map((r) =>
-                                        `movie_id=${r.movie_id} person_id=${r.person_id} name=${r.name} job=${r.job}`
-                                    );
-                                    showToast(`Movie Crew preview (${preview.length} rows):\n${lines.join('\n')}`, { level: 'warn', durationMs: 15000 });
-                                }
-                                const dups = Array.isArray(crew?.duplicates_by_person) ? crew.duplicates_by_person : [];
-                                if (dups.length > 0) {
-                                    const lines = dups.map((d) => `person_id=${d.person_id} count=${d.count}`);
-                                    showToast(`Movie Crew potential duplicates by person_id:\n${lines.join('\n')}`, { level: 'warn', durationMs: 15000 });
-                                }
-                            } catch (_) {}
                         }
                     } catch (e) {
                         showToast(`Cast sync warning: ${String(e?.message || e)}`);
@@ -3763,6 +3944,8 @@
                 }
 
                 if (!movie_id) throw new Error('Failed to determine movie_id.');
+
+                lastKnownMovieId = movie_id;
 
                 // Ensure external ratings are synced server-side on every save/update.
                 // ("Movie External Ratings" has no user_id; it should be written from the Edge Function.)
@@ -3882,7 +4065,7 @@
                         });
                     }
 
-                    showToast(shouldAddWatch ? 'Entry updated (+1 watch added)!' : 'Entry updated successfully!');
+                    openRatingsSuccessModal('updated');
                     return;
                 }
 
@@ -3903,11 +4086,6 @@
                     });
                 }
 
-                {
-                    const savedTitle = String(router?.selectedMovie?.title || '').trim();
-                    showToast(savedTitle ? `${savedTitle} entry saved successfully` : 'Entry saved successfully!');
-                }
-
                 // If user says they've watched this movie multiple times, collect the prior watches now.
                 // We treat the current save as 1 watch, and ask for the previous (times_watched - 1) entries.
                 if (entryType === 'new' && times_watched > 1) {
@@ -3924,9 +4102,27 @@
                         showToast('Skipped adding previous watches.', { level: 'warn' });
                     }
                 }
+
+                openRatingsSuccessModal('saved');
                 return;
             } catch (err) {
-                showToast(`Save failed: ${String(err.message || err)}`);
+                const msg = String(err?.message || err || 'Unknown error');
+                const code = String(err?.code || '').trim();
+                const isDuplicate =
+                    code === '23505' ||
+                    msg.toLowerCase().includes('duplicate key value') ||
+                    msg.includes('movie_ratings_user_movie_unique');
+
+                if (isDuplicate && String(lastKnownEntryType || '').toLowerCase() === 'new') {
+                    openDuplicateRatingModal({
+                        movie_id: lastKnownMovieId,
+                        tmdb_id: lastKnownTmdbId,
+                        title: lastKnownTitle,
+                    });
+                    return;
+                }
+
+                showToast(`Save failed: ${msg}`);
             } finally {
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
@@ -3939,6 +4135,44 @@
         let watchMethodPendingSelection = null;
         let priorWatchesChoiceResolver = null;
         let priorWatchesPendingCount = 0;
+
+        let ratingsSuccessTimer = null;
+
+        function openRatingsSuccessModal(kind) {
+            const overlay = document.getElementById('ratings-success-overlay');
+            const titleEl = document.getElementById('ratings-success-title');
+            if (!overlay) return;
+
+            const k = String(kind || '').toLowerCase();
+            if (titleEl) {
+                titleEl.textContent = (k === 'updated') ? 'Movie Ratings Updated' : 'Movie Ratings Saved';
+            }
+
+            overlay.style.display = 'flex';
+            overlay.classList.add('open');
+
+            if (ratingsSuccessTimer) {
+                clearTimeout(ratingsSuccessTimer);
+                ratingsSuccessTimer = null;
+            }
+
+            ratingsSuccessTimer = setTimeout(() => {
+                closeRatingsSuccessModal();
+            }, 3000);
+        }
+
+        function closeRatingsSuccessModal() {
+            const overlay = document.getElementById('ratings-success-overlay');
+
+            if (ratingsSuccessTimer) {
+                clearTimeout(ratingsSuccessTimer);
+                ratingsSuccessTimer = null;
+            }
+
+            if (!overlay) return;
+            overlay.classList.remove('open');
+            overlay.style.display = 'none';
+        }
 
         function openUpdateWatchModal() {
             const overlay = document.getElementById('update-watch-overlay');
@@ -4711,10 +4945,6 @@
             if (level === 'error') console.error(line, extra ?? '');
             else if (level === 'warn') console.warn(line, extra ?? '');
             else console.log(line, extra ?? '');
-
-            // If this HTML is running inside a VS Code WebView (e.g., Live Preview),
-            // some hosts may pick up console output into VS Code Output/Debug Console.
-            // We intentionally avoid hard dependencies on VS Code APIs.
         }
 
         function formatTime(ts) {
