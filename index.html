@@ -2453,6 +2453,7 @@
         let dashboardFavoritesMetric = 'overall';
 
         const dashPosterCacheByTmdbId = new Map();
+        const dashRatingCacheByMovieId = new Map();
 
         function initDashboardFavoritesMetric() {
             const wrap = document.getElementById('dash-fav-metric-wrap');
@@ -2628,22 +2629,69 @@
                 }
             };
 
+            const normalizeTierLabel = (tierRaw) => {
+                const t = String(tierRaw ?? '').trim();
+                if (!t) return '';
+                const u = t.toUpperCase();
+                if (u === 'UNRANKED') return 'Unranked';
+                if (/^[SABCDF]$/i.test(t)) return `${u}-Tier`;
+                if (/^[SABCDF]\s*-?\s*TIER$/i.test(t)) return `${u[0]}-Tier`;
+                return t;
+            };
+
+            const ensureRatingsForItems = async (items) => {
+                const safe = Array.isArray(items) ? items : [];
+                const ids = Array.from(new Set(
+                    safe
+                        .map((r) => r?.movie_id)
+                        .filter(Boolean)
+                ));
+                const missing = ids.filter((id) => !dashRatingCacheByMovieId.has(id));
+                if (missing.length === 0) return;
+
+                const { data, error } = await supabaseClient
+                    .from('Movie Ratings')
+                    .select('movie_id, overall_rating, tier')
+                    .eq('user_id', authedUser.id)
+                    .in('movie_id', missing);
+
+                if (error) throw error;
+
+                const rows = Array.isArray(data) ? data : [];
+                const byId = new Map(rows.map((r) => [r.movie_id, r]));
+                for (const id of missing) {
+                    dashRatingCacheByMovieId.set(id, byId.get(id) || null);
+                }
+            };
+
             const renderRow = async (items) => {
                 const safe = Array.isArray(items) ? items.slice(0, 5) : [];
                 if (safe.length === 0) {
                     return `<div class="text-gray">No rated movies found for this timeframe.</div>`;
                 }
 
-                // Best-effort poster fetch (cached).
-                await Promise.all(safe.map(ensurePosterPath));
+                // Best-effort poster fetch (cached) + rating metadata fetch (cached).
+                await Promise.all([
+                    Promise.all(safe.map(ensurePosterPath)),
+                    ensureRatingsForItems(safe),
+                ]);
 
                 const cards = safe.map((r) => {
                     const title = String(r?.title ?? '').trim() || 'Untitled';
                     const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
-                    const score = formatScore(r?.score);
+                    const ratingRow = dashRatingCacheByMovieId.get(r?.movie_id) || null;
+                    const overall = ratingRow ? ratingRow.overall_rating : null;
+                    const overallText = formatScore(overall);
+                    const tierLabel = normalizeTierLabel(ratingRow ? ratingRow.tier : '');
                     const tmdb_id = Number(r?.tmdb_id);
                     const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
                     const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
+
+                    const meta = [
+                        year || '',
+                        overallText ? `${overallText} Overall` : '',
+                        tierLabel,
+                    ].filter(Boolean).join(' • ');
 
                     return `
                         <div style="display:flex; flex-direction: column; gap: 8px;">
@@ -2654,7 +2702,7 @@
                                 }
                             </div>
                             <div class="text-sm text-white" style="font-weight: 700; line-height: 1.2;">${escapeHtml(title)}</div>
-                            <div class="text-xs text-gray tabular-nums">${escapeHtml([year, score].filter(Boolean).join(' • '))}</div>
+                            <div class="text-xs text-gray tabular-nums">${escapeHtml(meta)}</div>
                         </div>
                     `;
                 }).join('');
