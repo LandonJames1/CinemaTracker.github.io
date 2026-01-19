@@ -226,6 +226,17 @@
             pointer-events: none;
         }
 
+        /* Make native date picker indicator easier to find/click (Safari/Chrome) */
+        input[type="date"] { cursor: pointer; }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            width: 22px;
+            height: 22px;
+            padding: 10px;
+            cursor: pointer;
+            opacity: 0.95;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+
         /* Genre chips (tap/click selection, max 2) */
         .genre-chip-wrap {
             display: flex;
@@ -305,6 +316,18 @@
         .watch-method-option.selected {
             box-shadow: 0 0 0 2px rgba(255,255,255,0.35);
             border-color: rgba(255,255,255,0.45) !important;
+        }
+        #watch-method-overlay[data-has-selection="true"] .watch-method-option {
+            opacity: 0.22;
+            filter: grayscale(0.9) brightness(0.9);
+            box-shadow: none;
+        }
+        #watch-method-overlay[data-has-selection="true"] .watch-method-option.selected {
+            opacity: 1;
+            filter: none;
+            box-shadow:
+                0 0 0 2px rgba(255,255,255,0.28),
+                0 16px 40px rgba(0,0,0,0.45);
         }
         .input-readonly {
             background-color: rgba(255,255,255,0.02);
@@ -901,7 +924,7 @@
 
             <div style="margin-top: 0.85rem;">
                 <label class="text-sm text-white font-bold mb-2 label-gap submit-label block capitalize">Date Watched</label>
-                <input id="watch-method-date" type="date" class="input-field" required>
+                <input id="watch-method-date" type="date" class="input-field" onclick="openDatePickerFromInput(this)" onfocus="openDatePickerFromInput(this)" required>
                 <div class="text-xs text-gray" style="margin-top: 0.35rem;">This date will be saved to your Watch Logs.</div>
             </div>
 
@@ -928,11 +951,10 @@
         </div>
     </div>
 
-    <div id="prior-watches-overlay" class="auth-overlay" onclick="if(event.target === this) closePriorWatchesModal(null);" style="display:none;">
+    <div id="prior-watches-overlay" class="auth-overlay" style="display:none;">
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="prior-watches-title">
             <div class="auth-modal-header">
                 <div class="auth-modal-title" id="prior-watches-title">Add Previous Watches</div>
-                <button class="auth-modal-close" type="button" onclick="closePriorWatchesModal(null)">Close</button>
             </div>
 
             <div class="text-sm" id="prior-watches-message" style="color: var(--text-muted); margin-top: 0.5rem;"></div>
@@ -940,7 +962,6 @@
             <div id="prior-watches-fields" style="margin-top: 0.85rem; display:flex; flex-direction: column; gap: 0.75rem;"></div>
 
             <div class="auth-modal-actions" style="margin-top: 1rem; display:flex; gap: 0.75rem; flex-wrap: wrap;">
-                <button type="button" class="btn btn-outline" style="flex:1;" onclick="closePriorWatchesModal({ skipped: true })">Skip</button>
                 <button type="button" class="btn btn-primary" style="flex:1;" onclick="submitPriorWatchesModal()">Save Previous Watches</button>
             </div>
         </div>
@@ -1592,6 +1613,17 @@
                 const scoreOrder = ['overall', 'sound', 'pace', 'imagery', 'acting', 'plot', 'dialogue'];
 
                 const tierLetter = String(u.tier || '').trim().charAt(0).toUpperCase();
+
+                const tierHelpText = (() => {
+                    const t = (['S','A','B','C','D','F'].includes(tierLetter)) ? `${tierLetter}-Tier` : String(u.tier || '').trim();
+                    if (t === 'S-Tier') return 'The Pantheon. Best of the Best.';
+                    if (t === 'A-Tier') return 'Great! Highly recommended films!';
+                    if (t === 'B-Tier') return 'Worth a Watch. Solidly good and Entertaining';
+                    if (t === 'C-Tier') return "Totally Average. Fine if it's on, but don't go out of your way.";
+                    if (t === 'D-Tier') return 'Skip it. Seriously Flawed and not worth the time.';
+                    if (t === 'F-Tier') return 'Avoid at all costs! A genuinely bad experience.';
+                    return 'Choose exactly one tier';
+                })();
                 
                 const m = {
                     title: prefill.title || '', genre: prefill.genre || '', year: prefill.year || '', mpa: prefill.mpa || '',
@@ -1622,14 +1654,14 @@
                     return Number.isFinite(n) && n > 0;
                 };
 
-                // DB movies remain fully read-only.
-                // TMDb prefill: lock only fields that have meaningful values; allow editing blanks and 0/"0".
-                const titleLocked = detailsReadonly && (hasDbMovie || hasText(m.title));
-                const yearLocked = detailsReadonly && (hasDbMovie || hasPositiveInt(m.year));
-                const mpaLocked = detailsReadonly && (hasDbMovie || hasText(m.mpa));
-                const runtimeLocked = detailsReadonly && (hasDbMovie || hasPositiveInt(m.runtime));
-                const seriesLocked = detailsReadonly && (hasDbMovie || hasText(m.isSeriesValue));
-                const directorLocked = detailsReadonly && (hasDbMovie || hasText(m.director));
+                // Lock only fields that already have meaningful values.
+                // This prevents users getting stuck with blank read-only fields while we enforce required inputs.
+                const titleLocked = detailsReadonly && hasText(m.title);
+                const yearLocked = detailsReadonly && hasPositiveInt(m.year);
+                const mpaLocked = detailsReadonly && hasText(m.mpa);
+                const runtimeLocked = detailsReadonly && hasPositiveInt(m.runtime);
+                const seriesLocked = detailsReadonly && hasText(m.isSeriesValue);
+                const directorLocked = detailsReadonly && hasText(m.director);
 
                 // When updating an existing rating, Times Watched should reflect Watch Logs history,
                 // and it should not be editable on the form.
@@ -1641,7 +1673,7 @@
 
                 const genreLower = String(m.genre || '').trim().toLowerCase();
                 const genrePlaceholder = allowEditMissingDetails && (genreLower === 'movie' || genreLower === '0');
-                const genreLocked = detailsReadonly && (hasDbMovie || (hasText(m.genre) && !genrePlaceholder));
+                const genreLocked = detailsReadonly && (hasText(m.genre) && !genrePlaceholder);
 
                 const clampPct = (n) => {
                     const v = Number(n);
@@ -1861,7 +1893,7 @@
                                 <div class="grid md-row gap-6 mb-6" style="margin-top: 0px;">
                                     <div style="flex:1;">
                                         <label class="text-sm text-white font-bold mb-2 label-gap submit-label block capitalize">Date Watched</label>
-                                        <input id="fld-datewatch" name="Date Watch" type="date" class="input-field ${isUpdate ? 'input-readonly' : ''}" value="${u.date}" ${isUpdate ? 'readonly title="Locked while updating"' : ''} required>
+                                        <input id="fld-datewatch" name="Date Watch" type="date" class="input-field ${isUpdate ? 'input-readonly' : ''}" value="${u.date}" ${isUpdate ? 'readonly title="Locked while updating"' : ''} onclick="openDatePickerFromInput(this)" onfocus="openDatePickerFromInput(this)" required>
                                     </div>
                                     <div style="flex:1;">
                                         <label class="text-sm text-white font-bold mb-2 label-gap submit-label block capitalize">Tier List</label>
@@ -1874,7 +1906,7 @@
                                             <button type="button" class="tier-btn ${tierLetter === 'D' ? 'selected' : ''}" data-tier="D-Tier" aria-pressed="${tierLetter === 'D' ? 'true' : 'false'}" onclick="setTierFromButton(this)">D</button>
                                             <button type="button" class="tier-btn ${tierLetter === 'F' ? 'selected' : ''}" data-tier="F-Tier" aria-pressed="${tierLetter === 'F' ? 'true' : 'false'}" onclick="setTierFromButton(this)">F</button>
                                         </div>
-                                        <div class="text-xs text-gray" style="margin-top: 0.4rem;">Choose exactly one tier</div>
+                                        <div class="text-xs text-gray" id="tier-help-text" style="margin-top: 0.4rem;">${tierHelpText}</div>
                                     </div>
                                 </div>
 
@@ -2108,7 +2140,8 @@
                                         <span class="text-brand">${icons.trendingUp}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-top-genre">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-top-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-genre-n">—</span> movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-top-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-genre-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-xs text-gray">Only includes genres with at least 2 rated movies.</div>
                                 </div>
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4">
@@ -2116,7 +2149,8 @@
                                         <span class="text-brand">${icons.trendingDown}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-bottom-genre">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-bottom-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-genre-n">—</span> movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-bottom-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-genre-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-xs text-gray">Only includes genres with at least 2 rated movies.</div>
                                 </div>
                             </div>
 
@@ -2127,7 +2161,8 @@
                                         <span class="text-brand">${icons.user}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-top-director">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-top-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-director-n">—</span> movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-top-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-director-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-xs text-gray">Only includes directors with at least 2 rated movies.</div>
                                 </div>
 
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
@@ -2136,7 +2171,8 @@
                                         <span class="text-brand">${icons.user}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-bottom-director">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-bottom-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-director-n">—</span> movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-bottom-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-director-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-xs text-gray">Only includes directors with at least 2 rated movies.</div>
                                 </div>
                             </div>
                         </div>
@@ -2542,6 +2578,12 @@
             const allowed = new Set(['overall', 'sound', 'plot', 'pace', 'acting', 'imagery', 'dialogue']);
             dashboardFavoritesMetric = allowed.has(m) ? m : 'overall';
 
+            // The Favorites poster meta line shows the selected metric. Clear cached rating rows so we
+            // always have the needed columns for the currently selected metric.
+            try {
+                dashRatingCacheByMovieId.clear();
+            } catch (_) {}
+
             const wrap = document.getElementById('dash-fav-metric-wrap');
             if (wrap) {
                 wrap.querySelectorAll('button[data-metric]').forEach((btn) => {
@@ -2682,6 +2724,17 @@
                 return `${rounded.toFixed(1)}%`;
             };
 
+            const metricFieldForFavorites = (metric) => {
+                const m = String(metric || '').trim().toLowerCase();
+                if (m === 'sound') return { field: 'sound_rating', label: 'Sound' };
+                if (m === 'plot') return { field: 'plot_rating', label: 'Plot' };
+                if (m === 'pace') return { field: 'pacing_rating', label: 'Pace' };
+                if (m === 'acting') return { field: 'acting_rating', label: 'Acting' };
+                if (m === 'imagery') return { field: 'imagery_rating', label: 'Imagery' };
+                if (m === 'dialogue') return { field: 'dialogue_rating', label: 'Dialogue' };
+                return { field: 'overall_rating', label: 'Overall' };
+            };
+
             const ensurePosterPath = async (item) => {
                 const tmdb_id = Number(item?.tmdb_id);
                 if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return null;
@@ -2719,7 +2772,7 @@
 
                 const { data, error } = await supabaseClient
                     .from('Movie Ratings')
-                    .select('movie_id, overall_rating, tier')
+                    .select('movie_id, overall_rating, sound_rating, plot_rating, pacing_rating, acting_rating, imagery_rating, dialogue_rating, tier')
                     .eq('user_id', authedUser.id)
                     .in('movie_id', missing);
 
@@ -2748,8 +2801,10 @@
                     const title = String(r?.title ?? '').trim() || 'Untitled';
                     const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
                     const ratingRow = dashRatingCacheByMovieId.get(r?.movie_id) || null;
-                    const overall = ratingRow ? ratingRow.overall_rating : null;
-                    const overallText = formatScore(overall);
+
+                    const { field: metricField, label: metricLabel } = metricFieldForFavorites(dashboardFavoritesMetric);
+                    const metricValue = ratingRow ? ratingRow?.[metricField] : null;
+                    const metricText = formatScore(metricValue);
                     const tierLabel = normalizeTierLabel(ratingRow ? ratingRow.tier : '');
                     const tmdb_id = Number(r?.tmdb_id);
                     const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
@@ -2757,7 +2812,7 @@
 
                     const meta = [
                         year || '',
-                        overallText ? `${overallText} Overall` : '',
+                        metricText ? `${metricText} ${metricLabel}` : '',
                         tierLabel,
                     ].filter(Boolean).join(' • ');
 
@@ -3670,7 +3725,7 @@
             duplicateRatingContext = null;
         }
 
-        function proceedDuplicateUpdateRatings() {
+        async function proceedDuplicateUpdateRatings() {
             const ctx = duplicateRatingContext;
             closeDuplicateRatingModal();
 
@@ -3681,14 +3736,21 @@
                 return;
             }
 
+            // Reuse the same update flow as the Home dropdown "Update Ratings" entry point
+            // so we get the same prefill + locks.
             router.selectedMovie = {
                 id: movieId,
-                tmdb_id: Number.isFinite(Number(ctx?.tmdb_id)) ? Number(ctx.tmdb_id) : null,
+                tmdb_id: Number.isFinite(Number(ctx?.tmdb_id)) ? Number(ctx.tmdb_id) : undefined,
                 title: String(ctx?.title || '').trim(),
                 detailsReadonly: true,
             };
             router.pendingTitle = router.selectedMovie.title || '';
-            router.navigate('submit', 'update');
+
+            try {
+                await router.startUpdateRatings();
+            } catch (err) {
+                showToast(`Update Ratings failed: ${String(err?.message || err)}`, { level: 'warn' });
+            }
         }
 
         function proceedDuplicateReturnHome() {
@@ -3829,8 +3891,109 @@
             setGenreSelection([...current, genre]);
         }
 
+        function openDatePickerFromInput(el) {
+            try {
+                if (!el || el.disabled || el.readOnly) return;
+                // Modern browsers: open the picker programmatically.
+                if (typeof el.showPicker === 'function') {
+                    el.showPicker();
+                    return;
+                }
+
+                // Fallback: at least focus the field.
+                if (typeof el.focus === 'function') el.focus();
+            } catch (_) {}
+        }
+
+        function getMissingRequiredFieldsForNewEntry() {
+            const missing = [];
+
+            const getEl = (id) => document.getElementById(id);
+            const getText = (id) => String(getEl(id)?.value ?? '').trim();
+            const isBlank = (v) => String(v ?? '').trim() === '';
+
+            const ensureText = (id, label) => {
+                const el = getEl(id);
+                const v = getText(id);
+                if (!el || isBlank(v)) missing.push({ label, el });
+            };
+
+            const ensureNumber = (id, label, { min = null, max = null } = {}) => {
+                const el = getEl(id);
+                const raw = getText(id);
+                if (!el || isBlank(raw)) {
+                    missing.push({ label, el });
+                    return;
+                }
+                const n = Number(raw);
+                if (!Number.isFinite(n)) {
+                    missing.push({ label, el });
+                    return;
+                }
+                if (min !== null && n < min) {
+                    missing.push({ label, el });
+                    return;
+                }
+                if (max !== null && n > max) {
+                    missing.push({ label, el });
+                    return;
+                }
+            };
+
+            ensureText('fld-datewatch', 'Date Watched');
+            ensureText('fld-tier', 'Tier List');
+
+            // Movie details (must be present before submit)
+            ensureText('fld-title', 'Title');
+            ensureNumber('fld-year', 'Year');
+            ensureText('fld-mpa', 'MPA');
+            ensureNumber('fld-runtime', 'Runtime (min)', { min: 1 });
+            ensureText('fld-series', 'Series?');
+            ensureText('fld-director', 'Director');
+
+            // Genre is submitted via a hidden input when using chips.
+            {
+                const el = getEl('fld-genre');
+                const raw = getText('fld-genre');
+                const picked = Array.isArray(parseGenreString(raw)) ? parseGenreString(raw) : [];
+                if (!el || picked.length === 0) missing.push({ label: 'Genre', el });
+            }
+
+            // Ratings
+            ensureNumber('num-overall', 'Overall', { min: 0, max: 100 });
+            ensureNumber('num-sound', 'Score (Sound)', { min: 0, max: 100 });
+            ensureNumber('num-pace', 'Pace', { min: 0, max: 100 });
+            ensureNumber('num-imagery', 'Imagery', { min: 0, max: 100 });
+            ensureNumber('num-acting', 'Acting', { min: 0, max: 100 });
+            ensureNumber('num-plot', 'Plot', { min: 0, max: 100 });
+            ensureNumber('num-dialogue', 'Dialogue', { min: 0, max: 100 });
+
+            ensureText('fld-notes', 'Notes');
+            ensureNumber('fld-timeswatch', 'Times Watched', { min: 1 });
+            ensureText('fld-watchmethod', 'Watch Method');
+            ensureNumber('fld-imdb', 'IMDb Rating', { min: 0, max: 100 });
+
+            return missing;
+        }
+
         async function handleFormSubmit(e) {
             e.preventDefault();
+
+            const entryType = String(e.target.querySelector('input[name="entryType"]')?.value || '').trim().toLowerCase();
+            if (entryType === 'new') {
+                const missing = getMissingRequiredFieldsForNewEntry();
+                if (missing.length > 0) {
+                    const labels = missing.map(m => m.label);
+                    const list = labels.join(', ');
+                    showToast(`Please fill out: ${list}`, { level: 'warn', durationMs: 8000 });
+                    try {
+                        const firstEl = missing.find(m => m?.el)?.el;
+                        if (firstEl && typeof firstEl.focus === 'function') firstEl.focus();
+                    } catch (_) {}
+                    return;
+                }
+            }
+
             const btn = e.target.querySelector('button[type="submit"]');
             const originalHTML = btn.innerHTML;
             btn.innerHTML = `${icons.loader} Saving...`;
@@ -3840,14 +4003,13 @@
             let lastKnownMovieId = null;
             let lastKnownTmdbId = null;
             let lastKnownTitle = '';
-            let lastKnownEntryType = '';
+            let lastKnownEntryType = entryType;
 
             try {
                 if (!supabaseClient) {
                     throw new Error('Supabase SDK failed to load. Check the Supabase <script> include and your network.');
                 }
                 const { user: authedUser, accessToken } = await requireAuthOrThrow();
-                const entryType = String(e.target.querySelector('input[name="entryType"]')?.value || '').trim().toLowerCase();
                 lastKnownEntryType = entryType;
 
                 const toNumberOrNull = (v) => {
@@ -4098,8 +4260,6 @@
                             entries: prior.entries,
                         });
                         showToast(`Added ${prior.entries.length} previous watch${prior.entries.length === 1 ? '' : 'es'}!`);
-                    } else if (prior?.skipped) {
-                        showToast('Skipped adding previous watches.', { level: 'warn' });
                     }
                 }
 
@@ -4218,6 +4378,7 @@
             // Reset selection every time to prevent accidental saves.
             watchMethodPendingSelection = null;
             try {
+                overlay.setAttribute('data-has-selection', 'false');
                 const saveBtn = document.getElementById('watch-method-save');
                 if (saveBtn) {
                     saveBtn.disabled = true;
@@ -4239,6 +4400,7 @@
             if (!overlay) return;
 
             try {
+                overlay.setAttribute('data-has-selection', watchMethodPendingSelection ? 'true' : 'false');
                 overlay.querySelectorAll('[data-watch-method-option="true"]').forEach((btn) => {
                     const isSelected = String(btn.textContent || '').trim() === watchMethodPendingSelection;
                     btn.classList.toggle('selected', isSelected);
@@ -4318,11 +4480,12 @@
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                             <div>
                                 <label class="text-xs text-gray" style="display:block; margin-bottom: 0.35rem;">Date</label>
-                                <input id="prior-watch-date-${n}" type="date" class="input-field" max="${today}" required>
+                                <input id="prior-watch-date-${n}" type="date" class="input-field" max="${today}" onclick="openDatePickerFromInput(this)" onfocus="openDatePickerFromInput(this)" required>
                             </div>
                             <div>
                                 <label class="text-xs text-gray" style="display:block; margin-bottom: 0.35rem;">Watch Method</label>
-                                <select id="prior-watch-method-${n}" class="input-field">
+                                <select id="prior-watch-method-${n}" class="input-field" required>
+                                    <option value="" disabled selected>Select...</option>
                                     <option value="At Home">At Home</option>
                                     <option value="In Theater">In Theater</option>
                                 </select>
@@ -4366,6 +4529,11 @@
                     try { dateEl?.focus?.(); } catch (_) {}
                     return;
                 }
+                if (!watch_method) {
+                    showToast(`Please select a watch method for previous viewing #${i}.`, { level: 'warn' });
+                    try { methodEl?.focus?.(); } catch (_) {}
+                    return;
+                }
                 entries.push({ watch_date, watch_method });
             }
 
@@ -4373,11 +4541,22 @@
         }
 
         function promptPriorWatches(count) {
-            // Returns: { entries: Array<{watch_date, watch_method}> } | { skipped: true } | null
+            // Returns: { entries: Array<{watch_date, watch_method}> }
             return new Promise((resolve) => {
                 priorWatchesChoiceResolver = resolve;
                 openPriorWatchesModal(count);
             });
+        }
+
+        function getTierHelpText(tier) {
+            const t = String(tier || '').trim();
+            if (t === 'S-Tier') return 'The Pantheon. Best of the Best.';
+            if (t === 'A-Tier') return 'Great! Highly recommended films!';
+            if (t === 'B-Tier') return 'Worth a Watch. Solidly good and Entertaining';
+            if (t === 'C-Tier') return "Totally Average. Fine if it's on, but don't go out of your way.";
+            if (t === 'D-Tier') return 'Skip it. Seriously Flawed and not worth the time.';
+            if (t === 'F-Tier') return 'Avoid at all costs! A genuinely bad experience.';
+            return 'Choose exactly one tier';
         }
 
         function setTierFromButton(btn) {
@@ -4396,6 +4575,9 @@
                 });
 
                 group.setAttribute('data-has-selection', tier ? 'true' : 'false');
+
+                const help = document.getElementById('tier-help-text');
+                if (help) help.textContent = getTierHelpText(tier);
             } catch (_) {}
         }
 
