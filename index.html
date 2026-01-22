@@ -690,6 +690,16 @@
             background: rgba(0,0,0,0.22);
             border: 1px solid rgba(255,255,255,0.08);
         }
+
+        .dash-kpi-clickable {
+            cursor: pointer;
+            transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+        }
+        .dash-kpi-clickable:hover {
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.22);
+        }
         .dash-mini-kpi-value { line-height: 1; }
         .dash-mini-kpi-label {
             margin-top: 0.35rem;
@@ -728,6 +738,113 @@
             border-radius: 0.7rem;
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Help-text emphasis (scores + tiers) */
+        .dash-help-score {
+            /* Match the CinemaTracker logo color */
+            color: var(--brand);
+            font-weight: 900;
+        }
+        .dash-help-tier {
+            font-weight: 900;
+        }
+        .dash-help-tier[data-tier-letter="S"] { color: rgb(var(--tier-s-rgb)); }
+        .dash-help-tier[data-tier-letter="A"] { color: rgb(var(--tier-a-rgb)); }
+        .dash-help-tier[data-tier-letter="B"] { color: rgb(var(--tier-b-rgb)); }
+        .dash-help-tier[data-tier-letter="C"] { color: rgb(var(--tier-c-rgb)); }
+        .dash-help-tier[data-tier-letter="D"] { color: rgb(var(--tier-d-rgb)); }
+        .dash-help-tier[data-tier-letter="F"] { color: rgb(var(--tier-f-rgb)); }
+
+        /* Feed */
+        .feed-actor {
+            color: rgba(255,255,255,0.95);
+            font-weight: 900;
+        }
+        .feed-metrics {
+            margin-top: 0.35rem;
+            font-size: 0.95rem;
+            line-height: 1.15;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .feed-metrics .dash-help-score {
+            font-size: 1.15rem;
+        }
+        .feed-metrics .dash-help-tier {
+            font-size: 1.0rem;
+        }
+
+        /* Quote Wall */
+        .dash-quote-wall-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            align-items: stretch;
+        }
+        .dash-quote-card {
+            position: relative;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.05);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+        }
+        .dash-quote-card:hover {
+            border-color: rgba(20,184,166,0.40);
+            background: rgba(255,255,255,0.07);
+            box-shadow: 0 18px 50px rgba(0,0,0,0.40);
+        }
+        .dash-quote-card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            background: radial-gradient(600px circle at var(--mx, 40%) var(--my, 25%), rgba(168,85,247,0.18), transparent 45%),
+                        radial-gradient(520px circle at var(--mx2, 70%) var(--my2, 80%), rgba(20,184,166,0.14), transparent 50%);
+            opacity: 0.85;
+            pointer-events: none;
+        }
+        .dash-quote-card-inner {
+            position: relative;
+            padding: 1rem 1rem 0.95rem;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            /* Intentionally no motion: keep text easy to read. */
+        }
+        .dash-quote-text {
+            font-size: 0.98rem;
+            line-height: 1.35;
+            color: rgba(255,255,255,0.95);
+            font-weight: 750;
+            letter-spacing: 0.01em;
+        }
+        .dash-quote-text em { font-style: italic; font-weight: 750; }
+        .dash-quote-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            color: rgba(255,255,255,0.78);
+            font-size: 0.78rem;
+        }
+        .dash-quote-pill {
+            padding: 0.22rem 0.55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.20);
+            font-weight: 850;
+            letter-spacing: 0.03em;
+        }
+        .dash-quote-title {
+            font-size: 0.92rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.96);
+            line-height: 1.2;
         }
 
         /* Icon Size Helper */
@@ -780,6 +897,7 @@
             
             <div class="nav-links">
                 <button onclick="router.navigate('home')" class="nav-link">Home</button>
+                <button onclick="router.navigate('feed')" class="nav-link">Feed</button>
                 <button onclick="router.navigate('dashboard')" class="nav-link">Data Dash</button>
             </div>
 
@@ -795,6 +913,7 @@
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="glass-panel">
             <button onclick="router.navigate('home')" class="mobile-link">Home</button>
+            <button onclick="router.navigate('feed')" class="mobile-link">Feed</button>
             <button onclick="router.navigate('dashboard')" class="mobile-link">Data Dash</button>
             <button onclick="openAuthModal(); document.getElementById('mobile-menu').classList.remove('open');" class="mobile-link">Login</button>
         </div>
@@ -879,6 +998,21 @@
             </div>
             <div class="auth-modal-actions">
                 <button type="button" class="btn btn-primary" onclick="closeDashboardAuthWarning(); openAuthModal();">Log in</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="feed-auth-warning" class="auth-overlay" onclick="if(event.target === this) closeFeedAuthWarning();">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="feed-auth-warning-title">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="feed-auth-warning-title">Login Required</div>
+                <button class="auth-modal-close" type="button" onclick="closeFeedAuthWarning()">Close</button>
+            </div>
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Please login to view your feed
+            </div>
+            <div class="auth-modal-actions">
+                <button type="button" class="btn btn-primary" onclick="closeFeedAuthWarning(); openAuthModal();">Log in</button>
             </div>
         </div>
     </div>
@@ -1058,8 +1192,14 @@
 
             navigate(page, mode = 'new') {
                 // If the user is not logged in, block the Data Dash and prompt them to log in.
-                if (page === 'dashboard' && !cachedIsAuthed) {
+                if ((page === 'dashboard' || page === 'dashboard_kpi') && !cachedIsAuthed) {
                     openDashboardAuthWarning();
+                    return;
+                }
+
+                // If the user is not logged in, block the Feed page and prompt them to log in.
+                if (page === 'feed' && !cachedIsAuthed) {
+                    openFeedAuthWarning();
                     return;
                 }
 
@@ -1080,7 +1220,16 @@
                 
                 // Active Nav
                 document.querySelectorAll('.nav-link').forEach(el => {
-                    if (el.innerText.toLowerCase().includes(page === 'home' ? 'home' : page === 'submit' ? 'log' : 'data')) {
+                    const label = (
+                        page === 'home'
+                            ? 'home'
+                            : (page === 'submit'
+                                ? 'log'
+                                : ((page === 'dashboard' || page === 'dashboard_kpi')
+                                    ? 'data'
+                                    : (page === 'feed' ? 'feed' : '')))
+                    );
+                    if (label && el.innerText.toLowerCase().includes(label)) {
                         el.classList.add('active');
                     } else {
                         el.classList.remove('active');
@@ -1095,6 +1244,11 @@
                     this.pendingTitle = '';
                     resetHomeSearchAndFilters();
                     loadTrendingNow();
+                } else if (page === 'feed') {
+                    root.innerHTML = this.renderFeed();
+                    refreshAuthStateAndUI();
+                    initFeedPage();
+                    loadFeedPage();
                 } else if (page === 'submit') {
                     root.innerHTML = this.renderSubmit();
                     initializeWatchMethodToggle();
@@ -1105,7 +1259,15 @@
                     initDashboardTabs();
                     initDashboardTimeframe();
                     initDashboardFavoritesMetric();
-                    setDashboardTimeframe('all_time');
+                    initDashboardGeneralKpiClicks();
+                    initDashboardPosterUpdateRatingsClicks();
+                    setDashboardTimeframe(dashboardTimeframe || 'all_time');
+                    syncDashboardFavoritesMetricUI();
+                } else if (page === 'dashboard_kpi') {
+                    root.innerHTML = this.renderDashboardKpiDetail();
+                    refreshAuthStateAndUI();
+                    initDashboardPosterUpdateRatingsClicks();
+                    loadDashboardKpiDetail();
                 }
                 
                 window.scrollTo(0, 0);
@@ -1373,7 +1535,7 @@
                         // Back-compat: older data may be missing Watch Logs rows.
                         return 1;
                     })();
-                    const defaultDate = new Date().toISOString().split('T')[0];
+                    const defaultDate = getLocalISODate();
                     const date = existing?.[COL_WATCH_DATE]
                         ? String(existing[COL_WATCH_DATE])
                         : (latestWatch?.[COL_WATCH_DATE] ? String(latestWatch[COL_WATCH_DATE]) : defaultDate);
@@ -1390,7 +1552,12 @@
                             plot: Number(existing?.plot_rating ?? 50),
                             dialogue: Number(existing?.dialogue_rating ?? 50),
                         },
-                        quote: String(existing?.fav_quote ?? ''),
+                        quote: (() => {
+                            const fromDb = String(existing?.fav_quote ?? '').trim();
+                            if (fromDb) return fromDb;
+                            const fromSelection = String(m?.prefill_quote ?? m?.prefillQuote ?? m?.quote ?? '').trim();
+                            return fromSelection;
+                        })(),
                         notes: String(existing?.notes ?? ''),
                         watched: watchedTimes,
                         // When updating, show the original (oldest) watch method as the locked form value.
@@ -1417,8 +1584,15 @@
                         return m?.genre || '';
                     };
 
-                    // Director is often missing from the Movies table in this setup.
-                    // Prefer DB value, but fall back to TMDb details so the update form is fully populated.
+                    const isGenrePlaceholder = (raw) => {
+                        const s = String(raw ?? '').trim();
+                        if (!s) return true;
+                        const lower = s.toLowerCase();
+                        return lower === 'movie' || lower === '0';
+                    };
+
+                    // Director/genre can be missing or placeholder in the Movies table.
+                    // Prefer DB values, but fall back to TMDb details so the update form matches the Search-bar flow.
                     let resolvedDirector = String(
                         movieRow?.director ??
                         movieRow?.director_name ??
@@ -1426,19 +1600,53 @@
                         m?.director ??
                         ''
                     ).trim();
-                    if (!resolvedDirector) {
-                        const tmdb_id = Number(movieRow?.tmdb_id ?? m?.tmdb_id ?? getTmdbIdFromSelectedMovie(m) ?? null);
-                        if (Number.isFinite(tmdb_id) && tmdb_id > 0) {
-                            try {
-                                const details = await callSwiftApiGetMovieDetails({ tmdb_id });
-                                resolvedDirector = String(details?.director || '').trim();
 
-                                const imdbPct = details?.imdb_rating_pct;
-                                if (imdbPct !== null && imdbPct !== undefined) {
-                                    m.imdb = String(imdbPct);
-                                }
-                            } catch (_) {}
-                        }
+                    let resolvedGenre = String(coalesceGenre(movieRow) ?? '').trim();
+
+                    let resolvedPosterPath = String(
+                        movieRow?.poster_path ??
+                        m?.poster_path ??
+                        m?.posterPath ??
+                        m?.poster_url ??
+                        m?.posterUrl ??
+                        ''
+                    ).trim();
+
+                    const tmdb_id = Number(movieRow?.tmdb_id ?? m?.tmdb_id ?? getTmdbIdFromSelectedMovie(m) ?? null);
+                    const needsTmdbDetails = (
+                        (!resolvedDirector) ||
+                        isGenrePlaceholder(resolvedGenre) ||
+                        (!resolvedPosterPath)
+                    ) && (Number.isFinite(tmdb_id) && tmdb_id > 0);
+
+                    if (needsTmdbDetails) {
+                        try {
+                            const details = await callSwiftApiGetMovieDetails({ tmdb_id });
+
+                            if (!resolvedDirector) {
+                                resolvedDirector = String(details?.director || '').trim();
+                            }
+
+                            if (isGenrePlaceholder(resolvedGenre)) {
+                                const genres = Array.isArray(details?.genres)
+                                    ? details.genres.map(s => String(s).trim()).filter(Boolean)
+                                    : [];
+                                const joined = genres.length
+                                    ? genres.join(', ')
+                                    : String(details?.genre || '').trim();
+                                if (joined) resolvedGenre = joined;
+                            }
+
+                            if (!resolvedPosterPath) {
+                                const p = String(details?.poster_path ?? '').trim();
+                                if (p) resolvedPosterPath = p;
+                            }
+
+                            const imdbPct = details?.imdb_rating_pct;
+                            if (imdbPct !== null && imdbPct !== undefined) {
+                                m.imdb = String(imdbPct);
+                            }
+                        } catch (_) {}
                     }
 
                     this.selectedMovie = {
@@ -1451,8 +1659,8 @@
                         mpa: String(movieRow?.mpa_rating ?? movieRow?.mpa ?? m?.mpa ?? '').trim(),
                         runtime: coalesceRuntime(movieRow),
                         isSeries: (movieRow?.is_series ?? movieRow?.isSeries ?? m?.isSeries) === true,
-                        genre: coalesceGenre(movieRow),
-                        poster_path: movieRow?.poster_path ?? m?.poster_path ?? m?.posterPath ?? m?.poster_url ?? m?.posterUrl ?? '',
+                        genre: resolvedGenre,
+                        poster_path: resolvedPosterPath,
                         detailsReadonly: true,
                         mockUserReview: review
                     };
@@ -1603,7 +1811,7 @@
                 const uuidLike = isUuidLike;
                 const hasDbMovie = uuidLike(prefill?.id);
                 const detailsReadonly = hasDbMovie || Boolean(prefill?.detailsReadonly);
-                const defaultDate = new Date().toISOString().split('T')[0];
+                const defaultDate = getLocalISODate();
                 const allowEditMissingDetails = detailsReadonly && !hasDbMovie;
 
                 const formAccent = isUpdate
@@ -1949,7 +2157,7 @@
                                         <label class="text-sm text-white font-bold mb-2 label-gap submit-label block capitalize">Favorite Quote</label>
                                         <div class="relative">
                                             <div class="input-icon">${icons.quote}</div>
-                                            <input id="fld-quote" name="Fav Quote" type="text" class="input-field" style="padding-left: 2.5rem;" value="${u.quote}" placeholder="One liner...">
+                                            <input id="fld-quote" name="Fav Quote" type="text" class="input-field" style="padding-left: 2.5rem;" value="${escapeHtml(u.quote)}" placeholder="One liner...">
                                         </div>
                                     </div>
                                     <div>
@@ -2010,6 +2218,7 @@
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-ratings" data-tab="ratings" style="padding: 0.6rem 0.9rem;">Ratings</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-tiers" data-tab="tiers" style="padding: 0.6rem 0.9rem;">Tiers</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-favorites" data-tab="favorites" style="padding: 0.6rem 0.9rem;">Favorites</button>
+                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-quotes" data-tab="quotes" style="padding: 0.6rem 0.9rem;">Quote Wall</button>
                                 </div>
                             </div>
                         </div>
@@ -2055,7 +2264,6 @@
                                             <div class="dash-mini-kpi-label">Unique movies</div>
                                         </div>
                                     </div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-watch-events-note">&nbsp;</div>
                                 </div>
 
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
@@ -2070,19 +2278,22 @@
                                             <div class="dash-mini-kpi-label">Unique hours</div>
                                         </div>
                                     </div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-hours-watched-note">&nbsp;</div>
                                 </div>
 
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4"><span class="text-gray text-sm">Watch Method</span><span class="text-brand">${icons.tv}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-at-home">—</div>
-                                            <div class="dash-mini-kpi-label">At home • <span class="tabular-nums" id="dash-general-at-home-unique">—</span> unique</div>
+                                    <div class="grid grid-3" style="gap: 12px;">
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="watch_method_at_home_events">
+                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-at-home-watches">—</div>
+                                            <div class="dash-mini-kpi-label">At home (watch events)</div>
                                         </div>
-                                        <div class="dash-mini-kpi">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-in-theater">—</div>
-                                            <div class="dash-mini-kpi-label">In theater • <span class="tabular-nums" id="dash-general-in-theater-unique">—</span> unique</div>
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="watch_method_at_home_unique">
+                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-at-home-movies">—</div>
+                                            <div class="dash-mini-kpi-label">At home (unique movies)</div>
+                                        </div>
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="watch_method_in_theater">
+                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-in-theater-watches">—</div>
+                                            <div class="dash-mini-kpi-label">In theater</div>
                                         </div>
                                     </div>
                                 </div>
@@ -2091,36 +2302,86 @@
                             <div class="grid grid-3 gap-6 mb-8">
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Genre</span><span class="text-brand">${icons.pieChart}</span></div>
-                                    <div class="text-2xl font-bold text-white" id="dash-general-top-genre">—</div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-top-genre-note">&nbsp;</div>
+                                    <div class="grid grid-2" style="gap: 12px;">
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_genre">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-genre-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">All watch events</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-genre-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_genre_unique">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-genre-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">Unique movies only</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-genre-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Decade</span><span class="text-brand">${icons.calendar}</span></div>
-                                    <div class="text-2xl font-bold text-white" id="dash-general-top-decade">—</div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-top-decade-note">&nbsp;</div>
+                                    <div class="grid grid-2" style="gap: 12px;">
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_decade">
+                                            <div class="text-white font-bold tabular-nums dash-mini-kpi-value" id="dash-general-top-decade-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">All watch events</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-decade-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_decade_unique">
+                                            <div class="text-white font-bold tabular-nums dash-mini-kpi-value" id="dash-general-top-decade-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">Unique movies only</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-decade-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Director</span><span class="text-brand">${icons.user}</span></div>
-                                    <div class="text-2xl font-bold text-white" id="dash-general-top-director">—</div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-top-director-note">&nbsp;</div>
+                                    <div class="grid grid-2" style="gap: 12px;">
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_director">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-director-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">All watch events</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-director-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_director_unique">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-director-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">Unique movies only</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-director-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="grid grid-3 gap-6 mb-8">
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Actor</span><span class="text-brand">${icons.user}</span></div>
-                                    <div class="text-2xl font-bold text-white" id="dash-general-top-actor">—</div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-top-actor-note">&nbsp;</div>
+                                    <div class="grid grid-2" style="gap: 12px;">
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_actor">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-actor-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">All watch events</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-actor-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_actor_unique">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-actor-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">Unique movies only</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-actor-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
+                                <div class="glass-panel dash-kpi-clickable" data-general-kpi="most_watched_movie" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Movie</span><span class="text-brand">${icons.film}</span></div>
                                     <div class="text-xl font-bold text-white" id="dash-general-top-movie">—</div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-top-movie-note">&nbsp;</div>
+                                    <div class="mt-2 text-sm text-gray tabular-nums" id="dash-general-top-movie-count">&nbsp;</div>
                                 </div>
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched MPA Rating</span><span class="text-brand">${icons.star}</span></div>
-                                    <div class="text-2xl font-bold text-white" id="dash-general-top-mpa">—</div>
-                                    <div class="mt-2 text-sm text-gray" id="dash-general-top-mpa-note">&nbsp;</div>
+                                    <div class="grid grid-2" style="gap: 12px;">
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_mpa">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-mpa-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">All watch events</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-mpa-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_mpa_unique">
+                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-mpa-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
+                                            <div class="dash-mini-kpi-label">Unique movies only</div>
+                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-mpa-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2148,7 +2409,7 @@
                                         <span class="text-brand">${icons.trendingUp}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-top-genre">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-top-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-genre-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-top-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-genre-n">—</span> rated movies</div>
                                     <div class="mt-2 text-xs text-gray">Only includes genres with at least 2 rated movies.</div>
                                 </div>
                                 <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
@@ -2157,7 +2418,7 @@
                                         <span class="text-brand">${icons.trendingDown}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-bottom-genre">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-bottom-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-genre-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-bottom-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-genre-n">—</span> rated movies</div>
                                     <div class="mt-2 text-xs text-gray">Only includes genres with at least 2 rated movies.</div>
                                 </div>
                             </div>
@@ -2169,7 +2430,7 @@
                                         <span class="text-brand">${icons.user}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-top-director">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-top-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-director-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-top-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-director-n">—</span> rated movies</div>
                                     <div class="mt-2 text-xs text-gray">Only includes directors with at least 2 rated movies.</div>
                                 </div>
 
@@ -2179,7 +2440,7 @@
                                         <span class="text-brand">${icons.user}</span>
                                     </div>
                                     <div class="text-2xl font-bold text-white" id="dash-ratings-bottom-director">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="text-brand tabular-nums" id="dash-ratings-bottom-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-director-n">—</span> rated movies</div>
+                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-bottom-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-director-n">—</span> rated movies</div>
                                     <div class="mt-2 text-xs text-gray">Only includes directors with at least 2 rated movies.</div>
                                 </div>
                             </div>
@@ -2223,6 +2484,108 @@
                             </div>
                         </div>
 
+                        <!-- Tab: Quote Wall -->
+                        <div id="dash-pane-quotes" class="hidden">
+                            <div class="glass-panel" style="padding:1.5rem; border-radius:0.95rem;">
+                                <div class="flex justify-between mb-4" style="gap: 14px; align-items: flex-start; flex-wrap: wrap;">
+                                    <div>
+                                        <div class="text-white" style="font-size: 1.1rem; font-weight: 800;">Quote Wall</div>
+                                        <div class="text-xs text-gray" style="margin-top: 0.35rem;">Top quotes (max 50), ranked by Overall rating. Click a card to jump to Update Ratings.</div>
+                                    </div>
+                                    <div class="text-xs text-gray" id="dash-quote-wall-meta" style="text-align:right;"></div>
+                                </div>
+                                <div id="dash-quote-wall" class="text-gray">Loading…</div>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderFeed() {
+                return `
+                    <div class="fade-in">
+                        <!-- Background -->
+                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.12; pointer-events: none;"></div>
+                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
+
+                        <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
+                            <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-white">Feed</h1>
+                                    <p class="text-gray mt-2">New and updated ratings from people you follow.</p>
+                                </div>
+                            </div>
+
+                            <div class="grid" style="grid-template-columns: 1.2fr 0.8fr; gap: 16px; align-items: start;">
+                                <div class="glass-panel" style="padding: 1rem; border-radius: 1rem;">
+                                    <div class="flex justify-between items-center" style="gap: 12px; flex-wrap: wrap;">
+                                        <div>
+                                            <div class="text-white font-bold">Following Activity</div>
+                                            <div id="feed-meta" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
+                                        </div>
+                                        <div style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
+                                            <button id="feed-sort-updated" type="button" class="btn btn-outline" data-feed-action="set_sort" data-feed-sort-mode="updated_at" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Updated</button>
+                                            <button id="feed-sort-watched" type="button" class="btn btn-outline" data-feed-action="set_sort" data-feed-sort-mode="watch_date" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Watched</button>
+                                            <button id="feed-refresh" type="button" class="btn btn-outline" data-feed-action="refresh" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Refresh</button>
+                                        </div>
+                                    </div>
+
+                                    <div id="feed-list" style="margin-top: 0.9rem; display: grid; gap: 12px;"></div>
+                                </div>
+
+                                <div class="glass-panel" style="padding: 1rem; border-radius: 1rem;">
+                                    <div class="text-white font-bold">Follow People</div>
+                                    <div class="text-xs text-gray" style="margin-top: 0.25rem;">Search by username.</div>
+
+                                    <form id="feed-search-form" style="margin-top: 0.85rem;">
+                                        <div class="relative">
+                                            <input id="feed-search-input" type="text" class="input-field" placeholder="username" autocomplete="off" style="padding-right: 130px;">
+                                            <div style="position:absolute; right: 8px; top: 50%; transform: translateY(-50%); display:flex; gap: 8px;">
+                                                <button id="feed-search-btn" type="submit" class="btn btn-primary" style="padding: 0.5rem 0.75rem; border-radius: 0.75rem;">Search</button>
+                                                <button id="feed-clear-btn" type="button" class="btn btn-outline" style="padding: 0.5rem 0.75rem; border-radius: 0.75rem;">Clear</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div id="feed-search-results" style="margin-top: 0.9rem; display: grid; gap: 10px;"></div>
+
+                                    <div style="height: 1px; background: rgba(255,255,255,0.06); margin: 1rem 0;"></div>
+
+                                    <div class="text-white font-bold">Following</div>
+                                    <div id="feed-following" style="margin-top: 0.75rem; display: grid; gap: 10px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderDashboardKpiDetail() {
+                return `
+                    <div class="fade-in">
+                        <!-- Background -->
+                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?q=80&w=2028&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.15; pointer-events: none;"></div>
+                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
+
+                        <div class="container" style="padding-top: 2rem; position: relative;">
+                            <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
+                                <div class="flex" style="gap: 12px; align-items: center;">
+                                    <button type="button" class="btn btn-outline" id="dash-kpi-back" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem; display:flex; align-items:center; gap: 8px;" onclick="dashboardActiveTab='general'; router.navigate('dashboard');">
+                                        <span style="display:inline-flex; width: 18px; height: 18px;">${icons.arrowLeft}</span>
+                                        Back
+                                    </button>
+                                    <div>
+                                        <h1 class="text-2xl font-bold text-white" id="dash-kpi-title">KPI</h1>
+                                        <p class="text-gray mt-2" id="dash-kpi-subtitle"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel" style="padding:1.25rem; border-radius:0.95rem;">
+                                <div id="dash-kpi-grid" class="text-gray">Loading…</div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2487,12 +2850,12 @@
                 elInTheater.textContent = Number.isFinite(inTheater) ? String(inTheater) : '0';
 
                 const tierColors = {
-                    'S': 'rgba(20, 184, 166, 0.35)',
-                    'A': 'rgba(168, 85, 247, 0.35)',
-                    'B': 'rgba(59, 130, 246, 0.35)',
-                    'C': 'rgba(245, 158, 11, 0.35)',
-                    'D': 'rgba(239, 68, 68, 0.35)',
-                    'F': 'rgba(107, 114, 128, 0.35)',
+                    'S': 'rgba(var(--tier-s-rgb), 0.35)',
+                    'A': 'rgba(var(--tier-a-rgb), 0.35)',
+                    'B': 'rgba(var(--tier-b-rgb), 0.35)',
+                    'C': 'rgba(var(--tier-c-rgb), 0.35)',
+                    'D': 'rgba(var(--tier-d-rgb), 0.35)',
+                    'F': 'rgba(var(--tier-f-rgb), 0.35)',
                 };
 
                 elTierBars.innerHTML = tierDist.map((t) => {
@@ -2501,10 +2864,14 @@
                     const count = Number(t?.count ?? 0);
                     const width = Number.isFinite(pct) ? Math.max(0, Math.min(100, pct)) : 0;
                     const bg = tierColors[tier.toUpperCase()] || 'rgba(255,255,255,0.10)';
+                    const tierLetter = String(tier || '').trim().toUpperCase();
+                    const tierText = /^[SABCDF]$/.test(tierLetter)
+                        ? `Tier <span class=\"dash-help-tier\" data-tier-letter=\"${escapeHtml(tierLetter)}\">${escapeHtml(tierLetter)}</span>`
+                        : `Tier ${escapeHtml(tier)}`;
                     return `
                         <div style="min-width: 140px; flex: 1;">
                             <div class="flex justify-between" style="margin-bottom: 6px;">
-                                <span class="text-xs text-gray">Tier ${escapeHtml(tier)}</span>
+                                <span class="text-xs text-gray">${tierText}</span>
                                 <span class="text-xs text-gray">${Number.isFinite(pct) ? pct.toFixed(1) : '0.0'}% (${Number.isFinite(count) ? count : 0})</span>
                             </div>
                             <div style="height: 10px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06);">
@@ -2564,8 +2931,816 @@
         let dashboardAuthWarned = false;
         let dashboardFavoritesMetric = 'overall';
 
+        let dashboardGeneralLastData = null;
+        let dashboardKpiDetailState = null;
+
         const dashPosterCacheByTmdbId = new Map();
         const dashRatingCacheByMovieId = new Map();
+
+        async function dashEnsurePosterPath(item) {
+            const tmdb_id = Number(item?.tmdb_id);
+            if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return null;
+            if (dashPosterCacheByTmdbId.has(tmdb_id)) return dashPosterCacheByTmdbId.get(tmdb_id);
+            try {
+                const details = await callSwiftApiGetMovieDetails({ tmdb_id });
+                const poster_path = details?.poster_path ? String(details.poster_path) : null;
+                dashPosterCacheByTmdbId.set(tmdb_id, poster_path);
+                return poster_path;
+            } catch (_) {
+                dashPosterCacheByTmdbId.set(tmdb_id, null);
+                return null;
+            }
+        }
+
+        function dashFormatScore(n) {
+            const num = Number(n);
+            if (!Number.isFinite(num)) return '';
+            const rounded = Math.round(num * 10) / 10;
+            if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return `${Math.round(rounded)}%`;
+            return `${rounded.toFixed(1)}%`;
+        }
+
+        function dashNormalizeTierLabel(tierRaw) {
+            const t = String(tierRaw ?? '').trim();
+            if (!t) return '';
+            const u = t.toUpperCase();
+            if (u === 'UNRANKED') return 'Unranked';
+            if (/^[SABCDF]$/i.test(t)) return `${u}-Tier`;
+            if (/^[SABCDF]\s*-?\s*TIER$/i.test(t)) return `${u[0]}-Tier`;
+            return t;
+        }
+
+        function dashTierLetterFromLabel(label) {
+            const raw = String(label ?? '').trim();
+            if (!raw) return '';
+            const upper = raw.toUpperCase();
+            if (upper === 'UNRANKED') return '';
+            const m = upper.match(/^([SABCDF])/);
+            return m ? m[1] : '';
+        }
+
+        function dashRenderHelpScore(scoreText) {
+            const s = String(scoreText ?? '').trim();
+            if (!s) return '';
+            return `<span class="dash-help-score tabular-nums">${escapeHtml(s)}</span>`;
+        }
+
+        function dashRenderHelpTier(tierLabel) {
+            const t = String(tierLabel ?? '').trim();
+            if (!t) return '';
+            const letter = dashTierLetterFromLabel(t);
+            const attr = letter ? ` data-tier-letter="${escapeHtml(letter)}"` : '';
+            return `<span class="dash-help-tier"${attr}>${escapeHtml(t)}</span>`;
+        }
+
+        function dashJoinHelpParts(parts) {
+            return (Array.isArray(parts) ? parts : []).filter(Boolean).join(' • ');
+        }
+
+        function openFeedAuthWarning() {
+            const el = document.getElementById('feed-auth-warning');
+            if (!el) return;
+            el.style.display = 'flex';
+        }
+
+        function closeFeedAuthWarning() {
+            const el = document.getElementById('feed-auth-warning');
+            if (!el) return;
+            el.style.display = 'none';
+        }
+
+        let feedBound = false;
+        let feedFollowingIds = new Set();
+        let feedLastSearchQuery = '';
+        let feedSortMode = 'updated_at'; // 'updated_at' | 'watch_date'
+
+        function formatFeedTimestamp(ts) {
+            if (!ts) return '';
+            const d = new Date(ts);
+            if (Number.isNaN(d.getTime())) return '';
+            try {
+                return d.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+            } catch (_) {
+                return String(ts);
+            }
+        }
+
+        function initFeedPage() {
+            if (feedBound) return;
+            feedBound = true;
+
+            document.addEventListener('click', async (e) => {
+                const btn = e?.target?.closest ? e.target.closest('[data-feed-action]') : null;
+                if (!btn) return;
+                const action = String(btn.dataset.feedAction || '').trim();
+                const targetUserId = String(btn.dataset.feedUserId || '').trim();
+                if (!action) return;
+
+                if (action === 'refresh') {
+                    await loadFeedPage();
+                    return;
+                }
+
+                if (action === 'set_sort') {
+                    const mode = String(btn.dataset.feedSortMode || '').trim();
+                    feedSortMode = (mode === 'watch_date') ? 'watch_date' : 'updated_at';
+                    syncFeedSortUI();
+                    await loadFeedItems();
+                    return;
+                }
+
+                if (!supabaseClient) {
+                    showToast('Supabase SDK failed to load.', { level: 'warn' });
+                    return;
+                }
+
+                let authedUser = null;
+                try {
+                    const { user } = await requireAuthOrThrow();
+                    authedUser = user;
+                } catch (err) {
+                    showToast(String(err?.message || err), { level: 'warn' });
+                    return;
+                }
+
+                if (!targetUserId) return;
+                if (targetUserId === authedUser.id) {
+                    showToast('You cannot follow yourself.', { level: 'warn' });
+                    return;
+                }
+
+                try {
+                    if (action === 'follow') {
+                        const { error } = await supabaseClient
+                            .from('Follows')
+                            .insert({ follower_id: authedUser.id, followed_id: targetUserId });
+                        if (error) throw error;
+                        showToast('Followed!', { level: 'success' });
+                    }
+
+                    if (action === 'unfollow') {
+                        const { error } = await supabaseClient
+                            .from('Follows')
+                            .delete()
+                            .eq('follower_id', authedUser.id)
+                            .eq('followed_id', targetUserId);
+                        if (error) throw error;
+                        showToast('Unfollowed.', { level: 'success' });
+                    }
+
+                    await loadMyFollowingIds();
+                    await loadFeedFollowingList();
+                    await loadFeedItems();
+                    if (feedLastSearchQuery) {
+                        await searchFeedUsers(feedLastSearchQuery);
+                    }
+                } catch (err) {
+                    const msg = String(err?.message || err);
+                    // Common duplicate follow error
+                    if (/duplicate|unique/i.test(msg)) {
+                        showToast('You are already following that user.', { level: 'warn' });
+                        return;
+                    }
+                    showToast(`Feed action failed: ${msg}`, { level: 'warn' });
+                }
+            }, { capture: true });
+        }
+
+        async function loadMyFollowingIds() {
+            feedFollowingIds = new Set();
+            if (!supabaseClient) return;
+            let authedUser = null;
+            try {
+                const { data } = await supabaseClient.auth.getUser();
+                authedUser = data?.user || null;
+            } catch (_) {
+                authedUser = null;
+            }
+            if (!authedUser?.id) return;
+
+            const { data, error } = await supabaseClient
+                .from('Follows')
+                .select('followed_id')
+                .eq('follower_id', authedUser.id);
+            if (error) throw error;
+            const rows = Array.isArray(data) ? data : [];
+            for (const r of rows) {
+                const id = String(r?.followed_id || '').trim();
+                if (id) feedFollowingIds.add(id);
+            }
+        }
+
+        async function loadFeedPage() {
+            // Bind per-render DOM elements.
+            syncFeedSortUI();
+
+            const form = document.getElementById('feed-search-form');
+            const input = document.getElementById('feed-search-input');
+            const clearBtn = document.getElementById('feed-clear-btn');
+
+            if (form && !form.dataset.bound) {
+                form.dataset.bound = 'true';
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const q = String(input?.value || '').trim();
+                    await searchFeedUsers(q);
+                });
+            }
+
+            if (clearBtn && !clearBtn.dataset.bound) {
+                clearBtn.dataset.bound = 'true';
+                clearBtn.addEventListener('click', async () => {
+                    if (input) input.value = '';
+                    feedLastSearchQuery = '';
+                    const el = document.getElementById('feed-search-results');
+                    if (el) el.innerHTML = '';
+                });
+            }
+
+            try {
+                await loadMyFollowingIds();
+                await loadFeedFollowingList();
+                await loadFeedItems();
+            } catch (err) {
+                showToast(`Feed failed: ${String(err?.message || err)}`, { level: 'warn' });
+            }
+        }
+
+        function syncFeedSortUI() {
+            const btnUpdated = document.getElementById('feed-sort-updated');
+            const btnWatched = document.getElementById('feed-sort-watched');
+            const activate = (btn, on) => {
+                if (!btn) return;
+                btn.classList.remove('btn-glass', 'btn-outline');
+                btn.classList.add(on ? 'btn-glass' : 'btn-outline');
+            };
+            activate(btnUpdated, feedSortMode === 'updated_at');
+            activate(btnWatched, feedSortMode === 'watch_date');
+        }
+
+        async function loadFeedFollowingList() {
+            const el = document.getElementById('feed-following');
+            if (!el) return;
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                el.innerHTML = `<div class="text-gray">Log in to manage follows.</div>`;
+                return;
+            }
+
+            const ids = Array.from(feedFollowingIds);
+            if (ids.length === 0) {
+                el.innerHTML = `<div class="text-gray">You aren’t following anyone yet.</div>`;
+                return;
+            }
+
+            const { data, error } = await supabaseClient
+                .from('Users')
+                .select('id, username, display_name, privacy_level')
+                .in('id', ids);
+            if (error) throw error;
+
+            const rows = Array.isArray(data) ? data : [];
+            // Preserve the order of ids.
+            const map = new Map(rows.map(r => [String(r?.id || '').trim(), r]));
+            const ordered = ids.map(id => map.get(id)).filter(Boolean);
+
+            el.innerHTML = ordered.map((u) => {
+                const id = String(u?.id || '').trim();
+                const username = String(u?.username || '').trim();
+                const name = String(u?.display_name || '').trim() || (username ? `@${username}` : 'User');
+                const privacy = String(u?.privacy_level || 'public').trim();
+                return `
+                    <div class="glass-panel" style="padding: 0.75rem; border-radius: 0.9rem; display:flex; align-items:center; justify-content: space-between; gap: 10px;">
+                        <div style="min-width:0;">
+                            <div class="text-white font-semibold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(name)}</div>
+                            <div class="text-xs text-gray" style="margin-top: 0.15rem;">${username ? `@${escapeHtml(username)}` : ''}${privacy ? ` • ${escapeHtml(privacy)}` : ''}</div>
+                        </div>
+                        <button type="button" class="btn btn-outline" data-feed-action="unfollow" data-feed-user-id="${escapeHtml(id)}" style="padding: 0.45rem 0.7rem; border-radius: 0.75rem;">Unfollow</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function searchFeedUsers(query) {
+            const el = document.getElementById('feed-search-results');
+            if (!el) return;
+            const q = String(query || '').trim();
+            feedLastSearchQuery = q;
+
+            if (!q) {
+                el.innerHTML = `<div class="text-gray">Type a username to search.</div>`;
+                return;
+            }
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                el.innerHTML = `<div class="text-gray">Log in to search users.</div>`;
+                return;
+            }
+
+            el.innerHTML = `<div class="text-gray">Searching…</div>`;
+
+            const { data, error } = await supabaseClient
+                .from('Users')
+                .select('id, username, display_name, privacy_level')
+                .ilike('username', `%${q}%`)
+                .limit(20);
+            if (error) throw error;
+
+            const rows = Array.isArray(data) ? data : [];
+            if (rows.length === 0) {
+                el.innerHTML = `<div class="text-gray">No users found for “${escapeHtml(q)}”.</div>`;
+                return;
+            }
+
+            // Determine authed user id so we can hide follow-self.
+            let authedUserId = '';
+            try {
+                const { data: udata } = await supabaseClient.auth.getUser();
+                authedUserId = String(udata?.user?.id || '').trim();
+            } catch (_) {
+                authedUserId = '';
+            }
+
+            el.innerHTML = rows.map((u) => {
+                const id = String(u?.id || '').trim();
+                const username = String(u?.username || '').trim();
+                const name = String(u?.display_name || '').trim() || (username ? `@${username}` : 'User');
+                const privacy = String(u?.privacy_level || 'public').trim();
+                const isMe = authedUserId && id === authedUserId;
+                const isFollowing = feedFollowingIds.has(id);
+
+                const right = isMe
+                    ? `<span class="text-xs text-gray" style="white-space: nowrap;">This is you</span>`
+                    : (isFollowing
+                        ? `<button type="button" class="btn btn-outline" data-feed-action="unfollow" data-feed-user-id="${escapeHtml(id)}" style="padding: 0.45rem 0.7rem; border-radius: 0.75rem;">Unfollow</button>`
+                        : `<button type="button" class="btn btn-primary" data-feed-action="follow" data-feed-user-id="${escapeHtml(id)}" style="padding: 0.45rem 0.7rem; border-radius: 0.75rem;">Follow</button>`);
+
+                return `
+                    <div class="glass-panel" style="padding: 0.75rem; border-radius: 0.9rem; display:flex; align-items:center; justify-content: space-between; gap: 10px;">
+                        <div style="min-width:0;">
+                            <div class="text-white font-semibold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(name)}</div>
+                            <div class="text-xs text-gray" style="margin-top: 0.15rem;">${username ? `@${escapeHtml(username)}` : ''}${privacy ? ` • ${escapeHtml(privacy)}` : ''}</div>
+                        </div>
+                        ${right}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function loadFeedItems() {
+            const elList = document.getElementById('feed-list');
+            const elMeta = document.getElementById('feed-meta');
+            if (!elList) return;
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                elList.innerHTML = `<div class="text-gray">Log in to view your feed.</div>`;
+                if (elMeta) elMeta.textContent = '';
+                return;
+            }
+
+            const followedIds = Array.from(feedFollowingIds);
+            if (followedIds.length === 0) {
+                elList.innerHTML = `<div class="text-gray">Follow someone to see activity here.</div>`;
+                if (elMeta) elMeta.textContent = '';
+                return;
+            }
+
+            elList.innerHTML = `<div class="text-gray">Loading…</div>`;
+            if (elMeta) elMeta.textContent = '';
+
+            let rows = [];
+
+            // Mode A: sort by rating updated_at (most recently created/updated ratings)
+            if (feedSortMode === 'updated_at') {
+                const { data: ratings, error } = await supabaseClient
+                    .from('Movie Ratings')
+                    .select('user_id, movie_id, overall_rating, tier, watch_date, updated_at, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
+                    .in('user_id', followedIds)
+                    .order('updated_at', { ascending: false })
+                    .limit(15);
+                if (error) throw error;
+                rows = Array.isArray(ratings) ? ratings : [];
+            }
+
+            // Mode B: sort by most recent watch_date (ignores rating edits that weren't watched)
+            if (feedSortMode === 'watch_date') {
+                const { data: watches, error: wErr } = await supabaseClient
+                    .from('Watch Logs')
+                    .select('user_id, movie_id, watch_date')
+                    .in('user_id', followedIds)
+                    .order('watch_date', { ascending: false })
+                    .limit(15);
+                if (wErr) throw wErr;
+                const wrows = Array.isArray(watches) ? watches : [];
+
+                if (wrows.length) {
+                    const movieIds2 = Array.from(new Set(wrows.map(r => r?.movie_id).filter(Boolean)));
+                    const userIds2 = Array.from(new Set(wrows.map(r => r?.user_id).filter(Boolean)));
+                    const { data: ratings2, error: rErr } = await supabaseClient
+                        .from('Movie Ratings')
+                        .select('user_id, movie_id, overall_rating, tier, watch_date, updated_at, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
+                        .in('movie_id', movieIds2)
+                        .in('user_id', userIds2);
+                    if (rErr) throw rErr;
+
+                    const ratingMap = new Map();
+                    for (const rr of (Array.isArray(ratings2) ? ratings2 : [])) {
+                        const k = `${String(rr?.user_id || '').trim()}|${String(rr?.movie_id || '').trim()}`;
+                        if (k !== '|') ratingMap.set(k, rr);
+                    }
+
+                    rows = wrows.map((w) => {
+                        const k = `${String(w?.user_id || '').trim()}|${String(w?.movie_id || '').trim()}`;
+                        const rr = ratingMap.get(k) || {};
+                        // Ensure watch_date comes from Watch Logs sort mode.
+                        return { ...rr, user_id: w?.user_id, movie_id: w?.movie_id, watch_date: w?.watch_date };
+                    });
+                } else {
+                    rows = [];
+                }
+            }
+
+            if (rows.length === 0) {
+                const msg = (feedSortMode === 'watch_date')
+                    ? 'No recent watch logs found from people you follow (or their privacy blocks access).'
+                    : 'No ratings found from people you follow (or their privacy blocks access).';
+                elList.innerHTML = `<div class="text-gray">${msg}</div>`;
+                if (elMeta) elMeta.textContent = '';
+                return;
+            }
+
+            const movieIds = Array.from(new Set(rows.map(r => r?.movie_id).filter(Boolean)));
+            const userIds = Array.from(new Set(rows.map(r => r?.user_id).filter(Boolean)));
+
+            const moviesById = new Map();
+            if (movieIds.length) {
+                const { data: moviesData, error: moviesErr } = await supabaseClient
+                    .from('Movies')
+                    .select('id, title, release_year, tmdb_id')
+                    .in('id', movieIds);
+                if (moviesErr) throw moviesErr;
+                const mrows = Array.isArray(moviesData) ? moviesData : [];
+                for (const m of mrows) moviesById.set(m.id, m);
+            }
+
+            const usersById = new Map();
+            if (userIds.length) {
+                const { data: usersData, error: usersErr } = await supabaseClient
+                    .from('Users')
+                    .select('id, username, display_name')
+                    .in('id', userIds);
+                if (usersErr) throw usersErr;
+                const urows = Array.isArray(usersData) ? usersData : [];
+                for (const u of urows) usersById.set(u.id, u);
+            }
+
+            // Best-effort poster fetch (cached) for feed items.
+            try {
+                const posterItems = movieIds.map(id => moviesById.get(id)).filter(Boolean);
+                await Promise.all(posterItems.map(dashEnsurePosterPath));
+            } catch (_) {}
+
+            if (elMeta) {
+                const label = (feedSortMode === 'watch_date') ? 'Most recent watches first' : 'Most recent updates first';
+                elMeta.textContent = `${rows.length} item${rows.length === 1 ? '' : 's'} • ${label}`;
+            }
+
+            elList.innerHTML = rows.map((r) => {
+                const actorId = String(r?.user_id || '').trim();
+                const actor = usersById.get(actorId) || null;
+                const actorName = String(actor?.display_name || '').trim() || (actor?.username ? `@${String(actor.username).trim()}` : 'User');
+
+                const movie = moviesById.get(r?.movie_id) || null;
+                const title = String(movie?.title || '').trim() || 'Untitled';
+                const year = (movie?.release_year === null || movie?.release_year === undefined) ? '' : String(movie.release_year);
+
+                const overall = dashFormatScore(r?.overall_rating);
+                const tierLabel = dashNormalizeTierLabel(r?.tier);
+
+                const tmdb_id = Number(movie?.tmdb_id);
+                const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
+                const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
+
+                const quote = String(r?.fav_quote ?? '').trim();
+                const notes = String(r?.notes ?? '').trim();
+                const updatedAt = formatFeedTimestamp(r?.updated_at);
+                const watched = String(r?.watch_date ?? '').trim();
+
+                const detailRows = [
+                    { k: 'Overall', v: overall },
+                    { k: 'Tier', v: tierLabel },
+                    { k: 'Sound', v: dashFormatScore(r?.sound_rating) },
+                    { k: 'Pace', v: dashFormatScore(r?.pacing_rating) },
+                    { k: 'Imagery', v: dashFormatScore(r?.imagery_rating) },
+                    { k: 'Acting', v: dashFormatScore(r?.acting_rating) },
+                    { k: 'Plot', v: dashFormatScore(r?.plot_rating) },
+                    { k: 'Dialogue', v: dashFormatScore(r?.dialogue_rating) },
+                    { k: 'Watched', v: watched },
+                    { k: 'Updated', v: updatedAt },
+                ].filter(x => String(x.v || '').trim());
+
+                return `
+                    <details class="glass-panel" style="padding: 0.9rem; border-radius: 1rem;">
+                        <summary style="list-style: none; cursor: pointer; display:flex; gap: 12px; align-items: center;">
+                            <div style="width: 54px; height: 78px; border-radius: 0.75rem; overflow:hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); flex: 0 0 auto;">
+                                ${posterUrl
+                                    ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width:100%; height:100%; object-fit: cover; display:block;" onerror="this.style.display='none';">`
+                                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
+                            </div>
+
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="text-white font-bold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(title)}${year ? ` <span style=\"color: rgba(255,255,255,0.65); font-weight: 800;\">(${escapeHtml(year)})</span>` : ''}</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.2rem;">${feedSortMode === 'watch_date' ? 'Watched by' : 'Rated by'} <span class="feed-actor">${escapeHtml(actorName)}</span></div>
+                                ${(overall || tierLabel)
+                                    ? `<div class="feed-metrics">${overall ? dashRenderHelpScore(overall) : ''}${tierLabel ? dashRenderHelpTier(tierLabel) : ''}</div>`
+                                    : `<div class="text-xs text-gray" style="margin-top: 0.25rem;">No rating yet</div>`
+                                }
+                                ${(feedSortMode === 'watch_date')
+                                    ? (watched ? `<div class="text-xs" style="margin-top: 0.25rem; color: rgba(255,255,255,0.55);">Watched: ${escapeHtml(watched)}</div>` : '')
+                                    : (updatedAt ? `<div class="text-xs" style="margin-top: 0.25rem; color: rgba(255,255,255,0.55);">Updated: ${escapeHtml(updatedAt)}</div>` : '')
+                                }
+                            </div>
+                            <div class="text-xs text-gray" style="white-space: nowrap;">Details</div>
+                        </summary>
+
+                        <div style="margin-top: 0.8rem; display: grid; gap: 10px;">
+                            <div style="display:flex; flex-wrap: wrap; gap: 8px;">
+                                ${detailRows.map(d => `<span class=\"dash-quote-pill\">${escapeHtml(d.k)}: ${escapeHtml(d.v)}</span>`).join('')}
+                            </div>
+                            ${quote ? `
+                                <div>
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Favorite Quote</div>
+                                    <div class="text-white" style="line-height: 1.4;">${escapeHtml(quote)}</div>
+                                </div>
+                            ` : ''}
+                            ${notes ? `
+                                <div>
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Notes</div>
+                                    <div class="text-white" style="line-height: 1.4; white-space: pre-wrap;">${escapeHtml(notes)}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </details>
+                `;
+            }).join('');
+        }
+
+        function dashTitleForGeneralKpiKey(kpiKey) {
+            const k = String(kpiKey || '').trim().toLowerCase();
+            if (k === 'most_watched_genre' || k === 'most_watched_genre_unique') return 'Most Watched Genre';
+            if (k === 'most_watched_decade' || k === 'most_watched_decade_unique') return 'Most Watched Decade';
+            if (k === 'most_watched_director' || k === 'most_watched_director_unique') return 'Most Watched Director';
+            if (k === 'most_watched_actor' || k === 'most_watched_actor_unique') return 'Most Watched Actor';
+            if (k === 'most_watched_movie') return 'Most Watched Movie';
+            if (k === 'most_watched_mpa' || k === 'most_watched_mpa_unique') return 'Most Watched MPA Rating';
+            if (k === 'watch_method_at_home_events' || k === 'watch_method_at_home_unique' || k === 'watch_method_in_theater') return 'Watch Method';
+            return 'KPI Details';
+        }
+
+        function dashSubtitleForGeneralKpiKey(kpiKey) {
+            const k = String(kpiKey || '').trim().toLowerCase();
+            const data = dashboardGeneralLastData || {};
+
+            const suffix = k.endsWith('_unique') ? 'Unique movies only' : 'All watch events';
+            if (k === 'most_watched_genre' || k === 'most_watched_genre_unique') {
+                const v = k.endsWith('_unique') ? data?.most_watched_genre_unique?.name : data?.most_watched_genre?.name;
+                const name = String(v ?? '').trim();
+                return [name || '—', suffix].join(' • ');
+            }
+            if (k === 'most_watched_decade' || k === 'most_watched_decade_unique') {
+                const raw = k.endsWith('_unique') ? data?.most_watched_decade_unique?.decade : data?.most_watched_decade?.decade;
+                const decade = (raw === null || raw === undefined) ? '' : `${String(raw)}s`;
+                return [decade || '—', suffix].join(' • ');
+            }
+            if (k === 'most_watched_director' || k === 'most_watched_director_unique') {
+                const v = k.endsWith('_unique') ? data?.most_watched_director_unique?.name : data?.most_watched_director?.name;
+                const name = String(v ?? '').trim();
+                return [name || '—', suffix].join(' • ');
+            }
+            if (k === 'most_watched_actor' || k === 'most_watched_actor_unique') {
+                const v = k.endsWith('_unique') ? data?.most_watched_actor_unique?.name : data?.most_watched_actor?.name;
+                const name = String(v ?? '').trim();
+                return [name || '—', suffix].join(' • ');
+            }
+            if (k === 'most_watched_mpa' || k === 'most_watched_mpa_unique') {
+                const v = k.endsWith('_unique') ? data?.most_watched_mpa_unique?.rating : data?.most_watched_mpa?.rating;
+                const rating = String(v ?? '').trim();
+                return [rating || '—', suffix].join(' • ');
+            }
+            if (k === 'most_watched_movie') {
+                const title = String(data?.most_watched_movie?.title ?? '').trim();
+                const year = data?.most_watched_movie?.release_year;
+                const label = title
+                    ? `${title}${(year === null || year === undefined || String(year).trim() === '') ? '' : ` (${String(year)})`}`
+                    : '';
+                return label || '';
+            }
+            if (k === 'watch_method_at_home_events') return 'At home (watch events)';
+            if (k === 'watch_method_at_home_unique') return 'At home (unique movies)';
+            if (k === 'watch_method_in_theater') return 'In theater';
+            return '';
+        }
+
+        function initDashboardGeneralKpiClicks() {
+            const pane = document.getElementById('dash-pane-general');
+            if (!pane) return;
+            if (pane.dataset.boundKpiClicks) return;
+            pane.dataset.boundKpiClicks = 'true';
+
+            pane.addEventListener('click', (e) => {
+                const el = e?.target?.closest ? e.target.closest('[data-general-kpi]') : null;
+                const key = String(el?.dataset?.generalKpi ?? '').trim();
+                if (!key) return;
+
+                dashboardKpiDetailState = {
+                    kpi: key,
+                    title: dashTitleForGeneralKpiKey(key),
+                    subtitle: dashSubtitleForGeneralKpiKey(key),
+                };
+                router.navigate('dashboard_kpi');
+            });
+        }
+
+        function initDashboardPosterUpdateRatingsClicks() {
+            // Global delegation so it works for Favorites + KPI detail pages.
+            // Bound once per session.
+            if (document.documentElement.dataset.boundDashPosterClicks === 'true') return;
+            document.documentElement.dataset.boundDashPosterClicks = 'true';
+
+            const shouldHandleNow = () => {
+                const p = String(router?.currentPage || '').trim().toLowerCase();
+                return p === 'dashboard' || p === 'dashboard_kpi';
+            };
+
+            document.addEventListener('click', async (e) => {
+                if (!shouldHandleNow()) return;
+                const target = e?.target?.closest ? e.target.closest('[data-dash-movie-id]') : null;
+                if (!target) return;
+
+                const movieIdRaw = String(target.dataset.dashMovieId || '').trim();
+                const tmdbIdRaw = String(target.dataset.dashTmdbId || '').trim();
+                const titleRaw = String(target.dataset.dashMovieTitle || '').trim();
+                const posterRaw = String(target.dataset.dashPosterPath || '').trim();
+                const quoteRaw = String(target.dataset.dashMovieQuote || '').trim();
+
+                if (!movieIdRaw && !tmdbIdRaw) return;
+
+                e.preventDefault?.();
+                e.stopPropagation?.();
+
+                // Reuse the exact same update flow as the Home dropdown "Update Ratings" path.
+                // startUpdateRatings() resolves the DB movie id and loads existing rating + watch log data.
+                router.selectedMovie = {
+                    id: movieIdRaw || undefined,
+                    db_movie_id: movieIdRaw || undefined,
+                    tmdb_id: tmdbIdRaw ? Number(tmdbIdRaw) : undefined,
+                    title: titleRaw || undefined,
+                    poster_path: posterRaw || undefined,
+                    prefill_quote: quoteRaw || undefined,
+                };
+
+                await router.startUpdateRatings();
+            }, { capture: true });
+
+            // Cosmetic: move the Quote Wall glow with the mouse.
+            document.addEventListener('mousemove', (e) => {
+                if (!shouldHandleNow()) return;
+                const card = e?.target?.closest ? e.target.closest('.dash-quote-card') : null;
+                if (!card) return;
+                const rect = card.getBoundingClientRect();
+                const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / Math.max(1, rect.width)) * 100));
+                const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / Math.max(1, rect.height)) * 100));
+                card.style.setProperty('--mx', `${x}%`);
+                card.style.setProperty('--my', `${y}%`);
+                card.style.setProperty('--mx2', `${100 - x}%`);
+                card.style.setProperty('--my2', `${100 - y}%`);
+            }, { passive: true });
+        }
+
+        async function loadDashboardKpiDetail() {
+            const elTitle = document.getElementById('dash-kpi-title');
+            const elSubtitle = document.getElementById('dash-kpi-subtitle');
+            const elGrid = document.getElementById('dash-kpi-grid');
+            if (!elTitle || !elSubtitle || !elGrid) return;
+
+            const state = dashboardKpiDetailState || null;
+            const kpi = String(state?.kpi ?? '').trim();
+            elTitle.textContent = String(state?.title ?? 'KPI Details');
+            elSubtitle.textContent = String(state?.subtitle ?? '');
+
+            if (!kpi) {
+                elGrid.innerHTML = `<div class="text-gray">No KPI selected.</div>`;
+                return;
+            }
+
+            let authedUser = null;
+            try {
+                const { data } = await supabaseClient?.auth?.getUser?.();
+                authedUser = data?.user || null;
+            } catch (_) {
+                authedUser = null;
+            }
+
+            if (!supabaseClient || !authedUser?.id) {
+                elGrid.innerHTML = `<div class="text-gray">Log in to view KPI details.</div>`;
+                return;
+            }
+
+            elGrid.innerHTML = `<div class="text-gray">Loading…</div>`;
+
+            try {
+                let res = await supabaseClient.rpc('get_dashboard_general_kpi_movies', {
+                    p_timeframe: dashboardTimeframe,
+                    p_kpi: kpi,
+                });
+                if (res?.error) {
+                    const msg = String(res.error?.message || res.error);
+                    const missingRpc = /get_dashboard_general_kpi_movies/i.test(msg) && /(does not exist|not found|no function matches|function .* does not exist)/i.test(msg);
+                    if (missingRpc) {
+                        elGrid.innerHTML = `<div class="text-gray">KPI detail RPC missing. Run dashboard_rpc.sql to add get_dashboard_general_kpi_movies.</div>`;
+                        return;
+                    }
+                }
+                if (res?.error) throw res.error;
+                const data = res?.data;
+                const items = Array.isArray(data?.movies) ? data.movies : [];
+
+                // Prefer the server-computed leader for the subtitle so it always matches the timeframe.
+                try {
+                    const leader = String(data?.leader ?? '').trim();
+                    if (leader) {
+                        const key = String(kpi || '').trim().toLowerCase();
+                        const isUnique = key.endsWith('_unique');
+                        const suffix = isUnique ? 'Unique movies only' : 'All watch events';
+                        if (key.startsWith('most_watched_') && key !== 'most_watched_movie') {
+                            elSubtitle.textContent = [leader, suffix].filter(Boolean).join(' • ');
+                        } else if (key === 'most_watched_movie') {
+                            elSubtitle.textContent = leader;
+                        } else if (key.startsWith('watch_method_')) {
+                            elSubtitle.textContent = leader;
+                        }
+                    }
+                } catch (_) {}
+
+                if (items.length === 0) {
+                    elGrid.innerHTML = `<div class="text-gray">No movies found for this KPI in the selected timeframe.</div>`;
+                    return;
+                }
+
+                await Promise.all(items.map(dashEnsurePosterPath));
+
+                const cards = items.map((r) => {
+                    const title = String(r?.title ?? '').trim() || 'Untitled';
+                    const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
+                    const overall = dashFormatScore(r?.overall_rating);
+                    const tierLabel = dashNormalizeTierLabel(r?.tier);
+
+                    const dashMovieId = String(r?.movie_id ?? '').trim();
+                    const dashTmdbId = (r?.tmdb_id === null || r?.tmdb_id === undefined) ? '' : String(r.tmdb_id);
+
+                    const tmdb_id = Number(r?.tmdb_id);
+                    const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
+                    const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
+
+                    const metaHtml = dashJoinHelpParts([
+                        year ? escapeHtml(year) : '',
+                        overall ? `${dashRenderHelpScore(overall)} Overall` : '',
+                        tierLabel ? dashRenderHelpTier(tierLabel) : '',
+                    ]);
+
+                    return `
+                        <div style="display:flex; flex-direction: column; gap: 8px;">
+                            <div
+                                data-dash-movie-id="${escapeHtml(dashMovieId)}"
+                                data-dash-tmdb-id="${escapeHtml(dashTmdbId)}"
+                                data-dash-movie-title="${escapeHtml(title)}"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Update Ratings for ${escapeHtml(title)}"
+                                style="width: 100%; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06); cursor: pointer;"
+                            >
+                                ${posterUrl
+                                    ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
+                                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`
+                                }
+                            </div>
+                            <div class="text-sm text-white" style="font-weight: 700; line-height: 1.2;">${escapeHtml(title)}</div>
+                            <div class="text-xs text-gray tabular-nums">${metaHtml}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                elGrid.innerHTML = `
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px;">
+                        ${cards}
+                    </div>
+                `;
+            } catch (err) {
+                showToast(`KPI details failed: ${String(err?.message || err)}`, { level: 'warn' });
+                emitLog('error', 'Dashboard KPI detail load failed', err);
+                elGrid.innerHTML = `<div class="text-gray">Unable to load KPI details right now.</div>`;
+            }
+        }
 
         function initDashboardFavoritesMetric() {
             const wrap = document.getElementById('dash-fav-metric-wrap');
@@ -2578,6 +3753,20 @@
                 const metric = btn?.dataset?.metric;
                 if (!metric) return;
                 setDashboardFavoritesMetric(metric);
+            });
+        }
+
+        function syncDashboardFavoritesMetricUI() {
+            const m = String(dashboardFavoritesMetric || '').trim().toLowerCase();
+            const allowed = new Set(['overall', 'sound', 'plot', 'pace', 'acting', 'imagery', 'dialogue']);
+            dashboardFavoritesMetric = allowed.has(m) ? m : 'overall';
+
+            const wrap = document.getElementById('dash-fav-metric-wrap');
+            if (!wrap) return;
+            wrap.querySelectorAll('button[data-metric]').forEach((btn) => {
+                const isOn = String(btn.dataset.metric || '').trim().toLowerCase() === dashboardFavoritesMetric;
+                btn.classList.remove('btn-glass', 'btn-outline');
+                btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
             });
         }
 
@@ -2652,12 +3841,14 @@
             const tabRatings = document.getElementById('dash-tab-ratings');
             const tabTiers = document.getElementById('dash-tab-tiers');
             const tabFavorites = document.getElementById('dash-tab-favorites');
+            const tabQuotes = document.getElementById('dash-tab-quotes');
             const paneGeneral = document.getElementById('dash-pane-general');
             const paneRatings = document.getElementById('dash-pane-ratings');
             const paneTiers = document.getElementById('dash-pane-tiers');
             const paneFavorites = document.getElementById('dash-pane-favorites');
+            const paneQuotes = document.getElementById('dash-pane-quotes');
             const favMetricPanel = document.getElementById('dash-fav-metric-panel');
-            if (!tabGeneral || !tabRatings || !tabTiers || !tabFavorites || !paneGeneral || !paneRatings || !paneTiers || !paneFavorites) return;
+            if (!tabGeneral || !tabRatings || !tabTiers || !tabFavorites || !tabQuotes || !paneGeneral || !paneRatings || !paneTiers || !paneFavorites || !paneQuotes) return;
 
             const activate = (btn, on) => {
                 if (!btn) return;
@@ -2675,11 +3866,13 @@
             activate(tabRatings, t === 'ratings');
             activate(tabTiers, t === 'tiers');
             activate(tabFavorites, t === 'favorites');
+            activate(tabQuotes, t === 'quotes');
 
             show(paneGeneral, t === 'general');
             show(paneRatings, t === 'ratings');
             show(paneTiers, t === 'tiers');
             show(paneFavorites, t === 'favorites');
+            show(paneQuotes, t === 'quotes');
 
             // Favorites-only header controls
             if (favMetricPanel) {
@@ -2695,6 +3888,8 @@
                 await loadDashboardTiers();
             } else if (t === 'favorites') {
                 await loadDashboardFavorites();
+            } else if (t === 'quotes') {
+                await loadDashboardQuoteWall();
             }
         }
 
@@ -2724,14 +3919,6 @@
             elTop.innerHTML = `<div class="text-gray">Loading…</div>`;
             elBottom.innerHTML = `<div class="text-gray">Loading…</div>`;
 
-            const formatScore = (n) => {
-                const num = Number(n);
-                if (!Number.isFinite(num)) return '';
-                const rounded = Math.round(num * 10) / 10;
-                if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return `${Math.round(rounded)}%`;
-                return `${rounded.toFixed(1)}%`;
-            };
-
             const metricFieldForFavorites = (metric) => {
                 const m = String(metric || '').trim().toLowerCase();
                 if (m === 'sound') return { field: 'sound_rating', label: 'Sound' };
@@ -2741,31 +3928,6 @@
                 if (m === 'imagery') return { field: 'imagery_rating', label: 'Imagery' };
                 if (m === 'dialogue') return { field: 'dialogue_rating', label: 'Dialogue' };
                 return { field: 'overall_rating', label: 'Overall' };
-            };
-
-            const ensurePosterPath = async (item) => {
-                const tmdb_id = Number(item?.tmdb_id);
-                if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return null;
-                if (dashPosterCacheByTmdbId.has(tmdb_id)) return dashPosterCacheByTmdbId.get(tmdb_id);
-                try {
-                    const details = await callSwiftApiGetMovieDetails({ tmdb_id });
-                    const poster_path = details?.poster_path ? String(details.poster_path) : null;
-                    dashPosterCacheByTmdbId.set(tmdb_id, poster_path);
-                    return poster_path;
-                } catch (_) {
-                    dashPosterCacheByTmdbId.set(tmdb_id, null);
-                    return null;
-                }
-            };
-
-            const normalizeTierLabel = (tierRaw) => {
-                const t = String(tierRaw ?? '').trim();
-                if (!t) return '';
-                const u = t.toUpperCase();
-                if (u === 'UNRANKED') return 'Unranked';
-                if (/^[SABCDF]$/i.test(t)) return `${u}-Tier`;
-                if (/^[SABCDF]\s*-?\s*TIER$/i.test(t)) return `${u[0]}-Tier`;
-                return t;
             };
 
             const ensureRatingsForItems = async (items) => {
@@ -2801,7 +3963,7 @@
 
                 // Best-effort poster fetch (cached) + rating metadata fetch (cached).
                 await Promise.all([
-                    Promise.all(safe.map(ensurePosterPath)),
+                    Promise.all(safe.map(dashEnsurePosterPath)),
                     ensureRatingsForItems(safe),
                 ]);
 
@@ -2810,30 +3972,41 @@
                     const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
                     const ratingRow = dashRatingCacheByMovieId.get(r?.movie_id) || null;
 
+                    const dashMovieId = String(r?.movie_id ?? '').trim();
+                    const dashTmdbId = (r?.tmdb_id === null || r?.tmdb_id === undefined) ? '' : String(r.tmdb_id);
+
                     const { field: metricField, label: metricLabel } = metricFieldForFavorites(dashboardFavoritesMetric);
                     const metricValue = ratingRow ? ratingRow?.[metricField] : null;
-                    const metricText = formatScore(metricValue);
-                    const tierLabel = normalizeTierLabel(ratingRow ? ratingRow.tier : '');
+                    const metricText = dashFormatScore(metricValue);
+                    const tierLabel = dashNormalizeTierLabel(ratingRow ? ratingRow.tier : '');
                     const tmdb_id = Number(r?.tmdb_id);
                     const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
                     const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
 
-                    const meta = [
-                        year || '',
-                        metricText ? `${metricText} ${metricLabel}` : '',
-                        tierLabel,
-                    ].filter(Boolean).join(' • ');
+                    const metaHtml = dashJoinHelpParts([
+                        year ? escapeHtml(year) : '',
+                        metricText ? `${dashRenderHelpScore(metricText)} ${escapeHtml(metricLabel)}` : '',
+                        tierLabel ? dashRenderHelpTier(tierLabel) : '',
+                    ]);
 
                     return `
                         <div style="display:flex; flex-direction: column; gap: 8px;">
-                            <div style="width: 100%; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06);">
+                            <div
+                                data-dash-movie-id="${escapeHtml(dashMovieId)}"
+                                data-dash-tmdb-id="${escapeHtml(dashTmdbId)}"
+                                data-dash-movie-title="${escapeHtml(title)}"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Update Ratings for ${escapeHtml(title)}"
+                                style="width: 100%; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06); cursor: pointer;"
+                            >
                                 ${posterUrl
                                     ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
                                     : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`
                                 }
                             </div>
                             <div class="text-sm text-white" style="font-weight: 700; line-height: 1.2;">${escapeHtml(title)}</div>
-                            <div class="text-xs text-gray tabular-nums">${escapeHtml(meta)}</div>
+                            <div class="text-xs text-gray tabular-nums">${metaHtml}</div>
                         </div>
                     `;
                 }).join('');
@@ -2872,6 +4045,179 @@
                 emitLog('error', 'Dashboard favorites load failed', err);
                 elTop.innerHTML = `<div class="text-gray">Unable to load favorites right now.</div>`;
                 elBottom.innerHTML = `<div class="text-gray">Unable to load favorites right now.</div>`;
+            }
+        }
+
+        async function loadDashboardQuoteWall() {
+            const elWall = document.getElementById('dash-quote-wall');
+            const elMeta = document.getElementById('dash-quote-wall-meta');
+            if (!elWall) return;
+
+            let authedUser = null;
+            try {
+                const { data } = await supabaseClient?.auth?.getUser?.();
+                authedUser = data?.user || null;
+            } catch (_) {
+                authedUser = null;
+            }
+
+            if (!supabaseClient || !authedUser?.id) {
+                if (!dashboardAuthWarned) {
+                    dashboardAuthWarned = true;
+                    showToast('Log in to view your Quote Wall.', { level: 'warn' });
+                }
+                elWall.innerHTML = `<div class="text-gray">Log in to view your Quote Wall.</div>`;
+                if (elMeta) elMeta.textContent = '';
+                return;
+            }
+
+            elWall.innerHTML = `<div class="text-gray">Loading…</div>`;
+            if (elMeta) elMeta.textContent = '';
+
+            const computeRange = () => {
+                const tf = String(dashboardTimeframe || 'all_time').trim().toLowerCase();
+                if (tf === 'this_year') {
+                    const now = new Date();
+                    const start = new Date(now.getFullYear(), 0, 1);
+                    const end = new Date(now.getFullYear() + 1, 0, 1);
+                    return { start_date: getLocalISODate(start), end_date: getLocalISODate(end) };
+                }
+                if (tf === 'this_month') {
+                    const now = new Date();
+                    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+                    const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                    return { start_date: getLocalISODate(start), end_date: getLocalISODate(end) };
+                }
+                return { start_date: null, end_date: null };
+            };
+
+            const isNonBlank = (v) => {
+                const s = String(v ?? '').trim();
+                return s.length > 0;
+            };
+
+            try {
+                const { start_date, end_date } = computeRange();
+
+                let q = supabaseClient
+                    .from('Movie Ratings')
+                    .select('movie_id, overall_rating, tier, fav_quote, updated_at, watch_date')
+                    .eq('user_id', authedUser.id)
+                    .not('overall_rating', 'is', null)
+                    .not('fav_quote', 'is', null)
+                    .neq('fav_quote', '');
+
+                if (start_date && end_date) {
+                    q = q.gte('watch_date', start_date).lt('watch_date', end_date);
+                }
+
+                // Pull more than 50 to account for whitespace-only quotes.
+                q = q
+                    .order('overall_rating', { ascending: false })
+                    .order('updated_at', { ascending: false })
+                    .order('watch_date', { ascending: false })
+                    .limit(140);
+
+                const { data, error } = await q;
+                if (error) throw error;
+
+                const rows = Array.isArray(data) ? data : [];
+                const filtered = rows
+                    .filter((r) => isNonBlank(r?.fav_quote))
+                    .slice(0, 50);
+
+                if (filtered.length === 0) {
+                    elWall.innerHTML = `<div class="text-gray">No quotes found. Add a Favorite Quote on a movie and it will appear here.</div>`;
+                    if (elMeta) elMeta.textContent = '';
+                    return;
+                }
+
+                const movieIds = Array.from(new Set(filtered.map((r) => r?.movie_id).filter(Boolean)));
+                const moviesById = new Map();
+                if (movieIds.length) {
+                    const { data: moviesData, error: moviesErr } = await supabaseClient
+                        .from('Movies')
+                        .select('id, title, release_year, tmdb_id')
+                        .in('id', movieIds);
+                    if (moviesErr) throw moviesErr;
+                    const mrows = Array.isArray(moviesData) ? moviesData : [];
+                    for (const m of mrows) moviesById.set(m.id, m);
+                }
+
+                if (elMeta) {
+                    const tfLabel = (() => {
+                        const tf = String(dashboardTimeframe || 'all_time').trim().toLowerCase();
+                        if (tf === 'this_year') return 'This Year';
+                        if (tf === 'this_month') return 'This Month';
+                        return 'All Time';
+                    })();
+                    elMeta.textContent = `${filtered.length} quote${filtered.length === 1 ? '' : 's'} • ${tfLabel}`;
+                }
+
+                const cardsHtml = filtered.map((r, i) => {
+                    const quote = String(r?.fav_quote ?? '').trim();
+                    const movie_id = String(r?.movie_id ?? '').trim();
+                    const overall = dashFormatScore(r?.overall_rating);
+                    const tierLabel = dashNormalizeTierLabel(r?.tier);
+
+                    const movie = moviesById.get(r?.movie_id) || null;
+                    const title = String(movie?.title ?? '').trim() || 'Untitled';
+                    const year = (movie?.release_year === null || movie?.release_year === undefined) ? '' : String(movie.release_year);
+                    const tmdb_id = (movie?.tmdb_id === null || movie?.tmdb_id === undefined) ? '' : String(movie.tmdb_id);
+                    const poster_path = '';
+
+                    const floatDelay = `${(i % 11) * 0.22}s`;
+                    const tilt = `${(((i * 37) % 7) - 3) * 0.35}deg`;
+                    const mx = `${35 + ((i * 19) % 45)}%`;
+                    const my = `${18 + ((i * 29) % 55)}%`;
+                    const mx2 = `${20 + ((i * 13) % 60)}%`;
+                    const my2 = `${35 + ((i * 23) % 55)}%`;
+
+                    const metaParts = [
+                        overall ? { kind: 'score', value: overall } : null,
+                        tierLabel ? { kind: 'tier', value: tierLabel } : null,
+                    ].filter(Boolean);
+
+                    return `
+                        <div
+                            class="dash-quote-card"
+                            data-dash-movie-id="${escapeHtml(movie_id)}"
+                            data-dash-tmdb-id="${escapeHtml(tmdb_id)}"
+                            data-dash-movie-title="${escapeHtml(title)}"
+                            data-dash-poster-path="${escapeHtml(poster_path)}"
+                            data-dash-movie-quote="${escapeHtml(quote)}"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Update Ratings for ${escapeHtml(title)}"
+                            style="--floatDelay:${escapeHtml(floatDelay)}; --tilt:${escapeHtml(tilt)}; --mx:${escapeHtml(mx)}; --my:${escapeHtml(my)}; --mx2:${escapeHtml(mx2)}; --my2:${escapeHtml(my2)};"
+                        >
+                            <div class="dash-quote-card-inner">
+                                <div class="dash-quote-text">${escapeHtml(quote)}</div>
+                                <div class="dash-quote-title">${escapeHtml(title)}${year ? ` <span style=\"color: rgba(255,255,255,0.65); font-weight: 800;\">(${escapeHtml(year)})</span>` : ''}</div>
+                                <div class="dash-quote-meta">
+                                    ${metaParts.map((p) => {
+                                        if (p.kind === 'score') {
+                                            return `<span class=\"dash-quote-pill\">${dashRenderHelpScore(p.value)} Overall</span>`;
+                                        }
+                                        if (p.kind === 'tier') {
+                                            const letter = dashTierLetterFromLabel(p.value);
+                                            const attr = letter ? ` data-tier-letter=\"${escapeHtml(letter)}\"` : '';
+                                            return `<span class=\"dash-quote-pill dash-help-tier\"${attr}>${escapeHtml(p.value)}</span>`;
+                                        }
+                                        return '';
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                elWall.innerHTML = `<div class="dash-quote-wall-grid">${cardsHtml}</div>`;
+            } catch (err) {
+                showToast(`Dashboard (Quote Wall) failed: ${String(err?.message || err)}`, { level: 'warn' });
+                emitLog('error', 'Dashboard quote wall load failed', err);
+                elWall.innerHTML = `<div class="text-gray">Unable to load Quote Wall right now.</div>`;
+                if (elMeta) elMeta.textContent = '';
             }
         }
 
@@ -3226,39 +4572,50 @@
         async function loadDashboardGeneral() {
             const elEventsTotal = document.getElementById('dash-general-watch-events-total');
             const elEventsUnique = document.getElementById('dash-general-watch-events-unique');
-            const elEventsNote = document.getElementById('dash-general-watch-events-note');
             const elHours = document.getElementById('dash-general-hours-watched');
             const elHoursUnique = document.getElementById('dash-general-hours-watched-unique');
-            const elHoursNote = document.getElementById('dash-general-hours-watched-note');
-            const elAtHome = document.getElementById('dash-general-at-home');
-            const elInTheater = document.getElementById('dash-general-in-theater');
-            const elAtHomeUnique = document.getElementById('dash-general-at-home-unique');
-            const elInTheaterUnique = document.getElementById('dash-general-in-theater-unique');
+            const elAtHomeWatches = document.getElementById('dash-general-at-home-watches');
+            const elAtHomeMovies = document.getElementById('dash-general-at-home-movies');
+            const elInTheaterWatches = document.getElementById('dash-general-in-theater-watches');
 
-            const elTopGenre = document.getElementById('dash-general-top-genre');
-            const elTopGenreNote = document.getElementById('dash-general-top-genre-note');
-            const elTopDirector = document.getElementById('dash-general-top-director');
-            const elTopDirectorNote = document.getElementById('dash-general-top-director-note');
-            const elTopActor = document.getElementById('dash-general-top-actor');
-            const elTopActorNote = document.getElementById('dash-general-top-actor-note');
-            const elTopDecade = document.getElementById('dash-general-top-decade');
-            const elTopDecadeNote = document.getElementById('dash-general-top-decade-note');
+            const elTopGenreEvents = document.getElementById('dash-general-top-genre-events');
+            const elTopGenreUnique = document.getElementById('dash-general-top-genre-unique');
+            const elTopGenreEventsCount = document.getElementById('dash-general-top-genre-events-count');
+            const elTopGenreUniqueCount = document.getElementById('dash-general-top-genre-unique-count');
+
+            const elTopDirectorEvents = document.getElementById('dash-general-top-director-events');
+            const elTopDirectorUnique = document.getElementById('dash-general-top-director-unique');
+            const elTopDirectorEventsCount = document.getElementById('dash-general-top-director-events-count');
+            const elTopDirectorUniqueCount = document.getElementById('dash-general-top-director-unique-count');
+
+            const elTopActorEvents = document.getElementById('dash-general-top-actor-events');
+            const elTopActorUnique = document.getElementById('dash-general-top-actor-unique');
+            const elTopActorEventsCount = document.getElementById('dash-general-top-actor-events-count');
+            const elTopActorUniqueCount = document.getElementById('dash-general-top-actor-unique-count');
+
+            const elTopDecadeEvents = document.getElementById('dash-general-top-decade-events');
+            const elTopDecadeUnique = document.getElementById('dash-general-top-decade-unique');
+            const elTopDecadeEventsCount = document.getElementById('dash-general-top-decade-events-count');
+            const elTopDecadeUniqueCount = document.getElementById('dash-general-top-decade-unique-count');
 
             const elTopMovie = document.getElementById('dash-general-top-movie');
-            const elTopMovieNote = document.getElementById('dash-general-top-movie-note');
-            const elTopMpa = document.getElementById('dash-general-top-mpa');
-            const elTopMpaNote = document.getElementById('dash-general-top-mpa-note');
+            const elTopMovieCount = document.getElementById('dash-general-top-movie-count');
+
+            const elTopMpaEvents = document.getElementById('dash-general-top-mpa-events');
+            const elTopMpaUnique = document.getElementById('dash-general-top-mpa-unique');
+            const elTopMpaEventsCount = document.getElementById('dash-general-top-mpa-events-count');
+            const elTopMpaUniqueCount = document.getElementById('dash-general-top-mpa-unique-count');
 
             const required = [
-                elEventsTotal, elEventsUnique, elEventsNote,
-                elHours, elHoursUnique, elHoursNote,
-                elAtHome, elAtHomeUnique, elInTheater, elInTheaterUnique,
-                elTopGenre, elTopGenreNote,
-                elTopDirector, elTopDirectorNote,
-                elTopActor, elTopActorNote,
-                elTopDecade, elTopDecadeNote,
-                elTopMovie, elTopMovieNote,
-                elTopMpa, elTopMpaNote,
+                elEventsTotal, elEventsUnique,
+                elHours, elHoursUnique,
+                elAtHomeWatches, elAtHomeMovies, elInTheaterWatches,
+                elTopGenreEvents, elTopGenreUnique, elTopGenreEventsCount, elTopGenreUniqueCount,
+                elTopDirectorEvents, elTopDirectorUnique, elTopDirectorEventsCount, elTopDirectorUniqueCount,
+                elTopActorEvents, elTopActorUnique, elTopActorEventsCount, elTopActorUniqueCount,
+                elTopDecadeEvents, elTopDecadeUnique, elTopDecadeEventsCount, elTopDecadeUniqueCount,
+                elTopMovie, elTopMovieCount,
+                elTopMpaEvents, elTopMpaUnique, elTopMpaEventsCount, elTopMpaUniqueCount,
             ];
             if (required.some(x => !x)) return;
 
@@ -3274,20 +4631,39 @@
             const setAll = (v) => {
                 elEventsTotal.textContent = v;
                 elEventsUnique.textContent = v;
-                elEventsNote.textContent = v;
                 elHours.textContent = v;
                 elHoursUnique.textContent = v;
-                elHoursNote.textContent = v;
-                elAtHome.textContent = v;
-                elInTheater.textContent = v;
-                elAtHomeUnique.textContent = v;
-                elInTheaterUnique.textContent = v;
-                elTopGenre.textContent = v;
-                elTopDirector.textContent = v;
-                elTopActor.textContent = v;
-                elTopDecade.textContent = v;
+                elAtHomeWatches.textContent = v;
+                elAtHomeMovies.textContent = v;
+                elInTheaterWatches.textContent = v;
+                elTopGenreEvents.textContent = v;
+                elTopGenreUnique.textContent = v;
+                elTopGenreEventsCount.innerHTML = '&nbsp;';
+                elTopGenreUniqueCount.innerHTML = '&nbsp;';
+                elTopDirectorEvents.textContent = v;
+                elTopDirectorUnique.textContent = v;
+                elTopDirectorEventsCount.innerHTML = '&nbsp;';
+                elTopDirectorUniqueCount.innerHTML = '&nbsp;';
+                elTopActorEvents.textContent = v;
+                elTopActorUnique.textContent = v;
+                elTopActorEventsCount.innerHTML = '&nbsp;';
+                elTopActorUniqueCount.innerHTML = '&nbsp;';
+                elTopDecadeEvents.textContent = v;
+                elTopDecadeUnique.textContent = v;
+                elTopDecadeEventsCount.innerHTML = '&nbsp;';
+                elTopDecadeUniqueCount.innerHTML = '&nbsp;';
                 elTopMovie.textContent = v;
-                elTopMpa.textContent = v;
+                elTopMovieCount.innerHTML = '&nbsp;';
+                elTopMpaEvents.textContent = v;
+                elTopMpaUnique.textContent = v;
+                elTopMpaEventsCount.innerHTML = '&nbsp;';
+                elTopMpaUniqueCount.innerHTML = '&nbsp;';
+            };
+
+            const pluralize = (n, one, many) => {
+                const x = Number(n);
+                const v = Number.isFinite(x) ? x : 0;
+                return `${v} ${v === 1 ? one : many}`;
             };
 
             if (!supabaseClient || !authedUser?.id) {
@@ -3296,26 +4672,10 @@
                     showToast('Log in to view your dashboard stats.', { level: 'warn' });
                 }
                 setAll('—');
-                elEventsNote.innerHTML = '&nbsp;';
-                elHoursNote.innerHTML = '&nbsp;';
-                elTopGenreNote.innerHTML = '&nbsp;';
-                elTopDirectorNote.innerHTML = '&nbsp;';
-                elTopActorNote.innerHTML = '&nbsp;';
-                elTopDecadeNote.innerHTML = '&nbsp;';
-                elTopMovieNote.innerHTML = '&nbsp;';
-                elTopMpaNote.innerHTML = '&nbsp;';
                 return;
             }
 
             setAll('…');
-            elEventsNote.textContent = '…';
-            elHoursNote.textContent = '…';
-            elTopGenreNote.textContent = '…';
-            elTopDirectorNote.textContent = '…';
-            elTopActorNote.textContent = '…';
-            elTopDecadeNote.textContent = '…';
-            elTopMovieNote.textContent = '…';
-            elTopMpaNote.textContent = '…';
 
             try {
                 let res = await supabaseClient.rpc('get_dashboard_general', { p_timeframe: dashboardTimeframe });
@@ -3326,6 +4686,7 @@
                 }
                 if (res?.error) throw res.error;
                 const data = res?.data;
+                dashboardGeneralLastData = data;
 
                 const watchEvents = data?.watch_events || {};
                 const totalWatches = Number(watchEvents?.watches ?? 0);
@@ -3341,64 +4702,73 @@
                 const atHome = Number(atHomeObj?.watches ?? 0);
                 const atHomeUnique = Number(atHomeObj?.movies ?? 0);
                 const inTheater = Number(inTheaterObj?.watches ?? 0);
-                const inTheaterUnique = Number(inTheaterObj?.movies ?? 0);
 
                 const topGenre = data?.most_watched_genre || {};
+                const topGenreUnique = data?.most_watched_genre_unique || {};
                 const topDirector = data?.most_watched_director || {};
+                const topDirectorUnique = data?.most_watched_director_unique || {};
                 const topActor = data?.most_watched_actor || {};
+                const topActorUnique = data?.most_watched_actor_unique || {};
                 const topDecade = data?.most_watched_decade || {};
-
-                const fmtAcross = (watches, movies) => {
-                    const w = Number(watches ?? 0);
-                    const m = Number(movies ?? 0);
-                    const wTxt = Number.isFinite(w) ? w : 0;
-                    const mTxt = Number.isFinite(m) ? m : 0;
-                    const wLabel = (wTxt === 1) ? 'watch event' : 'watch events';
-                    const mLabel = (mTxt === 1) ? 'unique movie' : 'unique movies';
-                    return `${wTxt} ${wLabel} across ${mTxt} ${mLabel}`;
-                };
+                const topDecadeUnique = data?.most_watched_decade_unique || {};
 
                 elEventsTotal.textContent = Number.isFinite(totalWatches) ? String(totalWatches) : '0';
                 elEventsUnique.textContent = Number.isFinite(uniqueMovies) ? String(uniqueMovies) : '0';
-                elEventsNote.textContent = fmtAcross(totalWatches, uniqueMovies);
 
                 elHours.textContent = Number.isFinite(totalHours) ? String(totalHours) : '0';
                 elHoursUnique.textContent = Number.isFinite(uniqueHours) ? String(uniqueHours) : '0';
-                elHoursNote.textContent = fmtAcross(totalWatches, uniqueMovies);
 
-                elAtHome.textContent = Number.isFinite(atHome) ? String(atHome) : '0';
-                elInTheater.textContent = Number.isFinite(inTheater) ? String(inTheater) : '0';
-                elAtHomeUnique.textContent = Number.isFinite(atHomeUnique) ? String(atHomeUnique) : '0';
-                elInTheaterUnique.textContent = Number.isFinite(inTheaterUnique) ? String(inTheaterUnique) : '0';
+                elAtHomeWatches.textContent = Number.isFinite(atHome) ? String(atHome) : '0';
+                elAtHomeMovies.textContent = Number.isFinite(atHomeUnique) ? String(atHomeUnique) : '0';
+                elInTheaterWatches.textContent = Number.isFinite(inTheater) ? String(inTheater) : '0';
 
-                const genreName = String(topGenre?.name ?? '').trim();
-                elTopGenre.textContent = genreName || '—';
-                elTopGenreNote.textContent = fmtAcross(topGenre?.watches, topGenre?.movies);
+                const genreEventsName = String(topGenre?.name ?? '').trim();
+                const genreUniqueName = String(topGenreUnique?.name ?? '').trim();
+                elTopGenreEvents.textContent = genreEventsName || '—';
+                elTopGenreUnique.textContent = genreUniqueName || '—';
+                elTopGenreEventsCount.textContent = pluralize(topGenre?.watches, 'watch event', 'watch events');
+                elTopGenreUniqueCount.textContent = pluralize(topGenreUnique?.movies, 'unique movie', 'unique movies');
 
-                const directorName = String(topDirector?.name ?? '').trim();
-                elTopDirector.textContent = directorName || '—';
-                elTopDirectorNote.textContent = fmtAcross(topDirector?.watches, topDirector?.movies);
+                const directorEventsName = String(topDirector?.name ?? '').trim();
+                const directorUniqueName = String(topDirectorUnique?.name ?? '').trim();
+                elTopDirectorEvents.textContent = directorEventsName || '—';
+                elTopDirectorUnique.textContent = directorUniqueName || '—';
+                elTopDirectorEventsCount.textContent = pluralize(topDirector?.watches, 'watch event', 'watch events');
+                elTopDirectorUniqueCount.textContent = pluralize(topDirectorUnique?.movies, 'unique movie', 'unique movies');
 
-                const actorName = String(topActor?.name ?? '').trim();
-                elTopActor.textContent = actorName || '—';
-                elTopActorNote.textContent = fmtAcross(topActor?.watches, topActor?.movies);
+                const actorEventsName = String(topActor?.name ?? '').trim();
+                const actorUniqueName = String(topActorUnique?.name ?? '').trim();
+                elTopActorEvents.textContent = actorEventsName || '—';
+                elTopActorUnique.textContent = actorUniqueName || '—';
+                elTopActorEventsCount.textContent = pluralize(topActor?.watches, 'watch event', 'watch events');
+                elTopActorUniqueCount.textContent = pluralize(topActorUnique?.movies, 'unique movie', 'unique movies');
 
-                const decade = topDecade?.decade;
-                const decadeLabel = (decade === null || decade === undefined) ? '' : `${String(decade)}s`;
-                elTopDecade.textContent = decadeLabel || '—';
-                elTopDecadeNote.textContent = fmtAcross(topDecade?.watches, topDecade?.movies);
+                const decadeEvents = topDecade?.decade;
+                const decadeEventsLabel = (decadeEvents === null || decadeEvents === undefined) ? '' : `${String(decadeEvents)}s`;
+                const decadeUnique = topDecadeUnique?.decade;
+                const decadeUniqueLabel = (decadeUnique === null || decadeUnique === undefined) ? '' : `${String(decadeUnique)}s`;
+                elTopDecadeEvents.textContent = decadeEventsLabel || '—';
+                elTopDecadeUnique.textContent = decadeUniqueLabel || '—';
+                elTopDecadeEventsCount.textContent = pluralize(topDecade?.watches, 'watch event', 'watch events');
+                elTopDecadeUniqueCount.textContent = pluralize(topDecadeUnique?.movies, 'unique movie', 'unique movies');
 
                 const topMovie = data?.most_watched_movie || {};
                 const topMovieTitle = String(topMovie?.title ?? '').trim();
                 const topMovieYear = topMovie?.release_year;
-                const topMovieWatches = Number(topMovie?.watches ?? 0);
-                elTopMovie.textContent = topMovieTitle ? `${topMovieTitle}${(topMovieYear === null || topMovieYear === undefined || String(topMovieYear).trim() === '') ? '' : ` (${String(topMovieYear)})`}` : '—';
-                elTopMovieNote.textContent = fmtAcross(topMovieWatches, topMovieTitle ? 1 : 0);
+                const topMovieLabel = topMovieTitle
+                    ? `${topMovieTitle}${(topMovieYear === null || topMovieYear === undefined || String(topMovieYear).trim() === '') ? '' : ` (${String(topMovieYear)})`}`
+                    : '';
+                elTopMovie.textContent = topMovieLabel || '—';
+                elTopMovieCount.textContent = pluralize(topMovie?.watches, 'watch event', 'watch events');
 
                 const topMpa = data?.most_watched_mpa || {};
+                const topMpaUnique = data?.most_watched_mpa_unique || {};
                 const topMpaRating = String(topMpa?.rating ?? '').trim();
-                elTopMpa.textContent = topMpaRating || '—';
-                elTopMpaNote.textContent = fmtAcross(topMpa?.watches, topMpa?.movies);
+                const topMpaRatingUnique = String(topMpaUnique?.rating ?? '').trim();
+                elTopMpaEvents.textContent = topMpaRating || '—';
+                elTopMpaUnique.textContent = topMpaRatingUnique || '—';
+                elTopMpaEventsCount.textContent = pluralize(topMpa?.watches, 'watch event', 'watch events');
+                elTopMpaUniqueCount.textContent = pluralize(topMpaUnique?.movies, 'unique movie', 'unique movies');
             } catch (err) {
                 showToast(`Dashboard (General) failed: ${String(err?.message || err)}`, { level: 'warn' });
                 emitLog('error', 'Dashboard general load failed', err);
@@ -3412,14 +4782,6 @@
                     addMessageToLog('error', 'Dashboard (General) error details', JSON.stringify(details));
                 } catch (_) {}
                 setAll('—');
-                elEventsNote.innerHTML = '&nbsp;';
-                elHoursNote.innerHTML = '&nbsp;';
-                elTopGenreNote.innerHTML = '&nbsp;';
-                elTopDirectorNote.innerHTML = '&nbsp;';
-                elTopActorNote.innerHTML = '&nbsp;';
-                elTopDecadeNote.innerHTML = '&nbsp;';
-                elTopMovieNote.innerHTML = '&nbsp;';
-                elTopMpaNote.innerHTML = '&nbsp;';
             }
         }
 
@@ -4380,7 +5742,7 @@
             if (!overlay) return;
             const dateEl = document.getElementById('watch-method-date');
             if (dateEl) {
-                dateEl.value = new Date().toISOString().split('T')[0];
+                dateEl.value = getLocalISODate();
             }
 
             // Reset selection every time to prevent accidental saves.
@@ -4479,7 +5841,7 @@
                 msg.textContent = `It looks like you've seen this movie multiple times; please tell us about the first ${priorWatchesPendingCount} time${priorWatchesPendingCount === 1 ? '' : 's'} you've seen this movie.`;
             }
 
-            const today = new Date().toISOString().split('T')[0];
+            const today = getLocalISODate();
             fields.innerHTML = Array.from({ length: priorWatchesPendingCount }).map((_, i) => {
                 const n = i + 1;
                 return `
@@ -4779,6 +6141,10 @@
 
         async function resolveDbMovieIdFromSelectedMovie(movie) {
             if (!movie) return null;
+            // Allow callers (like Data Dash poster clicks) to pass the DB id explicitly.
+            if (movie?.db_movie_id !== undefined && movie?.db_movie_id !== null && String(movie.db_movie_id).trim() !== '') {
+                return movie.db_movie_id;
+            }
             if (isUuidLike(movie?.id)) return movie.id;
             const tmdb_id = getTmdbIdFromSelectedMovie(movie);
             if (!tmdb_id) return null;
@@ -4870,6 +6236,14 @@
 
             if (error) throw error;
             return Number.isFinite(Number(count)) ? Number(count) : 0;
+        }
+
+        function getLocalISODate(d = new Date()) {
+            const dt = (d instanceof Date) ? d : new Date(d);
+            const year = dt.getFullYear();
+            const month = String(dt.getMonth() + 1).padStart(2, '0');
+            const day = String(dt.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
         function decodeJwtPayload(token) {
