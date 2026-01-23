@@ -479,15 +479,19 @@
             background: rgba(0,0,0,0.65);
             display: none;
             align-items: center;
-            justify-content: center;
-            z-index: 140;
-            padding: 1.5rem;
+            font-size: 1.18rem;
+            font-weight: 900;
+            letter-spacing: 0.01em;
         }
         .auth-overlay.open { display: flex; }
         .auth-modal {
-            width: min(480px, 100%);
-            border-radius: 1rem;
+            font-weight: 900;
+            font-size: 1.06rem;
             background: rgba(24, 24, 27, 0.92);
+        .library-title-sep {
+            color: var(--brand);
+            font-weight: 950;
+        }
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255,255,255,0.10);
@@ -761,6 +765,296 @@
             color: rgba(255,255,255,0.95);
             font-weight: 900;
         }
+
+        .feed-sort-btn {
+            padding: 0.55rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .feed-card-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .feed-card-poster {
+            width: 54px;
+            height: 78px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.06);
+            flex: 0 0 auto;
+        }
+        .feed-card-main {
+            min-width: 0;
+            flex: 1 1 220px;
+        }
+        .feed-card-actor {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            white-space: nowrap;
+            flex: 0 0 auto;
+        }
+        .feed-card-actor-name {
+            color: rgba(255,255,255,0.92);
+            font-weight: 900;
+            font-size: 0.9rem;
+            letter-spacing: 0.01em;
+        }
+
+        .feed-item-card {
+            cursor: pointer;
+        }
+        .feed-card-details {
+            display: none;
+            margin-top: 0.75rem;
+        }
+        .feed-item-card.is-open .feed-card-details {
+            display: block;
+        }
+
+        /* Library (My Movies) */
+        .library-card-row {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+        }
+        .library-card-left {
+            flex: 0 0 auto;
+            width: 128px;
+            min-width: 128px;
+            max-width: 128px;
+        }
+        .library-card-poster {
+            width: 100%;
+            height: 190px;
+            border-radius: 0.95rem;
+            overflow: hidden;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .library-poster-flip {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 900px;
+        }
+        .library-poster-flip-inner {
+            position: absolute;
+            inset: 0;
+            transform-style: preserve-3d;
+            transition: transform 560ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .library-card-poster:hover .library-poster-flip-inner {
+            transform: rotateY(180deg);
+        }
+        .library-poster-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .library-poster-front {
+            background: rgba(255,255,255,0.02);
+        }
+        .library-poster-back {
+            transform: rotateY(180deg);
+            background: rgba(0,0,0,0.78);
+            border: 1px solid rgba(255,255,255,0.10);
+            padding: 0.6rem 0.65rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+        .library-poster-back-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: baseline;
+        }
+        .library-poster-back-key {
+            color: rgba(255,255,255,0.60);
+            font-weight: 850;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            text-align: left;
+            font-size: 0.72rem;
+        }
+        .library-poster-back-val {
+            color: rgba(255,255,255,0.94);
+            font-weight: 900;
+            text-align: right;
+            min-width: 0;
+            flex: 1 1 auto;
+            display: block;
+            width: 100%;
+            font-size: 0.78rem;
+            line-height: 1.25;
+            white-space: normal;
+            overflow-wrap: normal;
+            word-break: normal;
+            hyphens: none;
+        }
+        .library-under {
+            margin-top: 0.55rem;
+            display: grid;
+            gap: 6px;
+            font-size: 0.72rem;
+            line-height: 1.25;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        .library-under-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: baseline;
+            flex-wrap: nowrap;
+            width: 100%;
+            max-width: 100%;
+        }
+        .library-under-key {
+            color: rgba(255,255,255,0.55);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            text-align: left;
+        }
+        .library-under-val {
+            color: rgba(255,255,255,0.92);
+            font-weight: 850;
+            text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+        .library-under-val-wrap {
+            text-align: right;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: normal;
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        .library-under-val-multiline {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .library-title-line {
+            display: inline;
+            white-space: normal;
+            font-size: 1.18rem;
+            font-weight: 950;
+            letter-spacing: 0.01em;
+        }
+        .library-title-meta {
+            color: rgba(255,255,255,0.88);
+            font-weight: 900;
+            font-size: 1.06rem;
+        }
+
+        .library-title-sep {
+            color: var(--brand);
+            font-weight: 950;
+        }
+
+        .library-subratings .dash-quote-pill {
+            font-size: 0.98rem;
+            padding: 0.32rem 0.72rem;
+            border-color: rgba(255,255,255,0.16);
+            background: rgba(0,0,0,0.26);
+            letter-spacing: 0.02em;
+        }
+        .library-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.72rem;
+        }
+        @media (max-width: 520px) {
+            .library-card-row { flex-wrap: wrap; }
+            .library-card-left { width: 116px; min-width: 116px; max-width: 116px; }
+            .library-card-poster { width: 100%; height: 172px; }
+        }
+        .user-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.10);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.30);
+            color: rgba(255,255,255,0.92);
+            flex: 0 0 auto;
+        }
+        .user-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.2;
+        }
+        .user-icon[data-icon-id="icon_01"] { background: linear-gradient(135deg, rgba(20,184,166,0.55), rgba(20,184,166,0.10)); }
+        .user-icon[data-icon-id="icon_02"] { background: linear-gradient(135deg, rgba(168,85,247,0.55), rgba(168,85,247,0.12)); }
+        .user-icon[data-icon-id="icon_03"] { background: linear-gradient(135deg, rgba(59,130,246,0.55), rgba(59,130,246,0.12)); }
+        .user-icon[data-icon-id="icon_04"] { background: linear-gradient(135deg, rgba(245,158,11,0.55), rgba(245,158,11,0.12)); }
+        .user-icon[data-icon-id="icon_05"] { background: linear-gradient(135deg, rgba(239,68,68,0.55), rgba(239,68,68,0.12)); }
+        .user-icon[data-icon-id="icon_06"] { background: linear-gradient(135deg, rgba(34,197,94,0.55), rgba(34,197,94,0.12)); }
+        .user-icon[data-icon-id="icon_07"] { background: linear-gradient(135deg, rgba(14,165,233,0.55), rgba(14,165,233,0.12)); }
+        .user-icon[data-icon-id="icon_08"] { background: linear-gradient(135deg, rgba(236,72,153,0.55), rgba(236,72,153,0.12)); }
+        .user-icon[data-icon-id="icon_09"] { background: linear-gradient(135deg, rgba(129,140,248,0.55), rgba(129,140,248,0.12)); }
+        .user-icon[data-icon-id="icon_10"] { background: linear-gradient(135deg, rgba(148,163,184,0.50), rgba(148,163,184,0.12)); }
+
+        .account-icon-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 0.6rem;
+        }
+        @media (max-width: 520px) {
+            .account-icon-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+        .account-icon-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+        }
+        .account-icon-btn:hover {
+            border-color: rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.07);
+            transform: translateY(-1px);
+        }
+        .account-icon-btn[aria-pressed="true"] {
+            border-color: rgba(20,184,166,0.55);
+            background: rgba(20,184,166,0.10);
+            box-shadow: 0 0 0 1px rgba(20,184,166,0.35);
+        }
         .feed-metrics {
             margin-top: 0.35rem;
             font-size: 0.95rem;
@@ -898,11 +1192,12 @@
             <div class="nav-links">
                 <button onclick="router.navigate('home')" class="nav-link">Home</button>
                 <button onclick="router.navigate('feed')" class="nav-link">Feed</button>
+                <button onclick="router.navigate('library')" class="nav-link">My Movies</button>
                 <button onclick="router.navigate('dashboard')" class="nav-link">Data Dash</button>
             </div>
 
             <div class="nav-actions">
-                <button id="nav-login-btn" class="nav-auth-btn" type="button" onclick="openAuthModal()">Login</button>
+                <button id="nav-login-btn" class="nav-auth-btn" type="button" onclick="handleNavAccountButtonClick(event)">Login</button>
 
                 <div class="mobile-menu-btn">
                     <button onclick="toggleMobileMenu()" id="menu-icon-btn"></button>
@@ -914,8 +1209,9 @@
         <div id="mobile-menu" class="glass-panel">
             <button onclick="router.navigate('home')" class="mobile-link">Home</button>
             <button onclick="router.navigate('feed')" class="mobile-link">Feed</button>
+            <button onclick="router.navigate('library')" class="mobile-link">My Movies</button>
             <button onclick="router.navigate('dashboard')" class="mobile-link">Data Dash</button>
-            <button onclick="openAuthModal(); document.getElementById('mobile-menu').classList.remove('open');" class="mobile-link">Login</button>
+            <button id="mobile-auth-btn" onclick="handleNavAccountButtonClick(event); document.getElementById('mobile-menu').classList.remove('open');" class="mobile-link">Login</button>
         </div>
     </nav>
 
@@ -1013,6 +1309,36 @@
             </div>
             <div class="auth-modal-actions">
                 <button type="button" class="btn btn-primary" onclick="closeFeedAuthWarning(); openAuthModal();">Log in</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="library-auth-warning" class="auth-overlay" onclick="if(event.target === this) closeLibraryAuthWarning();">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="library-auth-warning-title">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="library-auth-warning-title">Login Required</div>
+                <button class="auth-modal-close" type="button" onclick="closeLibraryAuthWarning()">Close</button>
+            </div>
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Please login to view your movies
+            </div>
+            <div class="auth-modal-actions">
+                <button type="button" class="btn btn-primary" onclick="closeLibraryAuthWarning(); openAuthModal();">Log in</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="account-auth-warning" class="auth-overlay" onclick="if(event.target === this) closeAccountAuthWarning();">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="account-auth-warning-title">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="account-auth-warning-title">Login Required</div>
+                <button class="auth-modal-close" type="button" onclick="closeAccountAuthWarning()">Close</button>
+            </div>
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Please login to manage your account
+            </div>
+            <div class="auth-modal-actions">
+                <button type="button" class="btn btn-primary" onclick="closeAccountAuthWarning(); openAuthModal();">Log in</button>
             </div>
         </div>
     </div>
@@ -1203,6 +1529,18 @@
                     return;
                 }
 
+                // If the user is not logged in, block the Library page and prompt them to log in.
+                if (page === 'library' && !cachedIsAuthed) {
+                    openLibraryAuthWarning();
+                    return;
+                }
+
+                // If the user is not logged in, block the Account page and prompt them to log in.
+                if (page === 'account' && !cachedIsAuthed) {
+                    openAccountAuthWarning();
+                    return;
+                }
+
                 // Disallow opening the submit form without selecting a movie from the dropdown.
                 if (page === 'submit' && String(mode || 'new') === 'new') {
                     const hasPicked = Boolean(this.selectedMovie);
@@ -1225,9 +1563,11 @@
                             ? 'home'
                             : (page === 'submit'
                                 ? 'log'
+                                : (page === 'library'
+                                    ? 'movies'
                                 : ((page === 'dashboard' || page === 'dashboard_kpi')
                                     ? 'data'
-                                    : (page === 'feed' ? 'feed' : '')))
+                                        : (page === 'feed' ? 'feed' : (page === 'account' ? 'account' : '')))))
                     );
                     if (label && el.innerText.toLowerCase().includes(label)) {
                         el.classList.add('active');
@@ -1249,6 +1589,16 @@
                     refreshAuthStateAndUI();
                     initFeedPage();
                     loadFeedPage();
+                } else if (page === 'library') {
+                    root.innerHTML = this.renderLibrary();
+                    refreshAuthStateAndUI();
+                    initLibraryPage();
+                    loadLibraryPage({ reset: true });
+                } else if (page === 'account') {
+                    root.innerHTML = this.renderAccount();
+                    refreshAuthStateAndUI();
+                    initAccountPage();
+                    loadAccountPage();
                 } else if (page === 'submit') {
                     root.innerHTML = this.renderSubmit();
                     initializeWatchMethodToggle();
@@ -2526,8 +2876,8 @@
                                             <div id="feed-meta" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
                                         </div>
                                         <div style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
-                                            <button id="feed-sort-updated" type="button" class="btn btn-outline" data-feed-action="set_sort" data-feed-sort-mode="updated_at" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Updated</button>
-                                            <button id="feed-sort-watched" type="button" class="btn btn-outline" data-feed-action="set_sort" data-feed-sort-mode="watch_date" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Watched</button>
+                                            <button id="feed-sort-watched" type="button" class="nav-link feed-sort-btn" data-feed-action="set_sort" data-feed-sort-mode="watch_date">Watched</button>
+                                            <button id="feed-sort-updated" type="button" class="nav-link feed-sort-btn" data-feed-action="set_sort" data-feed-sort-mode="updated_at">Updated</button>
                                             <button id="feed-refresh" type="button" class="btn btn-outline" data-feed-action="refresh" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Refresh</button>
                                         </div>
                                     </div>
@@ -2555,6 +2905,124 @@
 
                                     <div class="text-white font-bold">Following</div>
                                     <div id="feed-following" style="margin-top: 0.75rem; display: grid; gap: 10px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderLibrary() {
+                return `
+                    <div class="fade-in">
+                        <!-- Background -->
+                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.10; pointer-events: none;"></div>
+                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
+
+                        <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
+                            <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-white">My Movies</h1>
+                                    <p class="text-gray mt-2">Your most recent watches, with all stored details and ratings.</p>
+                                </div>
+                                <div style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
+                                    <button id="library-refresh" type="button" class="btn btn-outline" data-library-action="refresh" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Refresh</button>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel" style="padding: 1rem; border-radius: 1rem;">
+                                <div class="flex justify-between items-center" style="gap: 12px; flex-wrap: wrap;">
+                                    <div>
+                                        <div class="text-white font-bold">Recent Watches</div>
+                                        <div id="library-meta" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
+                                    </div>
+                                </div>
+
+                                <div id="library-list" style="margin-top: 0.9rem; display: grid; gap: 12px;"></div>
+
+                                <div id="library-load-more-wrap" style="margin-top: 1rem; display:none; justify-content: center;">
+                                    <button id="library-load-more" type="button" class="btn btn-glass" data-library-action="load_more" style="padding: 0.75rem 1.25rem; border-radius: 0.95rem;">Load More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderAccount() {
+                return `
+                    <div class="fade-in">
+                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.10; pointer-events: none;"></div>
+                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
+
+                        <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
+                            <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-white">Account</h1>
+                                    <p class="text-gray mt-2">Update your profile and password.</p>
+                                </div>
+                                <div style="display:flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-outline" data-account-action="logout" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Log out</button>
+                                    <button type="button" class="btn btn-outline" onclick="router.navigate('home')" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Back</button>
+                                </div>
+                            </div>
+
+                            <div class="grid" style="grid-template-columns: 1fr; gap: 16px; align-items: start;">
+                                <div class="glass-panel" style="padding: 1rem; border-radius: 1rem;">
+                                    <div class="text-white font-bold">Profile</div>
+                                    <div class="text-xs text-gray" style="margin-top: 0.25rem;">Your username is used for search + following.</div>
+
+                                    <div id="account-profile-status" class="text-xs" style="margin-top: 0.6rem; color: rgba(255,255,255,0.60);"></div>
+
+                                    <form id="account-profile-form" style="margin-top: 0.85rem; display:grid; gap: 0.75rem;">
+                                        <input id="account-icon" type="hidden" value="">
+                                        <div>
+                                            <label class="text-sm text-white font-bold mb-2 label-gap submit-label block">Username</label>
+                                            <input id="account-username" type="text" class="input-field" placeholder="e.g. landon" autocomplete="username" spellcheck="false">
+                                            <div class="text-xs text-gray" style="margin-top: 0.35rem;">3–20 chars • letters/numbers/underscore • stored without “@”.</div>
+                                        </div>
+                                        <div>
+                                            <label class="text-sm text-white font-bold mb-2 label-gap submit-label block">Display name</label>
+                                            <input id="account-display-name" type="text" class="input-field" placeholder="e.g. Landon James" autocomplete="name">
+                                        </div>
+
+                                        <div>
+                                            <div class="text-sm text-white font-bold">Icon</div>
+                                            <div class="text-xs text-gray" style="margin-top: 0.25rem;">Pick one of 10 preset icons.</div>
+                                            <div id="account-icon-grid" class="account-icon-grid"></div>
+                                        </div>
+                                        <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                                            <button id="account-save-profile" type="submit" class="btn btn-primary" style="border-radius: 0.85rem;">Save profile</button>
+                                            <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" data-account-action="reload">Reload</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="glass-panel" style="padding: 1rem; border-radius: 1rem;">
+                                    <div class="text-white font-bold">Security</div>
+                                    <div class="text-xs text-gray" style="margin-top: 0.25rem;">Password changes update Supabase Auth (not your Users table).</div>
+
+                                    <div style="margin-top: 0.85rem; display:grid; gap: 0.75rem;">
+                                        <div>
+                                            <div class="text-sm text-white font-bold">Email</div>
+                                            <div id="account-email" class="text-xs" style="margin-top: 0.25rem; color: rgba(255,255,255,0.70);"></div>
+                                        </div>
+
+                                        <form id="account-password-form" style="display:grid; gap: 0.75rem;">
+                                            <div>
+                                                <label class="text-sm text-white font-bold mb-2 label-gap submit-label block">New password</label>
+                                                <input id="account-new-password" type="password" class="input-field" placeholder="••••••••" autocomplete="new-password">
+                                            </div>
+                                            <div>
+                                                <label class="text-sm text-white font-bold mb-2 label-gap submit-label block">Confirm new password</label>
+                                                <input id="account-confirm-password" type="password" class="input-field" placeholder="••••••••" autocomplete="new-password">
+                                            </div>
+                                            <div id="account-password-status" class="text-xs" style="color: rgba(255,255,255,0.60);"></div>
+                                            <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                                                <button id="account-change-password" type="submit" class="btn btn-primary" style="border-radius: 0.85rem;">Change password</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -3009,10 +3477,28 @@
             el.style.display = 'none';
         }
 
+        function openLibraryAuthWarning() {
+            const el = document.getElementById('library-auth-warning');
+            if (!el) return;
+            el.style.display = 'flex';
+        }
+
+        function closeLibraryAuthWarning() {
+            const el = document.getElementById('library-auth-warning');
+            if (!el) return;
+            el.style.display = 'none';
+        }
+
         let feedBound = false;
         let feedFollowingIds = new Set();
         let feedLastSearchQuery = '';
-        let feedSortMode = 'updated_at'; // 'updated_at' | 'watch_date'
+        let feedSortMode = 'watch_date'; // 'updated_at' | 'watch_date'
+
+        let libraryBound = false;
+        let libraryOffset = 0;
+        const libraryLimit = 25;
+        let libraryHasMore = true;
+        let libraryLoading = false;
 
         function formatFeedTimestamp(ts) {
             if (!ts) return '';
@@ -3028,6 +3514,17 @@
         function initFeedPage() {
             if (feedBound) return;
             feedBound = true;
+
+            document.addEventListener('click', (e) => {
+                const card = e?.target?.closest ? e.target.closest('[data-feed-card]') : null;
+                if (!card) return;
+
+                // Don't toggle when clicking buttons/controls.
+                const actionEl = e?.target?.closest ? e.target.closest('[data-feed-action]') : null;
+                if (actionEl) return;
+
+                card.classList.toggle('is-open');
+            });
 
             document.addEventListener('click', async (e) => {
                 const btn = e?.target?.closest ? e.target.closest('[data-feed-action]') : null;
@@ -3106,6 +3603,583 @@
             }, { capture: true });
         }
 
+        function initLibraryPage() {
+            if (libraryBound) return;
+            libraryBound = true;
+
+            document.addEventListener('click', async (e) => {
+                const btn = e?.target?.closest ? e.target.closest('[data-library-action]') : null;
+                if (!btn) return;
+                const action = String(btn.dataset.libraryAction || '').trim();
+                if (!action) return;
+
+                if (action === 'refresh') {
+                    await loadLibraryPage({ reset: true });
+                    return;
+                }
+                if (action === 'load_more') {
+                    await loadLibraryMore();
+                    return;
+                }
+            }, { capture: true });
+        }
+
+        function normalizeMovieFieldValue(v) {
+            if (v === null || v === undefined) return '';
+            if (typeof v === 'boolean') return v ? 'Yes' : 'No';
+            if (typeof v === 'number') return Number.isFinite(v) ? String(v) : '';
+            return String(v).trim();
+        }
+
+        function parsePercentLike(raw, { imdb = false } = {}) {
+            if (raw === null || raw === undefined) return null;
+            if (typeof raw === 'number') {
+                if (!Number.isFinite(raw)) return null;
+                if (imdb && raw <= 10) return raw * 10;
+                return raw;
+            }
+            const s = String(raw).trim();
+            if (!s) return null;
+            const m = s.match(/([0-9]+(?:\.[0-9]+)?)/);
+            if (!m) return null;
+            const n = Number(m[1]);
+            if (!Number.isFinite(n)) return null;
+            if (imdb && n <= 10) return n * 10;
+            return n;
+        }
+
+        function formatPctForDisplay(pct) {
+            const n = Number(pct);
+            if (!Number.isFinite(n)) return '';
+            const v = String(dashFormatScore(n) || '').trim();
+            if (!v) return '';
+            return /%\s*$/.test(v) ? v : `${v}%`;
+        }
+
+        function getAnyStringField(row, { preferKeys = [], avoidKeysRe = null } = {}) {
+            if (!row || typeof row !== 'object') return '';
+            const avoid = avoidKeysRe instanceof RegExp ? avoidKeysRe : null;
+            for (const k of preferKeys) {
+                const v = row?.[k];
+                if (typeof v === 'string' && v.trim()) return v.trim();
+            }
+            for (const [k, v] of Object.entries(row)) {
+                if (avoid && avoid.test(k)) continue;
+                if (typeof v === 'string' && v.trim()) return v.trim();
+            }
+            return '';
+        }
+
+        function getMovieIdFromAnyRow(r) {
+            if (!r || typeof r !== 'object') return '';
+            const candidates = [
+                r?.movie_id,
+                r?.movieId,
+                r?.movie_uuid,
+                r?.movieUuid,
+                r?.movie,
+                r?.movieID,
+            ];
+            for (const c of candidates) {
+                const s = String(c ?? '').trim();
+                if (s) return s;
+            }
+            return '';
+        }
+
+        async function selectAllFromFirstAvailableTable(tableNames, idCandidates, ids) {
+            const tables = Array.isArray(tableNames) ? tableNames : [];
+            const cols = Array.isArray(idCandidates) ? idCandidates : [];
+            let lastErr = null;
+
+            for (const table of tables) {
+                for (const col of cols) {
+                    try {
+                        const { data, error } = await supabaseClient
+                            .from(table)
+                            .select('*')
+                            .in(col, ids);
+                        if (error) throw error;
+                        return data;
+                    } catch (err) {
+                        lastErr = err;
+                        const msg = String(err?.message || err);
+                        // Try next table/column on common schema mismatches.
+                        if (/relation\s+"?.+"?\s+does\s+not\s+exist/i.test(msg)) continue;
+                        if (/column\s+"?.+"?\s+does\s+not\s+exist/i.test(msg)) continue;
+                        // Otherwise bubble up.
+                        throw err;
+                    }
+                }
+            }
+
+            if (lastErr) throw lastErr;
+            return null;
+        }
+
+        async function loadLibraryHydratedGenreDirectorImdb({ movieIds }) {
+            const genresByMovieId = new Map();
+            const directorByMovieId = new Map();
+            const imdbPctByMovieId = new Map();
+            const ids = Array.isArray(movieIds) ? movieIds : [];
+            if (!supabaseClient || ids.length === 0) {
+                return { genresByMovieId, directorByMovieId, imdbPctByMovieId };
+            }
+
+            // Genres
+            try {
+                const genreRows = await selectAllFromFirstAvailableTable(
+                    ['Movies Genres', 'Movie Genres', 'Movies_Genres', 'movie_genres', 'movies_genres'],
+                    ['movie_id', 'movieId', 'movie_uuid', 'movieUuid'],
+                    ids
+                );
+                const rows = Array.isArray(genreRows) ? genreRows : [];
+                for (const r of rows) {
+                    const mid = getMovieIdFromAnyRow(r);
+                    if (!mid) continue;
+                    const g = getAnyStringField(r, {
+                        preferKeys: ['genre', 'genre_name', 'name', 'genreName', 'genre_title', 'title'],
+                        avoidKeysRe: /(id|uuid|created|updated|tmdb|imdb)/i,
+                    });
+                    if (!g) continue;
+                    const arr = genresByMovieId.get(mid) || [];
+                    if (!arr.includes(g)) arr.push(g);
+                    genresByMovieId.set(mid, arr);
+                }
+            } catch (_) {}
+
+            // Directors (from crew)
+            try {
+                const crewRows = await selectAllFromFirstAvailableTable(
+                    ['Movie Crew', 'Movie Crew Table', 'Movies Crew', 'movie_crew', 'movies_crew'],
+                    ['movie_id', 'movieId', 'movie_uuid', 'movieUuid'],
+                    ids
+                );
+                const rows = Array.isArray(crewRows) ? crewRows : [];
+                for (const r of rows) {
+                    const mid = getMovieIdFromAnyRow(r);
+                    if (!mid || directorByMovieId.has(mid)) continue;
+                    const job = String(r?.job ?? r?.role ?? r?.credit_job ?? r?.job_name ?? r?.job_title ?? r?.position ?? '').trim();
+                    const dept = String(r?.department ?? r?.dept ?? r?.known_for_department ?? '').trim();
+                    const isDirector = (r?.is_director === true) || /director/i.test(job) || (/directing/i.test(dept) && (!job || /director/i.test(job)));
+                    if (!isDirector) continue;
+                    const name = getAnyStringField(r, {
+                        preferKeys: ['name', 'person_name', 'crew_name', 'full_name', 'display_name', 'person'],
+                        avoidKeysRe: /(movie|job|role|department|dept|id|uuid|created|updated)/i,
+                    });
+                    if (!name) continue;
+                    directorByMovieId.set(mid, name);
+                }
+            } catch (_) {}
+
+            // IMDb (external ratings)
+            try {
+                const extRows = await selectAllFromFirstAvailableTable(
+                    ['Movie External Ratings', 'Movies External Ratings', 'movie_external_ratings', 'movies_external_ratings'],
+                    ['movie_id', 'movieId', 'movie_uuid', 'movieUuid'],
+                    ids
+                );
+                const rows = Array.isArray(extRows) ? extRows : [];
+                for (const r of rows) {
+                    const mid = getMovieIdFromAnyRow(r);
+                    if (!mid) continue;
+
+                    // Common schema: a single row per movie with imdb_rating_pct
+                    const directPct = parsePercentLike(r?.imdb_rating_pct ?? r?.imdbPct ?? r?.imdb_rating ?? r?.imdb, { imdb: true });
+                    if (directPct !== null && directPct !== undefined) {
+                        imdbPctByMovieId.set(mid, directPct);
+                        continue;
+                    }
+
+                    // Multi-source schema: provider/source + rating
+                    const provider = String(r?.provider ?? r?.source ?? r?.site ?? r?.rating_source ?? r?.type ?? '').trim().toLowerCase();
+                    if (provider && !provider.includes('imdb')) continue;
+                    const pct = parsePercentLike(r?.rating_pct ?? r?.ratingPercent ?? r?.percent ?? r?.score_pct ?? r?.scorePercent ?? r?.score ?? r?.rating, { imdb: true });
+                    if (pct !== null && pct !== undefined) {
+                        imdbPctByMovieId.set(mid, pct);
+                    }
+                }
+            } catch (_) {}
+
+            return { genresByMovieId, directorByMovieId, imdbPctByMovieId };
+        }
+
+        async function loadLibraryTmdbFallbackForMovies({ movieIds, moviesById, genresByMovieId, directorByMovieId }) {
+            if (!Array.isArray(movieIds) || movieIds.length === 0) return;
+
+            // Build a list of tmdb_ids we still need details for.
+            const needs = [];
+            for (const id of movieIds) {
+                const m = moviesById.get(id) || null;
+                const mid = String(m?.id || id || '').trim();
+                if (!mid) continue;
+
+                const hasGenre = (() => {
+                    const arr = genresByMovieId.get(mid);
+                    if (Array.isArray(arr) && arr.length) return true;
+                    if (Array.isArray(m?.genres) && m.genres.length) return true;
+                    return Boolean(String(m?.genre ?? '').trim());
+                })();
+                const hasDirector = (() => {
+                    if (directorByMovieId.has(mid)) return true;
+                    return Boolean(String(m?.director ?? m?.director_name ?? '').trim());
+                })();
+
+                if (hasGenre && hasDirector) continue;
+                const tmdb = Number(m?.tmdb_id);
+                if (!Number.isFinite(tmdb) || tmdb <= 0) continue;
+                needs.push({ mid, tmdb, needGenre: !hasGenre, needDirector: !hasDirector });
+            }
+
+            if (needs.length === 0) return;
+
+            // De-dupe by tmdb_id (1:1 in your schema, but safe).
+            const byTmdb = new Map();
+            for (const n of needs) {
+                const prev = byTmdb.get(n.tmdb) || { tmdb: n.tmdb, movieIds: [], needGenre: false, needDirector: false };
+                prev.movieIds.push(n.mid);
+                prev.needGenre = prev.needGenre || n.needGenre;
+                prev.needDirector = prev.needDirector || n.needDirector;
+                byTmdb.set(n.tmdb, prev);
+            }
+
+            const items = Array.from(byTmdb.values());
+            const concurrency = 4;
+            for (let i = 0; i < items.length; i += concurrency) {
+                const chunk = items.slice(i, i + concurrency);
+                await Promise.allSettled(chunk.map(async (it) => {
+                    try {
+                        const details = await callSwiftApiGetMovieDetails({ tmdb_id: it.tmdb });
+                        const genres = Array.isArray(details?.genres)
+                            ? details.genres.map(s => String(s).trim()).filter(Boolean)
+                            : (String(details?.genre || '').trim() ? [String(details.genre).trim()] : []);
+                        const director = String(details?.director || '').trim();
+
+                        for (const mid of it.movieIds) {
+                            if (it.needGenre && genres.length) {
+                                genresByMovieId.set(mid, genres);
+                            }
+                            if (it.needDirector && director) {
+                                directorByMovieId.set(mid, director);
+                            }
+                        }
+                    } catch (_) {
+                        // ignore
+                    }
+                }));
+            }
+        }
+
+        function renderLibraryInfoChips(obj, opts = {}) {
+            const blacklist = Array.isArray(opts.blacklist) ? opts.blacklist : [];
+            const order = Array.isArray(opts.order) ? opts.order : [];
+            const max = Number.isFinite(opts.max) ? Number(opts.max) : 0;
+
+            const keys = Object.keys(obj || {});
+            const filtered = keys
+                .filter(k => !blacklist.includes(k))
+                .filter(k => !/(cast|crew|actor|actress|writers?|producers?)/i.test(k));
+
+            const orderedKeys = [];
+            for (const k of order) {
+                if (filtered.includes(k)) orderedKeys.push(k);
+            }
+            for (const k of filtered) {
+                if (!orderedKeys.includes(k)) orderedKeys.push(k);
+            }
+
+            const chips = [];
+            for (const k of orderedKeys) {
+                const raw = obj?.[k];
+                if (raw === null || raw === undefined) continue;
+                if (typeof raw === 'object') continue;
+                const v = normalizeMovieFieldValue(raw);
+                if (!v) continue;
+                chips.push(`<span class="dash-quote-pill">${escapeHtml(k)}: ${escapeHtml(v)}</span>`);
+                if (max > 0 && chips.length >= max) break;
+            }
+            return chips.join('');
+        }
+
+        async function loadLibraryPage({ reset = true } = {}) {
+            const elList = document.getElementById('library-list');
+            const elMeta = document.getElementById('library-meta');
+            const wrap = document.getElementById('library-load-more-wrap');
+            if (!elList) return;
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                elList.innerHTML = `<div class="text-gray">Log in to view your movies.</div>`;
+                if (elMeta) elMeta.textContent = '';
+                if (wrap) wrap.style.display = 'none';
+                return;
+            }
+
+            if (reset) {
+                libraryOffset = 0;
+                libraryHasMore = true;
+                libraryLoading = false;
+                elList.innerHTML = `<div class="text-gray">Loading…</div>`;
+                if (wrap) wrap.style.display = 'none';
+            }
+
+            await loadLibraryMore({ replace: true });
+        }
+
+        async function loadLibraryMore({ replace = false } = {}) {
+            const elList = document.getElementById('library-list');
+            const elMeta = document.getElementById('library-meta');
+            const wrap = document.getElementById('library-load-more-wrap');
+            const btn = document.getElementById('library-load-more');
+
+            if (!elList || !supabaseClient || !cachedIsAuthed) return;
+            if (libraryLoading) return;
+            if (!libraryHasMore && !replace) return;
+
+            libraryLoading = true;
+            if (btn) btn.disabled = true;
+
+            let authedUser = null;
+            try {
+                const { user } = await requireAuthOrThrow();
+                authedUser = user;
+            } catch (err) {
+                libraryLoading = false;
+                if (btn) btn.disabled = false;
+                showToast(String(err?.message || err), { level: 'warn' });
+                return;
+            }
+
+            const start = libraryOffset;
+            const end = libraryOffset + libraryLimit - 1;
+
+            try {
+                const { data: ratingsData, error: ratingsErr } = await supabaseClient
+                    .from('Movie Ratings')
+                    .select('movie_id, overall_rating, tier, watch_date, updated_at, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
+                    .eq('user_id', authedUser.id)
+                    .not('watch_date', 'is', null)
+                    .order('watch_date', { ascending: false })
+                    .order('updated_at', { ascending: false })
+                    .range(start, end);
+                if (ratingsErr) throw ratingsErr;
+
+                const rows = Array.isArray(ratingsData) ? ratingsData : [];
+                libraryHasMore = rows.length === libraryLimit;
+                if (libraryHasMore) libraryOffset += libraryLimit;
+
+                const movieIds = Array.from(new Set(rows.map(r => r?.movie_id).filter(Boolean)));
+                const moviesById = new Map();
+                let genresByMovieId = new Map();
+                let directorByMovieId = new Map();
+                let imdbPctByMovieId = new Map();
+                if (movieIds.length) {
+                    const { data: moviesData, error: moviesErr } = await supabaseClient
+                        .from('Movies')
+                        .select('*')
+                        .in('id', movieIds);
+                    if (moviesErr) throw moviesErr;
+                    const mrows = Array.isArray(moviesData) ? moviesData : [];
+                    for (const m of mrows) moviesById.set(m.id, m);
+
+                    // Hydrate genre/director/IMDb from normalized tables (DB-first)
+                    try {
+                        const hydrated = await loadLibraryHydratedGenreDirectorImdb({ movieIds });
+                        genresByMovieId = hydrated.genresByMovieId || genresByMovieId;
+                        directorByMovieId = hydrated.directorByMovieId || directorByMovieId;
+                        imdbPctByMovieId = hydrated.imdbPctByMovieId || imdbPctByMovieId;
+                    } catch (_) {}
+
+                    // Fallback: if genre/director still missing, pull details the same way the form does.
+                    try {
+                        await loadLibraryTmdbFallbackForMovies({ movieIds, moviesById, genresByMovieId, directorByMovieId });
+                    } catch (_) {}
+
+                    // Best-effort poster fetch (cached)
+                    try {
+                        const posterItems = movieIds.map(id => moviesById.get(id)).filter(Boolean);
+                        await Promise.all(posterItems.map(dashEnsurePosterPath));
+                    } catch (_) {}
+                }
+
+                const html = rows.map((r) => {
+                    const movie = moviesById.get(r?.movie_id) || null;
+                    const title = String(movie?.title || '').trim() || 'Untitled';
+                    const year = (movie?.release_year === null || movie?.release_year === undefined) ? '' : String(movie.release_year);
+
+                    const tmdb_id = Number(movie?.tmdb_id);
+                    const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
+                    const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
+
+                    const overall = dashFormatScore(r?.overall_rating);
+                    const tierLabel = dashNormalizeTierLabel(r?.tier);
+                    const watched = String(r?.watch_date ?? '').trim();
+                    const quote = String(r?.fav_quote ?? '').trim();
+                    const notes = String(r?.notes ?? '').trim();
+
+                    const runtimeRaw = (movie?.runtime_minutes ?? movie?.runtime);
+                    const runtimeVal = (() => {
+                        const v = normalizeMovieFieldValue(runtimeRaw);
+                        if (!v) return '';
+                        const n = Number(v);
+                        if (Number.isFinite(n) && n > 0) return `${Math.round(n)} min`;
+                        return /min/i.test(v) ? v : v;
+                    })();
+                    const mpaVal = normalizeMovieFieldValue(movie?.mpa_rating ?? movie?.mpa);
+                    const directorVal = (() => {
+                        const mid = String(movie?.id || r?.movie_id || '').trim();
+                        const fromCrew = directorByMovieId.get(mid);
+                        return normalizeMovieFieldValue(fromCrew) || normalizeMovieFieldValue(movie?.director ?? movie?.director_name);
+                    })();
+                    const genreVal = (() => {
+                        const mid = String(movie?.id || r?.movie_id || '').trim();
+                        const arr = genresByMovieId.get(mid);
+                        const joined = Array.isArray(arr) ? arr.filter(Boolean).join(', ') : '';
+                        const fromArray = Array.isArray(movie?.genres) ? movie.genres.map(s => String(s).trim()).filter(Boolean).join(', ') : '';
+                        return normalizeMovieFieldValue(joined) || normalizeMovieFieldValue(fromArray) || normalizeMovieFieldValue(movie?.genre);
+                    })();
+                    const imdbVal = (() => {
+                        const mid = String(movie?.id || r?.movie_id || '').trim();
+                        const fromExt = imdbPctByMovieId.get(mid);
+                        const n = parsePercentLike(fromExt, { imdb: true });
+                        if (n !== null && n !== undefined) {
+                            return formatPctForDisplay(n);
+                        }
+
+                        const raw = (movie?.imdb_rating_pct ?? movie?.imdb_pct ?? movie?.imdb_rating ?? movie?.imdb);
+                        const n2 = parsePercentLike(raw, { imdb: true });
+                        if (n2 !== null && n2 !== undefined) {
+                            return formatPctForDisplay(n2);
+                        }
+                        return '';
+                    })();
+
+                    const ratingChips = [
+                        overall ? dashRenderHelpScore(overall) : '',
+                        tierLabel ? dashRenderHelpTier(tierLabel) : '',
+                    ].join('');
+
+                    const subRatingRows = [
+                        { k: 'Sound', v: dashFormatScore(r?.sound_rating) },
+                        { k: 'Pace', v: dashFormatScore(r?.pacing_rating) },
+                        { k: 'Imagery', v: dashFormatScore(r?.imagery_rating) },
+                        { k: 'Acting', v: dashFormatScore(r?.acting_rating) },
+                        { k: 'Plot', v: dashFormatScore(r?.plot_rating) },
+                        { k: 'Dialogue', v: dashFormatScore(r?.dialogue_rating) },
+                    ].filter(x => String(x.v || '').trim());
+
+                    const extraMovieChips = renderLibraryInfoChips(movie || {}, {
+                        blacklist: ['id', 'title', 'release_year', 'tmdb_id', 'imdb_id', 'created_at', 'updated_at', 'genre', 'genres', 'director', 'director_name', 'runtime', 'runtime_minutes', 'mpa', 'mpa_rating', 'is_series', 'imdb', 'imdb_rating', 'imdb_pct', 'imdb_rating_pct'],
+                    });
+
+                    const posterBackDetailsHtml = (() => {
+                        const lines = [];
+                        const genreBackHtml = (() => {
+                            const raw = String(genreVal || '').trim();
+                            if (!raw) return '';
+                            const parts = raw
+                                .split(/[,|;]/g)
+                                .map(s => String(s).trim())
+                                .filter(Boolean);
+                            if (!parts.length) return '';
+                            return parts.map(p => escapeHtml(p)).join('<br>');
+                        })();
+                        if (runtimeVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">Runtime</span><span class="library-poster-back-val">${escapeHtml(runtimeVal)}</span></div>`);
+                        if (mpaVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">MPA</span><span class="library-poster-back-val">${escapeHtml(mpaVal)}</span></div>`);
+                        if (genreBackHtml) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">Genre</span><span class="library-poster-back-val">${genreBackHtml}</span></div>`);
+                        if (imdbVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">IMDb</span><span class="library-poster-back-val">${escapeHtml(imdbVal)}</span></div>`);
+                        return lines.join('');
+                    })();
+
+                    return `
+                        <div class="glass-panel" style="padding: 0.9rem; border-radius: 1rem;">
+                            <div class="library-card-row">
+                                <div class="library-card-left">
+                                    <div class="library-card-poster">
+                                        <div class="library-poster-flip">
+                                            <div class="library-poster-flip-inner">
+                                                <div class="library-poster-face library-poster-front">
+                                                    ${posterUrl
+                                                        ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width:100%; height:100%; object-fit: cover; display:block;" onerror="this.style.display='none';">`
+                                                        : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
+                                                </div>
+                                                <div class="library-poster-face library-poster-back">
+                                                    ${posterBackDetailsHtml || `<div class="text-xs text-gray" style="text-align:center;">No details</div>`}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="library-under"></div>
+                                </div>
+
+                                <div class="feed-card-main">
+                                    <div class="text-white font-bold" style="white-space: normal; overflow: hidden;">
+                                        <span class="library-title-line">${escapeHtml(title)}${year ? ` <span style=\"color: rgba(255,255,255,0.65); font-weight: 800;\">(${escapeHtml(year)})</span>` : ''}</span>
+                                        ${(directorVal || mpaVal)
+                                            ? `<span class="library-title-meta">${directorVal ? `<span class="library-title-sep"> — </span>${escapeHtml(directorVal)}` : ''}${mpaVal ? `<span class="library-title-sep"> — </span>${escapeHtml(mpaVal)}` : ''}</span>`
+                                            : ''}
+                                    </div>
+
+                                    ${(overall || tierLabel)
+                                        ? `<div class="feed-metrics">${ratingChips}</div>`
+                                        : `<div class="text-xs text-gray" style="margin-top: 0.25rem;">No rating yet</div>`
+                                    }
+
+                                    <div class="library-chip-row library-subratings" style="margin-top: 0.6rem;">
+                                        ${subRatingRows.map(d => `<span class=\"dash-quote-pill\">${escapeHtml(d.k)}: ${escapeHtml(d.v)}</span>`).join('')}
+                                    </div>
+
+                                    <div class="library-chip-row" style="margin-top: 0.55rem;">
+                                        ${extraMovieChips}
+                                    </div>
+
+                                    ${quote ? `
+                                        <div style="margin-top: 0.75rem;">
+                                            <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Favorite Quote</div>
+                                            <div class="text-white" style="line-height: 1.4;">${escapeHtml(quote)}</div>
+                                        </div>
+                                    ` : ''}
+                                    ${notes ? `
+                                        <div style="margin-top: 0.75rem;">
+                                            <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Notes</div>
+                                            <div class="text-white" style="line-height: 1.4; white-space: pre-wrap;">${escapeHtml(notes)}</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                if (replace) {
+                    elList.innerHTML = html || `<div class="text-gray">No watched movies found yet.</div>`;
+                } else {
+                    if (!html) {
+                        // nothing new
+                    } else {
+                        elList.insertAdjacentHTML('beforeend', html);
+                    }
+                }
+
+                if (elMeta) {
+                    const shown = elList.querySelectorAll('.glass-panel').length;
+                    elMeta.textContent = `Showing ${shown} • ${libraryHasMore ? 'Load more to continue' : 'End of list'}`;
+                }
+                if (wrap) wrap.style.display = libraryHasMore ? 'flex' : 'none';
+            } catch (err) {
+                const msg = String(err?.message || err);
+                if (replace) {
+                    elList.innerHTML = `<div class="text-gray">Could not load movies: ${escapeHtml(msg)}</div>`;
+                } else {
+                    showToast(`Could not load more: ${msg}`, { level: 'warn' });
+                }
+                if (wrap) wrap.style.display = 'none';
+            } finally {
+                libraryLoading = false;
+                if (btn) btn.disabled = false;
+            }
+        }
+
         async function loadMyFollowingIds() {
             feedFollowingIds = new Set();
             if (!supabaseClient) return;
@@ -3171,8 +4245,7 @@
             const btnWatched = document.getElementById('feed-sort-watched');
             const activate = (btn, on) => {
                 if (!btn) return;
-                btn.classList.remove('btn-glass', 'btn-outline');
-                btn.classList.add(on ? 'btn-glass' : 'btn-outline');
+                btn.classList.toggle('active', Boolean(on));
             };
             activate(btnUpdated, feedSortMode === 'updated_at');
             activate(btnWatched, feedSortMode === 'watch_date');
@@ -3193,11 +4266,27 @@
                 return;
             }
 
-            const { data, error } = await supabaseClient
-                .from('Users')
-                .select('id, username, display_name, privacy_level')
-                .in('id', ids);
-            if (error) throw error;
+            let data = null;
+            try {
+                const r1 = await supabaseClient
+                    .from('Users')
+                    .select('id, username, display_name, privacy_level, icon')
+                    .in('id', ids);
+                if (r1.error) throw r1.error;
+                data = r1.data;
+            } catch (err1) {
+                const msg1 = String(err1?.message || err1);
+                if (/column\s+"?icon"?\s+does\s+not\s+exist/i.test(msg1)) {
+                    const r2 = await supabaseClient
+                        .from('Users')
+                        .select('id, username, display_name, privacy_level')
+                        .in('id', ids);
+                    if (r2.error) throw r2.error;
+                    data = r2.data;
+                } else {
+                    throw err1;
+                }
+            }
 
             const rows = Array.isArray(data) ? data : [];
             // Preserve the order of ids.
@@ -3209,11 +4298,15 @@
                 const username = String(u?.username || '').trim();
                 const name = String(u?.display_name || '').trim() || (username ? `@${username}` : 'User');
                 const privacy = String(u?.privacy_level || 'public').trim();
+                const iconId = String(u?.icon || '').trim();
                 return `
                     <div class="glass-panel" style="padding: 0.75rem; border-radius: 0.9rem; display:flex; align-items:center; justify-content: space-between; gap: 10px;">
-                        <div style="min-width:0;">
-                            <div class="text-white font-semibold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(name)}</div>
-                            <div class="text-xs text-gray" style="margin-top: 0.15rem;">${username ? `@${escapeHtml(username)}` : ''}${privacy ? ` • ${escapeHtml(privacy)}` : ''}</div>
+                        <div style="min-width:0; display:flex; gap: 10px; align-items: center;">
+                            ${renderUserIconHtml(iconId, 28)}
+                            <div style="min-width:0;">
+                                <div class="text-white font-semibold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(name)}</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.15rem;">${username ? `@${escapeHtml(username)}` : ''}${privacy ? ` • ${escapeHtml(privacy)}` : ''}</div>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-outline" data-feed-action="unfollow" data-feed-user-id="${escapeHtml(id)}" style="padding: 0.45rem 0.7rem; border-radius: 0.75rem;">Unfollow</button>
                     </div>
@@ -3239,12 +4332,29 @@
 
             el.innerHTML = `<div class="text-gray">Searching…</div>`;
 
-            const { data, error } = await supabaseClient
-                .from('Users')
-                .select('id, username, display_name, privacy_level')
-                .ilike('username', `%${q}%`)
-                .limit(20);
-            if (error) throw error;
+            let data = null;
+            try {
+                const r1 = await supabaseClient
+                    .from('Users')
+                    .select('id, username, display_name, privacy_level, icon')
+                    .ilike('username', `%${q}%`)
+                    .limit(20);
+                if (r1.error) throw r1.error;
+                data = r1.data;
+            } catch (err1) {
+                const msg1 = String(err1?.message || err1);
+                if (/column\s+"?icon"?\s+does\s+not\s+exist/i.test(msg1)) {
+                    const r2 = await supabaseClient
+                        .from('Users')
+                        .select('id, username, display_name, privacy_level')
+                        .ilike('username', `%${q}%`)
+                        .limit(20);
+                    if (r2.error) throw r2.error;
+                    data = r2.data;
+                } else {
+                    throw err1;
+                }
+            }
 
             const rows = Array.isArray(data) ? data : [];
             if (rows.length === 0) {
@@ -3266,6 +4376,7 @@
                 const username = String(u?.username || '').trim();
                 const name = String(u?.display_name || '').trim() || (username ? `@${username}` : 'User');
                 const privacy = String(u?.privacy_level || 'public').trim();
+                const iconId = String(u?.icon || '').trim();
                 const isMe = authedUserId && id === authedUserId;
                 const isFollowing = feedFollowingIds.has(id);
 
@@ -3277,9 +4388,12 @@
 
                 return `
                     <div class="glass-panel" style="padding: 0.75rem; border-radius: 0.9rem; display:flex; align-items:center; justify-content: space-between; gap: 10px;">
-                        <div style="min-width:0;">
-                            <div class="text-white font-semibold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(name)}</div>
-                            <div class="text-xs text-gray" style="margin-top: 0.15rem;">${username ? `@${escapeHtml(username)}` : ''}${privacy ? ` • ${escapeHtml(privacy)}` : ''}</div>
+                        <div style="min-width:0; display:flex; gap: 10px; align-items: center;">
+                            ${renderUserIconHtml(iconId, 28)}
+                            <div style="min-width:0;">
+                                <div class="text-white font-semibold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(name)}</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.15rem;">${username ? `@${escapeHtml(username)}` : ''}${privacy ? ` • ${escapeHtml(privacy)}` : ''}</div>
+                            </div>
                         </div>
                         ${right}
                     </div>
@@ -3385,11 +4499,28 @@
 
             const usersById = new Map();
             if (userIds.length) {
-                const { data: usersData, error: usersErr } = await supabaseClient
-                    .from('Users')
-                    .select('id, username, display_name')
-                    .in('id', userIds);
-                if (usersErr) throw usersErr;
+                let usersData = null;
+                try {
+                    const r1 = await supabaseClient
+                        .from('Users')
+                        .select('id, username, display_name, icon')
+                        .in('id', userIds);
+                    if (r1.error) throw r1.error;
+                    usersData = r1.data;
+                } catch (err1) {
+                    const msg1 = String(err1?.message || err1);
+                    if (/column\s+"?icon"?\s+does\s+not\s+exist/i.test(msg1)) {
+                        const r2 = await supabaseClient
+                            .from('Users')
+                            .select('id, username, display_name')
+                            .in('id', userIds);
+                        if (r2.error) throw r2.error;
+                        usersData = r2.data;
+                    } else {
+                        throw err1;
+                    }
+                }
+
                 const urows = Array.isArray(usersData) ? usersData : [];
                 for (const u of urows) usersById.set(u.id, u);
             }
@@ -3408,7 +4539,9 @@
             elList.innerHTML = rows.map((r) => {
                 const actorId = String(r?.user_id || '').trim();
                 const actor = usersById.get(actorId) || null;
-                const actorName = String(actor?.display_name || '').trim() || (actor?.username ? `@${String(actor.username).trim()}` : 'User');
+                const actorUsernameRaw = String(actor?.username || '').trim().replace(/^@+/, '');
+                const actorUsername = actorUsernameRaw ? `@${actorUsernameRaw}` : 'User';
+                const actorIconId = String(actor?.icon || '').trim();
 
                 const movie = moviesById.get(r?.movie_id) || null;
                 const title = String(movie?.title || '').trim() || 'Untitled';
@@ -3426,61 +4559,66 @@
                 const updatedAt = formatFeedTimestamp(r?.updated_at);
                 const watched = String(r?.watch_date ?? '').trim();
 
-                const detailRows = [
-                    { k: 'Overall', v: overall },
-                    { k: 'Tier', v: tierLabel },
+                const subRatingRows = [
                     { k: 'Sound', v: dashFormatScore(r?.sound_rating) },
                     { k: 'Pace', v: dashFormatScore(r?.pacing_rating) },
                     { k: 'Imagery', v: dashFormatScore(r?.imagery_rating) },
                     { k: 'Acting', v: dashFormatScore(r?.acting_rating) },
                     { k: 'Plot', v: dashFormatScore(r?.plot_rating) },
                     { k: 'Dialogue', v: dashFormatScore(r?.dialogue_rating) },
-                    { k: 'Watched', v: watched },
-                    { k: 'Updated', v: updatedAt },
                 ].filter(x => String(x.v || '').trim());
 
                 return `
-                    <details class="glass-panel" style="padding: 0.9rem; border-radius: 1rem;">
-                        <summary style="list-style: none; cursor: pointer; display:flex; gap: 12px; align-items: center;">
-                            <div style="width: 54px; height: 78px; border-radius: 0.75rem; overflow:hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); flex: 0 0 auto;">
+                    <div class="glass-panel feed-item-card" data-feed-card="1" style="padding: 0.9rem; border-radius: 1rem;">
+                        <div class="feed-card-row">
+                            <div class="feed-card-poster">
                                 ${posterUrl
                                     ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width:100%; height:100%; object-fit: cover; display:block;" onerror="this.style.display='none';">`
                                     : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
                             </div>
 
-                            <div style="min-width: 0; flex: 1;">
+                            <div class="feed-card-main">
                                 <div class="text-white font-bold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(title)}${year ? ` <span style=\"color: rgba(255,255,255,0.65); font-weight: 800;\">(${escapeHtml(year)})</span>` : ''}</div>
-                                <div class="text-xs text-gray" style="margin-top: 0.2rem;">${feedSortMode === 'watch_date' ? 'Watched by' : 'Rated by'} <span class="feed-actor">${escapeHtml(actorName)}</span></div>
+
                                 ${(overall || tierLabel)
                                     ? `<div class="feed-metrics">${overall ? dashRenderHelpScore(overall) : ''}${tierLabel ? dashRenderHelpTier(tierLabel) : ''}</div>`
                                     : `<div class="text-xs text-gray" style="margin-top: 0.25rem;">No rating yet</div>`
                                 }
+
                                 ${(feedSortMode === 'watch_date')
                                     ? (watched ? `<div class="text-xs" style="margin-top: 0.25rem; color: rgba(255,255,255,0.55);">Watched: ${escapeHtml(watched)}</div>` : '')
                                     : (updatedAt ? `<div class="text-xs" style="margin-top: 0.25rem; color: rgba(255,255,255,0.55);">Updated: ${escapeHtml(updatedAt)}</div>` : '')
                                 }
                             </div>
-                            <div class="text-xs text-gray" style="white-space: nowrap;">Details</div>
-                        </summary>
 
-                        <div style="margin-top: 0.8rem; display: grid; gap: 10px;">
-                            <div style="display:flex; flex-wrap: wrap; gap: 8px;">
-                                ${detailRows.map(d => `<span class=\"dash-quote-pill\">${escapeHtml(d.k)}: ${escapeHtml(d.v)}</span>`).join('')}
+                            <div class="feed-card-actor" title="${escapeHtml(actorUsernameRaw || '')}">
+                                ${renderUserIconHtml(actorIconId, 26)}
+                                <span class="feed-card-actor-name">${escapeHtml(actorUsername)}</span>
                             </div>
+                        </div>
+
+                        <div class="feed-card-details">
+                            ${subRatingRows.length
+                                ? `<div class="library-chip-row" style="margin-top: 0.55rem;">
+                                        ${subRatingRows.map(d => `<span class=\"dash-quote-pill\">${escapeHtml(d.k)}: ${escapeHtml(d.v)}</span>`).join('')}
+                                   </div>`
+                                : ''}
+
                             ${quote ? `
-                                <div>
+                                <div style="margin-top: 0.75rem;">
                                     <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Favorite Quote</div>
                                     <div class="text-white" style="line-height: 1.4;">${escapeHtml(quote)}</div>
                                 </div>
                             ` : ''}
+
                             ${notes ? `
-                                <div>
+                                <div style="margin-top: 0.75rem;">
                                     <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Notes</div>
                                     <div class="text-white" style="line-height: 1.4; white-space: pre-wrap;">${escapeHtml(notes)}</div>
                                 </div>
                             ` : ''}
                         </div>
-                    </details>
+                    </div>
                 `;
             }).join('');
         }
@@ -6386,6 +7524,13 @@
                     navLoginBtn.textContent = 'Login';
                 }
             }
+
+            const mobileAuthBtn = document.getElementById('mobile-auth-btn');
+            if (mobileAuthBtn) {
+                mobileAuthBtn.textContent = isAuthed
+                    ? (displayName ? `${displayName} - Account` : 'Account')
+                    : 'Login';
+            }
             if (statusEl) {
                 if (isAuthed) {
                     const dn = displayName || fallbackAccountName(user);
@@ -6485,8 +7630,20 @@
             overlay.classList.add('open');
         }
 
+        function openAccountAuthWarning() {
+            const overlay = document.getElementById('account-auth-warning');
+            if (!overlay) return;
+            overlay.classList.add('open');
+        }
+
         function closeDashboardAuthWarning() {
             const overlay = document.getElementById('dashboard-auth-warning');
+            if (!overlay) return;
+            overlay.classList.remove('open');
+        }
+
+        function closeAccountAuthWarning() {
+            const overlay = document.getElementById('account-auth-warning');
             if (!overlay) return;
             overlay.classList.remove('open');
         }
@@ -6495,6 +7652,412 @@
             const overlay = document.getElementById('auth-overlay');
             if (!overlay) return;
             overlay.classList.remove('open');
+        }
+
+        function handleNavAccountButtonClick(e) {
+            e?.preventDefault?.();
+            try {
+                if (cachedIsAuthed) {
+                    router.navigate('account');
+                    return;
+                }
+                openAuthModal();
+            } catch (_) {
+                openAuthModal();
+            }
+        }
+
+        let accountBound = false;
+        let accountSelectedIconId = '';
+
+        function getPresetUserIconOptions() {
+            // These IDs should match your `Users.icon` allowed values.
+            return [
+                { id: 'icon_01', svg: icons.film },
+                { id: 'icon_02', svg: icons.quote },
+                { id: 'icon_03', svg: icons.activity },
+                { id: 'icon_04', svg: icons.tv },
+                { id: 'icon_05', svg: icons.video },
+                { id: 'icon_06', svg: icons.pieChart },
+                { id: 'icon_07', svg: icons.barChart2 },
+                { id: 'icon_08', svg: icons.percent },
+                { id: 'icon_09', svg: icons.clock },
+                { id: 'icon_10', svg: icons.user },
+            ];
+        }
+
+        function isValidPresetUserIconId(iconId) {
+            const id = String(iconId || '').trim();
+            return /^icon_0[1-9]$/.test(id) || id === 'icon_10';
+        }
+
+        function renderUserIconHtml(iconId, sizePx = 28) {
+            const id = isValidPresetUserIconId(iconId) ? String(iconId).trim() : '';
+            const options = getPresetUserIconOptions();
+            const match = options.find(o => o.id === id) || null;
+            const svg = match?.svg || icons.user;
+            const safeId = match?.id || 'icon_10';
+
+            return `
+                <span class="user-icon" data-icon-id="${escapeHtml(safeId)}" style="width:${Number(sizePx)}px; height:${Number(sizePx)}px;">
+                    ${svg}
+                </span>
+            `;
+        }
+
+        function renderAccountIconGrid() {
+            const grid = document.getElementById('account-icon-grid');
+            if (!grid) return;
+
+            const options = getPresetUserIconOptions();
+            grid.innerHTML = options.map((opt) => {
+                const pressed = accountSelectedIconId === opt.id;
+                return `
+                    <button type="button" class="account-icon-btn" data-account-icon-id="${escapeHtml(opt.id)}" aria-pressed="${pressed ? 'true' : 'false'}" title="${escapeHtml(opt.id)}">
+                        ${renderUserIconHtml(opt.id, 34)}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function syncAccountIconUI() {
+            const hidden = document.getElementById('account-icon');
+            if (hidden) hidden.value = String(accountSelectedIconId || '').trim();
+
+            const grid = document.getElementById('account-icon-grid');
+            if (!grid) return;
+            grid.querySelectorAll('[data-account-icon-id]').forEach((btn) => {
+                const id = String(btn?.dataset?.accountIconId || '').trim();
+                const on = id && id === accountSelectedIconId;
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+        }
+
+        function normalizeUsername(raw) {
+            const s = String(raw || '').trim().replace(/^@+/, '').toLowerCase();
+            return s;
+        }
+
+        function validateUsername(username) {
+            const u = normalizeUsername(username);
+            if (!u) return 'Username is required.';
+            if (u.length < 3 || u.length > 20) return 'Username must be 3–20 characters.';
+            if (!/^[a-z0-9_]+$/.test(u)) return 'Username can only include letters, numbers, and underscore.';
+            return '';
+        }
+
+        function initAccountPage() {
+            if (accountBound) return;
+            accountBound = true;
+
+            document.addEventListener('click', async (e) => {
+                const iconBtn = e?.target?.closest ? e.target.closest('[data-account-icon-id]') : null;
+                if (iconBtn) {
+                    const id = String(iconBtn.dataset.accountIconId || '').trim();
+                    if (isValidPresetUserIconId(id)) {
+                        accountSelectedIconId = id;
+                        syncAccountIconUI();
+                    }
+                    return;
+                }
+
+                const btn = e?.target?.closest ? e.target.closest('[data-account-action]') : null;
+                if (!btn) return;
+                const action = String(btn.dataset.accountAction || '').trim();
+
+                if (action === 'reload') {
+                    await loadAccountPage();
+                    return;
+                }
+
+                if (action === 'logout') {
+                    await handleLogoutClick(e);
+                    return;
+                }
+            });
+
+            document.addEventListener('submit', async (e) => {
+                const form = e?.target;
+                if (!form || !(form instanceof HTMLFormElement)) return;
+
+                if (form.id === 'account-profile-form') {
+                    e.preventDefault();
+                    await saveAccountProfile();
+                    return;
+                }
+
+                if (form.id === 'account-password-form') {
+                    e.preventDefault();
+                    await changeAccountPassword();
+                    return;
+                }
+            });
+        }
+
+        async function loadAccountPage() {
+            const profileStatus = document.getElementById('account-profile-status');
+            const passwordStatus = document.getElementById('account-password-status');
+            const emailEl = document.getElementById('account-email');
+            const usernameEl = document.getElementById('account-username');
+            const dnEl = document.getElementById('account-display-name');
+            const iconHidden = document.getElementById('account-icon');
+
+            if (profileStatus) profileStatus.textContent = '';
+            if (passwordStatus) passwordStatus.textContent = '';
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                if (profileStatus) profileStatus.textContent = 'Log in to manage your account.';
+                if (emailEl) emailEl.textContent = '';
+                return;
+            }
+
+            let user = cachedAuthUser;
+            try {
+                const { data: udata } = await supabaseClient.auth.getUser();
+                user = udata?.user || user;
+            } catch (_) {}
+
+            const uid = String(user?.id || '').trim();
+            const email = String(user?.email || '').trim();
+            if (emailEl) emailEl.textContent = email || '(no email)';
+
+            if (!uid) {
+                if (profileStatus) profileStatus.textContent = 'Auth session missing user id.';
+                return;
+            }
+
+            if (profileStatus) profileStatus.textContent = 'Loading profile…';
+
+            // Render picker immediately; selection will update after we load from DB.
+            try {
+                if (!accountSelectedIconId) accountSelectedIconId = 'icon_01';
+                renderAccountIconGrid();
+                syncAccountIconUI();
+            } catch (_) {}
+
+            try {
+                let data = null;
+                try {
+                    const r1 = await supabaseClient
+                        .from('Users')
+                        .select('username, display_name, icon')
+                        .eq('id', uid)
+                        .limit(1);
+                    if (r1.error) throw r1.error;
+                    data = r1.data;
+                } catch (err1) {
+                    const msg1 = String(err1?.message || err1);
+                    if (/column\s+"?icon"?\s+does\s+not\s+exist/i.test(msg1)) {
+                        const r2 = await supabaseClient
+                            .from('Users')
+                            .select('username, display_name')
+                            .eq('id', uid)
+                            .limit(1);
+                        if (r2.error) throw r2.error;
+                        data = r2.data;
+                    } else {
+                        throw err1;
+                    }
+                }
+
+                const row = Array.isArray(data) && data.length ? data[0] : null;
+                const username = String(row?.username || '').trim();
+                const displayName = String(row?.display_name || '').trim();
+                const iconId = String(row?.icon || '').trim();
+
+                if (usernameEl) usernameEl.value = username;
+                if (dnEl) dnEl.value = displayName;
+
+                if (isValidPresetUserIconId(iconId)) {
+                    accountSelectedIconId = iconId;
+                } else if (!accountSelectedIconId) {
+                    accountSelectedIconId = 'icon_01';
+                }
+                if (iconHidden) iconHidden.value = accountSelectedIconId;
+                renderAccountIconGrid();
+                syncAccountIconUI();
+
+                if (profileStatus) profileStatus.textContent = 'Profile loaded.';
+            } catch (err) {
+                if (profileStatus) profileStatus.textContent = `Could not load profile: ${String(err?.message || err)}`;
+            }
+        }
+
+        async function saveAccountProfile() {
+            const profileStatus = document.getElementById('account-profile-status');
+            const saveBtn = document.getElementById('account-save-profile');
+            const usernameEl = document.getElementById('account-username');
+            const dnEl = document.getElementById('account-display-name');
+            const iconHidden = document.getElementById('account-icon');
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                showToast('Please log in first.', { level: 'warn' });
+                openAuthModal();
+                return;
+            }
+
+            const uid = String(cachedAuthUser?.id || '').trim();
+            if (!uid) {
+                showToast('Missing user session.', { level: 'error' });
+                return;
+            }
+
+            const desiredUsernameRaw = String(usernameEl?.value || '');
+            const desiredUsername = normalizeUsername(desiredUsernameRaw);
+            const desiredDisplayName = String(dnEl?.value || '').trim();
+            const desiredIcon = (() => {
+                const v = String(iconHidden?.value || accountSelectedIconId || '').trim();
+                return isValidPresetUserIconId(v) ? v : '';
+            })();
+
+            const userErr = validateUsername(desiredUsername);
+            if (userErr) {
+                if (profileStatus) profileStatus.textContent = userErr;
+                showToast(userErr, { level: 'warn' });
+                return;
+            }
+
+            if (desiredDisplayName.length > 50) {
+                const msg = 'Display name must be 50 characters or less.';
+                if (profileStatus) profileStatus.textContent = msg;
+                showToast(msg, { level: 'warn' });
+                return;
+            }
+
+            const prev = saveBtn?.textContent;
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Saving…';
+            }
+            if (profileStatus) profileStatus.textContent = 'Saving…';
+
+            try {
+                const payload = {
+                    id: uid,
+                    username: desiredUsername,
+                    display_name: desiredDisplayName || null,
+                    icon: desiredIcon || null,
+                };
+
+                let data = null;
+                try {
+                    const r1 = await supabaseClient
+                        .from('Users')
+                        .upsert(payload, { onConflict: 'id' })
+                        .select('username, display_name, icon')
+                        .limit(1);
+                    if (r1.error) throw r1.error;
+                    data = r1.data;
+                } catch (err1) {
+                    const msg1 = String(err1?.message || err1);
+                    if (/column\s+"?icon"?\s+does\s+not\s+exist/i.test(msg1)) {
+                        const payload2 = { id: uid, username: desiredUsername, display_name: desiredDisplayName || null };
+                        const r2 = await supabaseClient
+                            .from('Users')
+                            .upsert(payload2, { onConflict: 'id' })
+                            .select('username, display_name')
+                            .limit(1);
+                        if (r2.error) throw r2.error;
+                        data = r2.data;
+                    } else {
+                        throw err1;
+                    }
+                }
+
+                const row = Array.isArray(data) && data.length ? data[0] : null;
+                const savedDisplayName = String(row?.display_name || '').trim();
+                const savedIcon = String(row?.icon || '').trim();
+
+                // Update cached display name so navbar updates immediately.
+                cachedUserDisplayNameId = uid;
+                cachedUserDisplayName = savedDisplayName;
+                cachedUserDisplayNameLoaded = true;
+                await refreshAuthStateAndUI();
+
+                if (savedIcon && isValidPresetUserIconId(savedIcon)) {
+                    accountSelectedIconId = savedIcon;
+                    syncAccountIconUI();
+                }
+
+                if (profileStatus) profileStatus.textContent = 'Saved.';
+                showToast('Profile updated.');
+            } catch (err) {
+                const code = String(err?.code || '').trim();
+                const msg = String(err?.message || err);
+                if (code === '23505' || /duplicate key/i.test(msg)) {
+                    if (profileStatus) profileStatus.textContent = 'That username is already taken.';
+                    showToast('Username already taken.', { level: 'warn' });
+                } else {
+                    if (profileStatus) profileStatus.textContent = `Save failed: ${msg}`;
+                    showToast(`Save failed: ${msg}`, { level: 'warn' });
+                }
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = prev || 'Save profile';
+                }
+            }
+        }
+
+        async function changeAccountPassword() {
+            const statusEl = document.getElementById('account-password-status');
+            const btn = document.getElementById('account-change-password');
+            const newEl = document.getElementById('account-new-password');
+            const confirmEl = document.getElementById('account-confirm-password');
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                showToast('Please log in first.', { level: 'warn' });
+                openAuthModal();
+                return;
+            }
+
+            const newPassword = String(newEl?.value || '').trim();
+            const confirmPassword = String(confirmEl?.value || '').trim();
+
+            if (!newPassword || !confirmPassword) {
+                const msg = 'Enter and confirm your new password.';
+                if (statusEl) statusEl.textContent = msg;
+                showToast(msg, { level: 'warn' });
+                return;
+            }
+            if (newPassword.length < 8) {
+                const msg = 'Password must be at least 8 characters.';
+                if (statusEl) statusEl.textContent = msg;
+                showToast(msg, { level: 'warn' });
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                const msg = 'Passwords do not match.';
+                if (statusEl) statusEl.textContent = msg;
+                showToast(msg, { level: 'warn' });
+                return;
+            }
+
+            const prev = btn?.textContent;
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Updating…';
+            }
+            if (statusEl) statusEl.textContent = 'Updating password…';
+
+            try {
+                const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+                if (error) throw error;
+
+                if (newEl) newEl.value = '';
+                if (confirmEl) confirmEl.value = '';
+                if (statusEl) statusEl.textContent = 'Password updated.';
+                showToast('Password updated.');
+            } catch (err) {
+                const msg = String(err?.message || err);
+                if (statusEl) statusEl.textContent = `Password update failed: ${msg}`;
+                showToast(`Password update failed: ${msg}`, { level: 'warn' });
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = prev || 'Change password';
+                }
+            }
         }
 
         let toastTimer = null;
@@ -6708,8 +8271,25 @@
         });
 
         document.addEventListener('DOMContentLoaded', async () => {
+            const isRecovery = (() => {
+                try {
+                    return /type=recovery/i.test(String(window.location.hash || ''));
+                } catch (_) {
+                    return false;
+                }
+            })();
+
             await refreshAuthStateAndUI();
             router.init();
+
+            // If we arrived via Supabase password recovery link, send the user to Account.
+            if (isRecovery) {
+                try {
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
+                } catch (_) {}
+                showToast('Set a new password in Account → Security.', { level: 'info' });
+                router.navigate('account');
+            }
         });
 
         document.addEventListener('keydown', (e) => {
