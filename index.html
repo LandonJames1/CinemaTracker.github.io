@@ -479,6 +479,8 @@
             background: rgba(0,0,0,0.65);
             display: none;
             align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
             font-size: 1.18rem;
             font-weight: 900;
             letter-spacing: 0.01em;
@@ -488,15 +490,14 @@
             font-weight: 900;
             font-size: 1.06rem;
             background: rgba(24, 24, 27, 0.92);
-        .library-title-sep {
-            color: var(--brand);
-            font-weight: 950;
-        }
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255,255,255,0.10);
             box-shadow: 0 24px 60px rgba(0,0,0,0.55);
             padding: 1.25rem;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 460px;
         }
         .auth-modal-header {
             display: flex;
@@ -524,6 +525,104 @@
             gap: 0.75rem;
             justify-content: flex-end;
             margin-top: 0.75rem;
+        }
+
+        /* Lists Page */
+        .lists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        @media (max-width: 520px) {
+            .lists-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        .lists-movie-card {
+            padding: 0.9rem;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.04);
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+        }
+        .lists-movie-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(20,184,166,0.38);
+            background: rgba(20,184,166,0.07);
+        }
+        .lists-poster-btn {
+            width: 100%;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            text-align: left;
+        }
+        .lists-poster {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            border-radius: 0.95rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+        }
+        .lists-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .lists-title {
+            color: #fff;
+            font-weight: 950;
+            font-size: 1.08rem;
+            line-height: 1.18;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .lists-title-year {
+            color: rgba(255,255,255,0.68);
+            font-weight: 900;
+        }
+        .lists-meta {
+            margin-top: 0.15rem;
+            color: rgba(255,255,255,0.76);
+            font-weight: 850;
+            font-size: 0.98rem;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+        .lists-meta-list {
+            margin-top: 0.35rem;
+            display: grid;
+            gap: 6px;
+        }
+        .lists-meta-item {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            color: rgba(255,255,255,0.76);
+            font-weight: 850;
+            font-size: 0.98rem;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+        .lists-bullet {
+            color: var(--brand);
+            font-weight: 950;
+            line-height: 1;
+            margin-top: 2px;
+            flex: 0 0 auto;
+        }
+        .lists-card-actions {
+            margin-top: 0.35rem;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
@@ -661,6 +760,20 @@
         .submit-label + .relative { margin-top: 0.5rem !important; }
         /* Handle grid blocks (e.g., External Ratings) and read-only inputs */
         .submit-label + .grid { margin-top: 0.5rem !important; }
+
+        /* Form validation helpers */
+        .field-error-msg {
+            color: rgba(254, 202, 202, 0.95);
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.01em;
+        }
+        .field-error-outline {
+            outline: 2px solid rgba(239, 68, 68, 0.40);
+            outline-offset: 2px;
+            border-color: rgba(239, 68, 68, 0.55) !important;
+        }
         
         /* Mobile Menu */
         #mobile-menu { display: none; }
@@ -1193,6 +1306,7 @@
                 <button onclick="router.navigate('home')" class="nav-link">Home</button>
                 <button onclick="router.navigate('feed')" class="nav-link">Feed</button>
                 <button onclick="router.navigate('library')" class="nav-link">My Movies</button>
+                <button onclick="router.navigate('lists')" class="nav-link">Lists</button>
                 <button onclick="router.navigate('dashboard')" class="nav-link">Data Dash</button>
             </div>
 
@@ -1210,6 +1324,7 @@
             <button onclick="router.navigate('home')" class="mobile-link">Home</button>
             <button onclick="router.navigate('feed')" class="mobile-link">Feed</button>
             <button onclick="router.navigate('library')" class="mobile-link">My Movies</button>
+            <button onclick="router.navigate('lists')" class="mobile-link">Lists</button>
             <button onclick="router.navigate('dashboard')" class="mobile-link">Data Dash</button>
             <button id="mobile-auth-btn" onclick="handleNavAccountButtonClick(event); document.getElementById('mobile-menu').classList.remove('open');" class="mobile-link">Login</button>
         </div>
@@ -1328,6 +1443,140 @@
         </div>
     </div>
 
+    <div id="lists-auth-warning" class="auth-overlay" onclick="if(event.target === this) closeListsAuthWarning();">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="lists-auth-warning-title">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="lists-auth-warning-title">Login Required</div>
+                <button class="auth-modal-close" type="button" onclick="closeListsAuthWarning()">Close</button>
+            </div>
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Please login to view your lists
+            </div>
+            <div class="auth-modal-actions">
+                <button type="button" class="btn btn-primary" onclick="closeListsAuthWarning(); openAuthModal();">Log in</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="list-picker-overlay" class="auth-overlay" onclick="if(event.target === this) closeListPickerModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="list-picker-title" style="max-width: 520px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="list-picker-title">Add to List</div>
+                <button class="auth-modal-close" type="button" onclick="closeListPickerModal()">Close</button>
+            </div>
+
+            <div id="list-picker-movie" class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;"></div>
+
+            <div class="glass-panel" style="margin-top: 0.85rem; padding: 0.85rem; border-radius: 0.85rem; background: rgba(0,0,0,0.10);">
+                <div class="text-white font-bold">Choose a list</div>
+                <div id="list-picker-lists" class="text-gray" style="margin-top: 0.65rem; display:flex; flex-direction: column; gap: 0.5rem;">Loading…</div>
+            </div>
+
+            <form id="list-picker-create-form" style="margin-top: 0.85rem; display:grid; gap: 0.65rem;">
+                <div class="text-white font-bold">Or create a new list</div>
+                <input id="list-picker-new-name" type="text" class="input-field" placeholder="e.g. 2026 Watchlist" maxlength="80">
+                <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="submit" class="btn btn-primary" style="border-radius: 0.85rem;">Create & Add</button>
+                    <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" onclick="closeListPickerModal()">Cancel</button>
+                </div>
+                <div id="list-picker-status" class="text-xs" style="color: rgba(255,255,255,0.60);"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="lists-create-overlay" class="auth-overlay" onclick="if(event.target === this) closeListsCreateModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="lists-create-title" style="max-width: 520px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="lists-create-title">Create New List</div>
+                <button class="auth-modal-close" type="button" onclick="closeListsCreateModal()">Close</button>
+            </div>
+
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Give your list a name (max 80 characters).
+            </div>
+
+            <form id="lists-create-form" style="margin-top: 0.85rem; display:grid; gap: 0.65rem;">
+                <input id="lists-create-name" type="text" class="input-field" placeholder="e.g. 2026 Watchlist" maxlength="80" autocomplete="off">
+                <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="submit" class="btn btn-primary" style="border-radius: 0.85rem;">Save</button>
+                    <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" onclick="closeListsCreateModal()">Cancel</button>
+                </div>
+                <div id="lists-create-status" class="text-xs" style="color: rgba(255,255,255,0.60);"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="library-sortfilter-overlay" class="auth-overlay" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="library-sortfilter-title" style="max-width: 560px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="library-sortfilter-title">Filters & Sort</div>
+                <button class="auth-modal-close" type="button" data-library-action="cancel_sort_filter">Close</button>
+            </div>
+
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Choose filters + sorting, then press <span class="text-white font-semibold">Save</span> to update your list.
+            </div>
+
+            <div class="glass-panel" style="margin-top: 0.85rem; padding: 0.85rem; border-radius: 0.85rem; background: rgba(0,0,0,0.10);">
+                <div class="text-white font-bold" style="margin-bottom: 0.55rem;">Sort</div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <select id="library-modal-sort-key" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="watch_date">Watch Date</option>
+                        <option value="overall">Overall %</option>
+                        <option value="sound">Sound %</option>
+                        <option value="pace">Pace %</option>
+                        <option value="imagery">Imagery %</option>
+                        <option value="acting">Acting %</option>
+                        <option value="plot">Plot %</option>
+                        <option value="dialogue">Dialogue %</option>
+                        <option value="imdb">IMDb %</option>
+                        <option value="release_year">Release Year</option>
+                    </select>
+                    <select id="library-modal-sort-dir" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                    </select>
+                </div>
+
+                <div style="height: 1px; background: rgba(255,255,255,0.06); margin: 0.85rem 0;"></div>
+
+                <div class="text-white font-bold" style="margin-bottom: 0.55rem;">Filters</div>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+                    <select id="library-modal-filter-tier" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Tier (All)</option>
+                        <option value="S-Tier">S-Tier</option>
+                        <option value="A-Tier">A-Tier</option>
+                        <option value="B-Tier">B-Tier</option>
+                        <option value="C-Tier">C-Tier</option>
+                        <option value="D-Tier">D-Tier</option>
+                        <option value="F-Tier">F-Tier</option>
+                        <option value="UNRANKED">Unranked</option>
+                    </select>
+
+                    <select id="library-modal-filter-decade" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Release Decade (All)</option>
+                    </select>
+
+                    <input id="library-modal-filter-director" class="input-field" placeholder="Director (contains…)" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;" />
+
+                    <select id="library-modal-filter-mpa" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">MPA (All)</option>
+                    </select>
+
+                    <select id="library-modal-filter-genre" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Genre (All)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="auth-modal-actions" style="margin-top: 0.85rem; display:flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                <button type="button" class="btn btn-outline" data-library-action="reset_sort_filter_draft" style="border-radius: 0.85rem;">Reset</button>
+                <button type="button" class="btn btn-outline" data-library-action="cancel_sort_filter" style="border-radius: 0.85rem;">Cancel</button>
+                <button type="button" class="btn btn-primary" data-library-action="save_sort_filter" style="border-radius: 0.85rem;">Save</button>
+            </div>
+        </div>
+    </div>
+
     <div id="account-auth-warning" class="auth-overlay" onclick="if(event.target === this) closeAccountAuthWarning();">
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="account-auth-warning-title">
             <div class="auth-modal-header">
@@ -1357,6 +1606,53 @@
             <div class="auth-modal-actions" style="margin-top: 1rem; display:flex; gap: 0.75rem;">
                 <button type="button" id="btn-update-only" class="btn btn-outline" style="flex:1;" onclick="closeUpdateWatchModal('update_only')">Only Update Rating</button>
                 <button type="button" id="btn-update-and-watch" class="btn btn-primary" style="flex:1;" onclick="closeUpdateWatchModal('update_and_watch')">Update and +1 to Watch Logs</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-rating-overlay" class="auth-overlay" onclick="if(event.target === this) closeDeleteRatingModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="delete-rating-title" style="max-width: 720px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="delete-rating-title">Delete</div>
+                <button class="auth-modal-close" type="button" onclick="closeDeleteRatingModal()">Close</button>
+            </div>
+
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.35rem;">
+                Movie: <span id="delete-rating-movie" class="text-white font-semibold">(loading…)</span>
+            </div>
+
+            <div class="glass-panel" style="margin-top: 0.85rem; padding: 0.95rem; border-radius: 0.95rem; background: rgba(0,0,0,0.10); border: 1px solid rgba(239,68,68,0.25);">
+                <div class="text-white font-bold">Option A — Delete rating + all watch logs</div>
+                <div class="text-sm" style="color: var(--text-muted); margin-top: 0.4rem;">
+                    This permanently deletes your <span class="text-white font-semibold">Movie Ratings</span> row and all related <span class="text-white font-semibold">Watch Logs</span> for this movie.
+                </div>
+                <div style="margin-top: 0.75rem; display:flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline" style="border-radius: 0.85rem; border-color: rgba(239,68,68,0.55); color: rgba(239,68,68,0.95); background: rgba(239,68,68,0.10);" onclick="confirmDeleteRatingAndAllLogs()">Delete rating + all watch logs</button>
+                </div>
+                <div id="delete-rating-status" class="text-xs" style="color: rgba(255,255,255,0.60); margin-top: 0.45rem;"></div>
+            </div>
+
+            <div class="glass-panel" style="margin-top: 0.85rem; padding: 0.95rem; border-radius: 0.95rem; background: rgba(0,0,0,0.10);">
+                <div class="flex justify-between items-center" style="gap: 10px; flex-wrap: wrap;">
+                    <div class="text-white font-bold">Option B — Delete selected watch logs</div>
+                    <div id="delete-logs-count" class="text-xs" style="color: rgba(255,255,255,0.60);"></div>
+                </div>
+                <div class="text-sm" style="color: var(--text-muted); margin-top: 0.4rem;">
+                    Select watch logs to delete. You must keep <span class="text-white font-semibold">at least 1</span> watch log.
+                </div>
+
+                <div id="delete-logs-list" style="margin-top: 0.75rem; display:flex; flex-direction: column; gap: 0.5rem; max-height: 280px; overflow: auto; padding-right: 4px;">
+                    <div class="text-sm" style="color: rgba(255,255,255,0.65);">Loading watch logs…</div>
+                </div>
+
+                <div class="auth-modal-actions" style="margin-top: 0.85rem; display:flex; gap: 10px; flex-wrap: wrap; justify-content: space-between;">
+                    <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" onclick="clearDeleteLogsSelection()">Clear</button>
+                        <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" onclick="toggleSelectAllDeleteLogs()">Select all</button>
+                    </div>
+                    <button type="button" id="btn-delete-selected-logs" class="btn btn-primary" style="border-radius: 0.85rem; background: rgba(239,68,68,0.90); border-color: rgba(239,68,68,0.90);" onclick="confirmDeleteSelectedWatchLogs()" disabled aria-disabled="true" title="Select at least one watch log.">Delete selected</button>
+                </div>
+                <div id="delete-logs-status" class="text-xs" style="color: rgba(255,255,255,0.60); margin-top: 0.45rem;"></div>
             </div>
         </div>
     </div>
@@ -1535,6 +1831,12 @@
                     return;
                 }
 
+                // If the user is not logged in, block the Lists page and prompt them to log in.
+                if (page === 'lists' && !cachedIsAuthed) {
+                    openListsAuthWarning();
+                    return;
+                }
+
                 // If the user is not logged in, block the Account page and prompt them to log in.
                 if (page === 'account' && !cachedIsAuthed) {
                     openAccountAuthWarning();
@@ -1558,17 +1860,14 @@
                 
                 // Active Nav
                 document.querySelectorAll('.nav-link').forEach(el => {
-                    const label = (
-                        page === 'home'
-                            ? 'home'
-                            : (page === 'submit'
-                                ? 'log'
-                                : (page === 'library'
-                                    ? 'movies'
-                                : ((page === 'dashboard' || page === 'dashboard_kpi')
-                                    ? 'data'
-                                        : (page === 'feed' ? 'feed' : (page === 'account' ? 'account' : '')))))
-                    );
+                    let label = '';
+                    if (page === 'home') label = 'home';
+                    else if (page === 'submit') label = 'log';
+                    else if (page === 'library') label = 'movies';
+                    else if (page === 'lists') label = 'lists';
+                    else if (page === 'feed') label = 'feed';
+                    else if (page === 'account') label = 'account';
+                    else if (page === 'dashboard' || page === 'dashboard_kpi') label = 'data';
                     if (label && el.innerText.toLowerCase().includes(label)) {
                         el.classList.add('active');
                     } else {
@@ -1594,6 +1893,11 @@
                     refreshAuthStateAndUI();
                     initLibraryPage();
                     loadLibraryPage({ reset: true });
+                } else if (page === 'lists') {
+                    root.innerHTML = this.renderLists();
+                    refreshAuthStateAndUI();
+                    initListsPage();
+                    loadListsPage({ reset: true });
                 } else if (page === 'account') {
                     root.innerHTML = this.renderAccount();
                     refreshAuthStateAndUI();
@@ -2122,6 +2426,15 @@
                                                     </button>
                                                 </div>
 
+                                                <div class="flex gap-3">
+                                                    <button id="btn-add-to-list" type="button" onclick="openAddToListModal()" class="btn btn-glass" style="flex:1; border-radius: 0.85rem;">
+                                                        ${icons.plusCircle} Add to List
+                                                    </button>
+                                                    <button type="button" onclick="router.navigate('lists')" class="btn btn-outline" style="flex:1; border-radius: 0.85rem;">
+                                                        ${icons.arrowRight} View Lists
+                                                    </button>
+                                                </div>
+
                                                 <div id="update-options" class="hidden grid-2 gap-3" style="padding: 1rem; border-radius: 0.75rem; border-style: dashed; border: 1px solid rgba(255,255,255,0.10);">
                                                     <button onclick="router.startUpdateRatings()" class="text-left" style="padding:0.75rem; border-radius:0.5rem; transition: background 0.2s; border: 1px solid rgba(168, 85, 247, 0.45); background: rgba(168, 85, 247, 0.10);">
                                                         <span class="text-brand font-semibold mb-2" style="display:block;">Update Ratings &rarr;</span>
@@ -2148,6 +2461,49 @@
                                 <div class="animate-marquee">
                                     <div class="flex" id="trending-track-1"></div>
                                     <div class="flex" id="trending-track-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderLists() {
+                return `
+                    <div class="fade-in">
+                        <!-- Background -->
+                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.15; pointer-events: none;"></div>
+                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, rgba(20,184,166, 0.10), transparent 22%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
+
+                        <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
+                            <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-white">Lists</h1>
+                                </div>
+                                <div class="flex" style="gap: 10px; flex-wrap: wrap;">
+                                    <button type="button" class="btn btn-primary" onclick="openListsCreateModal()" style="border-radius: 0.85rem;">New List</button>
+                                    <button type="button" class="btn btn-outline" data-lists-action="refresh" style="border-radius: 0.85rem;">Refresh</button>
+                                </div>
+                            </div>
+
+                            <div class="grid md-row gap-6" style="align-items: stretch;">
+                                <div class="glass-panel" style="padding: 1rem; border-radius: 1rem; width: 100%; max-width: 360px;">
+                                    <div class="text-white font-bold">Your Lists</div>
+                                    <div id="lists-list" class="text-gray" style="margin-top: 0.85rem;">
+                                        <select id="lists-select" class="input-field" style="width:100%; border-radius: 0.85rem;">
+                                            <option value="">Loading…</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="glass-panel" style="padding: 1rem; border-radius: 1rem; flex: 1;">
+                                    <div class="flex justify-between items-center" style="gap: 10px; flex-wrap: wrap;">
+                                        <div>
+                                            <div id="lists-active-title" class="text-white font-bold">Select a list</div>
+                                            <div id="lists-active-subtitle" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
+                                        </div>
+                                    </div>
+                                    <div id="lists-items" class="text-gray" style="margin-top: 0.85rem;">Choose a list on the left.</div>
                                 </div>
                             </div>
                         </div>
@@ -2263,7 +2619,9 @@
                 };
 
                 const imdbPct = parseExternalPercent(m.imdb, { imdb: true });
-                const imdbLocked = detailsReadonly && (hasDbMovie || imdbPct > 0);
+                // Only lock IMDb when we actually have a real (non-zero) value.
+                // DB movies can legitimately be missing IMDb; do not lock the user out at 0.
+                const imdbLocked = detailsReadonly && (imdbPct > 0);
 
                 const selectedGenres = String(m.genre || '')
                     .split(',')
@@ -2535,7 +2893,12 @@
                                         </div>
                                 </div>
 
-                                <div class="flex justify-center" style="border-top: 1px solid rgba(255,255,255,0.05); margin-top: 15px; padding-top: 15px;">
+                                <div class="flex" style="border-top: 1px solid rgba(255,255,255,0.05); margin-top: 15px; padding-top: 15px; justify-content: ${isUpdate ? 'space-between' : 'center'}; gap: 10px; flex-wrap: wrap;">
+                                    ${isUpdate ? `
+                                        <button id="btn-delete-rating" type="button" class="btn btn-outline" style="margin-top: 0px; border-radius: 0.85rem; border-color: rgba(239,68,68,0.55); color: rgba(239,68,68,0.95); background: rgba(239,68,68,0.10);" onclick="openDeleteRatingModal()">
+                                            Delete
+                                        </button>
+                                    ` : ''}
                                     <button id="btn-save-diary" type="submit" class="btn btn-primary" style="margin-top: 0px; opacity: 0.6;" aria-disabled="true" title="Please log in first.">
                                         ${icons.save} Save to Diary
                                     </button>
@@ -2926,6 +3289,7 @@
                                     <p class="text-gray mt-2">Your most recent watches, with all stored details and ratings.</p>
                                 </div>
                                 <div style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
+                                    <button id="library-open-sortfilter" type="button" class="btn btn-outline" data-library-action="open_sort_filter" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Change Filters/Sort</button>
                                     <button id="library-refresh" type="button" class="btn btn-outline" data-library-action="refresh" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Refresh</button>
                                 </div>
                             </div>
@@ -2937,7 +3301,6 @@
                                         <div id="library-meta" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
                                     </div>
                                 </div>
-
                                 <div id="library-list" style="margin-top: 0.9rem; display: grid; gap: 12px;"></div>
 
                                 <div id="library-load-more-wrap" style="margin-top: 1rem; display:none; justify-content: center;">
@@ -3409,11 +3772,28 @@
             const tmdb_id = Number(item?.tmdb_id);
             if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return null;
             if (dashPosterCacheByTmdbId.has(tmdb_id)) return dashPosterCacheByTmdbId.get(tmdb_id);
+
+            const direct = String(item?.poster_path ?? item?.posterPath ?? item?.poster_url ?? item?.posterUrl ?? '').trim();
+            if (direct) {
+                dashPosterCacheByTmdbId.set(tmdb_id, direct);
+                return direct;
+            }
+
+            // Prefer DB if the movie exists there; never call TMDb here.
+            if (!supabaseClient) {
+                dashPosterCacheByTmdbId.set(tmdb_id, null);
+                return null;
+            }
             try {
-                const details = await callSwiftApiGetMovieDetails({ tmdb_id });
-                const poster_path = details?.poster_path ? String(details.poster_path) : null;
-                dashPosterCacheByTmdbId.set(tmdb_id, poster_path);
-                return poster_path;
+                const { data, error } = await supabaseClient
+                    .from('Movies')
+                    .select('poster_path')
+                    .eq('tmdb_id', tmdb_id)
+                    .maybeSingle();
+                if (error) throw error;
+                const p = String(data?.poster_path || '').trim() || null;
+                dashPosterCacheByTmdbId.set(tmdb_id, p);
+                return p;
             } catch (_) {
                 dashPosterCacheByTmdbId.set(tmdb_id, null);
                 return null;
@@ -3489,6 +3869,778 @@
             el.style.display = 'none';
         }
 
+        function openListsAuthWarning() {
+            const el = document.getElementById('lists-auth-warning');
+            if (!el) return;
+            el.style.display = 'flex';
+        }
+
+        function closeListsAuthWarning() {
+            const el = document.getElementById('lists-auth-warning');
+            if (!el) return;
+            el.style.display = 'none';
+        }
+
+        let listsBound = false;
+        let listsLoading = false;
+        let listsActiveListId = null;
+        let listsActiveListName = '';
+        let cachedLists = [];
+        let cachedListsUserId = null;
+
+        let listsMoviePrefillById = new Map();
+
+        let cachedBucketListId = null;
+        let bucketListEnsuredForUserId = null;
+
+        let listPickerSelectedMovie = null;
+        let listPickerBusy = false;
+        let listsCreateBusy = false;
+
+        function closeListPickerModal() {
+            const overlay = document.getElementById('list-picker-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+
+            const statusEl = document.getElementById('list-picker-status');
+            if (statusEl) statusEl.textContent = '';
+            const nameEl = document.getElementById('list-picker-new-name');
+            if (nameEl) nameEl.value = '';
+            listPickerSelectedMovie = null;
+            listPickerBusy = false;
+        }
+
+        function openListsCreateModal() {
+            const overlay = document.getElementById('lists-create-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+
+            const statusEl = document.getElementById('lists-create-status');
+            if (statusEl) statusEl.textContent = '';
+            const input = document.getElementById('lists-create-name');
+            if (input) {
+                input.value = '';
+                try { input.focus(); } catch (_) {}
+            }
+            listsCreateBusy = false;
+        }
+
+        function closeListsCreateModal() {
+            const overlay = document.getElementById('lists-create-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+            const statusEl = document.getElementById('lists-create-status');
+            if (statusEl) statusEl.textContent = '';
+            const input = document.getElementById('lists-create-name');
+            if (input) input.value = '';
+            listsCreateBusy = false;
+        }
+
+        async function ensureBucketListForUser({ user_id }) {
+            if (!supabaseClient) throw new Error('Supabase client not initialized.');
+            const uid = String(user_id || '').trim();
+            if (!uid) throw new Error('Missing user_id.');
+
+            if (bucketListEnsuredForUserId === uid && cachedBucketListId) return cachedBucketListId;
+
+            const row = { user_id: uid, list_name: 'Bucket List' };
+            const { data, error } = await supabaseClient
+                .from('Lists')
+                .upsert(row, { onConflict: 'user_id,list_name' })
+                .select('id, list_name')
+                .single();
+
+            if (error) throw error;
+            cachedBucketListId = data?.id || null;
+            bucketListEnsuredForUserId = uid;
+            return cachedBucketListId;
+        }
+
+        function normalizeListName(name) {
+            const s = String(name ?? '').trim();
+            if (!s) return '';
+            return s.replace(/\s+/g, ' ').trim();
+        }
+
+        async function loadUserLists({ user_id, force = false } = {}) {
+            if (!supabaseClient) throw new Error('Supabase client not initialized.');
+            const uid = String(user_id || '').trim();
+            if (!uid) throw new Error('Missing user_id.');
+
+            if (!force && cachedListsUserId === uid && Array.isArray(cachedLists) && cachedLists.length) {
+                return cachedLists;
+            }
+
+            const { data, error } = await supabaseClient
+                .from('Lists')
+                .select('id, list_name, created_at')
+                .eq('user_id', uid)
+                .order('created_at', { ascending: true });
+            if (error) throw error;
+
+            const rows = Array.isArray(data) ? data : [];
+            rows.sort((a, b) => {
+                const an = String(a?.list_name || '').toLowerCase();
+                const bn = String(b?.list_name || '').toLowerCase();
+                if (an === 'bucket list' && bn !== 'bucket list') return -1;
+                if (bn === 'bucket list' && an !== 'bucket list') return 1;
+                return 0;
+            });
+
+            cachedLists = rows;
+            cachedListsUserId = uid;
+
+            const bucket = rows.find(r => String(r?.list_name || '').toLowerCase() === 'bucket list');
+            if (bucket?.id) {
+                cachedBucketListId = bucket.id;
+                bucketListEnsuredForUserId = uid;
+            }
+
+            return cachedLists;
+        }
+
+        async function createUserList({ user_id, list_name }) {
+            if (!supabaseClient) throw new Error('Supabase client not initialized.');
+            const uid = String(user_id || '').trim();
+            const name = normalizeListName(list_name);
+            if (!uid) throw new Error('Missing user_id.');
+            if (!name) throw new Error('List name is required.');
+
+            const { data, error } = await supabaseClient
+                .from('Lists')
+                .insert({ user_id: uid, list_name: name })
+                .select('id, list_name, created_at')
+                .single();
+
+            if (error) throw error;
+            return data;
+        }
+
+        async function addMovieToList({ user_id, list_id, movie_id }) {
+            if (!supabaseClient) throw new Error('Supabase client not initialized.');
+            const uid = String(user_id || '').trim();
+            const lid = String(list_id || '').trim();
+            const mid = String(movie_id || '').trim();
+            if (!uid) throw new Error('Missing user_id.');
+            if (!lid) throw new Error('Missing list_id.');
+            if (!mid) throw new Error('Missing movie_id.');
+
+            const { error } = await supabaseClient
+                .from('Movie Lists')
+                .insert({ user_id: uid, list_id: lid, movie_id: mid });
+
+            if (error) throw error;
+        }
+
+        async function removeMovieFromList({ user_id, list_id, movie_id }) {
+            if (!supabaseClient) throw new Error('Supabase client not initialized.');
+            const uid = String(user_id || '').trim();
+            const lid = String(list_id || '').trim();
+            const mid = String(movie_id || '').trim();
+            if (!uid || !lid || !mid) return;
+
+            const { error } = await supabaseClient
+                .from('Movie Lists')
+                .delete()
+                .eq('user_id', uid)
+                .eq('list_id', lid)
+                .eq('movie_id', mid);
+            if (error) throw error;
+        }
+
+        async function removeMovieFromBucketList({ user_id, movie_id }) {
+            const uid = String(user_id || '').trim();
+            const mid = String(movie_id || '').trim();
+            if (!uid || !mid) return;
+
+            let bucketId = cachedBucketListId;
+            try {
+                bucketId = await ensureBucketListForUser({ user_id: uid });
+            } catch (_) {}
+            if (!bucketId) return;
+
+            await removeMovieFromList({ user_id: uid, list_id: bucketId, movie_id: mid });
+        }
+
+        async function openAddToListModal() {
+            if (!supabaseClient) {
+                showToast('Supabase SDK failed to load.', { level: 'warn' });
+                return;
+            }
+
+            let authedUser = null;
+            let accessToken = null;
+            try {
+                const res = await requireAuthOrThrow();
+                authedUser = res.user;
+                accessToken = res.accessToken;
+            } catch (_) {
+                openAuthModal();
+                return;
+            }
+
+            const picked = router?.selectedMovie || null;
+            if (!picked) {
+                showToast('Select a movie first.', { level: 'warn' });
+                return;
+            }
+
+            const title = String(picked?.title || '').trim();
+            const year = Number(picked?.year ?? picked?.release_year ?? null);
+            const tmdbId = Number(picked?.tmdb_id ?? picked?.tmdbId ?? picked?.id ?? null);
+            const existingDbMovieId = (isUuidLike(picked?.id) ? String(picked.id).trim() : '');
+
+            listPickerSelectedMovie = {
+                title,
+                year: Number.isFinite(year) ? year : null,
+                tmdb_id: Number.isFinite(tmdbId) ? tmdbId : null,
+                db_movie_id: existingDbMovieId || null,
+                accessToken,
+                user_id: authedUser.id,
+            };
+
+            const overlay = document.getElementById('list-picker-overlay');
+            if (overlay) overlay.style.display = 'flex';
+
+            const movieEl = document.getElementById('list-picker-movie');
+            if (movieEl) {
+                movieEl.textContent = title ? `Movie: ${title}${(Number.isFinite(year) && year > 0) ? ` (${year})` : ''}` : 'Movie: (unknown)';
+            }
+
+            await ensureBucketListForUser({ user_id: authedUser.id }).catch(() => null);
+            const lists = await loadUserLists({ user_id: authedUser.id, force: true }).catch(() => []);
+            renderListPickerLists(lists);
+        }
+
+        function renderListPickerLists(lists) {
+            const el = document.getElementById('list-picker-lists');
+            if (!el) return;
+            const rows = Array.isArray(lists) ? lists : [];
+            if (rows.length === 0) {
+                el.innerHTML = `<div class="text-gray">No lists yet.</div>`;
+                return;
+            }
+            el.innerHTML = rows
+                .map((l) => {
+                    const name = String(l?.list_name || '').trim() || 'Untitled';
+                    const id = String(l?.id || '').trim();
+                    if (!id) return '';
+                    const isBucket = name.toLowerCase() === 'bucket list';
+                    return `
+                        <button
+                            type="button"
+                            class="btn ${isBucket ? 'btn-primary' : 'btn-glass'}"
+                            data-list-picker-action="add"
+                            data-list-id="${escapeHtml(id)}"
+                            style="width:100%; display:flex; justify-content: space-between; align-items: center; border-radius: 0.85rem;"
+                        >
+                            <span style="font-weight: 800;">${escapeHtml(name)}</span>
+                            <span style="opacity: 0.8;">Add</span>
+                        </button>
+                    `;
+                })
+                .filter(Boolean)
+                .join('');
+        }
+
+        async function ensureMovieFullySyncedForLists({ accessToken, title, release_year, tmdb_id, movie_id }) {
+            const token = String(accessToken || '').trim();
+            if (!token) throw new Error('Missing access token.');
+
+            const uuidLike = isUuidLike;
+            let dbMovieId = uuidLike(movie_id) ? String(movie_id).trim() : null;
+
+            if (!dbMovieId && Number.isFinite(Number(tmdb_id)) && Number(tmdb_id) > 0) {
+                try {
+                    const mapped = await getDbMovieIdByTmdbId(Number(tmdb_id));
+                    if (uuidLike(mapped)) dbMovieId = mapped;
+                } catch (_) {}
+            }
+
+            if (dbMovieId) {
+                const res = await callSwiftApi({ movie_id: dbMovieId, sync_people: true }, token);
+                const outId = res?.movie_id || dbMovieId;
+                return String(outId || '').trim();
+            }
+
+            const t = String(title || '').trim();
+            const y = (release_year === null || release_year === undefined) ? null : Number(release_year);
+            if (!t) throw new Error('Missing movie title.');
+
+            const res = await callSwiftApi({ title: t, release_year: Number.isFinite(y) ? y : null, sync_people: true }, token);
+            return String(res?.movie_id || '').trim();
+        }
+
+        async function handleListPickerAddToList(list_id) {
+            if (listPickerBusy) return;
+            const lid = String(list_id || '').trim();
+            if (!lid) return;
+
+            if (!listPickerSelectedMovie) {
+                showToast('No movie selected.', { level: 'warn' });
+                return;
+            }
+
+            const statusEl = document.getElementById('list-picker-status');
+            const setStatus = (s) => {
+                if (statusEl) statusEl.textContent = String(s || '');
+            };
+
+            listPickerBusy = true;
+            setStatus('Syncing movie metadata…');
+
+            try {
+                const uid = String(listPickerSelectedMovie.user_id || '').trim();
+                const accessToken = String(listPickerSelectedMovie.accessToken || '').trim();
+
+                const ensuredMovieId = await ensureMovieFullySyncedForLists({
+                    accessToken,
+                    title: listPickerSelectedMovie.title,
+                    release_year: listPickerSelectedMovie.year,
+                    tmdb_id: listPickerSelectedMovie.tmdb_id,
+                    movie_id: listPickerSelectedMovie.db_movie_id,
+                });
+
+                if (!ensuredMovieId) throw new Error('Failed to ensure movie exists.');
+                setStatus('Adding to list…');
+
+                try {
+                    await addMovieToList({ user_id: uid, list_id: lid, movie_id: ensuredMovieId });
+                } catch (err) {
+                    const msg = String(err?.message || err);
+                    if (/duplicate|unique/i.test(msg)) {
+                        showToast('Already in that list.', { level: 'warn' });
+                        closeListPickerModal();
+                        return;
+                    }
+                    throw err;
+                }
+
+                showToast('Added to list!', { level: 'success' });
+
+                // Refresh lists page if it's open.
+                if (router?.currentPage === 'lists') {
+                    await loadListsPage({ reset: false });
+                }
+
+                closeListPickerModal();
+            } catch (err) {
+                setStatus('');
+                showToast(`Add to list failed: ${String(err?.message || err)}`, { level: 'warn' });
+            } finally {
+                listPickerBusy = false;
+            }
+        }
+
+        function initListsPage() {
+            if (listsBound) return;
+            listsBound = true;
+
+            document.addEventListener('click', (e) => {
+                const el = e?.target?.closest ? e.target.closest('[data-lists-action]') : null;
+                if (!el) return;
+                const action = String(el.dataset.listsAction || '').trim();
+                if (!action) return;
+
+                if (action === 'refresh') {
+                    (async () => {
+                        await loadListsPage({ reset: true });
+                    })().catch(() => {});
+                    return;
+                }
+
+                if (action === 'open_movie') {
+                    const mid = String(el.dataset.movieId || '').trim();
+                    if (!mid) return;
+
+                    (async () => {
+                        const prefill = listsMoviePrefillById.get(mid) || null;
+                        if (!prefill) {
+                            showToast('Movie details not available yet. Try Refresh.', { level: 'warn' });
+                            return;
+                        }
+
+                        // Decide whether to open fully-populated Log New Entry (no existing rating)
+                        // or fully-populated Update Ratings (existing rating).
+                        let authedUser = null;
+                        try {
+                            const res = await requireAuthOrThrow();
+                            authedUser = res.user;
+                        } catch (_) {
+                            openAuthModal();
+                            return;
+                        }
+
+                        const alreadyRated = await hasExistingMovieRating({ user_id: authedUser.id, movie_id: mid });
+
+                        // Start from our cached DB prefill, but route through the existing flows
+                        // so MPA/Runtime/Series and rating fields are always filled correctly.
+                        router.selectedMovie = { ...prefill, id: mid, detailsReadonly: false };
+                        router.pendingTitle = String(prefill?.title || '').trim();
+
+                        if (alreadyRated) {
+                            await router.startUpdateRatings();
+                        } else {
+                            await router.startNewEntry();
+                        }
+                    })().catch((err) => {
+                        showToast(`Open entry failed: ${String(err?.message || err)}`, { level: 'warn' });
+                    });
+                    return;
+                }
+
+                if (action === 'remove_movie') {
+                    const lid = String(el.dataset.listId || '').trim();
+                    const mid = String(el.dataset.movieId || '').trim();
+                    if (!lid || !mid) return;
+
+                    (async () => {
+                        let authedUser = null;
+                        try {
+                            const { user } = await requireAuthOrThrow();
+                            authedUser = user;
+                        } catch (_) {
+                            openAuthModal();
+                            return;
+                        }
+
+                        try {
+                            await removeMovieFromList({ user_id: authedUser.id, list_id: lid, movie_id: mid });
+                            showToast('Removed.', { level: 'success' });
+                            await loadListsPage({ reset: false });
+                        } catch (err) {
+                            showToast(`Remove failed: ${String(err?.message || err)}`, { level: 'warn' });
+                        }
+                    })().catch(() => {});
+                }
+            }, { capture: true });
+
+            document.addEventListener('change', async (e) => {
+                const sel = e?.target?.closest ? e.target.closest('#lists-select') : null;
+                if (!sel) return;
+                const lid = String(sel.value || '').trim();
+                if (!lid) return;
+                listsActiveListId = lid;
+                const label = String(sel.selectedOptions?.[0]?.textContent || '').trim();
+                if (label) listsActiveListName = label;
+                await loadListsPage({ reset: false });
+            }, { capture: true });
+
+            document.addEventListener('click', async (e) => {
+                const el = e?.target?.closest ? e.target.closest('[data-list-picker-action]') : null;
+                if (!el) return;
+                const action = String(el.dataset.listPickerAction || '').trim();
+                if (action !== 'add') return;
+                const lid = String(el.dataset.listId || '').trim();
+                if (!lid) return;
+                await handleListPickerAddToList(lid);
+            }, { capture: true });
+
+            const createForm = document.getElementById('list-picker-create-form');
+            if (createForm) {
+                createForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    if (listPickerBusy) return;
+
+                    const statusEl = document.getElementById('list-picker-status');
+                    const nameEl = document.getElementById('list-picker-new-name');
+                    const setStatus = (s) => { if (statusEl) statusEl.textContent = String(s || ''); };
+
+                    let authedUser = null;
+                    let accessToken = null;
+                    try {
+                        const res = await requireAuthOrThrow();
+                        authedUser = res.user;
+                        accessToken = res.accessToken;
+                    } catch (_) {
+                        openAuthModal();
+                        return;
+                    }
+
+                    const name = normalizeListName(nameEl?.value || '');
+                    if (!name) {
+                        setStatus('List name is required.');
+                        return;
+                    }
+
+                    if (!listPickerSelectedMovie) {
+                        setStatus('Select a movie first.');
+                        return;
+                    }
+
+                    listPickerBusy = true;
+                    setStatus('Creating list…');
+
+                    try {
+                        const newList = await createUserList({ user_id: authedUser.id, list_name: name });
+                        cachedListsUserId = null;
+
+                        setStatus('Syncing movie metadata…');
+                        const ensuredMovieId = await ensureMovieFullySyncedForLists({
+                            accessToken,
+                            title: listPickerSelectedMovie.title,
+                            release_year: listPickerSelectedMovie.year,
+                            tmdb_id: listPickerSelectedMovie.tmdb_id,
+                            movie_id: listPickerSelectedMovie.db_movie_id,
+                        });
+
+                        if (!ensuredMovieId) throw new Error('Failed to ensure movie exists.');
+                        setStatus('Adding to list…');
+                        await addMovieToList({ user_id: authedUser.id, list_id: newList.id, movie_id: ensuredMovieId });
+
+                        showToast('Created list and added movie!', { level: 'success' });
+                        closeListPickerModal();
+                    } catch (err) {
+                        const msg = String(err?.message || err);
+                        if (/duplicate|unique/i.test(msg)) {
+                            setStatus('You already have a list with that name.');
+                            return;
+                        }
+                        setStatus('');
+                        showToast(`Create/add failed: ${msg}`, { level: 'warn' });
+                    } finally {
+                        listPickerBusy = false;
+                    }
+                }, { capture: true });
+            }
+
+            const listsCreateForm = document.getElementById('lists-create-form');
+            if (listsCreateForm) {
+                listsCreateForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    if (listsCreateBusy) return;
+
+                    const statusEl = document.getElementById('lists-create-status');
+                    const nameEl = document.getElementById('lists-create-name');
+                    const setStatus = (s) => { if (statusEl) statusEl.textContent = String(s || ''); };
+
+                    const name = normalizeListName(nameEl?.value || '');
+                    if (!name) {
+                        setStatus('List name is required.');
+                        return;
+                    }
+
+                    let authedUser = null;
+                    try {
+                        const { user } = await requireAuthOrThrow();
+                        authedUser = user;
+                    } catch (_) {
+                        setStatus('Please log in first.');
+                        openAuthModal();
+                        return;
+                    }
+
+                    listsCreateBusy = true;
+                    setStatus('Saving…');
+
+                    try {
+                        const created = await createUserList({ user_id: authedUser.id, list_name: name });
+                        cachedListsUserId = null;
+
+                        // Auto-select the newly created list.
+                        if (created?.id) {
+                            listsActiveListId = String(created.id);
+                            listsActiveListName = String(created?.list_name || name).trim();
+                        }
+
+                        closeListsCreateModal();
+                        await loadListsPage({ reset: true });
+                        showToast('List created!', { level: 'success' });
+                    } catch (err) {
+                        const msg = String(err?.message || err);
+                        if (/duplicate|unique/i.test(msg)) {
+                            setStatus('You already have a list with that name.');
+                            return;
+                        }
+                        setStatus('');
+                        showToast(`Create list failed: ${msg}`, { level: 'warn' });
+                    } finally {
+                        listsCreateBusy = false;
+                    }
+                }, { capture: true });
+            }
+        }
+
+        async function loadListsPage({ reset = true } = {}) {
+            const elLists = document.getElementById('lists-list');
+            const elItems = document.getElementById('lists-items');
+            const elTitle = document.getElementById('lists-active-title');
+            const elSub = document.getElementById('lists-active-subtitle');
+            if (!elLists || !elItems) return;
+
+            listsMoviePrefillById = new Map();
+
+            if (!supabaseClient || !cachedIsAuthed) {
+                elLists.innerHTML = `<div class="text-gray">Log in to view your lists.</div>`;
+                elItems.innerHTML = `<div class="text-gray">Log in to view your lists.</div>`;
+                if (elTitle) elTitle.textContent = 'Lists';
+                if (elSub) elSub.textContent = '';
+                return;
+            }
+
+            if (listsLoading) return;
+            listsLoading = true;
+            if (reset) {
+                elLists.innerHTML = `<div class="text-gray">Loading…</div>`;
+                elItems.innerHTML = `<div class="text-gray">Loading…</div>`;
+            }
+
+            try {
+                const { user } = await requireAuthOrThrow();
+
+                await ensureBucketListForUser({ user_id: user.id }).catch(() => null);
+                const lists = await loadUserLists({ user_id: user.id, force: true });
+
+                if (!listsActiveListId) {
+                    listsActiveListId = cachedBucketListId || (lists[0]?.id || null);
+                }
+
+                const active = lists.find(l => String(l?.id || '') === String(listsActiveListId || '')) || null;
+                listsActiveListName = String(active?.list_name || listsActiveListName || '').trim();
+
+                elLists.innerHTML = lists.length
+                    ? `
+                        <select id="lists-select" class="input-field" style="width:100%; border-radius: 0.85rem;">
+                            ${lists.map((l) => {
+                                const id = String(l?.id || '').trim();
+                                const name = String(l?.list_name || '').trim() || 'Untitled';
+                                if (!id) return '';
+                                const selected = (String(listsActiveListId || '') === id) ? 'selected' : '';
+                                return `<option value="${escapeHtml(id)}" ${selected}>${escapeHtml(name)}</option>`;
+                            }).filter(Boolean).join('')}
+                        </select>
+                    `
+                    : `
+                        <select id="lists-select" class="input-field" style="width:100%; border-radius: 0.85rem;" disabled>
+                            <option value="">No lists found</option>
+                        </select>
+                    `;
+
+                if (elTitle) elTitle.textContent = listsActiveListName || 'List';
+                if (elSub) elSub.textContent = '';
+
+                if (!listsActiveListId) {
+                    elItems.innerHTML = `<div class="text-gray">Create a list to get started.</div>`;
+                    return;
+                }
+
+                const { data: joins, error: joinErr } = await supabaseClient
+                    .from('Movie Lists')
+                    .select('movie_id, created_at')
+                    .eq('user_id', user.id)
+                    .eq('list_id', listsActiveListId)
+                    .order('created_at', { ascending: false });
+                if (joinErr) throw joinErr;
+
+                const joinRows = Array.isArray(joins) ? joins : [];
+                const movieIds = joinRows.map(r => r?.movie_id).filter(Boolean);
+                if (movieIds.length === 0) {
+                    elItems.innerHTML = `<div class="text-gray">No movies in this list yet.</div>`;
+                    return;
+                }
+
+                const { data: movies, error: moviesErr } = await supabaseClient
+                    .from('Movies')
+                    .select('*')
+                    .in('id', movieIds);
+                if (moviesErr) throw moviesErr;
+
+                const moviesById = new Map();
+                for (const m of (Array.isArray(movies) ? movies : [])) {
+                    if (m?.id) moviesById.set(m.id, m);
+                }
+
+                const cards = movieIds
+                    .map((id) => {
+                        const movie = moviesById.get(id) || null;
+                        const title = String(movie?.title || '').trim() || 'Untitled';
+                        const year = (movie?.release_year === null || movie?.release_year === undefined) ? '' : String(movie.release_year);
+                        const tmdb_id = Number(movie?.tmdb_id);
+                        const poster_path = String(movie?.poster_path || '').trim();
+                        const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path.startsWith('/') ? poster_path : `/${poster_path}`}` : '';
+
+                        const directorVal = normalizeMovieFieldValue(movie?.director ?? movie?.director_name);
+                        const genreVal = (() => {
+                            if (Array.isArray(movie?.genres) && movie.genres.length) {
+                                return normalizeMovieFieldValue(movie.genres.map(s => String(s).trim()).filter(Boolean).join(', '));
+                            }
+                            return normalizeMovieFieldValue(movie?.genre);
+                        })();
+                        const imdbVal = (() => {
+                            const raw = (movie?.imdb_rating_pct ?? movie?.imdb_pct ?? movie?.imdb_rating ?? movie?.imdb);
+                            const n = parsePercentLike(raw, { imdb: true });
+                            return (n !== null && n !== undefined) ? formatPctForDisplay(n) : '';
+                        })();
+
+                        const mpaVal = normalizeMovieFieldValue(movie?.mpa_rating ?? movie?.mpa);
+
+                        const metaLines = [];
+                        if (directorVal) metaLines.push({ label: 'Director', value: directorVal });
+                        if (genreVal) metaLines.push({ label: 'Genres', value: genreVal });
+                        if (imdbVal) metaLines.push({ label: 'IMDb', value: imdbVal });
+
+                        // Cache a prefill object for poster-click navigation to the Log New Entry flow.
+                        listsMoviePrefillById.set(String(id), {
+                            ...(movie || {}),
+                            id: String(id),
+                            title,
+                            year: year || null,
+                            release_year: movie?.release_year ?? null,
+                            director: directorVal || normalizeMovieFieldValue(movie?.director ?? movie?.director_name) || '',
+                            genre: genreVal || normalizeMovieFieldValue(movie?.genre) || '',
+                            imdb: imdbVal || '',
+                            tmdb_id: Number.isFinite(tmdb_id) ? tmdb_id : undefined,
+                            poster_path: poster_path || movie?.posterPath || movie?.poster_url || movie?.posterUrl || '',
+                            mpa: String(movie?.mpa_rating ?? movie?.mpa ?? '').trim(),
+                            runtime: (() => {
+                                const n = Number(movie?.runtime_minutes ?? movie?.runtime);
+                                return Number.isFinite(n) ? n : (movie?.runtime_minutes ?? movie?.runtime ?? null);
+                            })(),
+                            isSeries: (movie?.is_series ?? movie?.isSeries) === true,
+                            detailsReadonly: false,
+                        });
+
+                        return `
+                            <div class="lists-movie-card">
+                                <button type="button" class="lists-poster-btn" data-lists-action="open_movie" data-movie-id="${escapeHtml(String(id))}" title="Open entry">
+                                    <div class="lists-poster">
+                                        ${posterUrl
+                                            ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" onerror="this.style.display='none';">`
+                                            : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
+                                    </div>
+                                </button>
+
+                                <div>
+                                    <div class="lists-title">
+                                        ${escapeHtml(title)}${year ? ` <span class="lists-title-year">(${escapeHtml(year)})</span>` : ''}${mpaVal ? ` <span class="lists-title-year">- ${escapeHtml(mpaVal)}</span>` : ''}
+                                    </div>
+                                    ${metaLines.length ? `
+                                        <div class="lists-meta-list">
+                                            ${metaLines.map(({ label, value }) => (
+                                                `<div class="lists-meta-item"><span class="lists-bullet">•</span><span>${escapeHtml(label)}: ${escapeHtml(value)}</span></div>`
+                                            )).join('')}
+                                        </div>
+                                    ` : ''}
+
+                                    <div class="lists-card-actions">
+                                        <button type="button" class="btn btn-outline" data-lists-action="remove_movie" data-list-id="${escapeHtml(String(listsActiveListId))}" data-movie-id="${escapeHtml(String(id))}" style="border-radius: 0.85rem; padding: 0.5rem 0.75rem;">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    })
+                    .join('');
+
+                elItems.innerHTML = `<div class="lists-grid">${cards}</div>`;
+            } catch (err) {
+                const msg = String(err?.message || err);
+                elLists.innerHTML = `<div class="text-gray">Failed to load lists: ${escapeHtml(msg)}</div>`;
+                elItems.innerHTML = `<div class="text-gray">Failed to load list items.</div>`;
+            } finally {
+                listsLoading = false;
+            }
+        }
+
         let feedBound = false;
         let feedFollowingIds = new Set();
         let feedLastSearchQuery = '';
@@ -3499,6 +4651,13 @@
         const libraryLimit = 25;
         let libraryHasMore = true;
         let libraryLoading = false;
+
+        const LIBRARY_LATEST_WATCH_VIEW = 'user_movie_latest_watch';
+        const LIBRARY_ITEMS_VIEW = 'user_library_items_v2';
+        let libraryItems = [];
+        let libraryFacetsLoaded = false;
+
+        // (director filter is applied via modal Save)
 
         function formatFeedTimestamp(ts) {
             if (!ts) return '';
@@ -3618,10 +4777,413 @@
                     return;
                 }
                 if (action === 'load_more') {
-                    await loadLibraryMore();
+                    await loadLibraryMore({ replace: false });
+                    return;
+                }
+
+                if (action === 'open_sort_filter') {
+                    openLibrarySortFilterModal();
+                    return;
+                }
+
+                if (action === 'cancel_sort_filter') {
+                    closeLibrarySortFilterModal({ restoreDraft: true });
+                    return;
+                }
+
+                if (action === 'reset_sort_filter_draft') {
+                    ensureLibrarySortFilterStateInitialized();
+                    setLibrarySortFilterModalFromState(getDefaultLibrarySortFilterState());
+                    return;
+                }
+
+                if (action === 'save_sort_filter') {
+                    saveLibrarySortFilterModal();
+                    return;
+                }
+
+                if (action === 'delete_entry') {
+                    const mid = String(btn.dataset.movieId || '').trim();
+                    const title = String(btn.dataset.movieTitle || '').trim();
+                    if (!mid) return;
+
+                    (async () => {
+                        try {
+                            await openDeleteRatingModalForMovie({ movie_id: mid, title, source: 'library' });
+                        } catch (err) {
+                            const msg = String(err?.message || err);
+                            if (/log in/i.test(msg)) {
+                                openAuthModal();
+                                return;
+                            }
+                            showToast(msg, { level: 'warn' });
+                        }
+                    })().catch(() => {});
                     return;
                 }
             }, { capture: true });
+        }
+
+        let librarySortFilterState = null;
+        let librarySortFilterDraft = null;
+
+        function getDefaultLibrarySortFilterState() {
+            return {
+                sortKey: 'watch_date',
+                sortDir: 'desc',
+                tier: '',
+                decade: '',
+                directorContains: '',
+                mpa: '',
+                genre: '',
+            };
+        }
+
+        function ensureLibrarySortFilterStateInitialized() {
+            if (!librarySortFilterState) {
+                librarySortFilterState = getDefaultLibrarySortFilterState();
+            }
+        }
+
+        function getLibrarySortFilterModalEls() {
+            return {
+                overlay: document.getElementById('library-sortfilter-overlay'),
+                sortKey: document.getElementById('library-modal-sort-key'),
+                sortDir: document.getElementById('library-modal-sort-dir'),
+                tier: document.getElementById('library-modal-filter-tier'),
+                decade: document.getElementById('library-modal-filter-decade'),
+                director: document.getElementById('library-modal-filter-director'),
+                mpa: document.getElementById('library-modal-filter-mpa'),
+                genre: document.getElementById('library-modal-filter-genre'),
+            };
+        }
+
+        function setLibrarySortFilterModalFromState(state) {
+            const els = getLibrarySortFilterModalEls();
+            if (!els.sortKey || !els.sortDir) return;
+            els.sortKey.value = String(state?.sortKey || 'watch_date');
+            els.sortDir.value = (String(state?.sortDir || 'desc') === 'asc') ? 'asc' : 'desc';
+            if (els.tier) els.tier.value = String(state?.tier || '');
+            if (els.decade) els.decade.value = String(state?.decade || '');
+            if (els.director) els.director.value = String(state?.directorContains || '');
+            if (els.mpa) els.mpa.value = String(state?.mpa || '');
+            if (els.genre) els.genre.value = String(state?.genre || '');
+        }
+
+        function readLibrarySortFilterModalState() {
+            const els = getLibrarySortFilterModalEls();
+            const getVal = (el) => String(el?.value || '').trim();
+            return {
+                sortKey: getVal(els.sortKey) || 'watch_date',
+                sortDir: (getVal(els.sortDir) === 'asc') ? 'asc' : 'desc',
+                tier: getVal(els.tier),
+                decade: getVal(els.decade),
+                directorContains: getVal(els.director),
+                mpa: getVal(els.mpa),
+                genre: getVal(els.genre),
+            };
+        }
+
+        function openLibrarySortFilterModal() {
+            ensureLibrarySortFilterStateInitialized();
+            const els = getLibrarySortFilterModalEls();
+            if (!els.overlay) return;
+            // snapshot current inputs as draft
+            librarySortFilterDraft = { ...librarySortFilterState };
+            loadLibraryFacets().catch(() => null);
+            setLibrarySortFilterModalFromState(librarySortFilterState);
+            els.overlay.style.display = 'flex';
+            setTimeout(() => {
+                try { els.sortKey?.focus?.(); } catch (_) {}
+            }, 0);
+        }
+
+        function closeLibrarySortFilterModal({ restoreDraft = false } = {}) {
+            const els = getLibrarySortFilterModalEls();
+            if (!els.overlay) return;
+            if (restoreDraft && librarySortFilterDraft) {
+                setLibrarySortFilterModalFromState(librarySortFilterDraft);
+            }
+            els.overlay.style.display = 'none';
+        }
+
+        function saveLibrarySortFilterModal() {
+            ensureLibrarySortFilterStateInitialized();
+            const next = readLibrarySortFilterModalState();
+            librarySortFilterState = next;
+            librarySortFilterDraft = null;
+            closeLibrarySortFilterModal({ restoreDraft: false });
+            loadLibraryPage({ reset: true }).catch(() => null);
+        }
+
+        function renderLibraryList() {
+            const elList = document.getElementById('library-list');
+            const elMeta = document.getElementById('library-meta');
+            const wrap = document.getElementById('library-load-more-wrap');
+            if (!elList) return;
+
+            const shown = Array.isArray(libraryItems) ? libraryItems.length : 0;
+            const slice = Array.isArray(libraryItems) ? libraryItems : [];
+
+            const formatIsoDateLabel = (iso) => {
+                const raw = String(iso || '').trim();
+                if (!raw) return '';
+                const d = new Date(raw.includes('T') ? raw : `${raw}T00:00:00`);
+                if (Number.isNaN(d.getTime())) return raw;
+                try {
+                    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                } catch (_) {
+                    return raw;
+                }
+            };
+
+            const html = slice.map((it) => {
+                const movie_id = String(it?.movie_id || '').trim();
+                const title = String(it?.title || '').trim() || 'Untitled';
+                const year = (it?.release_year === null || it?.release_year === undefined) ? '' : String(it.release_year);
+                const poster_path = String(it?.poster_path || '').trim();
+                const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path.startsWith('/') ? poster_path : `/${poster_path}`}` : '';
+
+                const overall = dashFormatScore(it?.overall_rating);
+                const tierLabel = dashNormalizeTierLabel(it?.tier);
+                const quote = String(it?.fav_quote ?? '').trim();
+                const notes = String(it?.notes ?? '').trim();
+
+                const mostRecentLabel = formatIsoDateLabel(it?.latest_watch_date);
+
+                const runtimeRaw = (it?.runtime_minutes ?? it?.runtime);
+                const runtimeVal = (() => {
+                    const v = normalizeMovieFieldValue(runtimeRaw);
+                    if (!v) return '';
+                    const n = Number(v);
+                    if (Number.isFinite(n) && n > 0) return `${Math.round(n)} min`;
+                    return /min/i.test(v) ? v : v;
+                })();
+                const mpaVal = normalizeMovieFieldValue(it?.mpa_rating ?? it?.mpa);
+                const directorVal = normalizeMovieFieldValue(it?.director);
+                const genreVal = normalizeMovieFieldValue(it?.genre);
+                const imdbVal = (() => {
+                    const raw = (it?.imdb_rating_pct ?? it?.imdb_pct ?? it?.imdb_rating ?? it?.imdb);
+                    const n2 = parsePercentLike(raw, { imdb: true });
+                    if (n2 !== null && n2 !== undefined) return formatPctForDisplay(n2);
+                    return '';
+                })();
+
+                const ratingChips = [
+                    overall ? dashRenderHelpScore(overall) : '',
+                    tierLabel ? dashRenderHelpTier(tierLabel) : '',
+                ].join('');
+
+                const subRatingRows = [
+                    { k: 'Sound', v: dashFormatScore(it?.sound_rating) },
+                    { k: 'Pace', v: dashFormatScore(it?.pacing_rating) },
+                    { k: 'Imagery', v: dashFormatScore(it?.imagery_rating) },
+                    { k: 'Acting', v: dashFormatScore(it?.acting_rating) },
+                    { k: 'Plot', v: dashFormatScore(it?.plot_rating) },
+                    { k: 'Dialogue', v: dashFormatScore(it?.dialogue_rating) },
+                ].filter(x => String(x.v || '').trim());
+
+                const extraMovieChips = renderLibraryInfoChips(it || {}, {
+                    blacklist: [
+                        // Identity / paging
+                        'id', 'user_id', 'movie_id', 'latest_watch_date',
+
+                        // Already shown elsewhere on the card
+                        'title', 'release_year', 'tmdb_id', 'imdb_id',
+                        'genre', 'genres', 'director', 'director_name',
+                        'runtime', 'runtime_minutes', 'mpa', 'mpa_rating', 'is_series',
+                        'imdb', 'imdb_rating', 'imdb_pct', 'imdb_rating_pct',
+
+                        // Ratings + tier are already rendered as chips/subchips
+                        'overall_rating', 'tier',
+                        'sound_rating', 'pacing_rating', 'imagery_rating', 'acting_rating', 'plot_rating', 'dialogue_rating',
+
+                        // Notes/quote already have dedicated sections
+                        'fav_quote', 'notes',
+
+                        // Misc
+                        'created_at', 'updated_at',
+                    ],
+                });
+
+                const posterBackDetailsHtml = (() => {
+                    const lines = [];
+                    const genreBackHtml = (() => {
+                        const raw = String(genreVal || '').trim();
+                        if (!raw) return '';
+                        const parts = raw
+                            .split(/[,|;]/g)
+                            .map(s => String(s).trim())
+                            .filter(Boolean);
+                        if (!parts.length) return '';
+                        return parts.map(p => escapeHtml(p)).join('<br>');
+                    })();
+                    if (runtimeVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">Runtime</span><span class="library-poster-back-val">${escapeHtml(runtimeVal)}</span></div>`);
+                    if (mpaVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">MPA</span><span class="library-poster-back-val">${escapeHtml(mpaVal)}</span></div>`);
+                    if (genreBackHtml) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">Genre</span><span class="library-poster-back-val">${genreBackHtml}</span></div>`);
+                    if (imdbVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">IMDb</span><span class="library-poster-back-val">${escapeHtml(imdbVal)}</span></div>`);
+                    return lines.join('');
+                })();
+
+                return `
+                    <div class="glass-panel" style="padding: 0.9rem; border-radius: 1rem;">
+                        <div class="library-card-row">
+                            <div class="library-card-left">
+                                <div class="library-card-poster">
+                                    <div class="library-poster-flip">
+                                        <div class="library-poster-flip-inner">
+                                            <div class="library-poster-face library-poster-front">
+                                                ${posterUrl
+                                                    ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width:100%; height:100%; object-fit: cover; display:block;" onerror="this.style.display='none';">`
+                                                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
+                                            </div>
+                                            <div class="library-poster-face library-poster-back">
+                                                ${posterBackDetailsHtml || `<div class="text-xs text-gray" style="text-align:center;">No details</div>`}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="library-under">
+                                    ${mostRecentLabel
+                                        ? `<div class="text-xs text-gray tabular-nums" style="margin-top: 0.55rem;">Most Recent Watch: ${escapeHtml(mostRecentLabel)}</div>`
+                                        : ''
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="feed-card-main">
+                                <div class="text-white font-bold" style="white-space: normal; overflow: hidden;">
+                                    <span class="library-title-line">${escapeHtml(title)}${year ? ` <span style="color: rgba(255,255,255,0.65); font-weight: 800;">(${escapeHtml(year)})</span>` : ''}</span>
+                                    ${(directorVal || mpaVal)
+                                        ? `<span class="library-title-meta">${directorVal ? `<span class="library-title-sep"> — </span>${escapeHtml(directorVal)}` : ''}${mpaVal ? `<span class="library-title-sep"> — </span>${escapeHtml(mpaVal)}` : ''}</span>`
+                                        : ''}
+                                </div>
+
+                                ${(overall || tierLabel)
+                                    ? `<div class="feed-metrics">${ratingChips}</div>`
+                                    : `<div class="text-xs text-gray" style="margin-top: 0.25rem;">No rating yet</div>`
+                                }
+
+                                ${movie_id ? `
+                                    <div style="margin-top: 0.65rem; display:flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline"
+                                            data-library-action="delete_entry"
+                                            data-movie-id="${escapeHtml(movie_id)}"
+                                            data-movie-title="${escapeHtml(title)}"
+                                            style="border-radius: 0.85rem; padding: 0.5rem 0.75rem; border-color: rgba(239,68,68,0.55); color: rgba(239,68,68,0.95); background: rgba(239,68,68,0.10);"
+                                            title="Delete rating and/or watch logs"
+                                        >Delete</button>
+                                    </div>
+                                ` : ''}
+
+                                <div class="library-chip-row library-subratings" style="margin-top: 0.6rem;">
+                                    ${subRatingRows.map(d => `<span class=\"dash-quote-pill\">${escapeHtml(d.k)}: ${escapeHtml(d.v)}</span>`).join('')}
+                                </div>
+
+                                ${String(extraMovieChips || '').trim()
+                                    ? `<div class="library-chip-row" style="margin-top: 0.55rem;">${extraMovieChips}</div>`
+                                    : ''
+                                }
+
+                                ${quote ? `
+                                    <div style="margin-top: 0.75rem;">
+                                        <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Favorite Quote</div>
+                                        <div class="text-white" style="line-height: 1.4;">${escapeHtml(quote)}</div>
+                                    </div>
+                                ` : ''}
+                                ${notes ? `
+                                    <div style="margin-top: 0.75rem;">
+                                        <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Notes</div>
+                                        <div class="text-white" style="line-height: 1.4; white-space: pre-wrap;">${escapeHtml(notes)}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            elList.innerHTML = html || `<div class="text-gray">No watched movies found yet.</div>`;
+
+            if (elMeta) {
+                elMeta.textContent = `Showing ${shown}${libraryHasMore ? ' • Load more to continue' : ''}`;
+            }
+            if (wrap) wrap.style.display = libraryHasMore ? 'flex' : 'none';
+        }
+
+        async function loadLibraryFacets() {
+            if (libraryFacetsLoaded) return;
+            if (!supabaseClient || !cachedIsAuthed) return;
+
+            const decadeEl = document.getElementById('library-modal-filter-decade');
+            const mpaEl = document.getElementById('library-modal-filter-mpa');
+            const genreEl = document.getElementById('library-modal-filter-genre');
+            if (!decadeEl || !mpaEl || !genreEl) return;
+
+            let authedUser = null;
+            try {
+                const { user } = await requireAuthOrThrow();
+                authedUser = user;
+            } catch (_) {
+                return;
+            }
+
+            try {
+                // Grab a capped sample to populate dropdowns without loading the full dataset.
+                const { data, error } = await supabaseClient
+                    .from(LIBRARY_ITEMS_VIEW)
+                    .select('release_year, mpa_rating, genres, genre, user_id')
+                    .eq('user_id', authedUser.id)
+                    .range(0, 999);
+                if (error) throw error;
+                const rows = Array.isArray(data) ? data : [];
+
+                const decades = new Set();
+                const mpas = new Set();
+                const genres = new Set();
+                for (const r of rows) {
+                    const y = Number(r?.release_year);
+                    if (Number.isFinite(y) && y > 0) decades.add(Math.floor(y / 10) * 10);
+                    const mpa = String(r?.mpa_rating || '').trim();
+                    if (mpa) mpas.add(mpa);
+                    const arr = Array.isArray(r?.genres) ? r.genres : [];
+                    for (const g of arr) {
+                        const s = String(g || '').trim();
+                        if (s) genres.add(s);
+                    }
+                    const rawGenre = String(r?.genre || '').trim();
+                    if (rawGenre) {
+                        rawGenre.split(/[,|;]/g).map(s => String(s).trim()).filter(Boolean).forEach(g => genres.add(g));
+                    }
+                }
+
+                const sortedDecades = Array.from(decades).filter(Number.isFinite).sort((a, b) => b - a);
+                const sortedMpas = Array.from(mpas).sort((a, b) => a.localeCompare(b));
+                const sortedGenres = Array.from(genres).sort((a, b) => a.localeCompare(b));
+
+                const keep = {
+                    decade: String(decadeEl.value || ''),
+                    mpa: String(mpaEl.value || ''),
+                    genre: String(genreEl.value || ''),
+                };
+
+                decadeEl.innerHTML = `<option value="">Release Decade (All)</option>` +
+                    sortedDecades.map(d => `<option value="${escapeHtml(String(d))}">${escapeHtml(String(d))}s</option>`).join('');
+                mpaEl.innerHTML = `<option value="">MPA (All)</option>` +
+                    sortedMpas.map(v => `<option value="${escapeHtml(String(v))}">${escapeHtml(String(v))}</option>`).join('');
+                genreEl.innerHTML = `<option value="">Genre (All)</option>` +
+                    sortedGenres.map(v => `<option value="${escapeHtml(String(v))}">${escapeHtml(String(v))}</option>`).join('');
+
+                decadeEl.value = keep.decade;
+                mpaEl.value = keep.mpa;
+                genreEl.value = keep.genre;
+                libraryFacetsLoaded = true;
+            } catch (_) {
+                // Keep defaults; do not block modal.
+            }
         }
 
         function normalizeMovieFieldValue(v) {
@@ -3918,6 +5480,7 @@
                 libraryOffset = 0;
                 libraryHasMore = true;
                 libraryLoading = false;
+                libraryItems = [];
                 elList.innerHTML = `<div class="text-gray">Loading…</div>`;
                 if (wrap) wrap.style.display = 'none';
             }
@@ -3925,9 +5488,77 @@
             await loadLibraryMore({ replace: true });
         }
 
+        function libraryBuildServerQuery({ userId, offset, limit }) {
+            ensureLibrarySortFilterStateInitialized();
+            const state = librarySortFilterState;
+
+            const sortKey = String(state?.sortKey || 'watch_date');
+            const sortDir = (String(state?.sortDir || 'desc') === 'asc') ? 'asc' : 'desc';
+
+            let q = supabaseClient
+                .from(LIBRARY_ITEMS_VIEW)
+                .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
+                .eq('user_id', userId);
+
+            // Filters
+            const tierWanted = String(state?.tier || '').trim();
+            if (tierWanted) {
+                if (tierWanted === 'UNRANKED') {
+                    // null/empty or an explicit 'Unranked' value
+                    q = q.or('tier.is.null,tier.eq.,tier.eq.UNRANKED,tier.eq.Unranked');
+                } else {
+                    q = q.eq('tier', tierWanted);
+                }
+            }
+
+            const decadeWanted = String(state?.decade || '').trim();
+            if (decadeWanted) {
+                const d = Number(decadeWanted);
+                if (Number.isFinite(d)) {
+                    q = q.gte('release_year', d).lte('release_year', d + 9);
+                }
+            }
+
+            const directorNeedle = String(state?.directorContains || '').trim();
+            if (directorNeedle) {
+                q = q.ilike('director', `%${directorNeedle}%`);
+            }
+
+            const mpaWanted = String(state?.mpa || '').trim();
+            if (mpaWanted) {
+                // stored as raw label (e.g. PG-13)
+                q = q.ilike('mpa_rating', mpaWanted);
+            }
+
+            const genreWanted = String(state?.genre || '').trim();
+            if (genreWanted) {
+                // Try array first; if the column isn't an array this will error and be handled by caller.
+                q = q.contains('genres', [genreWanted]);
+            }
+
+            // Sorting
+            const asc = (sortDir === 'asc');
+            const addOrder = (col) => q.order(col, { ascending: asc, nullsFirst: false }).order('movie_id', { ascending: true });
+
+            if (sortKey === 'watch_date') addOrder('latest_watch_date');
+            else if (sortKey === 'release_year') addOrder('release_year');
+            else if (sortKey === 'imdb') addOrder('imdb_rating_pct');
+            else if (sortKey === 'overall') addOrder('overall_rating');
+            else if (sortKey === 'sound') addOrder('sound_rating');
+            else if (sortKey === 'pace') addOrder('pacing_rating');
+            else if (sortKey === 'imagery') addOrder('imagery_rating');
+            else if (sortKey === 'acting') addOrder('acting_rating');
+            else if (sortKey === 'plot') addOrder('plot_rating');
+            else if (sortKey === 'dialogue') addOrder('dialogue_rating');
+            else addOrder('latest_watch_date');
+
+            // Pagination (+1 to detect hasMore)
+            q = q.range(offset, offset + limit);
+            return q;
+        }
+
         async function loadLibraryMore({ replace = false } = {}) {
             const elList = document.getElementById('library-list');
-            const elMeta = document.getElementById('library-meta');
             const wrap = document.getElementById('library-load-more-wrap');
             const btn = document.getElementById('library-load-more');
 
@@ -3949,222 +5580,80 @@
                 return;
             }
 
-            const start = libraryOffset;
-            const end = libraryOffset + libraryLimit - 1;
+            const start = replace ? 0 : libraryOffset;
+            const limitPlusOne = libraryLimit; // we pass extra via range end
 
             try {
-                const { data: ratingsData, error: ratingsErr } = await supabaseClient
-                    .from('Movie Ratings')
-                    .select('movie_id, overall_rating, tier, watch_date, updated_at, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
-                    .eq('user_id', authedUser.id)
-                    .not('watch_date', 'is', null)
-                    .order('watch_date', { ascending: false })
-                    .order('updated_at', { ascending: false })
-                    .range(start, end);
-                if (ratingsErr) throw ratingsErr;
+                // Primary: server-side sort/filter/paging via `user_library_items`.
+                let q = libraryBuildServerQuery({ userId: authedUser.id, offset: start, limit: limitPlusOne });
+                let { data, error } = await q;
 
-                const rows = Array.isArray(ratingsData) ? ratingsData : [];
-                libraryHasMore = rows.length === libraryLimit;
-                if (libraryHasMore) libraryOffset += libraryLimit;
+                // If genres column isn't an array, `.contains` may fail; retry genre filter via `genre` string.
+                if (error && String(error?.message || '').toLowerCase().includes('operator')) {
+                    ensureLibrarySortFilterStateInitialized();
+                    const genreWanted = String(librarySortFilterState?.genre || '').trim();
+                    if (genreWanted) {
+                        q = supabaseClient
+                            .from(LIBRARY_ITEMS_VIEW)
+                            .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
+                            .eq('user_id', authedUser.id);
 
-                const movieIds = Array.from(new Set(rows.map(r => r?.movie_id).filter(Boolean)));
-                const moviesById = new Map();
-                let genresByMovieId = new Map();
-                let directorByMovieId = new Map();
-                let imdbPctByMovieId = new Map();
-                if (movieIds.length) {
-                    const { data: moviesData, error: moviesErr } = await supabaseClient
-                        .from('Movies')
-                        .select('*')
-                        .in('id', movieIds);
-                    if (moviesErr) throw moviesErr;
-                    const mrows = Array.isArray(moviesData) ? moviesData : [];
-                    for (const m of mrows) moviesById.set(m.id, m);
-
-                    // Hydrate genre/director/IMDb from normalized tables (DB-first)
-                    try {
-                        const hydrated = await loadLibraryHydratedGenreDirectorImdb({ movieIds });
-                        genresByMovieId = hydrated.genresByMovieId || genresByMovieId;
-                        directorByMovieId = hydrated.directorByMovieId || directorByMovieId;
-                        imdbPctByMovieId = hydrated.imdbPctByMovieId || imdbPctByMovieId;
-                    } catch (_) {}
-
-                    // Fallback: if genre/director still missing, pull details the same way the form does.
-                    try {
-                        await loadLibraryTmdbFallbackForMovies({ movieIds, moviesById, genresByMovieId, directorByMovieId });
-                    } catch (_) {}
-
-                    // Best-effort poster fetch (cached)
-                    try {
-                        const posterItems = movieIds.map(id => moviesById.get(id)).filter(Boolean);
-                        await Promise.all(posterItems.map(dashEnsurePosterPath));
-                    } catch (_) {}
-                }
-
-                const html = rows.map((r) => {
-                    const movie = moviesById.get(r?.movie_id) || null;
-                    const title = String(movie?.title || '').trim() || 'Untitled';
-                    const year = (movie?.release_year === null || movie?.release_year === undefined) ? '' : String(movie.release_year);
-
-                    const tmdb_id = Number(movie?.tmdb_id);
-                    const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
-                    const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
-
-                    const overall = dashFormatScore(r?.overall_rating);
-                    const tierLabel = dashNormalizeTierLabel(r?.tier);
-                    const watched = String(r?.watch_date ?? '').trim();
-                    const quote = String(r?.fav_quote ?? '').trim();
-                    const notes = String(r?.notes ?? '').trim();
-
-                    const runtimeRaw = (movie?.runtime_minutes ?? movie?.runtime);
-                    const runtimeVal = (() => {
-                        const v = normalizeMovieFieldValue(runtimeRaw);
-                        if (!v) return '';
-                        const n = Number(v);
-                        if (Number.isFinite(n) && n > 0) return `${Math.round(n)} min`;
-                        return /min/i.test(v) ? v : v;
-                    })();
-                    const mpaVal = normalizeMovieFieldValue(movie?.mpa_rating ?? movie?.mpa);
-                    const directorVal = (() => {
-                        const mid = String(movie?.id || r?.movie_id || '').trim();
-                        const fromCrew = directorByMovieId.get(mid);
-                        return normalizeMovieFieldValue(fromCrew) || normalizeMovieFieldValue(movie?.director ?? movie?.director_name);
-                    })();
-                    const genreVal = (() => {
-                        const mid = String(movie?.id || r?.movie_id || '').trim();
-                        const arr = genresByMovieId.get(mid);
-                        const joined = Array.isArray(arr) ? arr.filter(Boolean).join(', ') : '';
-                        const fromArray = Array.isArray(movie?.genres) ? movie.genres.map(s => String(s).trim()).filter(Boolean).join(', ') : '';
-                        return normalizeMovieFieldValue(joined) || normalizeMovieFieldValue(fromArray) || normalizeMovieFieldValue(movie?.genre);
-                    })();
-                    const imdbVal = (() => {
-                        const mid = String(movie?.id || r?.movie_id || '').trim();
-                        const fromExt = imdbPctByMovieId.get(mid);
-                        const n = parsePercentLike(fromExt, { imdb: true });
-                        if (n !== null && n !== undefined) {
-                            return formatPctForDisplay(n);
+                        const state = librarySortFilterState;
+                        const tierWanted = String(state?.tier || '').trim();
+                        if (tierWanted) {
+                            if (tierWanted === 'UNRANKED') q = q.or('tier.is.null,tier.eq.,tier.eq.UNRANKED,tier.eq.Unranked');
+                            else q = q.eq('tier', tierWanted);
                         }
-
-                        const raw = (movie?.imdb_rating_pct ?? movie?.imdb_pct ?? movie?.imdb_rating ?? movie?.imdb);
-                        const n2 = parsePercentLike(raw, { imdb: true });
-                        if (n2 !== null && n2 !== undefined) {
-                            return formatPctForDisplay(n2);
+                        const decadeWanted = String(state?.decade || '').trim();
+                        if (decadeWanted) {
+                            const d = Number(decadeWanted);
+                            if (Number.isFinite(d)) q = q.gte('release_year', d).lte('release_year', d + 9);
                         }
-                        return '';
-                    })();
+                        const directorNeedle = String(state?.directorContains || '').trim();
+                        if (directorNeedle) q = q.ilike('director', `%${directorNeedle}%`);
+                        const mpaWanted = String(state?.mpa || '').trim();
+                        if (mpaWanted) q = q.ilike('mpa_rating', mpaWanted);
 
-                    const ratingChips = [
-                        overall ? dashRenderHelpScore(overall) : '',
-                        tierLabel ? dashRenderHelpTier(tierLabel) : '',
-                    ].join('');
+                        q = q.ilike('genre', `%${genreWanted}%`);
 
-                    const subRatingRows = [
-                        { k: 'Sound', v: dashFormatScore(r?.sound_rating) },
-                        { k: 'Pace', v: dashFormatScore(r?.pacing_rating) },
-                        { k: 'Imagery', v: dashFormatScore(r?.imagery_rating) },
-                        { k: 'Acting', v: dashFormatScore(r?.acting_rating) },
-                        { k: 'Plot', v: dashFormatScore(r?.plot_rating) },
-                        { k: 'Dialogue', v: dashFormatScore(r?.dialogue_rating) },
-                    ].filter(x => String(x.v || '').trim());
+                        const sortKey = String(state?.sortKey || 'watch_date');
+                        const sortDir = (String(state?.sortDir || 'desc') === 'asc') ? 'asc' : 'desc';
+                        const asc = (sortDir === 'asc');
+                        const addOrder = (col) => q.order(col, { ascending: asc, nullsFirst: false }).order('movie_id', { ascending: true });
+                        if (sortKey === 'watch_date') addOrder('latest_watch_date');
+                        else if (sortKey === 'release_year') addOrder('release_year');
+                        else if (sortKey === 'imdb') addOrder('imdb_rating_pct');
+                        else if (sortKey === 'overall') addOrder('overall_rating');
+                        else if (sortKey === 'sound') addOrder('sound_rating');
+                        else if (sortKey === 'pace') addOrder('pacing_rating');
+                        else if (sortKey === 'imagery') addOrder('imagery_rating');
+                        else if (sortKey === 'acting') addOrder('acting_rating');
+                        else if (sortKey === 'plot') addOrder('plot_rating');
+                        else if (sortKey === 'dialogue') addOrder('dialogue_rating');
+                        else addOrder('latest_watch_date');
+                        q = q.range(start, start + limitPlusOne);
 
-                    const extraMovieChips = renderLibraryInfoChips(movie || {}, {
-                        blacklist: ['id', 'title', 'release_year', 'tmdb_id', 'imdb_id', 'created_at', 'updated_at', 'genre', 'genres', 'director', 'director_name', 'runtime', 'runtime_minutes', 'mpa', 'mpa_rating', 'is_series', 'imdb', 'imdb_rating', 'imdb_pct', 'imdb_rating_pct'],
-                    });
-
-                    const posterBackDetailsHtml = (() => {
-                        const lines = [];
-                        const genreBackHtml = (() => {
-                            const raw = String(genreVal || '').trim();
-                            if (!raw) return '';
-                            const parts = raw
-                                .split(/[,|;]/g)
-                                .map(s => String(s).trim())
-                                .filter(Boolean);
-                            if (!parts.length) return '';
-                            return parts.map(p => escapeHtml(p)).join('<br>');
-                        })();
-                        if (runtimeVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">Runtime</span><span class="library-poster-back-val">${escapeHtml(runtimeVal)}</span></div>`);
-                        if (mpaVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">MPA</span><span class="library-poster-back-val">${escapeHtml(mpaVal)}</span></div>`);
-                        if (genreBackHtml) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">Genre</span><span class="library-poster-back-val">${genreBackHtml}</span></div>`);
-                        if (imdbVal) lines.push(`<div class="library-poster-back-line"><span class="library-poster-back-key">IMDb</span><span class="library-poster-back-val">${escapeHtml(imdbVal)}</span></div>`);
-                        return lines.join('');
-                    })();
-
-                    return `
-                        <div class="glass-panel" style="padding: 0.9rem; border-radius: 1rem;">
-                            <div class="library-card-row">
-                                <div class="library-card-left">
-                                    <div class="library-card-poster">
-                                        <div class="library-poster-flip">
-                                            <div class="library-poster-flip-inner">
-                                                <div class="library-poster-face library-poster-front">
-                                                    ${posterUrl
-                                                        ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width:100%; height:100%; object-fit: cover; display:block;" onerror="this.style.display='none';">`
-                                                        : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
-                                                </div>
-                                                <div class="library-poster-face library-poster-back">
-                                                    ${posterBackDetailsHtml || `<div class="text-xs text-gray" style="text-align:center;">No details</div>`}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="library-under"></div>
-                                </div>
-
-                                <div class="feed-card-main">
-                                    <div class="text-white font-bold" style="white-space: normal; overflow: hidden;">
-                                        <span class="library-title-line">${escapeHtml(title)}${year ? ` <span style=\"color: rgba(255,255,255,0.65); font-weight: 800;\">(${escapeHtml(year)})</span>` : ''}</span>
-                                        ${(directorVal || mpaVal)
-                                            ? `<span class="library-title-meta">${directorVal ? `<span class="library-title-sep"> — </span>${escapeHtml(directorVal)}` : ''}${mpaVal ? `<span class="library-title-sep"> — </span>${escapeHtml(mpaVal)}` : ''}</span>`
-                                            : ''}
-                                    </div>
-
-                                    ${(overall || tierLabel)
-                                        ? `<div class="feed-metrics">${ratingChips}</div>`
-                                        : `<div class="text-xs text-gray" style="margin-top: 0.25rem;">No rating yet</div>`
-                                    }
-
-                                    <div class="library-chip-row library-subratings" style="margin-top: 0.6rem;">
-                                        ${subRatingRows.map(d => `<span class=\"dash-quote-pill\">${escapeHtml(d.k)}: ${escapeHtml(d.v)}</span>`).join('')}
-                                    </div>
-
-                                    <div class="library-chip-row" style="margin-top: 0.55rem;">
-                                        ${extraMovieChips}
-                                    </div>
-
-                                    ${quote ? `
-                                        <div style="margin-top: 0.75rem;">
-                                            <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Favorite Quote</div>
-                                            <div class="text-white" style="line-height: 1.4;">${escapeHtml(quote)}</div>
-                                        </div>
-                                    ` : ''}
-                                    ${notes ? `
-                                        <div style="margin-top: 0.75rem;">
-                                            <div class="text-xs text-gray" style="margin-bottom: 0.25rem;">Notes</div>
-                                            <div class="text-white" style="line-height: 1.4; white-space: pre-wrap;">${escapeHtml(notes)}</div>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                if (replace) {
-                    elList.innerHTML = html || `<div class="text-gray">No watched movies found yet.</div>`;
-                } else {
-                    if (!html) {
-                        // nothing new
-                    } else {
-                        elList.insertAdjacentHTML('beforeend', html);
+                        ({ data, error } = await q);
                     }
                 }
 
-                if (elMeta) {
-                    const shown = elList.querySelectorAll('.glass-panel').length;
-                    elMeta.textContent = `Showing ${shown} • ${libraryHasMore ? 'Load more to continue' : 'End of list'}`;
+                if (error) throw error;
+                const rows = Array.isArray(data) ? data : [];
+
+                // PostgREST range is inclusive; we requested `limit`+1 via range end.
+                const hasMore = rows.length > libraryLimit;
+                const page = hasMore ? rows.slice(0, libraryLimit) : rows;
+
+                libraryHasMore = hasMore;
+                if (replace) {
+                    libraryItems = page;
+                    libraryOffset = page.length;
+                } else {
+                    libraryItems = libraryItems.concat(page);
+                    libraryOffset += page.length;
                 }
+
+                renderLibraryList();
                 if (wrap) wrap.style.display = libraryHasMore ? 'flex' : 'none';
             } catch (err) {
                 const msg = String(err?.message || err);
@@ -4490,7 +5979,7 @@
             if (movieIds.length) {
                 const { data: moviesData, error: moviesErr } = await supabaseClient
                     .from('Movies')
-                    .select('id, title, release_year, tmdb_id')
+                    .select('id, title, release_year, tmdb_id, poster_path')
                     .in('id', movieIds);
                 if (moviesErr) throw moviesErr;
                 const mrows = Array.isArray(moviesData) ? moviesData : [];
@@ -4525,11 +6014,7 @@
                 for (const u of urows) usersById.set(u.id, u);
             }
 
-            // Best-effort poster fetch (cached) for feed items.
-            try {
-                const posterItems = movieIds.map(id => moviesById.get(id)).filter(Boolean);
-                await Promise.all(posterItems.map(dashEnsurePosterPath));
-            } catch (_) {}
+            // Posters are lazy-loaded from stored DB poster_path; no TMDb calls.
 
             if (elMeta) {
                 const label = (feedSortMode === 'watch_date') ? 'Most recent watches first' : 'Most recent updates first';
@@ -4551,7 +6036,7 @@
                 const tierLabel = dashNormalizeTierLabel(r?.tier);
 
                 const tmdb_id = Number(movie?.tmdb_id);
-                const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
+                const poster_path = String(movie?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : '');
                 const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
 
                 const quote = String(r?.fav_quote ?? '').trim();
@@ -4573,12 +6058,12 @@
                         <div class="feed-card-row">
                             <div class="feed-card-poster">
                                 ${posterUrl
-                                    ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width:100%; height:100%; object-fit: cover; display:block;" onerror="this.style.display='none';">`
+                                    ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width:100%; height:100%; object-fit: cover; display:block;" onerror="this.style.display='none';">`
                                     : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
                             </div>
 
                             <div class="feed-card-main">
-                                <div class="text-white font-bold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(title)}${year ? ` <span style=\"color: rgba(255,255,255,0.65); font-weight: 800;\">(${escapeHtml(year)})</span>` : ''}</div>
+                                <div class="text-white font-bold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(title)}${year ? ` <span style="color: rgba(255,255,255,0.65); font-weight: 800;">(${escapeHtml(year)})</span>` : ''}</div>
 
                                 ${(overall || tierLabel)
                                     ? `<div class="feed-metrics">${overall ? dashRenderHelpScore(overall) : ''}${tierLabel ? dashRenderHelpTier(tierLabel) : ''}</div>`
@@ -4825,7 +6310,7 @@
                     return;
                 }
 
-                await Promise.all(items.map(dashEnsurePosterPath));
+                // Posters are lazy-loaded from stored DB poster_path.
 
                 const cards = items.map((r) => {
                     const title = String(r?.title ?? '').trim() || 'Untitled';
@@ -4837,7 +6322,7 @@
                     const dashTmdbId = (r?.tmdb_id === null || r?.tmdb_id === undefined) ? '' : String(r.tmdb_id);
 
                     const tmdb_id = Number(r?.tmdb_id);
-                    const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
+                    const poster_path = String(r?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : '');
                     const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
 
                     const metaHtml = dashJoinHelpParts([
@@ -4852,13 +6337,14 @@
                                 data-dash-movie-id="${escapeHtml(dashMovieId)}"
                                 data-dash-tmdb-id="${escapeHtml(dashTmdbId)}"
                                 data-dash-movie-title="${escapeHtml(title)}"
+                                data-dash-poster-path="${escapeHtml(poster_path)}"
                                 role="button"
                                 tabindex="0"
                                 aria-label="Update Ratings for ${escapeHtml(title)}"
                                 style="width: 100%; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06); cursor: pointer;"
                             >
                                 ${posterUrl
-                                    ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
+                                    ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
                                     : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`
                                 }
                             </div>
@@ -5099,11 +6585,8 @@
                     return `<div class="text-gray">No rated movies found for this timeframe.</div>`;
                 }
 
-                // Best-effort poster fetch (cached) + rating metadata fetch (cached).
-                await Promise.all([
-                    Promise.all(safe.map(dashEnsurePosterPath)),
-                    ensureRatingsForItems(safe),
-                ]);
+                // Posters are lazy-loaded from stored DB poster_path.
+                await ensureRatingsForItems(safe);
 
                 const cards = safe.map((r) => {
                     const title = String(r?.title ?? '').trim() || 'Untitled';
@@ -5118,7 +6601,7 @@
                     const metricText = dashFormatScore(metricValue);
                     const tierLabel = dashNormalizeTierLabel(ratingRow ? ratingRow.tier : '');
                     const tmdb_id = Number(r?.tmdb_id);
-                    const poster_path = Number.isFinite(tmdb_id) ? dashPosterCacheByTmdbId.get(tmdb_id) : null;
+                    const poster_path = String(r?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : '');
                     const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
 
                     const metaHtml = dashJoinHelpParts([
@@ -5133,13 +6616,14 @@
                                 data-dash-movie-id="${escapeHtml(dashMovieId)}"
                                 data-dash-tmdb-id="${escapeHtml(dashTmdbId)}"
                                 data-dash-movie-title="${escapeHtml(title)}"
+                                data-dash-poster-path="${escapeHtml(poster_path)}"
                                 role="button"
                                 tabindex="0"
                                 aria-label="Update Ratings for ${escapeHtml(title)}"
                                 style="width: 100%; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06); cursor: pointer;"
                             >
                                 ${posterUrl
-                                    ? `<img src="${posterUrl}" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
+                                    ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
                                     : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`
                                 }
                             </div>
@@ -5331,7 +6815,7 @@
                         >
                             <div class="dash-quote-card-inner">
                                 <div class="dash-quote-text">${escapeHtml(quote)}</div>
-                                <div class="dash-quote-title">${escapeHtml(title)}${year ? ` <span style=\"color: rgba(255,255,255,0.65); font-weight: 800;\">(${escapeHtml(year)})</span>` : ''}</div>
+                                <div class="dash-quote-title">${escapeHtml(title)}${year ? ` <span style="color: rgba(255,255,255,0.65); font-weight: 800;">(${escapeHtml(year)})</span>` : ''}</div>
                                 <div class="dash-quote-meta">
                                     ${metaParts.map((p) => {
                                         if (p.kind === 'score') {
@@ -6399,6 +7883,116 @@
             setGenreSelection([...current, genre]);
         }
 
+        function clearInlineValidationHints() {
+            try {
+                document.querySelectorAll('.field-error-msg[data-inline-validation="true"]').forEach((n) => n.remove());
+                document.querySelectorAll('.field-error-outline').forEach((n) => n.classList.remove('field-error-outline'));
+            } catch (_) {}
+        }
+
+        function addInlineValidationHint(targetEl, message) {
+            if (!targetEl) return;
+            const msg = String(message || '').trim() || 'Required';
+
+            const anchor = (() => {
+                // Prefer a visual container for certain composite controls.
+                const id = String(targetEl?.id || '').trim();
+                if (id === 'fld-genre') return document.getElementById('genre-chip-wrap') || targetEl;
+                if (id === 'fld-tier') {
+                    return document.querySelector('.tier-btn-group[data-target-input="fld-tier"]') || targetEl;
+                }
+                if (id === 'fld-watchmethod') return document.getElementById('watchmethod-toggle') || targetEl;
+                return targetEl;
+            })();
+
+            try {
+                anchor?.classList?.add('field-error-outline');
+            } catch (_) {}
+
+            const wrap = anchor?.parentElement;
+            if (!wrap) return;
+
+            // Avoid duplicate messages if multiple validations run.
+            try {
+                const existing = wrap.querySelector('.field-error-msg[data-inline-validation="true"]');
+                if (existing) return;
+            } catch (_) {}
+
+            const div = document.createElement('div');
+            div.className = 'field-error-msg';
+            div.setAttribute('data-inline-validation', 'true');
+            div.textContent = msg;
+            wrap.insertBefore(div, anchor);
+        }
+
+        function ensureMissingMovieDetailsOverlay() {
+            let overlay = document.getElementById('missing-movie-details-overlay');
+            if (overlay) return overlay;
+
+            overlay = document.createElement('div');
+            overlay.id = 'missing-movie-details-overlay';
+            overlay.style.cssText = [
+                'display:none',
+                'position:fixed',
+                'inset:0',
+                'z-index:9999',
+                'background:rgba(0,0,0,0.60)',
+                'backdrop-filter: blur(6px)',
+                '-webkit-backdrop-filter: blur(6px)',
+                'align-items:center',
+                'justify-content:center',
+                'padding: 1.25rem'
+            ].join(';');
+
+            overlay.innerHTML = `
+                <div class="glass-panel" style="max-width: 680px; width: 100%; border-radius: 1rem; padding: 1.25rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.55);">
+                    <div class="flex" style="justify-content: space-between; align-items: flex-start; gap: 0.75rem;">
+                        <div>
+                            <div class="text-white" style="font-size: 1.15rem; font-weight: 950; letter-spacing: 0.01em;">Missing Movie Details</div>
+                            <div class="text-gray" style="margin-top: 0.35rem; line-height: 1.45;">
+                                Unfortunately this our API calls were unable to populate the following movie details for you:
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline" id="missing-movie-details-close" style="white-space: nowrap;">Close</button>
+                    </div>
+                    <div id="missing-movie-details-list" style="margin-top: 0.9rem; display:flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                    <div class="text-gray" style="margin-top: 0.95rem; line-height: 1.45;">
+                        Please search the web and update these fields accordingly.
+                    </div>
+                </div>
+            `;
+
+            overlay.addEventListener('click', (e) => {
+                if (e?.target === overlay) {
+                    overlay.style.display = 'none';
+                }
+            });
+
+            // Close button
+            setTimeout(() => {
+                const btn = document.getElementById('missing-movie-details-close');
+                if (btn) btn.onclick = () => { overlay.style.display = 'none'; };
+            }, 0);
+
+            document.body.appendChild(overlay);
+            return overlay;
+        }
+
+        function openMissingMovieDetailsOverlay(missingLabels) {
+            const labels = Array.from(new Set((missingLabels || []).map((s) => String(s || '').trim()).filter(Boolean)));
+            if (labels.length === 0) return;
+
+            const overlay = ensureMissingMovieDetailsOverlay();
+            const list = overlay.querySelector('#missing-movie-details-list');
+            if (list) {
+                list.innerHTML = labels
+                    .map((l) => `<span class="dash-quote-pill" style="background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.28);">${escapeHtml(l)}</span>`)
+                    .join('');
+            }
+
+            overlay.style.display = 'flex';
+        }
+
         function openDatePickerFromInput(el) {
             try {
                 if (!el || el.disabled || el.readOnly) return;
@@ -6413,58 +8007,139 @@
             } catch (_) {}
         }
 
-        function getMissingRequiredFieldsForNewEntry() {
+        function getMissingRequiredFieldsForDiaryFormCore() {
+            // Core fields required before we do any network/save work.
+            // This excludes Movie Details fields that we can attempt to re-hydrate from the API.
             const missing = [];
 
             const getEl = (id) => document.getElementById(id);
             const getText = (id) => String(getEl(id)?.value ?? '').trim();
             const isBlank = (v) => String(v ?? '').trim() === '';
 
-            const ensureText = (id, label) => {
-                const el = getEl(id);
+            const ensureText = (id, label, { kind = 'review', anchorEl = null } = {}) => {
+                const el = anchorEl || getEl(id);
                 const v = getText(id);
-                if (!el || isBlank(v)) missing.push({ label, el });
+                if (!el || isBlank(v)) missing.push({ label, el, kind });
             };
 
-            const ensureNumber = (id, label, { min = null, max = null } = {}) => {
-                const el = getEl(id);
+            const ensureNumber = (id, label, { min = null, max = null, kind = 'review', anchorEl = null } = {}) => {
+                const el = anchorEl || getEl(id);
                 const raw = getText(id);
                 if (!el || isBlank(raw)) {
-                    missing.push({ label, el });
+                    missing.push({ label, el, kind });
                     return;
                 }
                 const n = Number(raw);
                 if (!Number.isFinite(n)) {
-                    missing.push({ label, el });
+                    missing.push({ label, el, kind });
                     return;
                 }
                 if (min !== null && n < min) {
-                    missing.push({ label, el });
+                    missing.push({ label, el, kind });
                     return;
                 }
                 if (max !== null && n > max) {
-                    missing.push({ label, el });
+                    missing.push({ label, el, kind });
+                    return;
+                }
+            };
+
+            // Basic required fields
+            ensureText('fld-datewatch', 'Date Watched');
+
+            // Tier uses a hidden input + button group.
+            {
+                const tierEl = document.getElementById('fld-tier');
+                const tierRaw = getText('fld-tier');
+                const anchor = document.querySelector('.tier-btn-group[data-target-input="fld-tier"]') || tierEl;
+                if (!anchor || isBlank(tierRaw)) missing.push({ label: 'Tier List', el: anchor, kind: 'review' });
+            }
+
+            // Need these to resolve the movie (and they're required regardless).
+            ensureText('fld-title', 'Title', { kind: 'movie_details' });
+            ensureNumber('fld-year', 'Year', { kind: 'movie_details', min: 1 });
+
+            // Ratings
+            ensureNumber('num-overall', 'Overall', { min: 0, max: 100 });
+            ensureNumber('num-sound', 'Score (Sound)', { min: 0, max: 100 });
+            ensureNumber('num-pace', 'Pace', { min: 0, max: 100 });
+            ensureNumber('num-imagery', 'Imagery', { min: 0, max: 100 });
+            ensureNumber('num-acting', 'Acting', { min: 0, max: 100 });
+            ensureNumber('num-plot', 'Plot', { min: 0, max: 100 });
+            ensureNumber('num-dialogue', 'Dialogue', { min: 0, max: 100 });
+
+            ensureText('fld-notes', 'Notes');
+            ensureNumber('fld-timeswatch', 'Times Watched', { min: 1 });
+
+            // Watch method is stored in a hidden input controlled by a toggle button.
+            {
+                const el = document.getElementById('watchmethod-toggle') || getEl('fld-watchmethod');
+                const raw = getText('fld-watchmethod');
+                if (!el || isBlank(raw)) missing.push({ label: 'Watch Method', el, kind: 'review' });
+            }
+
+            return missing;
+        }
+
+        function getMissingRequiredFieldsForDiaryFormStrict() {
+            const missing = [];
+
+            const getEl = (id) => document.getElementById(id);
+            const getText = (id) => String(getEl(id)?.value ?? '').trim();
+            const isBlank = (v) => String(v ?? '').trim() === '';
+
+            const ensureText = (id, label, { kind = 'review', anchorEl = null } = {}) => {
+                const el = anchorEl || getEl(id);
+                const v = getText(id);
+                if (!el || isBlank(v)) missing.push({ label, el, kind });
+            };
+
+            const ensureNumber = (id, label, { min = null, max = null, kind = 'review', anchorEl = null } = {}) => {
+                const el = anchorEl || getEl(id);
+                const raw = getText(id);
+                if (!el || isBlank(raw)) {
+                    missing.push({ label, el, kind });
+                    return;
+                }
+                const n = Number(raw);
+                if (!Number.isFinite(n)) {
+                    missing.push({ label, el, kind });
+                    return;
+                }
+                if (min !== null && n < min) {
+                    missing.push({ label, el, kind });
+                    return;
+                }
+                if (max !== null && n > max) {
+                    missing.push({ label, el, kind });
                     return;
                 }
             };
 
             ensureText('fld-datewatch', 'Date Watched');
-            ensureText('fld-tier', 'Tier List');
+
+            // Tier uses a hidden input + button group.
+            {
+                const tierEl = document.getElementById('fld-tier');
+                const tierRaw = getText('fld-tier');
+                const anchor = document.querySelector('.tier-btn-group[data-target-input="fld-tier"]') || tierEl;
+                if (!anchor || isBlank(tierRaw)) missing.push({ label: 'Tier List', el: anchor, kind: 'review' });
+            }
 
             // Movie details (must be present before submit)
-            ensureText('fld-title', 'Title');
-            ensureNumber('fld-year', 'Year');
-            ensureText('fld-mpa', 'MPA');
-            ensureNumber('fld-runtime', 'Runtime (min)', { min: 1 });
-            ensureText('fld-series', 'Series?');
-            ensureText('fld-director', 'Director');
+            ensureText('fld-title', 'Title', { kind: 'movie_details' });
+            ensureNumber('fld-year', 'Year', { kind: 'movie_details', min: 1 });
+            ensureText('fld-mpa', 'MPA', { kind: 'movie_details' });
+            ensureNumber('fld-runtime', 'Runtime (min)', { kind: 'movie_details', min: 1 });
+            ensureText('fld-series', 'Series?', { kind: 'movie_details' });
+            ensureText('fld-director', 'Director', { kind: 'movie_details' });
 
             // Genre is submitted via a hidden input when using chips.
             {
-                const el = getEl('fld-genre');
+                const el = document.getElementById('genre-chip-wrap') || getEl('fld-genre');
                 const raw = getText('fld-genre');
                 const picked = Array.isArray(parseGenreString(raw)) ? parseGenreString(raw) : [];
-                if (!el || picked.length === 0) missing.push({ label: 'Genre', el });
+                if (!el || picked.length === 0) missing.push({ label: 'Genre', el, kind: 'movie_details' });
             }
 
             // Ratings
@@ -6478,28 +8153,56 @@
 
             ensureText('fld-notes', 'Notes');
             ensureNumber('fld-timeswatch', 'Times Watched', { min: 1 });
-            ensureText('fld-watchmethod', 'Watch Method');
-            ensureNumber('fld-imdb', 'IMDb Rating', { min: 0, max: 100 });
+
+            // Watch method is stored in a hidden input controlled by a toggle button.
+            {
+                const el = document.getElementById('watchmethod-toggle') || getEl('fld-watchmethod');
+                const raw = getText('fld-watchmethod');
+                if (!el || isBlank(raw)) missing.push({ label: 'Watch Method', el, kind: 'review' });
+            }
+
+            // IMPORTANT: IMDb rating is required and 0 means "missing" in this UI.
+            // Block save unless it's a real value.
+            ensureNumber('fld-imdb', 'IMDb Rating', { kind: 'movie_details', min: 1, max: 100 });
 
             return missing;
+        }
+
+        function blockSubmitWithValidationUI(missing) {
+            const items = Array.isArray(missing) ? missing : [];
+            if (items.length === 0) return;
+
+            clearInlineValidationHints();
+            for (const m of items) {
+                addInlineValidationHint(m?.el, `Missing: ${String(m?.label || '').trim() || 'Required field'}`);
+            }
+
+            const missingMovieDetails = items
+                .filter((m) => String(m?.kind || '') === 'movie_details')
+                .map((m) => m.label);
+            if (missingMovieDetails.length > 0) {
+                openMissingMovieDetailsOverlay(missingMovieDetails);
+            }
+
+            const labels = items.map(m => m.label);
+            const list = labels.join(', ');
+            showToast(`Please fill out: ${list}`, { level: 'warn', durationMs: 8000 });
+            try {
+                const firstEl = items.find(m => m?.el)?.el;
+                if (firstEl && typeof firstEl.focus === 'function') firstEl.focus();
+            } catch (_) {}
         }
 
         async function handleFormSubmit(e) {
             e.preventDefault();
 
             const entryType = String(e.target.querySelector('input[name="entryType"]')?.value || '').trim().toLowerCase();
-            if (entryType === 'new') {
-                const missing = getMissingRequiredFieldsForNewEntry();
-                if (missing.length > 0) {
-                    const labels = missing.map(m => m.label);
-                    const list = labels.join(', ');
-                    showToast(`Please fill out: ${list}`, { level: 'warn', durationMs: 8000 });
-                    try {
-                        const firstEl = missing.find(m => m?.el)?.el;
-                        if (firstEl && typeof firstEl.focus === 'function') firstEl.focus();
-                    } catch (_) {}
-                    return;
-                }
+            // Hard guarantee: no DB writes if anything (except Favorite Quote) is missing.
+            // Phase 1: validate core fields required to proceed.
+            const coreMissing = getMissingRequiredFieldsForDiaryFormCore();
+            if (coreMissing.length > 0) {
+                blockSubmitWithValidationUI(coreMissing);
+                return;
             }
 
             const btn = e.target.querySelector('button[type="submit"]');
@@ -6542,12 +8245,89 @@
                     if (!Number.isFinite(h) || !Number.isFinite(m)) return null;
                     return h * 60 + m;
                 };
-                const selectedId = window.router?.selectedMovie?.id;
+                const selectedId = router?.selectedMovie?.id;
                 const hiddenMovieId = String(document.getElementById('fld-movie-id')?.value || '').trim();
                 const hiddenTmdbId = String(document.getElementById('fld-tmdb-id')?.value || '').trim();
 
-                lastKnownTmdbId = hiddenTmdbId || String(window.router?.selectedMovie?.tmdb_id || '').trim();
-                lastKnownTitle = String(document.getElementById('fld-title')?.value || window.router?.selectedMovie?.title || '').trim();
+                lastKnownTmdbId = hiddenTmdbId || String(router?.selectedMovie?.tmdb_id || '').trim();
+                lastKnownTitle = String(document.getElementById('fld-title')?.value || router?.selectedMovie?.title || '').trim();
+
+                // Best-effort: if any Movie Details fields are missing (including IMDb), try re-hydrating
+                // from the public details endpoint BEFORE we decide whether to block saving.
+                try {
+                    const strictPre = getMissingRequiredFieldsForDiaryFormStrict();
+                    const missingMovieLabels = strictPre
+                        .filter((m) => String(m?.kind || '') === 'movie_details')
+                        .map((m) => m.label);
+
+                    const tmdbIdNum = Number(hiddenTmdbId || lastKnownTmdbId || 0);
+                    if (missingMovieLabels.length > 0 && Number.isFinite(tmdbIdNum) && tmdbIdNum > 0) {
+                        const details = await callSwiftApiGetMovieDetails({ tmdb_id: tmdbIdNum });
+                        if (details) {
+                            const title = String(details?.title ?? '').trim();
+                            const year = Number(details?.year ?? 0);
+                            const runtime = Number(details?.runtime ?? 0);
+                            const mpa = String(details?.mpa ?? '').trim();
+                            const isSeries = details?.isSeries;
+                            const director = String(details?.director ?? '').trim();
+                            const genres = Array.isArray(details?.genres) ? details.genres : [];
+                            const imdbPct = Number(details?.imdb_rating_pct ?? 0);
+
+                            if (title) {
+                                const el = document.getElementById('fld-title');
+                                if (el) el.value = title;
+                            }
+                            if (Number.isFinite(year) && year > 0) {
+                                const el = document.getElementById('fld-year');
+                                if (el && !String(el.value || '').trim()) el.value = String(year);
+                            }
+                            if (mpa) {
+                                const el = document.getElementById('fld-mpa');
+                                if (el && !String(el.value || '').trim()) el.value = mpa;
+                            }
+                            if (Number.isFinite(runtime) && runtime > 0) {
+                                const el = document.getElementById('fld-runtime');
+                                if (el && !String(el.value || '').trim()) el.value = String(runtime);
+                            }
+                            if (isSeries === true || isSeries === false) {
+                                const el = document.getElementById('fld-series');
+                                const val = isSeries ? 'TRUE' : 'FALSE';
+                                if (el && !String(el.value || '').trim()) el.value = val;
+                            }
+                            if (director) {
+                                const el = document.getElementById('fld-director');
+                                if (el && !String(el.value || '').trim()) el.value = director;
+                            }
+                            if (genres.length > 0) {
+                                try {
+                                    const current = parseGenreString(String(document.getElementById('fld-genre')?.value || ''));
+                                    if (!Array.isArray(current) || current.length === 0) {
+                                        setGenreSelection(genres);
+                                    }
+                                } catch (_) {}
+                            }
+                            if (Number.isFinite(imdbPct) && imdbPct > 0) {
+                                const el = document.getElementById('fld-imdb');
+                                const range = document.getElementById('fld-imdb-range');
+                                if (el && (!String(el.value || '').trim() || Number(el.value) === 0)) el.value = String(Math.round(imdbPct));
+                                if (range) range.value = String(Math.round(imdbPct));
+                            }
+                        }
+                    }
+                } catch (_) {
+                    // Ignore hydration failures; strict validation below will catch missing fields.
+                }
+
+                // Phase 2: strict validation (includes Movie Details + IMDb).
+                // If anything is still missing, BLOCK before any DB writes.
+                const strictMissing = getMissingRequiredFieldsForDiaryFormStrict();
+                if (strictMissing.length > 0) {
+                    blockSubmitWithValidationUI(strictMissing);
+                    return;
+                }
+
+                // Clear any stale validation messages once the form is valid.
+                clearInlineValidationHints();
 
                 let movie_id = uuidLike(hiddenMovieId)
                     ? hiddenMovieId
@@ -6617,14 +8397,15 @@
 
                 lastKnownMovieId = movie_id;
 
-                // Ensure external ratings are synced server-side on every save/update.
+                // NOTE: Only after strict validation passes do we run any server-side sync that writes to DB.
                 // ("Movie External Ratings" has no user_id; it should be written from the Edge Function.)
                 try {
                     const syncRes = await callSwiftApi({ movie_id, sync_people: false }, accessToken);
                     const imdbPct = syncRes?.imdb_rating_pct;
                     if (imdbPct !== null && imdbPct !== undefined) {
                         const imdbEl = document.getElementById('fld-imdb');
-                        if (imdbEl && !String(imdbEl.value || '').trim()) {
+                        const imdbVal = String(imdbEl?.value || '').trim();
+                        if (imdbEl && (!imdbVal || Number(imdbVal) === 0)) {
                             imdbEl.value = String(imdbPct);
                         }
 
@@ -6718,6 +8499,16 @@
                         updated_at: new Date().toISOString(),
                     };
 
+                    // Final safety gate: absolutely no DB writes if anything is missing.
+                    // (This should already be true, but we re-check right before writing.)
+                    {
+                        const finalMissing = getMissingRequiredFieldsForDiaryFormStrict();
+                        if (finalMissing.length > 0) {
+                            blockSubmitWithValidationUI(finalMissing);
+                            return;
+                        }
+                    }
+
                     const { error: updateError } = await supabaseClient
                         .from('Movie Ratings')
                         .update(updateRow)
@@ -6735,8 +8526,23 @@
                         });
                     }
 
+                    // Best-effort: if this movie was in Bucket List, remove it now that it's rated.
+                    try {
+                        await removeMovieFromBucketList({ user_id: authedUser.id, movie_id });
+                    } catch (_) {}
+
                     openRatingsSuccessModal('updated');
                     return;
+                }
+
+                // Final safety gate: absolutely no DB writes if anything is missing.
+                // (This should already be true, but we re-check right before writing.)
+                {
+                    const finalMissing = getMissingRequiredFieldsForDiaryFormStrict();
+                    if (finalMissing.length > 0) {
+                        blockSubmitWithValidationUI(finalMissing);
+                        return;
+                    }
                 }
 
                 const { error: insertError } = await supabaseClient
@@ -6770,6 +8576,11 @@
                         showToast(`Added ${prior.entries.length} previous watch${prior.entries.length === 1 ? '' : 'es'}!`);
                     }
                 }
+
+                // Best-effort: if this movie was in Bucket List, remove it now that it's rated.
+                try {
+                    await removeMovieFromBucketList({ user_id: authedUser.id, movie_id });
+                } catch (_) {}
 
                 openRatingsSuccessModal('saved');
                 return;
@@ -6847,6 +8658,372 @@
             if (!overlay) return;
             overlay.style.display = 'flex';
             overlay.classList.add('open');
+        }
+
+        let deleteConfirmState = {
+            action: null,
+            token: null,
+            ts: 0,
+        };
+
+        let deleteRatingState = {
+            user_id: null,
+            movie_id: null,
+            title: '',
+            logs: [],
+            source: 'submit',
+        };
+
+        function armDeleteConfirmation({ action, token, message, statusElId }) {
+            const now = Date.now();
+            const statusEl = statusElId ? document.getElementById(statusElId) : null;
+
+            // If the user clicks the same action twice within 8 seconds, treat as confirmed.
+            const isSame = (
+                deleteConfirmState.action === action &&
+                deleteConfirmState.token === token &&
+                (now - Number(deleteConfirmState.ts || 0)) < 8000
+            );
+
+            if (isSame) {
+                deleteConfirmState = { action: null, token: null, ts: 0 };
+                if (statusEl) statusEl.textContent = '';
+                return true;
+            }
+
+            deleteConfirmState = { action, token, ts: now };
+            if (statusEl) {
+                statusEl.textContent = String(message || 'Click again to confirm.');
+                statusEl.style.color = 'rgba(239,68,68,0.95)';
+            }
+            return false;
+        }
+
+        async function openDeleteRatingModalForMovie({ movie_id, title = '', source = 'submit' } = {}) {
+            const mid = String(movie_id || '').trim();
+            if (!mid) throw new Error('Missing movie_id for delete modal.');
+
+            const { user: authedUser } = await requireAuthOrThrow();
+
+            deleteRatingState = {
+                user_id: authedUser.id,
+                movie_id: mid,
+                title: String(title || '').trim(),
+                logs: [],
+                source: String(source || 'submit'),
+            };
+
+            const overlay = document.getElementById('delete-rating-overlay');
+            if (!overlay) return;
+            const movieEl = document.getElementById('delete-rating-movie');
+            if (movieEl) movieEl.textContent = deleteRatingState.title || 'this movie';
+
+            const statusA = document.getElementById('delete-rating-status');
+            const statusB = document.getElementById('delete-logs-status');
+            if (statusA) {
+                statusA.textContent = '';
+                statusA.style.color = 'rgba(255,255,255,0.60)';
+            }
+            if (statusB) {
+                statusB.textContent = '';
+                statusB.style.color = 'rgba(255,255,255,0.60)';
+            }
+
+            overlay.style.display = 'flex';
+            overlay.classList.add('open');
+
+            await loadDeleteRatingWatchLogs();
+        }
+
+        function openDeleteRatingModal() {
+            (async () => {
+                try {
+                    let movie_id = String(document.getElementById('fld-movie-id')?.value || '').trim();
+                    if (!movie_id) {
+                        movie_id = await resolveDbMovieIdFromSelectedMovie(router?.selectedMovie);
+                    }
+                    if (!movie_id) throw new Error('Missing movie_id for this entry.');
+
+                    const title = String(router?.selectedMovie?.title || '').trim();
+                    await openDeleteRatingModalForMovie({ movie_id, title, source: 'submit' });
+                } catch (err) {
+                    showToast(String(err?.message || err || 'Delete failed.'), { level: 'warn' });
+                }
+            })();
+        }
+
+        function closeDeleteRatingModal() {
+            const overlay = document.getElementById('delete-rating-overlay');
+            if (!overlay) return;
+            overlay.classList.remove('open');
+            overlay.style.display = 'none';
+        }
+
+        async function loadDeleteRatingWatchLogs() {
+            const list = document.getElementById('delete-logs-list');
+            const countEl = document.getElementById('delete-logs-count');
+            const btn = document.getElementById('btn-delete-selected-logs');
+            if (list) {
+                list.innerHTML = `<div class="text-sm" style="color: rgba(255,255,255,0.65);">Loading watch logs…</div>`;
+            }
+
+            deleteRatingState.logs = [];
+
+            const { user_id, movie_id } = deleteRatingState;
+            if (!supabaseClient) throw new Error('Supabase client not initialized.');
+            if (!user_id || !movie_id) throw new Error('Missing delete context. Close and re-open Delete.');
+
+            const { data, error } = await supabaseClient
+                .from('Watch Logs')
+                .select(`id, watch_method, ${COL_WATCH_DATE}`)
+                .eq('user_id', user_id)
+                .eq('movie_id', movie_id)
+                .order(COL_WATCH_DATE, { ascending: false })
+                .order('id', { ascending: false });
+
+            if (error) throw error;
+
+            const logs = Array.isArray(data) ? data : [];
+            deleteRatingState.logs = logs;
+
+            if (countEl) {
+                countEl.textContent = `${logs.length} watch log${logs.length === 1 ? '' : 's'}`;
+            }
+
+            if (!list) return;
+
+            if (logs.length === 0) {
+                list.innerHTML = `<div class="text-sm" style="color: rgba(255,255,255,0.65);">No watch logs found for this movie.</div>`;
+                if (btn) {
+                    btn.disabled = true;
+                    btn.setAttribute('aria-disabled', 'true');
+                    btn.title = 'No watch logs to delete.';
+                }
+                return;
+            }
+
+            const fmt = (raw) => {
+                const s = String(raw ?? '').trim();
+                return s || '(unknown date)';
+            };
+
+            list.innerHTML = logs.map((r) => {
+                const id = String(r?.id || '').trim();
+                const method = String(r?.watch_method || '');
+                const wd = fmt(r?.[COL_WATCH_DATE]);
+                const label = method ? `${wd} — ${escapeHtml(method)}` : `${wd}`;
+                return `
+                    <label style="display:flex; gap: 0.65rem; align-items: flex-start; padding: 0.65rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.85rem; background: rgba(255,255,255,0.03);">
+                        <input type="checkbox" class="delete-log-checkbox" data-log-id="${escapeHtml(id)}" onchange="handleDeleteLogCheckboxChange()" style="margin-top: 0.25rem;">
+                        <div style="display:flex; flex-direction: column; gap: 0.2rem;">
+                            <div class="text-white font-semibold" style="font-size: 0.9rem;">${label}</div>
+                            <div class="text-xs" style="color: rgba(255,255,255,0.60);">id: ${escapeHtml(id)}</div>
+                        </div>
+                    </label>
+                `;
+            }).join('');
+
+            handleDeleteLogCheckboxChange();
+        }
+
+        function getDeleteSelectedLogIds() {
+            try {
+                const checked = Array.from(document.querySelectorAll('#delete-logs-list .delete-log-checkbox:checked'));
+                return checked
+                    .map((el) => String(el?.getAttribute('data-log-id') || '').trim())
+                    .filter(Boolean);
+            } catch (_) {
+                return [];
+            }
+        }
+
+        function handleDeleteLogCheckboxChange() {
+            const btn = document.getElementById('btn-delete-selected-logs');
+            const status = document.getElementById('delete-logs-status');
+            const total = Array.isArray(deleteRatingState.logs) ? deleteRatingState.logs.length : 0;
+            const selectedIds = getDeleteSelectedLogIds();
+            const selectedCount = selectedIds.length;
+
+            if (status) status.textContent = '';
+
+            if (!btn) return;
+            if (total === 0 || selectedCount === 0) {
+                btn.disabled = true;
+                btn.setAttribute('aria-disabled', 'true');
+                btn.title = total === 0 ? 'No watch logs to delete.' : 'Select at least one watch log.';
+                btn.textContent = 'Delete selected';
+                return;
+            }
+
+            if (selectedCount >= total) {
+                btn.disabled = true;
+                btn.setAttribute('aria-disabled', 'true');
+                btn.title = 'You must keep at least 1 watch log.';
+                btn.textContent = `Delete selected (${selectedCount})`;
+                if (status) status.textContent = 'You cannot delete all watch logs. Leave at least 1 unchecked.';
+                return;
+            }
+
+            btn.disabled = false;
+            btn.setAttribute('aria-disabled', 'false');
+            btn.title = `Delete ${selectedCount} watch log${selectedCount === 1 ? '' : 's'}.`;
+            btn.textContent = `Delete selected (${selectedCount})`;
+        }
+
+        function clearDeleteLogsSelection() {
+            try {
+                document.querySelectorAll('#delete-logs-list .delete-log-checkbox').forEach((el) => {
+                    el.checked = false;
+                });
+            } catch (_) {}
+            handleDeleteLogCheckboxChange();
+        }
+
+        function toggleSelectAllDeleteLogs() {
+            const boxes = Array.from(document.querySelectorAll('#delete-logs-list .delete-log-checkbox'));
+            if (boxes.length === 0) return;
+            const allChecked = boxes.every(b => b.checked);
+            boxes.forEach((b) => { b.checked = !allChecked; });
+            handleDeleteLogCheckboxChange();
+        }
+
+        async function confirmDeleteSelectedWatchLogs() {
+            try {
+                const { user_id, movie_id } = deleteRatingState;
+                if (!user_id || !movie_id) throw new Error('Missing delete context. Close and re-open Delete.');
+                const total = Array.isArray(deleteRatingState.logs) ? deleteRatingState.logs.length : 0;
+                const ids = getDeleteSelectedLogIds();
+                if (ids.length === 0) {
+                    showToast('Select at least one watch log to delete.', { level: 'warn' });
+                    return;
+                }
+                if (total > 0 && ids.length >= total) {
+                    showToast('You must keep at least 1 watch log.', { level: 'warn' });
+                    return;
+                }
+                const status = document.getElementById('delete-logs-status');
+                if (status) {
+                    status.textContent = '';
+                    status.style.color = 'rgba(255,255,255,0.60)';
+                }
+
+                const token = `${user_id}:${movie_id}:${ids.slice().sort().join(',')}`;
+                const confirmed = armDeleteConfirmation({
+                    action: 'delete_selected_logs',
+                    token,
+                    statusElId: 'delete-logs-status',
+                    message: `Click “Delete selected” again to confirm deleting ${ids.length} watch log${ids.length === 1 ? '' : 's'} (you must keep at least 1).`,
+                });
+                if (!confirmed) return;
+
+                if (status) {
+                    status.textContent = 'Deleting selected watch logs…';
+                    status.style.color = 'rgba(255,255,255,0.60)';
+                }
+
+                const { error: delErr } = await supabaseClient
+                    .from('Watch Logs')
+                    .delete()
+                    .in('id', ids)
+                    .eq('user_id', user_id)
+                    .eq('movie_id', movie_id);
+
+                if (delErr) throw delErr;
+
+                // Keep Movie Ratings watch_date aligned to the latest remaining Watch Logs entry.
+                const latest = await getLatestWatchLog({ user_id, movie_id });
+                const latestDate = String(latest?.[COL_WATCH_DATE] || '').trim();
+                if (latestDate) {
+                    const { error: updErr } = await supabaseClient
+                        .from('Movie Ratings')
+                        .update({
+                            [COL_WATCH_DATE]: latestDate,
+                            updated_at: new Date().toISOString(),
+                        })
+                        .eq('user_id', user_id)
+                        .eq('movie_id', movie_id);
+                    if (updErr) throw updErr;
+                }
+
+                const remaining = await getWatchLogCount({ user_id, movie_id });
+                const timesEl = document.getElementById('fld-timeswatch');
+                if (timesEl && Number.isFinite(Number(remaining)) && Number(remaining) >= 1) {
+                    timesEl.value = String(Number(remaining));
+                }
+
+                showToast(`Deleted ${ids.length} watch log${ids.length === 1 ? '' : 's'}.`);
+                await loadDeleteRatingWatchLogs();
+
+                // If launched from My Movies, refresh the cards behind the modal.
+                if (String(deleteRatingState?.source || '') === 'library' && String(router?.currentPage || '') === 'library') {
+                    await loadLibraryPage({ reset: true });
+                }
+            } catch (err) {
+                const msg = String(err?.message || err);
+                const status = document.getElementById('delete-logs-status');
+                if (status) {
+                    status.textContent = `Delete failed: ${msg}`;
+                    status.style.color = 'rgba(239,68,68,0.95)';
+                }
+                showToast(`Delete failed: ${msg}`);
+            }
+        }
+
+        async function confirmDeleteRatingAndAllLogs() {
+            try {
+                const { user_id, movie_id, title } = deleteRatingState;
+                if (!user_id || !movie_id) throw new Error('Missing delete context. Close and re-open Delete.');
+                const status = document.getElementById('delete-rating-status');
+                if (status) {
+                    status.textContent = '';
+                    status.style.color = 'rgba(255,255,255,0.60)';
+                }
+
+                const token = `${user_id}:${movie_id}`;
+                const confirmed = armDeleteConfirmation({
+                    action: 'delete_rating_and_all_logs',
+                    token,
+                    statusElId: 'delete-rating-status',
+                    message: `Click again to confirm deleting your rating and all watch logs for ${title || 'this movie'}. This cannot be undone.`,
+                });
+                if (!confirmed) return;
+
+                if (status) {
+                    status.textContent = 'Deleting rating and watch logs…';
+                    status.style.color = 'rgba(255,255,255,0.60)';
+                }
+
+                // Delete logs first (works with or without DB cascades).
+                const { error: logsErr } = await supabaseClient
+                    .from('Watch Logs')
+                    .delete()
+                    .eq('user_id', user_id)
+                    .eq('movie_id', movie_id);
+                if (logsErr) throw logsErr;
+
+                const { error: ratingErr } = await supabaseClient
+                    .from('Movie Ratings')
+                    .delete()
+                    .eq('user_id', user_id)
+                    .eq('movie_id', movie_id);
+                if (ratingErr) throw ratingErr;
+
+                closeDeleteRatingModal();
+                showToast('Deleted rating and watch logs.');
+                if (String(deleteRatingState?.source || '') === 'library' && String(router?.currentPage || '') === 'library') {
+                    await loadLibraryPage({ reset: true });
+                } else {
+                    try { router.navigate('library'); } catch (_) { router.navigate('home'); }
+                }
+            } catch (err) {
+                const msg = String(err?.message || err);
+                const status = document.getElementById('delete-rating-status');
+                if (status) {
+                    status.textContent = `Delete failed: ${msg}`;
+                    status.style.color = 'rgba(239,68,68,0.95)';
+                }
+                showToast(`Delete failed: ${msg}`);
+            }
         }
 
         function closeUpdateWatchModal(choice) {
@@ -7487,6 +9664,19 @@
 
             cachedAuthUser = user;
             cachedIsAuthed = isAuthed;
+
+            if (isAuthed) {
+                const uid = String(user.id);
+                // Best-effort; don't block UI.
+                ensureBucketListForUser({ user_id: uid }).catch(() => null);
+            } else {
+                cachedLists = [];
+                cachedListsUserId = null;
+                listsActiveListId = null;
+                listsActiveListName = '';
+                cachedBucketListId = null;
+                bucketListEnsuredForUserId = null;
+            }
 
             let displayName = '';
             if (isAuthed) {
@@ -8280,6 +10470,7 @@
             })();
 
             await refreshAuthStateAndUI();
+            initListsPage();
             router.init();
 
             // If we arrived via Supabase password recovery link, send the user to Account.
