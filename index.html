@@ -2502,6 +2502,24 @@
                                             <div id="lists-active-title" class="text-white font-bold">Select a list</div>
                                             <div id="lists-active-subtitle" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
                                         </div>
+
+                                        <!-- Lists-only Search (adds directly to the active list) -->
+                                        <div style="position: relative; width: 260px; max-width: 100%;">
+                                            <div class="input-group" style="margin: 0;">
+                                                <div class="input-icon" style="height: 34px; display:flex; align-items:center;">${icons.search}</div>
+                                                <input
+                                                    type="text"
+                                                    id="lists-movie-search-input"
+                                                    oninput="handleListsAddMovieSearch(this.value)"
+                                                    autocomplete="off"
+                                                    placeholder="Select a list to add movies…"
+                                                    class="input-field glass-input"
+                                                    style="border-radius: 0.75rem; height: 34px; font-size: 0.85rem; padding-left: 2.35rem;"
+                                                    disabled
+                                                >
+                                                <div id="lists-movie-search-results" class="search-dropdown hidden"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div id="lists-items" class="text-gray" style="margin-top: 0.85rem;">Choose a list on the left.</div>
                                 </div>
@@ -3768,22 +3786,64 @@
         const dashPosterCacheByTmdbId = new Map();
         const dashRatingCacheByMovieId = new Map();
 
-        async function dashEnsurePosterPath(item) {
-            const tmdb_id = Number(item?.tmdb_id);
-            if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return null;
-            if (dashPosterCacheByTmdbId.has(tmdb_id)) return dashPosterCacheByTmdbId.get(tmdb_id);
+        function dashNormalizePosterPath(p) {
+            const raw = String(p ?? '').trim();
+            if (!raw) return '';
+            // Allow full URLs (future-proof).
+            if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+            // TMDb poster_path should be "/abc.jpg" but some sources may provide "abc.jpg".
+            return raw.startsWith('/') ? raw : `/${raw}`;
+        }
 
-            const direct = String(item?.poster_path ?? item?.posterPath ?? item?.poster_url ?? item?.posterUrl ?? '').trim();
-            if (direct) {
-                dashPosterCacheByTmdbId.set(tmdb_id, direct);
-                return direct;
+        function dashBuildPosterUrl(posterPath, size = 'w342') {
+            const normalized = dashNormalizePosterPath(posterPath);
+            if (!normalized) return '';
+            if (normalized.startsWith('http://') || normalized.startsWith('https://')) return normalized;
+            return `https://image.tmdb.org/t/p/${String(size || 'w342')}${normalized}`;
+        }
+
+        async function dashEnsurePosterPath(item) {
+            // 1) If the item already has a poster path, use it (no DB needed).
+            const direct = dashNormalizePosterPath(item?.poster_path ?? item?.posterPath ?? item?.poster_url ?? item?.posterUrl ?? '');
+            if (direct) return direct;
+
+            const tmdb_id = Number(item?.tmdb_id);
+            if (Number.isFinite(tmdb_id) && tmdb_id > 0) {
+                if (dashPosterCacheByTmdbId.has(tmdb_id)) return dashPosterCacheByTmdbId.get(tmdb_id);
             }
 
             // Prefer DB if the movie exists there; never call TMDb here.
             if (!supabaseClient) {
-                dashPosterCacheByTmdbId.set(tmdb_id, null);
+                if (Number.isFinite(tmdb_id) && tmdb_id > 0) dashPosterCacheByTmdbId.set(tmdb_id, null);
                 return null;
             }
+
+            const movie_id = String(item?.movie_id ?? item?.movieId ?? item?.id ?? '').trim();
+
+            // 2) DB lookup by movie_id (most reliable in this app)
+            if (isUuidLike(movie_id)) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('Movies')
+                        .select('tmdb_id, poster_path')
+                        .eq('id', movie_id)
+                        .maybeSingle();
+                    if (error) throw error;
+
+                    const pRaw = String(data?.poster_path || '').trim();
+                    const p = pRaw ? (dashNormalizePosterPath(pRaw) || null) : null;
+                    const tmdbFromDb = Number(data?.tmdb_id);
+                    if (Number.isFinite(tmdbFromDb) && tmdbFromDb > 0) dashPosterCacheByTmdbId.set(tmdbFromDb, p);
+                    if (Number.isFinite(tmdb_id) && tmdb_id > 0) dashPosterCacheByTmdbId.set(tmdb_id, p);
+                    return p;
+                } catch (_) {
+                    if (Number.isFinite(tmdb_id) && tmdb_id > 0) dashPosterCacheByTmdbId.set(tmdb_id, null);
+                    return null;
+                }
+            }
+
+            // 3) DB lookup by tmdb_id fallback
+            if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return null;
             try {
                 const { data, error } = await supabaseClient
                     .from('Movies')
@@ -3791,7 +3851,8 @@
                     .eq('tmdb_id', tmdb_id)
                     .maybeSingle();
                 if (error) throw error;
-                const p = String(data?.poster_path || '').trim() || null;
+                const pRaw = String(data?.poster_path || '').trim();
+                const p = pRaw ? (dashNormalizePosterPath(pRaw) || null) : null;
                 dashPosterCacheByTmdbId.set(tmdb_id, p);
                 return p;
             } catch (_) {
@@ -4323,6 +4384,15 @@
                 listsActiveListId = lid;
                 const label = String(sel.selectedOptions?.[0]?.textContent || '').trim();
                 if (label) listsActiveListName = label;
+
+                // Reset the quick-add search UI when changing lists.
+                try {
+                    const input = document.getElementById('lists-movie-search-input');
+                    if (input) input.value = '';
+                    clearListsSearchUI();
+                    setListsQuickAddEnabledState();
+                } catch (_) {}
+
                 await loadListsPage({ reset: false });
             }, { capture: true });
 
@@ -4475,6 +4545,7 @@
                 elItems.innerHTML = `<div class="text-gray">Log in to view your lists.</div>`;
                 if (elTitle) elTitle.textContent = 'Lists';
                 if (elSub) elSub.textContent = '';
+                try { setListsQuickAddEnabledState(); } catch (_) {}
                 return;
             }
 
@@ -4518,9 +4589,11 @@
 
                 if (elTitle) elTitle.textContent = listsActiveListName || 'List';
                 if (elSub) elSub.textContent = '';
+                try { setListsQuickAddEnabledState(); } catch (_) {}
 
                 if (!listsActiveListId) {
                     elItems.innerHTML = `<div class="text-gray">Create a list to get started.</div>`;
+                    try { setListsQuickAddEnabledState(); } catch (_) {}
                     return;
                 }
 
@@ -4536,6 +4609,7 @@
                 const movieIds = joinRows.map(r => r?.movie_id).filter(Boolean);
                 if (movieIds.length === 0) {
                     elItems.innerHTML = `<div class="text-gray">No movies in this list yet.</div>`;
+                    try { setListsQuickAddEnabledState(); } catch (_) {}
                     return;
                 }
 
@@ -4637,6 +4711,7 @@
                 elLists.innerHTML = `<div class="text-gray">Failed to load lists: ${escapeHtml(msg)}</div>`;
                 elItems.innerHTML = `<div class="text-gray">Failed to load list items.</div>`;
             } finally {
+                try { setListsQuickAddEnabledState(); } catch (_) {}
                 listsLoading = false;
             }
         }
@@ -5002,6 +5077,7 @@
                         'fav_quote', 'notes',
 
                         // Misc
+                        'poster_path', 'posterPath', 'poster_url', 'posterUrl',
                         'created_at', 'updated_at',
                     ],
                 });
@@ -6036,8 +6112,8 @@
                 const tierLabel = dashNormalizeTierLabel(r?.tier);
 
                 const tmdb_id = Number(movie?.tmdb_id);
-                const poster_path = String(movie?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : '');
-                const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
+                const poster_path = dashNormalizePosterPath(String(movie?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : ''));
+                const posterUrl = dashBuildPosterUrl(poster_path, 'w342');
 
                 const quote = String(r?.fav_quote ?? '').trim();
                 const notes = String(r?.notes ?? '').trim();
@@ -6312,7 +6388,9 @@
 
                 // Posters are lazy-loaded from stored DB poster_path.
 
-                const cards = items.map((r) => {
+                const ensuredPosterPaths = await Promise.all(items.map((r) => dashEnsurePosterPath(r)));
+
+                const cards = items.map((r, idx) => {
                     const title = String(r?.title ?? '').trim() || 'Untitled';
                     const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
                     const overall = dashFormatScore(r?.overall_rating);
@@ -6322,8 +6400,9 @@
                     const dashTmdbId = (r?.tmdb_id === null || r?.tmdb_id === undefined) ? '' : String(r.tmdb_id);
 
                     const tmdb_id = Number(r?.tmdb_id);
-                    const poster_path = String(r?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : '');
-                    const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
+                    const ensured = ensuredPosterPaths[idx] || '';
+                    const poster_path = dashNormalizePosterPath(ensured || String(r?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : ''));
+                    const posterUrl = dashBuildPosterUrl(poster_path, 'w342');
 
                     const metaHtml = dashJoinHelpParts([
                         year ? escapeHtml(year) : '',
@@ -6588,7 +6667,10 @@
                 // Posters are lazy-loaded from stored DB poster_path.
                 await ensureRatingsForItems(safe);
 
-                const cards = safe.map((r) => {
+                // Ensure we have poster_path from Movies even if the RPC doesn't return it.
+                const ensuredPosterPaths = await Promise.all(safe.map((r) => dashEnsurePosterPath(r)));
+
+                const cards = safe.map((r, idx) => {
                     const title = String(r?.title ?? '').trim() || 'Untitled';
                     const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
                     const ratingRow = dashRatingCacheByMovieId.get(r?.movie_id) || null;
@@ -6601,8 +6683,9 @@
                     const metricText = dashFormatScore(metricValue);
                     const tierLabel = dashNormalizeTierLabel(ratingRow ? ratingRow.tier : '');
                     const tmdb_id = Number(r?.tmdb_id);
-                    const poster_path = String(r?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : '');
-                    const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '';
+                    const ensured = ensuredPosterPaths[idx] || '';
+                    const poster_path = dashNormalizePosterPath(ensured || String(r?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : ''));
+                    const posterUrl = dashBuildPosterUrl(poster_path, 'w342');
 
                     const metaHtml = dashJoinHelpParts([
                         year ? escapeHtml(year) : '',
@@ -7417,6 +7500,16 @@
             }
         }
 
+        async function callSwiftApiSearchMoviesForLists({ query, page = 1, signal }) {
+            try {
+                // Lists page search should be dedicated to adding movies to lists only.
+                // It intentionally does not use the Home page filter state.
+                return await callSwiftApiPublic({ action: 'search', query, page, limit: 8 }, { signal });
+            } catch (err) {
+                throw new Error(`Search failed: ${String(err?.message || err)}`);
+            }
+        }
+
         async function callSwiftApiGetMovieDetails({ tmdb_id, signal }) {
             try {
                 return await callSwiftApiPublic({ action: 'details', tmdb_id }, { signal });
@@ -7545,6 +7638,222 @@
                     router.selectMovie(picked);
                 });
             }
+        }
+
+        let listsSearchItems = [];
+        let listsSearchDebounceTimer = null;
+        let listsSearchAbortController = null;
+        let listsQuickAddBusy = false;
+
+        function setListsQuickAddEnabledState() {
+            const input = document.getElementById('lists-movie-search-input');
+            if (!input) return;
+            const hasList = Boolean(String(listsActiveListId || '').trim());
+            input.disabled = !hasList || listsQuickAddBusy;
+            input.placeholder = hasList
+                ? `Add movies to “${String(listsActiveListName || 'this list').trim() || 'this list'}”…`
+                : 'Select a list to add movies…';
+        }
+
+        async function addListsSearchMovieToActiveList(picked) {
+            if (listsQuickAddBusy) return;
+
+            if (!supabaseClient) {
+                showToast('Supabase SDK failed to load.', { level: 'warn' });
+                return;
+            }
+
+            const lid = String(listsActiveListId || '').trim();
+            if (!lid) {
+                showToast('Select a list first.', { level: 'warn' });
+                setListsQuickAddEnabledState();
+                return;
+            }
+
+            let authedUser = null;
+            let accessToken = null;
+            try {
+                const res = await requireAuthOrThrow();
+                authedUser = res.user;
+                accessToken = res.accessToken;
+            } catch (_) {
+                openAuthModal();
+                return;
+            }
+
+            const title = String(picked?.title || '').trim();
+            const year = Number(picked?.year ?? picked?.release_year ?? null);
+            const tmdbId = Number(picked?.tmdb_id ?? picked?.tmdbId ?? picked?.id ?? null);
+            const existingDbMovieId = (isUuidLike(picked?.id) ? String(picked.id).trim() : '');
+
+            if (!title) {
+                showToast('Movie title missing. Try a different result.', { level: 'warn' });
+                return;
+            }
+
+            listsQuickAddBusy = true;
+            setListsQuickAddEnabledState();
+
+            try {
+                const ensuredMovieId = await ensureMovieFullySyncedForLists({
+                    accessToken,
+                    title,
+                    release_year: Number.isFinite(year) ? year : null,
+                    tmdb_id: Number.isFinite(tmdbId) ? tmdbId : null,
+                    movie_id: existingDbMovieId || null,
+                });
+
+                if (!ensuredMovieId) throw new Error('Failed to ensure movie exists.');
+
+                try {
+                    await addMovieToList({ user_id: authedUser.id, list_id: lid, movie_id: ensuredMovieId });
+                } catch (err) {
+                    const msg = String(err?.message || err);
+                    if (/duplicate|unique/i.test(msg)) {
+                        showToast('Already in this list.', { level: 'warn' });
+                        return;
+                    }
+                    throw err;
+                }
+
+                const listLabel = String(listsActiveListName || '').trim() || 'list';
+                showToast(`Added to ${listLabel}!`, { level: 'success' });
+                await loadListsPage({ reset: false });
+            } catch (err) {
+                showToast(`Add failed: ${String(err?.message || err)}`, { level: 'warn' });
+            } finally {
+                listsQuickAddBusy = false;
+                setListsQuickAddEnabledState();
+            }
+        }
+
+        function setListsSearchLoading() {
+            const results = document.getElementById('lists-movie-search-results');
+            if (!results) return;
+            results.innerHTML = `
+                <div class="search-item text-gray justify-center" style="gap:0.5rem;">
+                    <span class="icon-sm">${icons.loader}</span>
+                    Searching…
+                </div>
+            `;
+            results.classList.remove('hidden');
+        }
+
+        function clearListsSearchUI() {
+            const results = document.getElementById('lists-movie-search-results');
+            if (results) results.classList.add('hidden');
+            listsSearchItems = [];
+        }
+
+        function renderListsAddMovieSearchResults(items) {
+            const results = document.getElementById('lists-movie-search-results');
+            if (!results) return;
+
+            listsSearchItems = Array.isArray(items) ? items.slice(0, 6) : [];
+            if (listsSearchItems.length === 0) {
+                results.innerHTML = `<div class="search-item text-gray justify-center">No movies found</div>`;
+                results.classList.remove('hidden');
+                return;
+            }
+
+            results.innerHTML = listsSearchItems.map((m, idx) => {
+                const title = String(m?.title || '').trim();
+                const year = m?.year ? String(m.year) : '';
+                const genres = Array.isArray(m?.genres)
+                    ? m.genres.map(s => String(s).trim()).filter(Boolean)
+                    : String(m?.genre || '').split(',').map(s => s.trim()).filter(Boolean);
+                const posterPath = String(m?.poster_path || '').trim();
+                const posterUrl = posterPath ? `https://image.tmdb.org/t/p/w154${posterPath}` : '';
+                const metaParts = [year, (genres.length ? genres.join(', ') : '')].filter(Boolean);
+
+                return `
+                    <div class="search-item" data-lists-idx="${idx}" title="Add to list">
+                        <div style="display:flex; align-items:center; gap: 0.75rem;">
+                            <div style="width: 34px; height: 51px; flex: 0 0 34px; border-radius: 7px; overflow:hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+                                ${posterUrl
+                                    ? `<img src="${posterUrl}" alt="" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.style.display='none'; this.parentElement.style.opacity='0.6';">`
+                                    : `<div style="opacity:0.65; color: var(--text-muted); width: 16px; height: 16px; display:flex; align-items:center; justify-content:center;">${icons.film}</div>`
+                                }
+                            </div>
+                            <div>
+                                <div class="text-white font-semibold">${escapeHtml(title)}</div>
+                                <div class="text-xs text-gray">${escapeHtml(metaParts.join(' • '))}</div>
+                            </div>
+                        </div>
+                        <div style="color:var(--text-muted);">${icons.plusCircle}</div>
+                    </div>
+                `;
+            }).join('');
+            results.classList.remove('hidden');
+
+            if (!results.dataset.boundClicks) {
+                results.dataset.boundClicks = 'true';
+                results.addEventListener('click', (e) => {
+                    const row = e?.target?.closest ? e.target.closest('.search-item[data-lists-idx]') : null;
+                    if (!row) return;
+                    const idx = Number(row.getAttribute('data-lists-idx'));
+                    const picked = Number.isFinite(idx) ? listsSearchItems[idx] : null;
+                    if (!picked) return;
+
+                    // This Lists-only search does ONE thing: add the picked movie to the active list.
+                    const input = document.getElementById('lists-movie-search-input');
+                    if (input) input.value = '';
+                    clearListsSearchUI();
+                    addListsSearchMovieToActiveList(picked).catch(() => null);
+                });
+            }
+        }
+
+        function handleListsAddMovieSearch(query, opts = {}) {
+            const inputEl = document.getElementById('lists-movie-search-input');
+            const results = document.getElementById('lists-movie-search-results');
+            // If the Lists page isn't mounted, do nothing.
+            if (!inputEl || !results) return;
+
+            if (inputEl.disabled) return;
+
+            const q = String(query || '').trim();
+            if (!q || q.length < 1) {
+                if (listsSearchDebounceTimer) clearTimeout(listsSearchDebounceTimer);
+                if (listsSearchAbortController) listsSearchAbortController.abort();
+                clearListsSearchUI();
+                return;
+            }
+
+            // Debounce + cancel in-flight request.
+            if (listsSearchDebounceTimer) clearTimeout(listsSearchDebounceTimer);
+            if (listsSearchAbortController) listsSearchAbortController.abort();
+            listsSearchAbortController = new AbortController();
+
+            // Keep it lightweight; wait until the user types at least 3 characters.
+            if (q.length < 3) {
+                results.classList.add('hidden');
+                listsSearchItems = [];
+                return;
+            }
+
+            const debounceMs = opts?.force ? 0 : 320;
+            listsSearchDebounceTimer = setTimeout(async () => {
+                try {
+                    setListsSearchLoading();
+
+                    const data = await callSwiftApiSearchMoviesForLists({
+                        query: q,
+                        page: 1,
+                        signal: listsSearchAbortController.signal,
+                    });
+
+                    const items = Array.isArray(data?.results) ? data.results : [];
+                    renderListsAddMovieSearchResults(items);
+                } catch (err) {
+                    // Ignore aborts
+                    if (String(err?.name || '').toLowerCase() === 'aborterror') return;
+                    if (String(err?.message || '').toLowerCase().includes('aborted')) return;
+
+                    results.innerHTML = `<div class="search-item text-gray justify-center">Search unavailable — please try again</div>`;
+                    results.classList.remove('hidden');
+                }
+            }, debounceMs);
         }
 
         function setHomeActionsVisible(isVisible) {
@@ -7816,6 +8125,18 @@
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('open');
         }
+
+        // Close the Lists-only movie search dropdown when clicking outside it.
+        // (This is separate from the Home page search UI.)
+        document.addEventListener('click', (e) => {
+            const results = document.getElementById('lists-movie-search-results');
+            const input = document.getElementById('lists-movie-search-input');
+            if (!results || !input) return;
+            const within = (e?.target && (results.contains(e.target) || input.contains(e.target)));
+            if (!within) {
+                try { results.classList.add('hidden'); } catch (_) {}
+            }
+        }, { capture: true });
 
         function initializeWatchMethodToggle() {
             const btn = document.getElementById('watchmethod-toggle');
