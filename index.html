@@ -625,6 +625,49 @@
             flex-wrap: wrap;
         }
 
+        .lists-watch-options-btn {
+            width: 100%;
+            border-radius: 0.85rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 850;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.92);
+            cursor: pointer;
+        }
+        .lists-watch-options-btn:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(20,184,166,0.35);
+        }
+
+        .lists-platforms {
+            margin-top: 0.55rem;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .lists-platform-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.22rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.82);
+            font-weight: 850;
+            font-size: 0.78rem;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        .lists-platform-pill.more {
+            background: rgba(20,184,166,0.10);
+            border-color: rgba(20,184,166,0.35);
+            color: rgba(20,184,166,0.95);
+        }
+
         .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
         .nav-auth-btn {
             padding: 0.5rem 0.9rem;
@@ -1503,6 +1546,66 @@
                 </div>
                 <div id="lists-create-status" class="text-xs" style="color: rgba(255,255,255,0.60);"></div>
             </form>
+        </div>
+    </div>
+
+    <div id="lists-rename-overlay" class="auth-overlay" onclick="if(event.target === this) closeListsRenameModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="lists-rename-title" style="max-width: 520px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="lists-rename-title">Rename List</div>
+                <button class="auth-modal-close" type="button" onclick="closeListsRenameModal()">Close</button>
+            </div>
+
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Enter a new name (max 80 characters).
+            </div>
+
+            <form id="lists-rename-form" style="margin-top: 0.85rem; display:grid; gap: 0.65rem;">
+                <input id="lists-rename-name" type="text" class="input-field" placeholder="New list name" maxlength="80" autocomplete="off">
+                <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="submit" class="btn btn-primary" style="border-radius: 0.85rem;">Save</button>
+                    <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" onclick="closeListsRenameModal()">Cancel</button>
+                </div>
+                <div id="lists-rename-status" class="text-xs" style="color: rgba(255,255,255,0.60);"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="lists-delete-overlay" class="auth-overlay" onclick="if(event.target === this) closeListsDeleteModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="lists-delete-title" style="max-width: 520px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="lists-delete-title">Delete List</div>
+                <button class="auth-modal-close" type="button" onclick="closeListsDeleteModal()">Close</button>
+            </div>
+
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                This will permanently delete <span id="lists-delete-name" class="text-white font-semibold"></span> and remove all movies from it. Ratings/logs are not affected.
+            </div>
+
+            <div style="margin-top: 0.85rem; display:flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline" data-lists-action="confirm_delete_list" style="border-radius: 0.85rem; border-color: rgba(239,68,68,0.55); background: rgba(239,68,68,0.10);">Delete</button>
+                <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" onclick="closeListsDeleteModal()">Cancel</button>
+            </div>
+            <div id="lists-delete-status" class="text-xs" style="color: rgba(255,255,255,0.60); margin-top: 0.65rem;"></div>
+        </div>
+    </div>
+
+    <div id="lists-watch-options-overlay" class="auth-overlay" onclick="if(event.target === this) closeListsWatchOptionsModal();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="lists-watch-options-title" style="max-width: 520px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="lists-watch-options-title">Watch Options</div>
+                <button class="auth-modal-close" type="button" onclick="closeListsWatchOptionsModal()">Close</button>
+            </div>
+
+            <div id="lists-watch-options-movie" class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;"></div>
+
+            <div id="lists-watch-options-body" class="glass-panel" style="margin-top: 0.85rem; padding: 0.85rem; border-radius: 0.85rem; background: rgba(0,0,0,0.10);">
+                <div class="text-gray">Loading…</div>
+            </div>
+
+            <div class="auth-modal-actions">
+                <button type="button" class="btn btn-outline" style="border-radius: 0.85rem;" onclick="closeListsWatchOptionsModal()">Close</button>
+            </div>
         </div>
     </div>
 
@@ -2503,21 +2606,40 @@
                                             <div id="lists-active-subtitle" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
                                         </div>
 
-                                        <!-- Lists-only Search (adds directly to the active list) -->
-                                        <div style="position: relative; width: 260px; max-width: 100%;">
-                                            <div class="input-group" style="margin: 0;">
-                                                <div class="input-icon" style="height: 34px; display:flex; align-items:center;">${icons.search}</div>
-                                                <input
-                                                    type="text"
-                                                    id="lists-movie-search-input"
-                                                    oninput="handleListsAddMovieSearch(this.value)"
-                                                    autocomplete="off"
-                                                    placeholder="Select a list to add movies…"
-                                                    class="input-field glass-input"
-                                                    style="border-radius: 0.75rem; height: 34px; font-size: 0.85rem; padding-left: 2.35rem;"
-                                                    disabled
-                                                >
-                                                <div id="lists-movie-search-results" class="search-dropdown hidden"></div>
+                                        <div class="flex items-center" style="gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                                            <button
+                                                id="lists-rename-btn"
+                                                type="button"
+                                                class="btn btn-outline"
+                                                data-lists-action="rename_list"
+                                                style="border-radius: 0.75rem; height: 34px; padding: 0.45rem 0.65rem; font-size: 0.85rem;"
+                                                disabled
+                                            >Rename</button>
+                                            <button
+                                                id="lists-delete-btn"
+                                                type="button"
+                                                class="btn btn-outline"
+                                                data-lists-action="delete_list"
+                                                style="border-radius: 0.75rem; height: 34px; padding: 0.45rem 0.65rem; font-size: 0.85rem; border-color: rgba(239,68,68,0.55); background: rgba(239,68,68,0.10);"
+                                                disabled
+                                            >Delete</button>
+
+                                            <!-- Lists-only Search (adds directly to the active list) -->
+                                            <div style="position: relative; width: 260px; max-width: 100%;">
+                                                <div class="input-group" style="margin: 0;">
+                                                    <div class="input-icon" style="height: 34px; display:flex; align-items:center;">${icons.search}</div>
+                                                    <input
+                                                        type="text"
+                                                        id="lists-movie-search-input"
+                                                        oninput="handleListsAddMovieSearch(this.value)"
+                                                        autocomplete="off"
+                                                        placeholder="Select a list to add movies…"
+                                                        class="input-field glass-input"
+                                                        style="border-radius: 0.75rem; height: 34px; font-size: 0.85rem; padding-left: 2.35rem;"
+                                                        disabled
+                                                    >
+                                                    <div id="lists-movie-search-results" class="search-dropdown hidden"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -3950,6 +4072,7 @@
         let cachedListsUserId = null;
 
         let listsMoviePrefillById = new Map();
+        let listsPlatformsByMovieId = new Map();
 
         let cachedBucketListId = null;
         let bucketListEnsuredForUserId = null;
@@ -3957,6 +4080,15 @@
         let listPickerSelectedMovie = null;
         let listPickerBusy = false;
         let listsCreateBusy = false;
+        let listsRenameBusy = false;
+        let listsDeleteBusy = false;
+
+        function isBucketList({ list_id, list_name } = {}) {
+            const lid = String(list_id || '').trim();
+            if (lid && cachedBucketListId && String(cachedBucketListId) === lid) return true;
+            const name = String(list_name || '').trim().toLowerCase();
+            return name === 'bucket list';
+        }
 
         function closeListPickerModal() {
             const overlay = document.getElementById('list-picker-overlay');
@@ -3997,6 +4129,209 @@
             listsCreateBusy = false;
         }
 
+        function openListsRenameModal() {
+            const lid = String(listsActiveListId || '').trim();
+            if (!lid) {
+                showToast('Select a list first.', { level: 'warn' });
+                return;
+            }
+            if (isBucketList({ list_id: lid, list_name: listsActiveListName })) {
+                showToast('Bucket List can’t be renamed.', { level: 'warn' });
+                return;
+            }
+
+            const overlay = document.getElementById('lists-rename-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+
+            const statusEl = document.getElementById('lists-rename-status');
+            if (statusEl) statusEl.textContent = '';
+            const input = document.getElementById('lists-rename-name');
+            if (input) {
+                input.value = String(listsActiveListName || '').trim();
+                try { input.focus(); input.select?.(); } catch (_) {}
+            }
+            listsRenameBusy = false;
+        }
+
+        function closeListsRenameModal() {
+            const overlay = document.getElementById('lists-rename-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+            const statusEl = document.getElementById('lists-rename-status');
+            if (statusEl) statusEl.textContent = '';
+            const input = document.getElementById('lists-rename-name');
+            if (input) input.value = '';
+            listsRenameBusy = false;
+        }
+
+        function openListsDeleteModal() {
+            const lid = String(listsActiveListId || '').trim();
+            if (!lid) {
+                showToast('Select a list first.', { level: 'warn' });
+                return;
+            }
+            if (isBucketList({ list_id: lid, list_name: listsActiveListName })) {
+                showToast('Bucket List can’t be deleted.', { level: 'warn' });
+                return;
+            }
+
+            const overlay = document.getElementById('lists-delete-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+
+            const statusEl = document.getElementById('lists-delete-status');
+            if (statusEl) statusEl.textContent = '';
+            const nameEl = document.getElementById('lists-delete-name');
+            if (nameEl) nameEl.textContent = `“${String(listsActiveListName || 'this list').trim() || 'this list'}”`;
+            listsDeleteBusy = false;
+        }
+
+        function closeListsDeleteModal() {
+            const overlay = document.getElementById('lists-delete-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+            const statusEl = document.getElementById('lists-delete-status');
+            if (statusEl) statusEl.textContent = '';
+            const nameEl = document.getElementById('lists-delete-name');
+            if (nameEl) nameEl.textContent = '';
+            listsDeleteBusy = false;
+        }
+
+        function hexToRgba(hex, alpha) {
+            const h = String(hex || '').trim().replace('#', '');
+            if (!/^[0-9a-f]{6}$/i.test(h)) return `rgba(255,255,255,${Number(alpha) || 0.15})`;
+            const r = parseInt(h.slice(0, 2), 16);
+            const g = parseInt(h.slice(2, 4), 16);
+            const b = parseInt(h.slice(4, 6), 16);
+            const a = Math.max(0, Math.min(1, Number(alpha)));
+            return `rgba(${r},${g},${b},${a})`;
+        }
+
+        function platformBrandTheme(platformName) {
+            const raw = normalizePlatformName(platformName);
+            const n = raw.toLowerCase();
+
+            // Defaults (neutral).
+            let bg = 'rgba(255,255,255,0.06)';
+            let border = 'rgba(255,255,255,0.14)';
+            let text = 'rgba(255,255,255,0.92)';
+
+            const solid = (hex) => {
+                bg = hexToRgba(hex, 0.18);
+                border = hexToRgba(hex, 0.55);
+                text = '#fff';
+            };
+
+            if (n.includes('netflix')) {
+                solid('#E50914');
+            } else if (n.includes('prime video') || (n.includes('amazon') && n.includes('prime'))) {
+                solid('#00A8E1');
+            } else if (n === 'amazon video' || (n.includes('amazon') && !n.includes('prime'))) {
+                solid('#FF9900');
+            } else if (n.includes('disney')) {
+                bg = 'linear-gradient(90deg, rgba(17,60,207,0.30), rgba(0,209,255,0.22))';
+                border = 'rgba(0,209,255,0.55)';
+                text = '#fff';
+            } else if (n === 'max' || n.includes('hbo') || n.includes('hbo max')) {
+                solid('#7D2AE8');
+            } else if (n.includes('hulu')) {
+                solid('#1CE783');
+            } else if (n.includes('apple tv') || n === 'apple tv+' || n.includes('itunes')) {
+                bg = 'rgba(255,255,255,0.10)';
+                border = 'rgba(255,255,255,0.35)';
+                text = '#fff';
+            } else if (n.includes('paramount')) {
+                solid('#0064FF');
+            } else if (n.includes('peacock')) {
+                solid('#00A7E1');
+            } else if (n.includes('crunchyroll')) {
+                solid('#F47521');
+            } else if (n.includes('tubi')) {
+                solid('#FF1D5E');
+            } else if (n.includes('pluto')) {
+                bg = 'rgba(255, 236, 0, 0.18)';
+                border = 'rgba(255, 236, 0, 0.55)';
+                text = 'rgba(255,255,255,0.95)';
+            } else if (n.includes('youtube')) {
+                solid('#FF0000');
+            } else if (n.includes('google play') || (n.includes('google') && n.includes('play'))) {
+                solid('#34A853');
+            } else if (n.includes('vudu')) {
+                solid('#0077C8');
+            } else if (n.includes('plex')) {
+                solid('#E5A00D');
+            } else if (n.includes('mubi')) {
+                bg = 'rgba(255,255,255,0.10)';
+                border = 'rgba(255,255,255,0.28)';
+                text = '#fff';
+            }
+
+            return { bg, border, text };
+        }
+
+        function openListsWatchOptionsModal({ movie_id, title } = {}) {
+            const mid = String(movie_id || '').trim();
+            if (!mid) return;
+
+            const overlay = document.getElementById('lists-watch-options-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+
+            const movieEl = document.getElementById('lists-watch-options-movie');
+            if (movieEl) {
+                const t = String(title || '').trim();
+                movieEl.textContent = t ? `Movie: ${t}` : 'Movie';
+            }
+
+            const bodyEl = document.getElementById('lists-watch-options-body');
+            if (!bodyEl) return;
+
+            const platforms = listsPlatformsByMovieId.get(mid) || [];
+            if (!platforms.length) {
+                bodyEl.innerHTML = `<div class="text-gray">No watch options found yet.</div>`;
+                return;
+            }
+
+            bodyEl.innerHTML = `
+                <div class="text-white font-bold" style="margin-bottom: 0.55rem;">Available on</div>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+                    ${platforms.map((p) => {
+                        const full = normalizePlatformName(p);
+                        const label = platformShortLabel(full) || full;
+                        const theme = platformBrandTheme(full);
+                        const pillStyle = `background: ${theme.bg}; border: 1px solid ${theme.border}; color: ${theme.text};`;
+
+                        return `
+                            <div style="display:flex; align-items:center; justify-content: center; padding: 0.7rem; border-radius: 0.85rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);">
+                                <span style="display:inline-flex; align-items:center; padding: 0.28rem 0.6rem; border-radius: 999px; font-weight: 900; font-size: 0.88rem; line-height: 1; ${pillStyle}">${escapeHtml(label)}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function closeListsWatchOptionsModal() {
+            const overlay = document.getElementById('lists-watch-options-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+            const movieEl = document.getElementById('lists-watch-options-movie');
+            if (movieEl) movieEl.textContent = '';
+            const bodyEl = document.getElementById('lists-watch-options-body');
+            if (bodyEl) bodyEl.innerHTML = `<div class="text-gray">Loading…</div>`;
+        }
+
+        function setListsActiveListActionsEnabledState() {
+            const renameBtn = document.getElementById('lists-rename-btn');
+            const deleteBtn = document.getElementById('lists-delete-btn');
+            const lid = String(listsActiveListId || '').trim();
+            const isBucket = isBucketList({ list_id: lid, list_name: listsActiveListName });
+            const enabled = Boolean(lid) && !isBucket;
+            if (renameBtn) renameBtn.disabled = !enabled || listsRenameBusy;
+            if (deleteBtn) deleteBtn.disabled = !enabled || listsDeleteBusy;
+        }
+
         async function ensureBucketListForUser({ user_id }) {
             if (!supabaseClient) throw new Error('Supabase client not initialized.');
             const uid = String(user_id || '').trim();
@@ -4021,6 +4356,62 @@
             const s = String(name ?? '').trim();
             if (!s) return '';
             return s.replace(/\s+/g, ' ').trim();
+        }
+
+        function normalizePlatformName(name) {
+            const s = String(name ?? '').trim();
+            if (!s) return '';
+            return s.replace(/\s+/g, ' ').trim();
+        }
+
+        function platformShortLabel(platformName) {
+            const raw = normalizePlatformName(platformName);
+            const n = raw.toLowerCase();
+            if (!n) return '';
+
+            if (n.includes('netflix')) return 'Netflix';
+            if (n.includes('amazon') || n.includes('prime video') || n === 'prime') return 'Prime';
+            if (n.includes('disney')) return 'Disney+';
+            if (n === 'max' || n.includes('hbo') || n.includes('hbo max')) return 'Max';
+            if (n.includes('hulu')) return 'Hulu';
+            if (n.includes('apple tv') || n.includes('apple') || n.includes('itunes')) return 'Apple TV';
+            if (n.includes('paramount')) return 'Paramount+';
+            if (n.includes('peacock')) return 'Peacock';
+            if (n.includes('crunchyroll')) return 'Crunchyroll';
+            if (n.includes('tubi')) return 'Tubi';
+            if (n.includes('pluto')) return 'Pluto';
+            if (n.includes('youtube')) return 'YouTube';
+            if (n.includes('google play') || n.includes('google') || n.includes('play')) return 'Google Play';
+            if (n.includes('vudu')) return 'Vudu';
+            if (n.includes('mubi')) return 'MUBI';
+            if (n.includes('kanopy')) return 'Kanopy';
+            if (n.includes('plex')) return 'Plex';
+
+            // Fallback: keep short names readable.
+            if (raw.length <= 14) return raw;
+            return raw.slice(0, 12).trim() + '…';
+        }
+
+        function renderPlatformPills(platformNames) {
+            const names = Array.isArray(platformNames) ? platformNames : [];
+            const labels = [];
+            const seen = new Set();
+
+            for (const name of names) {
+                const label = platformShortLabel(name);
+                const key = String(label || '').toLowerCase();
+                if (!label || seen.has(key)) continue;
+                seen.add(key);
+                labels.push(label);
+            }
+
+            const max = 4;
+            const head = labels.slice(0, max);
+            const more = labels.length - head.length;
+
+            const chips = head.map((l) => (`<span class="lists-platform-pill">${escapeHtml(l)}</span>`));
+            if (more > 0) chips.push(`<span class="lists-platform-pill more">+${escapeHtml(String(more))}</span>`);
+            return chips.join('');
         }
 
         async function loadUserLists({ user_id, force = false } = {}) {
@@ -4310,6 +4701,86 @@
                     return;
                 }
 
+                if (action === 'rename_list') {
+                    openListsRenameModal();
+                    return;
+                }
+
+                if (action === 'delete_list') {
+                    openListsDeleteModal();
+                    return;
+                }
+
+                if (action === 'confirm_delete_list') {
+                    (async () => {
+                        if (listsDeleteBusy) return;
+
+                        const lid = String(listsActiveListId || '').trim();
+                        if (!lid) return;
+                        if (isBucketList({ list_id: lid, list_name: listsActiveListName })) {
+                            showToast('Bucket List can’t be deleted.', { level: 'warn' });
+                            return;
+                        }
+
+                        const statusEl = document.getElementById('lists-delete-status');
+                        const setStatus = (s) => { if (statusEl) statusEl.textContent = String(s || ''); };
+
+                        let authedUser = null;
+                        try {
+                            const { user } = await requireAuthOrThrow();
+                            authedUser = user;
+                        } catch (_) {
+                            setStatus('Please log in first.');
+                            openAuthModal();
+                            return;
+                        }
+
+                        listsDeleteBusy = true;
+                        setListsActiveListActionsEnabledState();
+                        setStatus('Deleting…');
+
+                        try {
+                            // Remove joins first (safe even if there are none).
+                            const { error: joinsErr } = await supabaseClient
+                                .from('Movie Lists')
+                                .delete()
+                                .eq('user_id', authedUser.id)
+                                .eq('list_id', lid);
+                            if (joinsErr) throw joinsErr;
+
+                            const { error: delErr } = await supabaseClient
+                                .from('Lists')
+                                .delete()
+                                .eq('user_id', authedUser.id)
+                                .eq('id', lid);
+                            if (delErr) throw delErr;
+
+                            cachedListsUserId = null;
+                            listsActiveListId = null;
+                            listsActiveListName = '';
+
+                            closeListsDeleteModal();
+                            await loadListsPage({ reset: true });
+                            showToast('List deleted.', { level: 'success' });
+                        } catch (err) {
+                            setStatus('');
+                            showToast(`Delete failed: ${String(err?.message || err)}`, { level: 'warn' });
+                        } finally {
+                            listsDeleteBusy = false;
+                            setListsActiveListActionsEnabledState();
+                        }
+                    })().catch(() => {});
+                    return;
+                }
+
+                if (action === 'watch_options') {
+                    const mid = String(el.dataset.movieId || '').trim();
+                    if (!mid) return;
+                    const title = String(el.dataset.movieTitle || '').trim();
+                    openListsWatchOptionsModal({ movie_id: mid, title });
+                    return;
+                }
+
                 if (action === 'open_movie') {
                     const mid = String(el.dataset.movieId || '').trim();
                     if (!mid) return;
@@ -4529,6 +5000,84 @@
                     }
                 }, { capture: true });
             }
+
+            const listsRenameForm = document.getElementById('lists-rename-form');
+            if (listsRenameForm) {
+                listsRenameForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    if (listsRenameBusy) return;
+
+                    const lid = String(listsActiveListId || '').trim();
+                    if (!lid) return;
+                    if (isBucketList({ list_id: lid, list_name: listsActiveListName })) {
+                        showToast('Bucket List can’t be renamed.', { level: 'warn' });
+                        return;
+                    }
+
+                    const statusEl = document.getElementById('lists-rename-status');
+                    const nameEl = document.getElementById('lists-rename-name');
+                    const setStatus = (s) => { if (statusEl) statusEl.textContent = String(s || ''); };
+
+                    const name = normalizeListName(nameEl?.value || '');
+                    if (!name) {
+                        setStatus('List name is required.');
+                        return;
+                    }
+
+                    if (name.toLowerCase() === 'bucket list') {
+                        setStatus('That name is reserved.');
+                        return;
+                    }
+
+                    if (String(listsActiveListName || '').trim() === name) {
+                        closeListsRenameModal();
+                        return;
+                    }
+
+                    let authedUser = null;
+                    try {
+                        const { user } = await requireAuthOrThrow();
+                        authedUser = user;
+                    } catch (_) {
+                        setStatus('Please log in first.');
+                        openAuthModal();
+                        return;
+                    }
+
+                    listsRenameBusy = true;
+                    setListsActiveListActionsEnabledState();
+                    setStatus('Saving…');
+
+                    try {
+                        const { data, error } = await supabaseClient
+                            .from('Lists')
+                            .update({ list_name: name })
+                            .eq('user_id', authedUser.id)
+                            .eq('id', lid)
+                            .select('id, list_name')
+                            .single();
+                        if (error) throw error;
+
+                        cachedListsUserId = null;
+                        listsActiveListName = String(data?.list_name || name).trim();
+
+                        closeListsRenameModal();
+                        await loadListsPage({ reset: true });
+                        showToast('List renamed!', { level: 'success' });
+                    } catch (err) {
+                        const msg = String(err?.message || err);
+                        if (/duplicate|unique/i.test(msg)) {
+                            setStatus('You already have a list with that name.');
+                            return;
+                        }
+                        setStatus('');
+                        showToast(`Rename failed: ${msg}`, { level: 'warn' });
+                    } finally {
+                        listsRenameBusy = false;
+                        setListsActiveListActionsEnabledState();
+                    }
+                }, { capture: true });
+            }
         }
 
         async function loadListsPage({ reset = true } = {}) {
@@ -4539,6 +5088,7 @@
             if (!elLists || !elItems) return;
 
             listsMoviePrefillById = new Map();
+            listsPlatformsByMovieId = new Map();
 
             if (!supabaseClient || !cachedIsAuthed) {
                 elLists.innerHTML = `<div class="text-gray">Log in to view your lists.</div>`;
@@ -4624,6 +5174,55 @@
                     if (m?.id) moviesById.set(m.id, m);
                 }
 
+                // Fetch watch platforms for these movies (best-effort; do not fail page).
+                const platformsByMovieId = new Map();
+                try {
+                    const { data: mpRows, error: mpErr } = await supabaseClient
+                        .from('Movie Platforms')
+                        .select('movie_id, platform_id')
+                        .in('movie_id', movieIds);
+                    if (!mpErr) {
+                        const rows = Array.isArray(mpRows) ? mpRows : [];
+                        const platformIds = Array.from(new Set(rows.map(r => r?.platform_id).filter(Boolean)));
+
+                        let platformNameById = new Map();
+                        if (platformIds.length > 0) {
+                            const { data: plats, error: platsErr } = await supabaseClient
+                                .from('Platforms')
+                                .select('id, name')
+                                .in('id', platformIds);
+                            if (!platsErr) {
+                                platformNameById = new Map(
+                                    (Array.isArray(plats) ? plats : [])
+                                        .filter(p => p?.id)
+                                        .map(p => [p.id, normalizePlatformName(p?.name) || String(p?.name || '').trim()]),
+                                );
+                            }
+                        }
+
+                        for (const r of rows) {
+                            const mid = String(r?.movie_id || '').trim();
+                            const pid = r?.platform_id;
+                            if (!mid || pid === null || pid === undefined) continue;
+                            const pname = platformNameById.get(pid);
+                            if (!pname) continue;
+                            const arr = platformsByMovieId.get(mid) || [];
+                            arr.push(pname);
+                            platformsByMovieId.set(mid, arr);
+                        }
+
+                        // De-dupe + keep stable ordering.
+                        for (const [mid, arr] of platformsByMovieId.entries()) {
+                            platformsByMovieId.set(mid, uniqStrings(arr));
+                        }
+                    }
+                } catch (_) {
+                    // Ignore platform fetch errors.
+                }
+
+                // Promote to global map for the Watch Options modal.
+                listsPlatformsByMovieId = platformsByMovieId;
+
                 const cards = movieIds
                     .map((id) => {
                         const movie = moviesById.get(id) || null;
@@ -4652,6 +5251,8 @@
                         if (directorVal) metaLines.push({ label: 'Director', value: directorVal });
                         if (genreVal) metaLines.push({ label: 'Genres', value: genreVal });
                         if (imdbVal) metaLines.push({ label: 'IMDb', value: imdbVal });
+
+                        const platforms = platformsByMovieId.get(String(id)) || [];
 
                         // Cache a prefill object for poster-click navigation to the Log New Entry flow.
                         listsMoviePrefillById.set(String(id), {
@@ -4683,6 +5284,8 @@
                                             : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`}
                                     </div>
                                 </button>
+
+                                <button type="button" class="lists-watch-options-btn" data-lists-action="watch_options" data-movie-id="${escapeHtml(String(id))}" data-movie-title="${escapeHtml(title)}">Watch Options</button>
 
                                 <div>
                                     <div class="lists-title">
@@ -7653,6 +8256,8 @@
             input.placeholder = hasList
                 ? `Add movies to “${String(listsActiveListName || 'this list').trim() || 'this list'}”…`
                 : 'Select a list to add movies…';
+
+            try { setListsActiveListActionsEnabledState(); } catch (_) {}
         }
 
         async function addListsSearchMovieToActiveList(picked) {
