@@ -9,8 +9,8 @@
             To change it later: replace the embedded SVG inside the href="data:image/svg+xml,..." below.
             Tip: If you prefer a file instead of inline, swap these for: <link rel="icon" href="/favicon.ico">.
         ========================== FAVICON (BOOKMARK/TAB ICON) START ========================== -->
-        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2309090b'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial, sans-serif' font-weight='700' fill='%2314b8a6'%3ECT%3C/text%3E%3C/svg%3E">
-        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2309090b'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial, sans-serif' font-weight='700' fill='%2314b8a6'%3ECT%3C/text%3E%3C/svg%3E">
+        <link rel="icon" type="image/png" href="CT_Logo_Transparent.png">
+        <link rel="apple-touch-icon" href="CT_Logo_Transparent.png">
         <!-- ========================== FAVICON (BOOKMARK/TAB ICON) END ========================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -32,11 +32,11 @@
             --tier-b-rgb: 250, 204, 21;  /* Yellow (#facc15) */
             --tier-c-rgb: 74, 222, 128;  /* Green (#4ade80) */
             --tier-d-rgb: 96, 165, 250;  /* Blue (#60a5fa) */
-            --tier-f-rgb: 168, 85, 247;  /* Purple (#a855f7) */
+            --tier-f-rgb: 161, 55, 198;  /* Purple (#a137c6) */
             
             --font-family: 'Outfit', sans-serif;
             --container-width: 1280px;
-            --header-height: 64px;
+            --header-height: 120px;
         }
 
         * {
@@ -136,6 +136,28 @@
         }
         .nav-brand { font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem; }
         .nav-brand span { color: var(--brand); }
+
+        /* Navbar logo image */
+        .icon-wrapper { display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; }
+        .icon-wrapper img { width: 120px; height: 120px; object-fit: contain; display: block; }
+
+        @media (max-width: 768px) {
+            :root { --header-height: 96px; }
+            .icon-wrapper { width: 96px; height: 96px; }
+            .icon-wrapper img { width: 96px; height: 96px; }
+        }
+
+        /* Home hero logo (bigger brand mark) */
+        .home-hero-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 14px 28px rgba(0,0,0,0.45));
+        }
+        @media (max-width: 768px) {
+            .home-hero-logo { width: 96px; height: 96px; }
+        }
         .nav-links { display: flex; gap: 0.75rem; }
         .nav-link {
             font-size: 0.95rem;
@@ -1609,6 +1631,81 @@
         </div>
     </div>
 
+    <div id="lists-sortfilter-overlay" class="auth-overlay" onclick="if(event.target === this) closeListsSortFilterModal({ restoreDraft: true });" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="lists-sortfilter-title" style="max-width: 560px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="lists-sortfilter-title">Filters & Sort</div>
+                <button class="auth-modal-close" type="button" data-lists-action="cancel_sort_filter">Close</button>
+            </div>
+
+            <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
+                Choose filters + sorting, then press <span class="text-white font-semibold">Save</span> to update your list.
+            </div>
+
+            <div class="glass-panel" style="margin-top: 0.85rem; padding: 0.85rem; border-radius: 0.85rem; background: rgba(0,0,0,0.10);">
+                <div class="text-white font-bold" style="margin-bottom: 0.55rem;">Sort</div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <select id="lists-modal-sort-key" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="watch_date">Watch Date</option>
+                        <option value="overall">Overall %</option>
+                        <option value="sound">Sound %</option>
+                        <option value="pace">Pace %</option>
+                        <option value="imagery">Imagery %</option>
+                        <option value="acting">Acting %</option>
+                        <option value="plot">Plot %</option>
+                        <option value="dialogue">Dialogue %</option>
+                        <option value="imdb">IMDb %</option>
+                        <option value="release_year">Release Year</option>
+                    </select>
+                    <select id="lists-modal-sort-dir" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                    </select>
+                </div>
+
+                <div style="height: 1px; background: rgba(255,255,255,0.06); margin: 0.85rem 0;"></div>
+
+                <div class="text-white font-bold" style="margin-bottom: 0.55rem;">Filters</div>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+                    <select id="lists-modal-filter-tier" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Tier (All)</option>
+                        <option value="S-Tier">S-Tier</option>
+                        <option value="A-Tier">A-Tier</option>
+                        <option value="B-Tier">B-Tier</option>
+                        <option value="C-Tier">C-Tier</option>
+                        <option value="D-Tier">D-Tier</option>
+                        <option value="F-Tier">F-Tier</option>
+                        <option value="UNRANKED">Unranked</option>
+                    </select>
+
+                    <select id="lists-modal-filter-decade" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Release Decade (All)</option>
+                    </select>
+
+                    <input id="lists-modal-filter-director" class="input-field" placeholder="Director (contains…)" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;" />
+
+                    <select id="lists-modal-filter-mpa" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">MPA (All)</option>
+                    </select>
+
+                    <select id="lists-modal-filter-genre" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Genre (All)</option>
+                    </select>
+
+                    <select id="lists-modal-filter-platform" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Platform (All)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="auth-modal-actions" style="margin-top: 0.85rem; display:flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                <button type="button" class="btn btn-outline" data-lists-action="reset_sort_filter_draft" style="border-radius: 0.85rem;">Reset</button>
+                <button type="button" class="btn btn-outline" data-lists-action="cancel_sort_filter" style="border-radius: 0.85rem;">Cancel</button>
+                <button type="button" class="btn btn-primary" data-lists-action="save_sort_filter" style="border-radius: 0.85rem;">Save</button>
+            </div>
+        </div>
+    </div>
+
     <div id="library-sortfilter-overlay" class="auth-overlay" style="display:none;">
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="library-sortfilter-title" style="max-width: 560px;">
             <div class="auth-modal-header">
@@ -1897,7 +1994,7 @@
             user: `<svg viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>`,
             loader: `<svg viewBox="0 0 24 24" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>`
         };
-        document.getElementById('nav-logo-icon').innerHTML = icons.film;
+        document.getElementById('nav-logo-icon').innerHTML = `<img src="CT_Logo_Transparent.png" alt="CinemaTracker" />`;
         document.getElementById('menu-icon-btn').innerHTML = icons.menu;
         document.getElementById('toast-icon').innerHTML = icons.checkCircle;
         document.getElementById('footer-icons').innerHTML = `
@@ -1959,6 +2056,7 @@
 
                 this.currentPage = page;
                 this.formMode = mode;
+                document.body.dataset.page = page;
                 const root = document.getElementById('app-root');
                 
                 // Active Nav
@@ -2466,8 +2564,9 @@
                             
                             <!-- Content (Containerized) -->
                             <div class="container" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 2.25rem;">
+                                <img src="CT_Logo_Transparent.png" alt="CinemaTracker" class="home-hero-logo" style="margin-bottom: 0.85rem;" />
                                 <span class="text-xs font-semibold text-brand uppercase" style="background: var(--brand-light); padding: 0.25rem 0.75rem; border-radius: 99px; border: 1px solid rgba(20,184,166,0.2); width: fit-content; margin-bottom: 1rem;">Start Logging</span>
-                                <h1 class="text-5xl font-bold text-white mb-6" style="line-height: 1.1;">Cinematic <br/> <span style="background: linear-gradient(to right, var(--brand), #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Masterpieces</span></h1>
+                                <h1 class="text-5xl font-bold text-white mb-6" style="line-height: 1.1;">Cinematic <br/> <span style="background: linear-gradient(to right, var(--brand), #a137c6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Masterpieces</span></h1>
                                 
                                 <div style="max-width: 600px; position: relative;">
                                     <p class="text-xl text-gray mb-4">Search for a movie to add it to your diary.</p>
@@ -2525,7 +2624,7 @@
                                                         ${icons.plusCircle} Log as New Entry
                                                     </button>
                                                     <button id="update-existing-btn" onclick="router.toggleUpdateOptions()" class="btn btn-outline" style="flex:1; border-color: rgba(168, 85, 247, 0.55); background: rgba(168, 85, 247, 0.10);">
-                                                        <span style="color:#a855f7; width:20px;">${icons.refreshCw}</span> Update Existing
+                                                        <span style="color:#a137c6; width:20px;">${icons.refreshCw}</span> Update Existing
                                                     </button>
                                                 </div>
 
@@ -2608,6 +2707,14 @@
 
                                         <div class="flex items-center" style="gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
                                             <button
+                                                id="lists-filter-btn"
+                                                type="button"
+                                                class="btn btn-outline"
+                                                data-lists-action="open_sort_filter"
+                                                style="border-radius: 0.75rem; height: 34px; padding: 0.45rem 0.65rem; font-size: 0.85rem;"
+                                                disabled
+                                            >Filters/Sort</button>
+                                            <button
                                                 id="lists-rename-btn"
                                                 type="button"
                                                 class="btn btn-outline"
@@ -2661,7 +2768,7 @@
                 const allowEditMissingDetails = detailsReadonly && !hasDbMovie;
 
                 const formAccent = isUpdate
-                    ? { rgb: '168, 85, 247', hex: '#a855f7', name: 'Update Ratings' }
+                    ? { rgb: '161, 55, 198', hex: '#a137c6', name: 'Update Ratings' }
                     : { rgb: '20, 184, 166', hex: '#14b8a6', name: 'Log New Entry' };
 
                 const u = (isUpdate && prefill.mockUserReview) ? prefill.mockUserReview : {
@@ -3429,7 +3536,7 @@
                                     <p class="text-gray mt-2">Your most recent watches, with all stored details and ratings.</p>
                                 </div>
                                 <div style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
-                                    <button id="library-open-sortfilter" type="button" class="btn btn-outline" data-library-action="open_sort_filter" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Change Filters/Sort</button>
+                                    <button id="library-open-sortfilter" type="button" class="btn btn-outline" data-library-action="open_sort_filter" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Filters/Sort</button>
                                     <button id="library-refresh" type="button" class="btn btn-outline" data-library-action="refresh" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Refresh</button>
                                 </div>
                             </div>
@@ -4325,11 +4432,537 @@
         function setListsActiveListActionsEnabledState() {
             const renameBtn = document.getElementById('lists-rename-btn');
             const deleteBtn = document.getElementById('lists-delete-btn');
+            const filterBtn = document.getElementById('lists-filter-btn');
             const lid = String(listsActiveListId || '').trim();
             const isBucket = isBucketList({ list_id: lid, list_name: listsActiveListName });
             const enabled = Boolean(lid) && !isBucket;
             if (renameBtn) renameBtn.disabled = !enabled || listsRenameBusy;
             if (deleteBtn) deleteBtn.disabled = !enabled || listsDeleteBusy;
+
+            // Bucket List should not expose a Delete entry point.
+            if (deleteBtn) deleteBtn.style.display = isBucket ? 'none' : '';
+
+            // Filters/Sort works for all lists (including Bucket List).
+            const filtersEnabled = Boolean(lid) && !listsLoading;
+            if (filterBtn) filterBtn.disabled = !filtersEnabled;
+
+            if (filterBtn) {
+                ensureListsSortFilterStateInitialized();
+                const labels = {
+                    sortKey: {
+                        watch_date: 'Watch Date',
+                        overall: 'Overall %',
+                        sound: 'Sound %',
+                        pace: 'Pace %',
+                        imagery: 'Imagery %',
+                        acting: 'Acting %',
+                        plot: 'Plot %',
+                        dialogue: 'Dialogue %',
+                        imdb: 'IMDb %',
+                        release_year: 'Release Year',
+                    }
+                };
+                const model = buildSortFilterChipModel({
+                    state: listsSortFilterState,
+                    defaults: getDefaultListsSortFilterStateForActiveList(),
+                    labels,
+                });
+
+                filterBtn.title = model?.summaryText || '';
+                if (model?.isDefault) {
+                    filterBtn.style.borderColor = '';
+                    filterBtn.style.background = '';
+                } else {
+                    filterBtn.style.borderColor = 'rgba(20, 184, 166, 0.65)';
+                    filterBtn.style.background = 'rgba(20, 184, 166, 0.12)';
+                }
+            }
+        }
+
+        let listsSortFilterState = null;
+        let listsSortFilterDraft = null;
+        let listsFacetOptions = { decades: [], mpas: [], genres: [], platforms: [] };
+
+        function buildSortFilterStatusLine({ state, defaults, labels }) {
+            const st = state || {};
+            const def = defaults || {};
+
+            const sortKey = String(st.sortKey || def.sortKey || '').trim();
+            const sortDir = String(st.sortDir || def.sortDir || '').trim().toLowerCase();
+            const sortDefault = (sortKey === String(def.sortKey || '').trim()) && (sortDir === String(def.sortDir || '').trim().toLowerCase());
+
+            const parts = [];
+
+            const filterPairs = [];
+            const pushFilter = (k, v, { label = '' } = {}) => {
+                const val = String(v || '').trim();
+                if (!val) return;
+                filterPairs.push({ k, label: label || k, v: val });
+            };
+
+            pushFilter('tier', st.tier, { label: 'Tier' });
+            pushFilter('decade', st.decade, { label: 'Decade' });
+            pushFilter('directorContains', st.directorContains, { label: 'Director' });
+            pushFilter('mpa', st.mpa, { label: 'MPA' });
+            pushFilter('genre', st.genre, { label: 'Genre' });
+            pushFilter('platform', st.platform, { label: 'Platform' });
+
+            const hasAnyFilters = filterPairs.length > 0;
+
+            const sortLabel = labels?.sortKey?.[sortKey] || sortKey || 'Watch Date';
+            const dirArrow = (sortDir === 'asc') ? '↑' : '↓';
+            const sortPart = `Sort: ${sortLabel} ${dirArrow}`;
+
+            const formatFilter = (p) => {
+                if (p.k === 'directorContains') return `${p.label} contains “${p.v}”`;
+                if (p.k === 'platform' && p.v === '__NONE__') return `${p.label}: None`;
+                if (p.k === 'tier' && p.v === 'UNRANKED') return `${p.label}: Unranked`;
+                return `${p.label}: ${p.v}`;
+            };
+
+            if (!hasAnyFilters && sortDefault) {
+                return { isDefault: true, text: 'Filters/Sort: Default' };
+            }
+
+            if (hasAnyFilters) {
+                const shown = filterPairs.slice(0, 3).map(formatFilter);
+                const extra = filterPairs.length - shown.length;
+                parts.push(`Filters: ${shown.join(', ')}${extra > 0 ? ` (+${extra})` : ''}`);
+            }
+            if (!sortDefault) parts.push(sortPart);
+            if (sortDefault && hasAnyFilters) parts.push('Sort: Default');
+
+            return { isDefault: false, text: parts.join(' • ') };
+        }
+
+        function buildSortFilterChipModel({ state, defaults, labels }) {
+            const st = state || {};
+            const def = defaults || {};
+            const status = buildSortFilterStatusLine({ state: st, defaults: def, labels });
+
+            const sortKey = String(st.sortKey || def.sortKey || '').trim();
+            const sortDir = String(st.sortDir || def.sortDir || '').trim().toLowerCase();
+            const sortChanged = (sortKey !== String(def.sortKey || '').trim()) || (sortDir !== String(def.sortDir || '').trim().toLowerCase());
+
+            const sortLabel = labels?.sortKey?.[sortKey] || sortKey || 'Watch Date';
+            const dirArrow = (sortDir === 'asc') ? '↑' : '↓';
+
+            const chips = [];
+
+            const addFilterChip = (part, text) => {
+                const t = String(text || '').trim();
+                if (!t) return;
+                chips.push({ part, kind: 'filter', text: t });
+            };
+
+            const tier = String(st.tier || '').trim();
+            if (tier) addFilterChip('tier', `Tier: ${tier === 'UNRANKED' ? 'Unranked' : tier}`);
+
+            const decade = String(st.decade || '').trim();
+            if (decade) addFilterChip('decade', `Decade: ${decade}`);
+
+            const director = String(st.directorContains || '').trim();
+            if (director) addFilterChip('directorContains', `Director contains “${director}”`);
+
+            const mpa = String(st.mpa || '').trim();
+            if (mpa) addFilterChip('mpa', `MPA: ${mpa}`);
+
+            const genre = String(st.genre || '').trim();
+            if (genre) addFilterChip('genre', `Genre: ${genre}`);
+
+            const platform = String(st.platform || '').trim();
+            if (platform) addFilterChip('platform', `Platform: ${platform === '__NONE__' ? 'None' : platform}`);
+
+            if (sortChanged) {
+                chips.push({ part: 'sort', kind: 'sort', text: `Sort: ${sortLabel} ${dirArrow}` });
+            }
+
+            return {
+                isDefault: Boolean(status?.isDefault),
+                summaryText: String(status?.text || ''),
+                chips,
+            };
+        }
+
+        function renderSortFilterChipsHtml({ model, namespace }) {
+            const m = model || { isDefault: true, summaryText: '', chips: [] };
+            const ns = String(namespace || '').trim();
+            const wrapStyle = 'display:flex; flex-wrap: wrap; gap: 8px; align-items: center;';
+            const xStyle = 'width: 18px; height: 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); background: rgba(0,0,0,0.18); color: rgba(255,255,255,0.80); font-weight: 900; line-height: 1; display:inline-flex; align-items:center; justify-content:center; cursor:pointer;';
+
+            const defaultChip = `<span class="dash-quote-pill" style="display:inline-flex; align-items:center; gap: 8px; opacity: 0.9;">Default</span>`;
+            if (m.isDefault) {
+                return `<div style="${wrapStyle}">${defaultChip}</div>`;
+            }
+
+            const chipHtml = (c) => {
+                const text = String(c?.text || '').trim();
+                const part = String(c?.part || '').trim();
+                if (!text || !part) return '';
+                const clearBtn = `<button type="button" style="${xStyle}" data-${escapeHtml(ns)}-action="clear_sort_filter_part" data-part="${escapeHtml(part)}" aria-label="Clear ${escapeHtml(text)}" title="Clear">×</button>`;
+                return `<span class="dash-quote-pill" style="display:inline-flex; align-items:center; gap: 8px;">${escapeHtml(text)}${clearBtn}</span>`;
+            };
+
+            const chips = (Array.isArray(m.chips) ? m.chips : []).map(chipHtml).filter(Boolean).join('');
+            return `<div style="${wrapStyle}">${chips || defaultChip}</div>`;
+        }
+
+        function getDefaultListsSortFilterState({ isBucket = false } = {}) {
+            // Bucket List: movies are generally unwatched/unrated, so avoid rating-based defaults.
+            // Also avoid "Watch Date" since it will typically be null.
+            if (isBucket) {
+                return {
+                    sortKey: 'release_year',
+                    sortDir: 'desc',
+                    tier: '',
+                    decade: '',
+                    directorContains: '',
+                    mpa: '',
+                    genre: '',
+                    platform: '',
+                };
+            }
+
+            return {
+                sortKey: 'watch_date',
+                sortDir: 'desc',
+                tier: '',
+                decade: '',
+                directorContains: '',
+                mpa: '',
+                genre: '',
+                platform: '',
+            };
+        }
+
+        function getDefaultListsSortFilterStateForActiveList() {
+            const lid = String(listsActiveListId || '').trim();
+            const isBucket = isBucketList({ list_id: lid, list_name: listsActiveListName });
+            return getDefaultListsSortFilterState({ isBucket });
+        }
+
+        function getAllowedListsSortKeysForActiveList() {
+            const lid = String(listsActiveListId || '').trim();
+            const isBucket = isBucketList({ list_id: lid, list_name: listsActiveListName });
+
+            if (isBucket) {
+                // Bucket List: no user rating sorts; no watch-date sort.
+                return ['release_year', 'imdb'];
+            }
+
+            return [
+                'watch_date',
+                'overall',
+                'sound',
+                'pace',
+                'imagery',
+                'acting',
+                'plot',
+                'dialogue',
+                'imdb',
+                'release_year',
+            ];
+        }
+
+        function ensureListsSortFilterStateInitialized() {
+            if (!listsSortFilterState) {
+                listsSortFilterState = getDefaultListsSortFilterStateForActiveList();
+            }
+        }
+
+        function configureListsSortFilterModalForActiveList() {
+            const els = getListsSortFilterModalEls();
+            if (!els.sortKey) return;
+
+            const lid = String(listsActiveListId || '').trim();
+            const isBucket = isBucketList({ list_id: lid, list_name: listsActiveListName });
+            const allowed = new Set(getAllowedListsSortKeysForActiveList());
+
+            const sortOptions = [
+                { value: 'watch_date', label: 'Watch Date' },
+                { value: 'overall', label: 'Overall %' },
+                { value: 'sound', label: 'Sound %' },
+                { value: 'pace', label: 'Pace %' },
+                { value: 'imagery', label: 'Imagery %' },
+                { value: 'acting', label: 'Acting %' },
+                { value: 'plot', label: 'Plot %' },
+                { value: 'dialogue', label: 'Dialogue %' },
+                { value: 'imdb', label: 'IMDb %' },
+                { value: 'release_year', label: 'Release Year' },
+            ].filter(o => allowed.has(o.value));
+
+            const prev = String(els.sortKey.value || '').trim();
+            els.sortKey.innerHTML = sortOptions.map(o => `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`).join('');
+            if (prev && allowed.has(prev)) {
+                els.sortKey.value = prev;
+            }
+
+            // Bucket List shouldn't expose tier controls.
+            if (els.tier) {
+                els.tier.value = '';
+                els.tier.disabled = isBucket;
+                els.tier.style.display = isBucket ? 'none' : '';
+            }
+
+            // If current state is incompatible with this list, coerce it.
+            ensureListsSortFilterStateInitialized();
+            const def = getDefaultListsSortFilterState({ isBucket });
+            const next = { ...listsSortFilterState };
+
+            if (!allowed.has(String(next.sortKey || '').trim())) {
+                next.sortKey = def.sortKey;
+                next.sortDir = def.sortDir;
+            }
+
+            if (isBucket) {
+                next.tier = '';
+            }
+
+            listsSortFilterState = next;
+        }
+
+        function getListsSortFilterModalEls() {
+            return {
+                overlay: document.getElementById('lists-sortfilter-overlay'),
+                sortKey: document.getElementById('lists-modal-sort-key'),
+                sortDir: document.getElementById('lists-modal-sort-dir'),
+                tier: document.getElementById('lists-modal-filter-tier'),
+                decade: document.getElementById('lists-modal-filter-decade'),
+                director: document.getElementById('lists-modal-filter-director'),
+                mpa: document.getElementById('lists-modal-filter-mpa'),
+                genre: document.getElementById('lists-modal-filter-genre'),
+                platform: document.getElementById('lists-modal-filter-platform'),
+            };
+        }
+
+        function setSelectOptions(el, { baseOptions = [], values = [] } = {}) {
+            if (!el) return;
+            const keep = baseOptions.map(o => ({ value: String(o?.value ?? ''), label: String(o?.label ?? '') }));
+            const uniq = Array.from(new Set((Array.isArray(values) ? values : []).map(v => String(v || '').trim()).filter(Boolean)));
+            const items = uniq.sort((a, b) => a.localeCompare(b));
+            el.innerHTML = [
+                ...keep.map(o => `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`),
+                ...items.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`),
+            ].join('');
+        }
+
+        function loadListsFacetsIntoModal() {
+            const els = getListsSortFilterModalEls();
+            setSelectOptions(els.decade, {
+                baseOptions: [{ value: '', label: 'Release Decade (All)' }],
+                values: listsFacetOptions?.decades || [],
+            });
+            setSelectOptions(els.mpa, {
+                baseOptions: [{ value: '', label: 'MPA (All)' }],
+                values: listsFacetOptions?.mpas || [],
+            });
+            setSelectOptions(els.genre, {
+                baseOptions: [{ value: '', label: 'Genre (All)' }],
+                values: listsFacetOptions?.genres || [],
+            });
+            setSelectOptions(els.platform, {
+                baseOptions: [
+                    { value: '', label: 'Platform (All)' },
+                    { value: '__NONE__', label: 'No Watch Options' },
+                ],
+                values: listsFacetOptions?.platforms || [],
+            });
+        }
+
+        function setListsSortFilterModalFromState(state) {
+            const els = getListsSortFilterModalEls();
+            if (!els.sortKey || !els.sortDir) return;
+            els.sortKey.value = String(state?.sortKey || 'watch_date');
+            els.sortDir.value = (String(state?.sortDir || 'desc') === 'asc') ? 'asc' : 'desc';
+            if (els.tier && !els.tier.disabled) els.tier.value = String(state?.tier || '');
+            if (els.decade) els.decade.value = String(state?.decade || '');
+            if (els.director) els.director.value = String(state?.directorContains || '');
+            if (els.mpa) els.mpa.value = String(state?.mpa || '');
+            if (els.genre) els.genre.value = String(state?.genre || '');
+            if (els.platform) els.platform.value = String(state?.platform || '');
+        }
+
+        function readListsSortFilterModalState() {
+            const els = getListsSortFilterModalEls();
+            const getVal = (el) => String(el?.value || '').trim();
+            return {
+                sortKey: getVal(els.sortKey) || 'watch_date',
+                sortDir: (getVal(els.sortDir) === 'asc') ? 'asc' : 'desc',
+                tier: (els.tier && els.tier.disabled) ? '' : getVal(els.tier),
+                decade: getVal(els.decade),
+                directorContains: getVal(els.director),
+                mpa: getVal(els.mpa),
+                genre: getVal(els.genre),
+                platform: getVal(els.platform),
+            };
+        }
+
+        function openListsSortFilterModal() {
+            ensureListsSortFilterStateInitialized();
+            const els = getListsSortFilterModalEls();
+            if (!els.overlay) return;
+            const lid = String(listsActiveListId || '').trim();
+            if (!lid) {
+                showToast('Select a list first.', { level: 'warn' });
+                return;
+            }
+            listsSortFilterDraft = { ...listsSortFilterState };
+            loadListsFacetsIntoModal();
+            setListsSortFilterModalFromState(listsSortFilterState);
+            els.overlay.style.display = 'flex';
+            setTimeout(() => {
+                try { els.sortKey?.focus?.(); } catch (_) {}
+            }, 0);
+        }
+
+        function closeListsSortFilterModal({ restoreDraft = false } = {}) {
+            const els = getListsSortFilterModalEls();
+            if (!els.overlay) return;
+            if (restoreDraft && listsSortFilterDraft) {
+                loadListsFacetsIntoModal();
+                setListsSortFilterModalFromState(listsSortFilterDraft);
+            }
+            els.overlay.style.display = 'none';
+        }
+
+        function saveListsSortFilterModal() {
+            ensureListsSortFilterStateInitialized();
+            const next = readListsSortFilterModalState();
+            listsSortFilterState = next;
+            listsSortFilterDraft = null;
+            closeListsSortFilterModal({ restoreDraft: false });
+            loadListsPage({ reset: false }).catch(() => null);
+        }
+
+        function resetListsSortFilterDraft() {
+            ensureListsSortFilterStateInitialized();
+            const next = getDefaultListsSortFilterStateForActiveList();
+            listsSortFilterDraft = next;
+            configureListsSortFilterModalForActiveList();
+            loadListsFacetsIntoModal();
+            setListsSortFilterModalFromState(next);
+        }
+
+        function listsDecadeLabelFromYear(year) {
+            const y = Number(year);
+            if (!Number.isFinite(y) || y <= 0) return '';
+            const decade = Math.floor(y / 10) * 10;
+            return `${decade}s`;
+        }
+
+        function listsNormalizeGenresToArray(movie) {
+            if (!movie) return [];
+            if (Array.isArray(movie?.genres) && movie.genres.length) {
+                return uniqStrings(movie.genres.map(x => String(x || '').trim()).filter(Boolean));
+            }
+            const raw = String(movie?.genre || '').trim();
+            if (!raw) return [];
+            return uniqStrings(raw.split(',').map(s => String(s || '').trim()).filter(Boolean));
+        }
+
+        function applyListsSortFilter(items, state) {
+            const st = state || getDefaultListsSortFilterStateForActiveList();
+            const wantedTier = String(st.tier || '').trim();
+            const wantedDecade = String(st.decade || '').trim();
+            const wantedDirector = String(st.directorContains || '').trim().toLowerCase();
+            const wantedMpa = String(st.mpa || '').trim().toLowerCase();
+            const wantedGenre = String(st.genre || '').trim().toLowerCase();
+            const wantedPlatform = String(st.platform || '').trim();
+
+            const filtered = (Array.isArray(items) ? items : []).filter((it) => {
+                if (!it) return false;
+
+                if (wantedTier) {
+                    const t = String(it?.tier || '').trim();
+                    if (wantedTier === 'UNRANKED') {
+                        if (t) return false;
+                    } else {
+                        if (t !== wantedTier) return false;
+                    }
+                }
+
+                if (wantedDecade) {
+                    const decade = listsDecadeLabelFromYear(it?.release_year);
+                    if (decade !== wantedDecade) return false;
+                }
+
+                if (wantedDirector) {
+                    const dir = String(it?.director || '').toLowerCase();
+                    if (!dir.includes(wantedDirector)) return false;
+                }
+
+                if (wantedMpa) {
+                    const mpa = String(it?.mpa_rating || '').trim().toLowerCase();
+                    if (!mpa || mpa !== wantedMpa) return false;
+                }
+
+                if (wantedGenre) {
+                    const genres = Array.isArray(it?.genresArr) ? it.genresArr : [];
+                    const ok = genres.some(g => String(g || '').trim().toLowerCase() === wantedGenre);
+                    if (!ok) return false;
+                }
+
+                if (wantedPlatform) {
+                    const plats = Array.isArray(it?.platforms) ? it.platforms : [];
+                    if (wantedPlatform === '__NONE__') {
+                        if (plats.length) return false;
+                    } else {
+                        if (!plats.includes(wantedPlatform)) return false;
+                    }
+                }
+
+                return true;
+            });
+
+            const sortKey = String(st.sortKey || 'watch_date');
+            const asc = String(st.sortDir || 'desc') === 'asc';
+            const dirMul = asc ? 1 : -1;
+
+            const getSortVal = (it) => {
+                if (sortKey === 'watch_date') {
+                    const raw = String(it?.latest_watch_date || '').trim();
+                    if (!raw) return null;
+                    const d = new Date(raw.includes('T') ? raw : `${raw}T00:00:00`);
+                    return Number.isNaN(d.getTime()) ? null : d.getTime();
+                }
+                if (sortKey === 'release_year') {
+                    const y = Number(it?.release_year);
+                    return Number.isFinite(y) ? y : null;
+                }
+                if (sortKey === 'imdb') {
+                    const n = parsePercentLike(it?.imdb_rating_pct ?? it?.imdb_pct ?? it?.imdb_rating ?? it?.imdb, { imdb: true });
+                    return (n === null || n === undefined) ? null : Number(n);
+                }
+                if (sortKey === 'overall') return (it?.overall_rating === null || it?.overall_rating === undefined) ? null : Number(it.overall_rating);
+                if (sortKey === 'sound') return (it?.sound_rating === null || it?.sound_rating === undefined) ? null : Number(it.sound_rating);
+                if (sortKey === 'pace') return (it?.pacing_rating === null || it?.pacing_rating === undefined) ? null : Number(it.pacing_rating);
+                if (sortKey === 'imagery') return (it?.imagery_rating === null || it?.imagery_rating === undefined) ? null : Number(it.imagery_rating);
+                if (sortKey === 'acting') return (it?.acting_rating === null || it?.acting_rating === undefined) ? null : Number(it.acting_rating);
+                if (sortKey === 'plot') return (it?.plot_rating === null || it?.plot_rating === undefined) ? null : Number(it.plot_rating);
+                if (sortKey === 'dialogue') return (it?.dialogue_rating === null || it?.dialogue_rating === undefined) ? null : Number(it.dialogue_rating);
+                return null;
+            };
+
+            const cmp = (a, b) => {
+                const av = getSortVal(a);
+                const bv = getSortVal(b);
+                const aNull = (av === null || av === undefined || Number.isNaN(av));
+                const bNull = (bv === null || bv === undefined || Number.isNaN(bv));
+                if (aNull && bNull) {
+                    const at = String(a?.title || '').toLowerCase();
+                    const bt = String(b?.title || '').toLowerCase();
+                    return at.localeCompare(bt);
+                }
+                if (aNull) return 1;
+                if (bNull) return -1;
+                if (av < bv) return -1 * dirMul;
+                if (av > bv) return 1 * dirMul;
+                const at = String(a?.title || '').toLowerCase();
+                const bt = String(b?.title || '').toLowerCase();
+                return at.localeCompare(bt);
+            };
+
+            return filtered.sort(cmp);
         }
 
         async function ensureBucketListForUser({ user_id }) {
@@ -4708,6 +5341,45 @@
 
                 if (action === 'delete_list') {
                     openListsDeleteModal();
+                    return;
+                }
+
+                if (action === 'open_sort_filter') {
+                    openListsSortFilterModal();
+                    return;
+                }
+
+                if (action === 'cancel_sort_filter') {
+                    closeListsSortFilterModal({ restoreDraft: true });
+                    return;
+                }
+
+                if (action === 'save_sort_filter') {
+                    saveListsSortFilterModal();
+                    return;
+                }
+
+                if (action === 'reset_sort_filter_draft') {
+                    resetListsSortFilterDraft();
+                    return;
+                }
+
+                if (action === 'clear_sort_filter_part') {
+                    ensureListsSortFilterStateInitialized();
+                    const part = String(el.dataset.part || '').trim();
+                    const def = getDefaultListsSortFilterStateForActiveList();
+                    const next = { ...listsSortFilterState };
+
+                    if (part === 'sort') {
+                        next.sortKey = def.sortKey;
+                        next.sortDir = def.sortDir;
+                    } else if (Object.prototype.hasOwnProperty.call(next, part)) {
+                        next[part] = '';
+                    }
+
+                    listsSortFilterState = next;
+                    listsSortFilterDraft = null;
+                    loadListsPage({ reset: false }).catch(() => null);
                     return;
                 }
 
@@ -5119,6 +5791,9 @@
                 const active = lists.find(l => String(l?.id || '') === String(listsActiveListId || '')) || null;
                 listsActiveListName = String(active?.list_name || listsActiveListName || '').trim();
 
+                // If user switches lists (especially into Bucket List), make sure we don't keep incompatible sort/filter state.
+                configureListsSortFilterModalForActiveList();
+
                 elLists.innerHTML = lists.length
                     ? `
                         <select id="lists-select" class="input-field" style="width:100%; border-radius: 0.85rem;">
@@ -5138,8 +5813,31 @@
                     `;
 
                 if (elTitle) elTitle.textContent = listsActiveListName || 'List';
-                if (elSub) elSub.textContent = '';
+                if (elSub) {
+                    ensureListsSortFilterStateInitialized();
+                    const labels = {
+                        sortKey: {
+                            watch_date: 'Watch Date',
+                            overall: 'Overall %',
+                            sound: 'Sound %',
+                            pace: 'Pace %',
+                            imagery: 'Imagery %',
+                            acting: 'Acting %',
+                            plot: 'Plot %',
+                            dialogue: 'Dialogue %',
+                            imdb: 'IMDb %',
+                            release_year: 'Release Year',
+                        }
+                    };
+                    const model = buildSortFilterChipModel({
+                        state: listsSortFilterState,
+                        defaults: getDefaultListsSortFilterStateForActiveList(),
+                        labels,
+                    });
+                    elSub.innerHTML = renderSortFilterChipsHtml({ model, namespace: 'lists' });
+                }
                 try { setListsQuickAddEnabledState(); } catch (_) {}
+                try { setListsActiveListActionsEnabledState(); } catch (_) {}
 
                 if (!listsActiveListId) {
                     elItems.innerHTML = `<div class="text-gray">Create a list to get started.</div>`;
@@ -5160,6 +5858,7 @@
                 if (movieIds.length === 0) {
                     elItems.innerHTML = `<div class="text-gray">No movies in this list yet.</div>`;
                     try { setListsQuickAddEnabledState(); } catch (_) {}
+                    try { setListsActiveListActionsEnabledState(); } catch (_) {}
                     return;
                 }
 
@@ -5172,6 +5871,44 @@
                 const moviesById = new Map();
                 for (const m of (Array.isArray(movies) ? movies : [])) {
                     if (m?.id) moviesById.set(m.id, m);
+                }
+
+                // Fetch user ratings for these movies (best-effort).
+                const ratingsByMovieId = new Map();
+                try {
+                    const { data: ratings, error: ratingsErr } = await supabaseClient
+                        .from('Movie Ratings')
+                        .select('movie_id, overall_rating, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating, tier')
+                        .eq('user_id', user.id)
+                        .in('movie_id', movieIds);
+                    if (!ratingsErr) {
+                        for (const r of (Array.isArray(ratings) ? ratings : [])) {
+                            const mid = String(r?.movie_id || '').trim();
+                            if (!mid) continue;
+                            ratingsByMovieId.set(mid, r);
+                        }
+                    }
+                } catch (_) {
+                    // Ignore ratings fetch errors.
+                }
+
+                // Fetch latest watch date per movie (best-effort).
+                const latestWatchByMovieId = new Map();
+                try {
+                    const { data: lw, error: lwErr } = await supabaseClient
+                        .from('user_movie_latest_watch')
+                        .select('movie_id, latest_watch_date')
+                        .eq('user_id', user.id)
+                        .in('movie_id', movieIds);
+                    if (!lwErr) {
+                        for (const r of (Array.isArray(lw) ? lw : [])) {
+                            const mid = String(r?.movie_id || '').trim();
+                            if (!mid) continue;
+                            latestWatchByMovieId.set(mid, r?.latest_watch_date || null);
+                        }
+                    }
+                } catch (_) {
+                    // Ignore latest watch fetch errors.
                 }
 
                 // Fetch watch platforms for these movies (best-effort; do not fail page).
@@ -5223,8 +5960,109 @@
                 // Promote to global map for the Watch Options modal.
                 listsPlatformsByMovieId = platformsByMovieId;
 
-                const cards = movieIds
-                    .map((id) => {
+                // Compute facets for Lists filters.
+                try {
+                    const decades = new Set();
+                    const mpas = new Set();
+                    const genres = new Set();
+                    const platforms = new Set();
+
+                    for (const id of movieIds) {
+                        const movie = moviesById.get(id) || null;
+                        if (!movie) continue;
+
+                        const dec = listsDecadeLabelFromYear(movie?.release_year);
+                        if (dec) decades.add(dec);
+
+                        const mpa = normalizeMovieFieldValue(movie?.mpa_rating ?? movie?.mpa);
+                        if (mpa) mpas.add(mpa);
+
+                        for (const g of listsNormalizeGenresToArray(movie)) {
+                            if (g) genres.add(g);
+                        }
+
+                        const plats = platformsByMovieId.get(String(id)) || [];
+                        for (const p of plats) {
+                            const name = normalizePlatformName(p);
+                            if (name) platforms.add(name);
+                        }
+                    }
+
+                    const decadeArr = Array.from(decades);
+                    decadeArr.sort((a, b) => {
+                        const an = Number(String(a).replace(/\D/g, ''));
+                        const bn = Number(String(b).replace(/\D/g, ''));
+                        if (Number.isFinite(an) && Number.isFinite(bn)) return bn - an;
+                        return String(b).localeCompare(String(a));
+                    });
+
+                    listsFacetOptions = {
+                        decades: decadeArr,
+                        mpas: Array.from(mpas).sort((a, b) => a.localeCompare(b)),
+                        genres: Array.from(genres).sort((a, b) => a.localeCompare(b)),
+                        platforms: Array.from(platforms).sort((a, b) => a.localeCompare(b)),
+                    };
+                } catch (_) {
+                    // Ignore facet computation errors.
+                }
+
+                ensureListsSortFilterStateInitialized();
+
+                // Refresh subtitle now that platform facets exist.
+                if (elSub) {
+                    const labels = {
+                        sortKey: {
+                            watch_date: 'Watch Date',
+                            overall: 'Overall %',
+                            sound: 'Sound %',
+                            pace: 'Pace %',
+                            imagery: 'Imagery %',
+                            acting: 'Acting %',
+                            plot: 'Plot %',
+                            dialogue: 'Dialogue %',
+                            imdb: 'IMDb %',
+                            release_year: 'Release Year',
+                        }
+                    };
+                    const model = buildSortFilterChipModel({
+                        state: listsSortFilterState,
+                        defaults: getDefaultListsSortFilterStateForActiveList(),
+                        labels,
+                    });
+                    elSub.innerHTML = renderSortFilterChipsHtml({ model, namespace: 'lists' });
+                }
+
+                const items = movieIds.map((id) => {
+                    const movie = moviesById.get(id) || null;
+                    const r = ratingsByMovieId.get(String(id)) || null;
+                    const genresArr = listsNormalizeGenresToArray(movie);
+                    return {
+                        movie_id: String(id),
+                        title: String(movie?.title || '').trim() || 'Untitled',
+                        release_year: movie?.release_year ?? null,
+                        director: normalizeMovieFieldValue(movie?.director ?? movie?.director_name),
+                        mpa_rating: normalizeMovieFieldValue(movie?.mpa_rating ?? movie?.mpa),
+                        genre: normalizeMovieFieldValue(movie?.genre),
+                        genresArr,
+                        imdb_rating_pct: movie?.imdb_rating_pct ?? movie?.imdb_pct ?? movie?.imdb_rating ?? movie?.imdb,
+                        latest_watch_date: latestWatchByMovieId.get(String(id)) || null,
+                        overall_rating: r?.overall_rating ?? null,
+                        sound_rating: r?.sound_rating ?? null,
+                        pacing_rating: r?.pacing_rating ?? null,
+                        imagery_rating: r?.imagery_rating ?? null,
+                        acting_rating: r?.acting_rating ?? null,
+                        plot_rating: r?.plot_rating ?? null,
+                        dialogue_rating: r?.dialogue_rating ?? null,
+                        tier: String(r?.tier || '').trim(),
+                        platforms: platformsByMovieId.get(String(id)) || [],
+                    };
+                });
+
+                const visibleItems = applyListsSortFilter(items, listsSortFilterState);
+
+                const cards = visibleItems
+                    .map((it) => {
+                        const id = String(it?.movie_id || '').trim();
                         const movie = moviesById.get(id) || null;
                         const title = String(movie?.title || '').trim() || 'Untitled';
                         const year = (movie?.release_year === null || movie?.release_year === undefined) ? '' : String(movie.release_year);
@@ -5308,7 +6146,10 @@
                     })
                     .join('');
 
-                elItems.innerHTML = `<div class="lists-grid">${cards}</div>`;
+                elItems.innerHTML = `
+                    <div class="text-xs" style="color: rgba(255,255,255,0.70); margin-bottom: 0.65rem;">Showing ${visibleItems.length} of ${movieIds.length}</div>
+                    <div class="lists-grid">${cards}</div>
+                `;
             } catch (err) {
                 const msg = String(err?.message || err);
                 elLists.innerHTML = `<div class="text-gray">Failed to load lists: ${escapeHtml(msg)}</div>`;
@@ -5316,6 +6157,7 @@
             } finally {
                 try { setListsQuickAddEnabledState(); } catch (_) {}
                 listsLoading = false;
+                try { setListsActiveListActionsEnabledState(); } catch (_) {}
             }
         }
 
@@ -5477,6 +6319,25 @@
 
                 if (action === 'save_sort_filter') {
                     saveLibrarySortFilterModal();
+                    return;
+                }
+
+                if (action === 'clear_sort_filter_part') {
+                    ensureLibrarySortFilterStateInitialized();
+                    const part = String(btn.dataset.part || '').trim();
+                    const def = getDefaultLibrarySortFilterState();
+                    const next = { ...librarySortFilterState };
+
+                    if (part === 'sort') {
+                        next.sortKey = def.sortKey;
+                        next.sortDir = def.sortDir;
+                    } else if (Object.prototype.hasOwnProperty.call(next, part)) {
+                        next[part] = '';
+                    }
+
+                    librarySortFilterState = next;
+                    librarySortFilterDraft = null;
+                    await loadLibraryPage({ reset: true });
                     return;
                 }
 
@@ -5788,7 +6649,44 @@
             elList.innerHTML = html || `<div class="text-gray">No watched movies found yet.</div>`;
 
             if (elMeta) {
-                elMeta.textContent = `Showing ${shown}${libraryHasMore ? ' • Load more to continue' : ''}`;
+                ensureLibrarySortFilterStateInitialized();
+                const labels = {
+                    sortKey: {
+                        watch_date: 'Watch Date',
+                        overall: 'Overall %',
+                        sound: 'Sound %',
+                        pace: 'Pace %',
+                        imagery: 'Imagery %',
+                        acting: 'Acting %',
+                        plot: 'Plot %',
+                        dialogue: 'Dialogue %',
+                        imdb: 'IMDb %',
+                        release_year: 'Release Year',
+                    }
+                };
+                const model = buildSortFilterChipModel({
+                    state: librarySortFilterState,
+                    defaults: getDefaultLibrarySortFilterState(),
+                    labels,
+                });
+                const top = `Showing ${shown}${libraryHasMore ? ' • Load more to continue' : ''}`;
+                const chipsHtml = renderSortFilterChipsHtml({ model, namespace: 'library' });
+                elMeta.innerHTML = `
+                    <div>${escapeHtml(top)}</div>
+                    <div style="margin-top: 0.35rem; color: rgba(255,255,255,0.72);">${chipsHtml}</div>
+                `;
+
+                const openBtn = document.getElementById('library-open-sortfilter');
+                if (openBtn) {
+                    openBtn.title = model?.summaryText || '';
+                    if (model?.isDefault) {
+                        openBtn.style.borderColor = '';
+                        openBtn.style.background = '';
+                    } else {
+                        openBtn.style.borderColor = 'rgba(20, 184, 166, 0.65)';
+                        openBtn.style.background = 'rgba(20, 184, 166, 0.12)';
+                    }
+                }
             }
             if (wrap) wrap.style.display = libraryHasMore ? 'flex' : 'none';
         }
