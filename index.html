@@ -36,7 +36,7 @@
             
             --font-family: 'Outfit', sans-serif;
             --container-width: 1280px;
-            --header-height: 120px;
+            --header-height: 80px;
         }
 
         * {
@@ -135,7 +135,8 @@
             justify-content: space-between;
         }
         .nav-brand { font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-brand span { color: var(--brand); }
+        .nav-brand .cinema-title { color: #74c6cd; }
+        .nav-brand .tracker-title { color: #fdfbf8; }
 
         /* Navbar logo image */
         .icon-wrapper { display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; }
@@ -1364,7 +1365,7 @@
         <div class="container nav-inner">
             <div class="nav-brand" onclick="router.navigate('home')" style="cursor:pointer;">
                 <span class="icon-wrapper" id="nav-logo-icon"></span>
-                <span>Cinema<span>Tracker</span></span>
+                <span><span class="cinema-title">Cinema</span><span class="tracker-title">Tracker</span></span>
             </div>
             
             <div class="nav-links">
