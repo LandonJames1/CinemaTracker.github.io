@@ -1,0 +1,31 @@
+<p style="font-weight: 800; font-size: 1rem;">AI Picks — Step by Step</p>
+<p style="opacity: 0.9;">Follow these steps to get the best results:</p>
+
+<ol style="margin-top: 0.6rem; padding-left: 1.25rem; display: grid; gap: 0.6rem;">
+  <li>
+    <div style="font-weight: 800;">Describe the vibe</div>
+    <div>Use mood + era + pacing (e.g., “cozy, character‑driven, 2000s, slow burn”).</div>
+  </li>
+  <li>
+    <div style="font-weight: 800;">Choose your requirement path</div>
+    <div>Pick <strong>one similar movie</strong> (up to 5) <em>or</em> fill out <strong>all filters</strong>.</div>
+  </li>
+  <li>
+    <div style="font-weight: 800;">If using filters, complete all of these</div>
+    <ul style="margin-top: 0.35rem; padding-left: 1.1rem;">
+      <li>Minimum TMDb rating</li>
+      <li>Release year range (from + to)</li>
+      <li>Genres (include)</li>
+      <li>Watch providers</li>
+    </ul>
+  </li>
+  <li>
+    <div style="font-weight: 800;">Generate suggestions</div>
+    <div>Click “Generate Suggestions” and review your results.</div>
+  </li>
+</ol>
+
+<div style="margin-top: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 0.75rem; background: rgba(255,255,255,0.05);">
+  <span style="letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px;">Tip</span><br>
+  Short, specific prompts tend to perform best.
+</div>
