@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,8 +9,11 @@
             To change it later: replace the embedded SVG inside the href="data:image/svg+xml,..." below.
             Tip: If you prefer a file instead of inline, swap these for: <link rel="icon" href="/favicon.ico">.
         ========================== FAVICON (BOOKMARK/TAB ICON) START ========================== -->
-        <link rel="icon" type="image/png" href="CT_Logo.png">
-        <link rel="apple-touch-icon" href="CT_Logo.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/CT_Logo.png?v=1">
+        <link rel="icon" type="image/png" sizes="16x16" href="/CT_Logo.png?v=1">
+        <link rel="icon" type="image/png" href="CT_Logo.png?v=1">
+        <link rel="shortcut icon" href="/CT_Logo.png?v=1">
+        <link rel="apple-touch-icon" sizes="180x180" href="/CT_Logo.png?v=1">
         <!-- ========================== FAVICON (BOOKMARK/TAB ICON) END ========================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1587,6 +1590,34 @@
         </div>
     </div>
 
+    <div id="new-features-overlay" class="auth-overlay" onclick="if(event.target === this) closeNewFeaturesPopup();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="new-features-title" style="max-width: 640px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="new-features-title">New Features Pop Up</div>
+                <button class="auth-modal-close" type="button" onclick="closeNewFeaturesPopup()">Close</button>
+            </div>
+            <div id="new-features-popup-text" class="text-sm" style="color: var(--text-muted); margin-top: 0.4rem; line-height: 1.6;">
+                Loading…
+            </div>
+        </div>
+    </div>
+
+    <div id="ai-help-overlay" class="auth-overlay" onclick="if(event.target === this) closeAiHelpPopup();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="ai-help-title" style="max-width: 640px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="ai-help-title">AI Help Pop Up</div>
+                <button class="auth-modal-close" type="button" onclick="closeAiHelpPopup()">Close</button>
+            </div>
+            <div id="ai-help-popup-text" class="text-sm" style="color: var(--text-muted); margin-top: 0.4rem; line-height: 1.6;">
+                Loading…
+            </div>
+            <label class="text-xs text-gray" style="display:inline-flex; gap: 8px; align-items:center; margin-top: 0.85rem;">
+                <input id="ai-help-dismiss" type="checkbox" />
+                Don’t show again
+            </label>
+        </div>
+    </div>
+
     <div id="dashboard-auth-warning" class="auth-overlay" onclick="if(event.target === this) closeDashboardAuthWarning();">
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="dashboard-auth-warning-title">
             <div class="auth-modal-header">
@@ -2228,6 +2259,7 @@
                     root.innerHTML = this.renderAiPicks();
                     refreshAuthStateAndUI();
                     initAiPicksPage();
+                    showAiHelpPopupIfNeeded().catch(() => null);
                 } else if (page === 'account') {
                     root.innerHTML = this.renderAccount();
                     refreshAuthStateAndUI();
@@ -11849,6 +11881,18 @@
         let cachedUserIcon = '';
         let cachedUserIconLoaded = false;
 
+        let cachedHelpPopupsUserId = null;
+        let cachedHelpPopupsLoaded = false;
+        let cachedHelpPopups = {
+            aiPicksHelp: false,
+            newFeaturesNews: false,
+        };
+        let sessionNewFeaturesShown = false;
+        let sessionAiHelpShown = false;
+        const NEW_FEATURES_POPUP_PATH = 'new-features-popup.txt';
+        const AI_HELP_POPUP_PATH = 'ai-help-popup.txt';
+        const popupTextCache = new Map();
+
         function fallbackAccountName(user) {
             const email = String(user?.email || '').trim();
             if (email) return email.split('@')[0] || email;
@@ -12012,6 +12056,161 @@
                 saveBtn.setAttribute('aria-disabled', locked ? 'true' : 'false');
                 saveBtn.title = locked ? 'Please log in first.' : '';
             }
+
+            if (isAuthed) {
+                showNewFeaturesPopupIfNeeded().catch(() => null);
+                if (String(router?.currentPage || '') === 'ai_picks') {
+                    showAiHelpPopupIfNeeded().catch(() => null);
+                }
+            }
+        }
+
+        async function loadHelpPopupsState(userId) {
+            const uid = String(userId || '').trim();
+            if (!uid || !supabaseClient) return { ...cachedHelpPopups };
+            if (cachedHelpPopupsLoaded && cachedHelpPopupsUserId === uid) return { ...cachedHelpPopups };
+
+            cachedHelpPopupsLoaded = true;
+            cachedHelpPopupsUserId = uid;
+            cachedHelpPopups = { aiPicksHelp: false, newFeaturesNews: false };
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Help Pop-ups')
+                    .select('user_id, "AI Picks Help", "New Feature News"')
+                    .eq('user_id', uid)
+                    .limit(1);
+                if (error) throw error;
+                if (Array.isArray(data) && data.length > 0) {
+                    const row = data[0];
+                    cachedHelpPopups = {
+                        aiPicksHelp: Boolean(row?.['AI Picks Help']),
+                        newFeaturesNews: Boolean(row?.['New Feature News']),
+                    };
+                    return { ...cachedHelpPopups };
+                }
+            } catch (_) {
+                // fall through to upsert
+            }
+
+            try {
+                await supabaseClient
+                    .from('Help Pop-ups')
+                    .insert({ user_id: uid });
+            } catch (_) {
+                // Best-effort only.
+            }
+            return { ...cachedHelpPopups };
+        }
+
+        async function updateHelpPopupsState(userId, updates = {}) {
+            const uid = String(userId || '').trim();
+            if (!uid || !supabaseClient) return;
+            const payload = {};
+            if (updates.aiPicksHelp !== undefined) payload['AI Picks Help'] = Boolean(updates.aiPicksHelp);
+            if (updates.newFeaturesNews !== undefined) payload['New Feature News'] = Boolean(updates.newFeaturesNews);
+            if (!Object.keys(payload).length) return;
+            try {
+                await supabaseClient
+                    .from('Help Pop-ups')
+                    .upsert({ user_id: uid, ...payload }, { onConflict: 'user_id' });
+                cachedHelpPopups = {
+                    aiPicksHelp: updates.aiPicksHelp ?? cachedHelpPopups.aiPicksHelp,
+                    newFeaturesNews: updates.newFeaturesNews ?? cachedHelpPopups.newFeaturesNews,
+                };
+            } catch (_) {
+                // Best-effort only.
+            }
+        }
+
+        async function loadPopupTextFile(path) {
+            const p = String(path || '').trim();
+            if (!p) return '';
+            if (popupTextCache.has(p)) return popupTextCache.get(p) || '';
+            try {
+                const res = await fetch(p, { cache: 'no-cache' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const text = await res.text();
+                popupTextCache.set(p, text);
+                return text;
+            } catch (_) {
+                return '';
+            }
+        }
+
+        async function setPopupText(elId, path) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            const text = await loadPopupTextFile(path);
+            if (text) {
+                el.innerHTML = text;
+            } else {
+                el.textContent = 'Unable to load content.';
+            }
+        }
+
+        function openNewFeaturesPopup() {
+            const overlay = document.getElementById('new-features-overlay');
+            if (!overlay) return;
+            setPopupText('new-features-popup-text', NEW_FEATURES_POPUP_PATH).catch(() => null);
+            overlay.style.display = 'flex';
+            overlay.classList.add('open');
+        }
+
+        function closeNewFeaturesPopup() {
+            const overlay = document.getElementById('new-features-overlay');
+            if (!overlay) return;
+            overlay.classList.remove('open');
+            overlay.style.display = 'none';
+        }
+
+        function openAiHelpPopup() {
+            const overlay = document.getElementById('ai-help-overlay');
+            if (!overlay) return;
+            setPopupText('ai-help-popup-text', AI_HELP_POPUP_PATH).catch(() => null);
+            overlay.style.display = 'flex';
+            overlay.classList.add('open');
+        }
+
+        function closeAiHelpPopup() {
+            const overlay = document.getElementById('ai-help-overlay');
+            if (!overlay) return;
+            overlay.classList.remove('open');
+            overlay.style.display = 'none';
+
+            try {
+                const box = document.getElementById('ai-help-dismiss');
+                const checked = Boolean(box?.checked);
+                const uid = String(cachedAuthUser?.id || '').trim();
+                if (checked && uid) {
+                    updateHelpPopupsState(uid, { aiPicksHelp: true }).catch(() => null);
+                }
+            } catch (_) {
+                // Best-effort only.
+            }
+        }
+
+        async function showNewFeaturesPopupIfNeeded() {
+            if (!cachedIsAuthed || sessionNewFeaturesShown) return;
+            const uid = String(cachedAuthUser?.id || '').trim();
+            if (!uid) return;
+            const state = await loadHelpPopupsState(uid);
+            if (state.newFeaturesNews) return;
+            sessionNewFeaturesShown = true;
+            openNewFeaturesPopup();
+            updateHelpPopupsState(uid, { newFeaturesNews: true }).catch(() => null);
+        }
+
+        async function showAiHelpPopupIfNeeded() {
+            if (!cachedIsAuthed || sessionAiHelpShown) return;
+            const uid = String(cachedAuthUser?.id || '').trim();
+            if (!uid) return;
+            const state = await loadHelpPopupsState(uid);
+            if (state.aiPicksHelp) return;
+            sessionAiHelpShown = true;
+            const box = document.getElementById('ai-help-dismiss');
+            if (box) box.checked = false;
+            openAiHelpPopup();
         }
 
         async function handleLoginClick(e) {
