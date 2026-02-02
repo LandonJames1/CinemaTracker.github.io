@@ -12155,6 +12155,14 @@
             setPopupText('new-features-popup-text', NEW_FEATURES_POPUP_PATH).catch(() => null);
             overlay.style.display = 'flex';
             overlay.classList.add('open');
+            try {
+                const uid = String(cachedAuthUser?.id || '').trim();
+                if (uid) {
+                    updateHelpPopupsState(uid, { newFeaturesNews: true }).catch(() => null);
+                }
+            } catch (_) {
+                // Best-effort only.
+            }
         }
 
         function closeNewFeaturesPopup() {
