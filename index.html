@@ -1599,6 +1599,10 @@
             <div id="new-features-popup-text" class="text-sm" style="color: var(--text-muted); margin-top: 0.4rem; line-height: 1.6;">
                 Loading…
             </div>
+            <label class="text-xs text-gray" style="display:inline-flex; gap: 8px; align-items:center; margin-top: 0.85rem;">
+                <input id="new-features-dismiss" type="checkbox" checked />
+                Don’t show again
+            </label>
         </div>
     </div>
 
@@ -11881,14 +11885,6 @@
         let cachedUserIcon = '';
         let cachedUserIconLoaded = false;
 
-        let cachedHelpPopupsUserId = null;
-        let cachedHelpPopupsLoaded = false;
-        let cachedHelpPopups = {
-            aiPicksHelp: false,
-            newFeaturesNews: false,
-        };
-        let sessionNewFeaturesShown = false;
-        let sessionAiHelpShown = false;
         const NEW_FEATURES_POPUP_PATH = 'new-features-popup.txt';
         const AI_HELP_POPUP_PATH = 'ai-help-popup.txt';
         const popupTextCache = new Map();
@@ -12065,15 +12061,9 @@
             }
         }
 
-        async function loadHelpPopupsState(userId) {
+        async function fetchHelpPopupsRow(userId) {
             const uid = String(userId || '').trim();
-            if (!uid || !supabaseClient) return { ...cachedHelpPopups };
-            if (cachedHelpPopupsLoaded && cachedHelpPopupsUserId === uid) return { ...cachedHelpPopups };
-
-            cachedHelpPopupsLoaded = true;
-            cachedHelpPopupsUserId = uid;
-            cachedHelpPopups = { aiPicksHelp: false, newFeaturesNews: false };
-
+            if (!uid || !supabaseClient) return null;
             try {
                 const { data, error } = await supabaseClient
                     .from('Help Pop-ups')
@@ -12081,43 +12071,50 @@
                     .eq('user_id', uid)
                     .limit(1);
                 if (error) throw error;
-                if (Array.isArray(data) && data.length > 0) {
-                    const row = data[0];
-                    cachedHelpPopups = {
-                        aiPicksHelp: Boolean(row?.['AI Picks Help']),
-                        newFeaturesNews: Boolean(row?.['New Feature News']),
-                    };
-                    return { ...cachedHelpPopups };
-                }
+                return Array.isArray(data) && data.length > 0 ? data[0] : null;
             } catch (_) {
-                // fall through to upsert
+                return null;
             }
+        }
 
+        async function ensureHelpPopupsRow(userId) {
+            const uid = String(userId || '').trim();
+            if (!uid || !supabaseClient) return;
             try {
                 await supabaseClient
                     .from('Help Pop-ups')
-                    .insert({ user_id: uid });
+                    .upsert({ user_id: uid }, { onConflict: 'user_id' });
             } catch (_) {
                 // Best-effort only.
             }
-            return { ...cachedHelpPopups };
         }
 
-        async function updateHelpPopupsState(userId, updates = {}) {
+        async function getHelpPopupFlags(userId) {
+            const uid = String(userId || '').trim();
+            if (!uid) return { known: false, aiPicksHelp: false, newFeaturesNews: false };
+            let row = await fetchHelpPopupsRow(uid);
+            if (!row) {
+                await ensureHelpPopupsRow(uid);
+                row = await fetchHelpPopupsRow(uid);
+            }
+            if (!row) return { known: false, aiPicksHelp: false, newFeaturesNews: false };
+            return {
+                known: true,
+                aiPicksHelp: row?.['AI Picks Help'] === true,
+                newFeaturesNews: row?.['New Feature News'] === true,
+            };
+        }
+
+        async function setHelpPopupFlag(userId, updates = {}) {
             const uid = String(userId || '').trim();
             if (!uid || !supabaseClient) return;
-            const payload = {};
+            const payload = { user_id: uid };
             if (updates.aiPicksHelp !== undefined) payload['AI Picks Help'] = Boolean(updates.aiPicksHelp);
             if (updates.newFeaturesNews !== undefined) payload['New Feature News'] = Boolean(updates.newFeaturesNews);
-            if (!Object.keys(payload).length) return;
             try {
                 await supabaseClient
                     .from('Help Pop-ups')
-                    .upsert({ user_id: uid, ...payload }, { onConflict: 'user_id' });
-                cachedHelpPopups = {
-                    aiPicksHelp: updates.aiPicksHelp ?? cachedHelpPopups.aiPicksHelp,
-                    newFeaturesNews: updates.newFeaturesNews ?? cachedHelpPopups.newFeaturesNews,
-                };
+                    .upsert(payload, { onConflict: 'user_id' });
             } catch (_) {
                 // Best-effort only.
             }
@@ -12156,13 +12153,9 @@
             overlay.style.display = 'flex';
             overlay.classList.add('open');
             try {
-                const uid = String(cachedAuthUser?.id || '').trim();
-                if (uid) {
-                    updateHelpPopupsState(uid, { newFeaturesNews: true }).catch(() => null);
-                }
-            } catch (_) {
-                // Best-effort only.
-            }
+                const box = document.getElementById('new-features-dismiss');
+                if (box) box.checked = true;
+            } catch (_) {}
         }
 
         function closeNewFeaturesPopup() {
@@ -12170,6 +12163,14 @@
             if (!overlay) return;
             overlay.classList.remove('open');
             overlay.style.display = 'none';
+            try {
+                const uid = String(cachedAuthUser?.id || '').trim();
+                if (uid) {
+                    setHelpPopupFlag(uid, { newFeaturesNews: true }).catch(() => null);
+                }
+            } catch (_) {
+                // Best-effort only.
+            }
         }
 
         function openAiHelpPopup() {
@@ -12191,7 +12192,7 @@
                 const checked = Boolean(box?.checked);
                 const uid = String(cachedAuthUser?.id || '').trim();
                 if (checked && uid) {
-                    updateHelpPopupsState(uid, { aiPicksHelp: true }).catch(() => null);
+                    setHelpPopupFlag(uid, { aiPicksHelp: true }).catch(() => null);
                 }
             } catch (_) {
                 // Best-effort only.
@@ -12199,23 +12200,21 @@
         }
 
         async function showNewFeaturesPopupIfNeeded() {
-            if (!cachedIsAuthed || sessionNewFeaturesShown) return;
+            if (!cachedIsAuthed) return;
             const uid = String(cachedAuthUser?.id || '').trim();
             if (!uid) return;
-            const state = await loadHelpPopupsState(uid);
-            if (state.newFeaturesNews) return;
-            sessionNewFeaturesShown = true;
+            const state = await getHelpPopupFlags(uid);
+            if (!state.known || state.newFeaturesNews !== false) return;
             openNewFeaturesPopup();
-            updateHelpPopupsState(uid, { newFeaturesNews: true }).catch(() => null);
+            setHelpPopupFlag(uid, { newFeaturesNews: true }).catch(() => null);
         }
 
         async function showAiHelpPopupIfNeeded() {
-            if (!cachedIsAuthed || sessionAiHelpShown) return;
+            if (!cachedIsAuthed) return;
             const uid = String(cachedAuthUser?.id || '').trim();
             if (!uid) return;
-            const state = await loadHelpPopupsState(uid);
-            if (state.aiPicksHelp) return;
-            sessionAiHelpShown = true;
+            const state = await getHelpPopupFlags(uid);
+            if (!state.known || state.aiPicksHelp !== false) return;
             const box = document.getElementById('ai-help-dismiss');
             if (box) box.checked = false;
             openAiHelpPopup();
