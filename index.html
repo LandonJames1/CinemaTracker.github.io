@@ -3747,6 +3747,7 @@
                                             <input id="ai-debug-toggle" type="checkbox" /> Debug
                                         </label>
                                     </div>
+
                                 </div>
 
                                 <div style="display:flex; flex-direction: column; gap: 12px;">
@@ -3754,6 +3755,17 @@
                                         <div class="text-white font-bold">Refine with Filters</div>
                                         <div class="text-xs text-gray" style="margin-top: 0.35rem; line-height: 1.5;">Filters are required unless you pick at least one similar movie.</div>
                                         <button type="button" class="btn btn-outline" style="border-radius: 0.85rem; margin-top: 0.6rem; width: 100%;" onclick="openAiFiltersModal()">Open Filters</button>
+                                    </div>
+
+                                    <div class="ai-card" style="padding: 0.85rem 1rem; border-radius: 1rem; display:flex; align-items:center; justify-content: space-between; gap: 12px;">
+                                        <div>
+                                            <div class="text-white font-bold" style="font-size: 0.95rem;">Exclude already watched</div>
+                                            <div class="text-xs text-gray" style="margin-top: 0.2rem;">Hide movies you’ve already rated or logged.</div>
+                                        </div>
+                                        <label style="display:inline-flex; align-items:center; gap: 10px; padding: 0.35rem 0.6rem; border-radius: 0.8rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
+                                            <input id="ai-filter-exclude-watched" type="checkbox" style="transform: scale(1.2); accent-color: #38bdf8;" />
+                                            <span class="text-xs" style="color: #e2e8f0; font-weight: 700; letter-spacing: 0.02em;">Exclude</span>
+                                        </label>
                                     </div>
 
                                     <div class="ai-card" style="padding: 1rem; border-radius: 1rem;">
@@ -3941,11 +3953,16 @@
                                     <div class="text-white font-bold">Feature Requests</div>
                                     <div class="text-xs text-gray" style="margin-top: 0.35rem;">Send ideas and suggestions.</div>
                                 </button>
+                                <button type="button" class="glass-panel" data-account-action="recalc_taste" style="padding: 1rem; border-radius: 1rem; text-align: left;">
+                                    <div class="text-white font-bold">Recalculate Taste Profile</div>
+                                    <div class="text-xs text-gray" style="margin-top: 0.35rem;">Refresh your AI taste profile data.</div>
+                                </button>
                                 <button type="button" class="glass-panel" data-account-action="logout" style="padding: 1rem; border-radius: 1rem; text-align: left;">
                                     <div class="text-white font-bold">Log out</div>
                                     <div class="text-xs text-gray" style="margin-top: 0.35rem;">Sign out of your account.</div>
                                 </button>
                             </div>
+                            <div id="account-taste-status" class="text-xs" style="margin-top: 0.85rem; color: rgba(255,255,255,0.60);"></div>
                             </div>
                         </div>
                     </div>
@@ -12846,6 +12863,7 @@
             const tmdbNum = document.getElementById('ai-filter-tmdb-num');
             const yearFrom = document.getElementById('ai-filter-year-from');
             const yearTo = document.getElementById('ai-filter-year-to');
+            const excludeWatched = document.getElementById('ai-filter-exclude-watched');
 
             const rating = Number(tmdbNum?.value ?? 0);
             const yrFrom = Number(yearFrom?.value ?? 0);
@@ -12858,6 +12876,7 @@
                 genres_include: getAiSelectedGenres('include'),
                 watch_region: 'US',
                 watch_providers: getAiSelectedProviders(),
+                exclude_watched: Boolean(excludeWatched?.checked),
             };
         }
 
@@ -13014,6 +13033,11 @@
                     return;
                 }
 
+                if (action === 'recalc_taste') {
+                    await recalculateTasteProfile();
+                    return;
+                }
+
                 if (action === 'close_modal') {
                     const kind = String(btn.dataset.modal || '').trim();
                     if (kind) closeAccountSectionModal(kind);
@@ -13056,6 +13080,52 @@
                     updateFeatureRequestCounter();
                 }
             });
+        }
+
+        async function recalculateTasteProfile() {
+            const statusEl = document.getElementById('account-taste-status');
+            if (!supabaseClient || !cachedIsAuthed) {
+                if (statusEl) statusEl.textContent = 'Please log in first.';
+                showToast('Please log in first.', { level: 'warn' });
+                openAuthModal();
+                return;
+            }
+
+            try {
+                if (statusEl) statusEl.textContent = 'Recalculating taste profile…';
+                const { user, accessToken } = await requireAuthOrThrow();
+                const res = await fetch('https://dbxhaseoxpnmzdxbzdpj.supabase.co/functions/v1/swift-responder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify({ user_id: user.id })
+                });
+
+                const text = await res.text();
+                let data = null;
+                try {
+                    data = text ? JSON.parse(text) : null;
+                } catch (_) {
+                    data = text;
+                }
+
+                if (!res.ok) {
+                    const msg = data && typeof data === 'object'
+                        ? (data.message || data.error || JSON.stringify(data))
+                        : String(data || `HTTP ${res.status}`);
+                    throw new Error(msg);
+                }
+
+                if (statusEl) statusEl.textContent = 'Taste profile refreshed.';
+                showToast('Taste profile refreshed.');
+            } catch (err) {
+                const msg = String(err?.message || err);
+                if (statusEl) statusEl.textContent = `Recalc failed: ${msg}`;
+                showToast(`Recalc failed: ${msg}`, { level: 'warn' });
+            }
         }
 
         async function loadAccountPage() {
