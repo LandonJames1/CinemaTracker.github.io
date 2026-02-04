@@ -31,9 +31,14 @@
     <div style="font-weight: 800;">4) Generate suggestions</div>
     <div style="margin-top: 0.25rem;">Click “Generate Suggestions” and review your results.</div>
   </div>
+
+  <div style="padding: 0.75rem; border-radius: 0.85rem; background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.25);">
+    <div style="font-weight: 800;">Optional: Exclude already watched</div>
+    <div style="margin-top: 0.25rem;">Use the toggle to hide movies you’ve already rated or logged.</div>
+  </div>
 </div>
 
 <div style="margin-top: 0.85rem; padding: 0.65rem 0.85rem; border-radius: 0.75rem; background: rgba(255,255,255,0.05); display:flex; gap: 10px; align-items:flex-start;">
   <div style="font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px;">Tip</div>
-  <div>Short, specific prompts tend to perform best.</div>
+  <div>Short, specific prompts tend to perform best. AI reasons now include prompt match + taste‑profile alignment.</div>
 </div>
