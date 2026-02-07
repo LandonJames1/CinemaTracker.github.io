@@ -1,29 +1,29 @@
-<p style="font-weight: 800; font-size: 1rem;">What’s new in CinemaTracker</p>
-<p style="opacity: 0.9;">Quick highlights of the latest upgrades and tools.</p>
+<div style="text-align:center;">
+  <div style="font-weight: 900; font-size: 1.1rem; letter-spacing: 0.08em; text-transform: uppercase;">Themes Themes Themes</div>
+  <div style="margin-top: 0.35rem; font-weight: 700; opacity: 0.9;">Pick a vibe. Hit play.</div>
+</div>
 
-<div style="display:grid; gap: 0.75rem; margin-top: 0.6rem;">
-  <div style="padding: 0.75rem; border-radius: 0.85rem; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25);">
-    <div style="font-weight: 800;">NEW AI MOVIE SELECTOR TOOL</div>
-    <div style="margin-top: 0.25rem;">When you can’t decide what to watch, try the new AI tool to pick a movie based on your prompt.</div>
+<div style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 0.95rem; background: linear-gradient(135deg, rgba(20,184,166,0.20), rgba(59,130,246,0.18)); border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 12px 30px rgba(0,0,0,0.28);">
+  <div style="font-weight: 900;">New look, same movie magic.</div>
+  <div style="margin-top: 0.35rem; opacity: 0.9;">You can now switch themes any time from your Account page.</div>
+</div>
+
+<div style="margin-top: 0.7rem; display:grid; gap: 0.5rem;">
+  <div style="display:flex; gap: 8px; align-items:center; padding: 0.55rem 0.7rem; border-radius: 0.75rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
+    <div style="width: 10px; height: 10px; border-radius: 999px; background: #22d3ee;"></div>
+    <div style="font-weight: 800;">Go to Account</div>
   </div>
-
-  <div style="padding: 0.75rem; border-radius: 0.85rem; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25);">
-    <div style="font-weight: 800;">New User Icons</div>
-    <div style="margin-top: 0.25rem;">We’re now showing custom photos for user icons — ask Landon if you want to change it.</div>
+  <div style="display:flex; gap: 8px; align-items:center; padding: 0.55rem 0.7rem; border-radius: 0.75rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
+    <div style="width: 10px; height: 10px; border-radius: 999px; background: #a78bfa;"></div>
+    <div style="font-weight: 800;">Choose a Theme</div>
   </div>
-
-  <div style="padding: 0.75rem; border-radius: 0.85rem; background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25);">
-    <div style="font-weight: 800;">New Feature Request Button</div>
-    <div style="margin-top: 0.25rem;">Go to your account page to find the feature request button and submit new ideas.</div>
-  </div>
-
-  <div style="padding: 0.75rem; border-radius: 0.85rem; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.25);">
-    <div style="font-weight: 800;">The Lists Feature</div>
-    <div style="margin-top: 0.25rem;">Create different lists, use your default Bucket List, and sort/filter by movie details and watch platform options.</div>
+  <div style="display:flex; gap: 8px; align-items:center; padding: 0.55rem 0.7rem; border-radius: 0.75rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
+    <div style="width: 10px; height: 10px; border-radius: 999px; background: #fbbf24;"></div>
+    <div style="font-weight: 800;">Enjoy the glow</div>
   </div>
 </div>
 
-<div style="margin-top: 0.8rem; padding: 0.6rem 0.8rem; border-radius: 0.75rem; background: rgba(255,255,255,0.05);">
+<div style="margin-top: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 0.75rem; background: rgba(255,255,255,0.05); text-align:center;">
   <span style="letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px;">Tip</span><br>
-  Check back here for the latest improvements.
+  Try a few and keep the one that feels most you.
 </div>
