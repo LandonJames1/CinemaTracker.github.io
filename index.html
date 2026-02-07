@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CinemaTracker | Your Movie Journey</title>
+    <link rel="preconnect" href="https://dbxhaseoxpnmzdxbzdpj.supabase.co">
         <!-- ========================= FAVICON (BOOKMARK/TAB ICON) START =========================
             This is the icon browsers use for tabs + bookmarks.
             To change it later: replace the embedded SVG inside the href="data:image/svg+xml,..." below.
@@ -24,10 +25,28 @@
             --border: #27272a;       /* Zinc 800 */
             --text-main: #e4e4e7;    /* Zinc 200 */
             --text-muted: #a1a1aa;   /* Zinc 400 */
-            
+
             --brand: #14b8a6;        /* Teal 500 */
             --brand-hover: #0d9488;  /* Teal 600 */
             --brand-light: rgba(20, 184, 166, 0.1);
+            --brand-shadow: rgba(20, 184, 166, 0.3);
+            --brand-2: rgba(168, 85, 247, 0.35);
+            --brand-3: rgba(59, 130, 246, 0.35);
+            --accent-1: #5eead4;
+            --accent-2: #a78bfa;
+            --accent-3: #60a5fa;
+            --nav-accent: #74c6cd;
+            --nav-title: #fdfbf8;
+            --nav-active-a: rgba(20,184,166,0.28);
+            --nav-active-b: rgba(168,85,247,0.22);
+            --glass-bg: rgba(24, 24, 27, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-shadow: rgba(0, 0, 0, 0.35);
+            --btn-outline-bg: rgba(24, 24, 27, 0.65);
+            --focus-ring: rgba(20, 184, 166, 0.6);
+
+            --bg-image: none;
+            --bg-overlay: linear-gradient(to bottom, rgba(9,9,11,0.1), rgba(9,9,11,0.55) 50%, rgba(9,9,11,0.9) 100%);
 
             /* Tier colors (match Data Dashboard tier colors) */
             --tier-s-rgb: 239, 68, 68;   /* Red (#ef4444) */
@@ -36,11 +55,12 @@
             --tier-c-rgb: 74, 222, 128;  /* Green (#4ade80) */
             --tier-d-rgb: 96, 165, 250;  /* Blue (#60a5fa) */
             --tier-f-rgb: 161, 55, 198;  /* Purple (#a137c6) */
-            
+
             --font-family: 'Outfit', sans-serif;
             --container-width: 1280px;
             --header-height: 80px;
         }
+
 
         * {
             box-sizing: border-box;
@@ -51,11 +71,29 @@
         body {
             font-family: var(--font-family);
             background-color: var(--bg-dark);
+            background-image: none;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+        }
+        .theme-background,
+        .theme-gradient-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+        .theme-background {
+            z-index: -2;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .theme-gradient-overlay {
+            z-index: -1;
+            background: var(--bg-overlay);
         }
         body::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
@@ -119,10 +157,11 @@
             100% { transform: translateX(-50%); }
         }
         .glass-panel {
-            background: rgba(24, 24, 27, 0.6);
+            background: var(--glass-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 18px 32px var(--glass-shadow);
         }
         .navbar {
             position: fixed;
@@ -137,9 +176,9 @@
             align-items: center;
             justify-content: space-between;
         }
-        .nav-brand { font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-brand .cinema-title { color: #74c6cd; }
-        .nav-brand .tracker-title { color: #fdfbf8; }
+        .nav-brand { font-size: 1.25rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; }
+        .nav-brand .cinema-title { color: var(--nav-accent); }
+        .nav-brand .tracker-title { color: var(--nav-title); }
 
         /* Navbar logo image */
         .icon-wrapper { display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; }
@@ -185,8 +224,8 @@
         }
         .nav-link.active {
             color: #fff;
-            background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(168,85,247,0.22));
-            border-color: rgba(20,184,166,0.45);
+            background: linear-gradient(135deg, var(--nav-active-a), var(--nav-active-b));
+            border-color: var(--brand);
             box-shadow: 0 10px 26px rgba(0,0,0,0.35);
         }
         .mobile-menu-btn { color: var(--text-muted); display: none; }
@@ -209,23 +248,23 @@
         .btn-primary {
             background-color: var(--brand);
             color: white;
-            box-shadow: 0 4px 14px 0 rgba(20, 184, 166, 0.3);
+            box-shadow: 0 4px 14px 0 var(--brand-shadow);
         }
-        .btn-primary:hover { background-color: var(--brand-hover); }
+        .btn-primary:hover { background-color: var(--brand-hover); box-shadow: 0 8px 22px 0 var(--brand-shadow); }
         
         .btn-glass {
-            background: rgba(255,255,255,0.05);
+            background: color-mix(in srgb, var(--brand-2) 20%, rgba(255,255,255,0.04));
             color: white;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid color-mix(in srgb, var(--brand-2) 50%, rgba(255,255,255,0.12));
         }
-        .btn-glass:hover { background: rgba(255,255,255,0.1); }
+        .btn-glass:hover { background: color-mix(in srgb, var(--brand-2) 35%, rgba(255,255,255,0.08)); }
 
         .btn-outline {
-            background: var(--surface);
+            background: var(--btn-outline-bg);
             border: 1px solid var(--border);
             color: white;
         }
-        .btn-outline:hover { border-color: var(--brand); }
+        .btn-outline:hover { border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand); }
         .input-group { position: relative; }
         .input-field, .select-field, .textarea-field {
             width: 100%;
@@ -240,7 +279,7 @@
         }
         .input-field:focus, .select-field:focus, .textarea-field:focus {
             border-color: var(--brand);
-            box-shadow: 0 0 0 1px var(--brand);
+            box-shadow: 0 0 0 2px var(--focus-ring);
         }
         .glass-input {
             background: rgba(255, 255, 255, 0.05);
@@ -425,9 +464,29 @@
             border: 1px solid var(--border);
             border-radius: 0.75rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            z-index: 50;
+            z-index: 1200;
             max-height: 360px;
             overflow-y: auto;
+        }
+        #theme-creator-search-results {
+            z-index: 9999;
+        }
+        #theme-creator-ai-search-results {
+            z-index: 9999;
+        }
+        #theme-creator-search-panel {
+            position: relative;
+            z-index: 10000;
+            overflow: visible;
+        }
+        #theme-creator-search-panel .input-group {
+            z-index: 10001;
+            overflow: visible;
+        }
+        #theme-creator-backdrops-panel,
+        #theme-creator-selected-panel {
+            position: relative;
+            z-index: 0;
         }
         .search-item {
             padding: 1.1rem;
@@ -1369,8 +1428,8 @@
         }
         .ai-mode-btn.is-active {
             color: #fff;
-            background: linear-gradient(135deg, rgba(59,130,246,0.32), rgba(236,72,153,0.26));
-            border-color: rgba(147,197,253,0.6);
+            background: linear-gradient(135deg, var(--nav-active-a), var(--nav-active-b));
+            border-color: color-mix(in srgb, var(--brand) 60%, var(--border));
             box-shadow: 0 10px 26px rgba(0,0,0,0.35);
         }
 
@@ -1391,7 +1450,7 @@
             transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
         }
         .dash-quote-card:hover {
-            border-color: rgba(20,184,166,0.40);
+            border-color: color-mix(in srgb, var(--brand) 55%, rgba(255,255,255,0.12));
             background: rgba(255,255,255,0.07);
             box-shadow: 0 18px 50px rgba(0,0,0,0.40);
         }
@@ -1399,8 +1458,8 @@
             content: "";
             position: absolute;
             inset: -2px;
-            background: radial-gradient(600px circle at var(--mx, 40%) var(--my, 25%), rgba(168,85,247,0.18), transparent 45%),
-                        radial-gradient(520px circle at var(--mx2, 70%) var(--my2, 80%), rgba(20,184,166,0.14), transparent 50%);
+            background: radial-gradient(600px circle at var(--mx, 40%) var(--my, 25%), var(--brand-2), transparent 45%),
+                        radial-gradient(520px circle at var(--mx2, 70%) var(--my2, 80%), var(--brand-light), transparent 50%);
             opacity: 0.85;
             pointer-events: none;
         }
@@ -1472,17 +1531,23 @@
             background: rgba(255,255,255,0.07);
         }
         .dash-pill-btn.btn-glass {
-            background: linear-gradient(135deg, rgba(20,184,166,0.24), rgba(168,85,247,0.18));
-            border-color: rgba(20,184,166,0.42);
+            background: linear-gradient(135deg, var(--nav-active-a), var(--nav-active-b));
+            border-color: color-mix(in srgb, var(--brand) 65%, var(--border));
             color: #fff;
             box-shadow: 0 10px 26px rgba(0,0,0,0.35);
         }
         .dash-pill-btn.btn-glass:hover {
-            background: linear-gradient(135deg, rgba(20,184,166,0.30), rgba(168,85,247,0.22));
+            background: linear-gradient(
+                135deg,
+                color-mix(in srgb, var(--nav-active-a) 80%, var(--brand-light)),
+                color-mix(in srgb, var(--nav-active-b) 80%, var(--brand-light))
+            );
         }
     </style>
 </head>
 <body>
+    <div class="theme-background"></div>
+    <div class="theme-gradient-overlay"></div>
 
     <!-- Navbar -->
     <nav class="navbar glass-panel">
@@ -2202,6 +2267,12 @@
                     return;
                 }
 
+                // If the user is not logged in, block Theme Creator.
+                if (page === 'theme_creator' && !cachedIsAuthed) {
+                    openAccountAuthWarning();
+                    return;
+                }
+
                 // Disallow opening the submit form without selecting a movie from the dropdown.
                 if (page === 'submit' && String(mode || 'new') === 'new') {
                     const hasPicked = Boolean(this.selectedMovie);
@@ -2269,6 +2340,10 @@
                     refreshAuthStateAndUI();
                     initAccountPage();
                     loadAccountPage();
+                } else if (page === 'theme_creator') {
+                    root.innerHTML = this.renderThemeCreator();
+                    refreshAuthStateAndUI();
+                    initThemeCreatorPage();
                 } else if (page === 'submit') {
                     root.innerHTML = this.renderSubmit();
                     initializeWatchMethodToggle();
@@ -2724,14 +2799,10 @@
                         <div class="fade-in">
                         <!-- Hero (Full Width) -->
                         <div class="relative w-full" style="height: 62vh; margin-bottom: 1.5rem;">
-                            <!-- Backgrounds -->
-                            <div class="absolute" style="inset:0; background-image: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2525&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.4;"></div>
-                            <div class="absolute" style="inset:0; background: linear-gradient(to top, var(--bg-dark) 10%, transparent 90%); z-index: -1;"></div>
-                            
                             <!-- Content (Containerized) -->
                             <div class="container" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 2.25rem;">
-                                <span class="text-xs font-semibold text-brand uppercase" style="background: var(--brand-light); padding: 0.25rem 0.75rem; border-radius: 99px; border: 1px solid rgba(20,184,166,0.2); width: fit-content; margin-bottom: 1rem;">Start Logging</span>
-                                <h1 class="text-5xl font-bold text-white mb-6" style="line-height: 1.1;">Cinematic <br/> <span style="background: linear-gradient(to right, var(--brand), #a137c6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Masterpieces</span></h1>
+                                <span class="text-xs font-semibold text-brand uppercase" style="background: var(--brand-light); padding: 0.25rem 0.75rem; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent); width: fit-content; margin-bottom: 1rem;">Start Logging</span>
+                                <h1 class="text-5xl font-bold text-white mb-6" style="line-height: 1.1; color: var(--text-main);">Cinematic <br/> <span style="background: linear-gradient(to right, var(--brand), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Masterpieces</span></h1>
                                 
                                 <div style="max-width: 600px; position: relative;">
                                     <p class="text-xl text-gray mb-4">Search for a movie to add it to your diary.</p>
@@ -2788,8 +2859,8 @@
                                                     <button id="btn-log-new-entry" onclick="router.startNewEntry()" class="btn btn-primary" style="flex:1;">
                                                         ${icons.plusCircle} Log as New Entry
                                                     </button>
-                                                    <button id="update-existing-btn" onclick="router.toggleUpdateOptions()" class="btn btn-outline" style="flex:1; border-color: rgba(168, 85, 247, 0.55); background: rgba(168, 85, 247, 0.10);">
-                                                        <span style="color:#a137c6; width:20px;">${icons.refreshCw}</span> Update Existing
+                                                    <button id="update-existing-btn" onclick="router.toggleUpdateOptions()" class="btn btn-outline" style="flex:1; border-color: color-mix(in srgb, var(--brand-2) 60%, transparent); background: color-mix(in srgb, var(--brand-2) 30%, transparent);">
+                                                        <span style="color: var(--accent-2); width:20px;">${icons.refreshCw}</span> Update Existing
                                                     </button>
                                                 </div>
 
@@ -2838,10 +2909,6 @@
             renderLists() {
                 return `
                     <div class="fade-in">
-                        <!-- Background -->
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.15; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, rgba(20,184,166, 0.10), transparent 22%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-
                         <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
                             <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
                                 <div>
@@ -2934,8 +3001,8 @@
                 const allowEditMissingDetails = detailsReadonly && !hasDbMovie;
 
                 const formAccent = isUpdate
-                    ? { rgb: '161, 55, 198', hex: '#a137c6', name: 'Update Ratings' }
-                    : { rgb: '20, 184, 166', hex: '#14b8a6', name: 'Log New Entry' };
+                    ? { color: 'var(--brand-2)', name: 'Update Ratings' }
+                    : { color: 'var(--brand)', name: 'Log New Entry' };
 
                 const u = (isUpdate && prefill.mockUserReview) ? prefill.mockUserReview : {
                     date: defaultDate, tier: "", scores: { overall: 50, sound: 50, pace: 50, imagery: 50, acting: 50, plot: 50, dialogue: 50 },
@@ -3048,10 +3115,6 @@
 
                 return `
                     <div class="fade-in">
-                        <!-- Background -->
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?q=80&w=2076&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.15; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, rgba(${formAccent.rgb}, 0.14), transparent 22%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-                        
                         <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
                         <div class="flex items-center gap-4 mb-8">
                             <button onclick="router.navigate('home')" style="color: var(--text-muted); padding: 0.5rem; border-radius: 50%;">
@@ -3060,26 +3123,26 @@
                             <div>
                                 <div class="flex items-center gap-2" style="flex-wrap: wrap;">
                                     <h1 class="text-3xl font-bold text-white">${isUpdate ? 'Update Ratings' : 'Log New Entry'}</h1>
-                                    <span style="display:inline-flex; align-items:center; height: 28px; padding: 0 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.95); background: rgba(${formAccent.rgb}, 0.16); border: 1px solid rgba(${formAccent.rgb}, 0.35);">
+                                    <span style="display:inline-flex; align-items:center; height: 28px; padding: 0 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.95); background: color-mix(in srgb, ${formAccent.color} 16%, transparent); border: 1px solid color-mix(in srgb, ${formAccent.color} 35%, transparent);">
                                         ${formAccent.name}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <form onsubmit="handleFormSubmit(event)" class="grid grid-3 gap-6" style="border: 1px solid rgba(${formAccent.rgb}, 0.14); border-radius: 1.2rem; padding: 0.75rem; background: rgba(0,0,0,0.12);">
+                        <form onsubmit="handleFormSubmit(event)" class="grid grid-3 gap-6" style="border: 1px solid color-mix(in srgb, ${formAccent.color} 18%, transparent); border-radius: 1.2rem; padding: 0.75rem; background: rgba(0,0,0,0.12);">
                             <input type="hidden" name="entryType" value="${isUpdate ? 'update' : 'new'}">
                             <input type="hidden" id="fld-movie-id" value="${hasDbMovie ? String(prefill.id) : ''}">
                             <input type="hidden" id="fld-tmdb-id" value="${Number.isFinite(Number(prefill?.tmdb_id)) ? String(Number(prefill.tmdb_id)) : ''}">
                             <!-- Read Only Section -->
-                            <div class="glass-panel" style="padding: 1.5rem; border-radius: 1rem; background: rgba(${formAccent.rgb}, 0.10); border: 1px solid rgba(${formAccent.rgb}, 0.22);">
+                            <div class="glass-panel" style="padding: 1.5rem; border-radius: 1rem; background: color-mix(in srgb, ${formAccent.color} 10%, transparent); border: 1px solid color-mix(in srgb, ${formAccent.color} 22%, transparent);">
                                 <div class="flex items-center gap-3 mb-4">
-                                    <span style="color: ${formAccent.hex};">${icons.database}</span>
+                                    <span style="color: ${formAccent.color};">${icons.database}</span>
                                     <h2 class="text-xl font-semibold text-white">Movie Details</h2>
                                 </div>
-                                <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1.5rem;" class="text-sm flex items-center gap-2">
+                                <div style="background: color-mix(in srgb, var(--brand) 12%, transparent); border: 1px solid color-mix(in srgb, var(--brand) 22%, transparent); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1.5rem;" class="text-sm flex items-center gap-2">
                                     <span style="width:16px;">${icons.info}</span>
-                                    <span style="color: #bfdbfe;">${hasDbMovie ? 'Auto-filled from DB' : (allowEditMissingDetails ? 'Auto-filled from TMDb (edit any missing fields)' : 'Auto-filled from TMDb')}</span>
+                                    <span style="color: var(--text-main);">${hasDbMovie ? 'Auto-filled from DB' : (allowEditMissingDetails ? 'Auto-filled from TMDb (edit any missing fields)' : 'Auto-filled from TMDb')}</span>
                                 </div>
 
                                 ${posterUrl ? `
@@ -3326,10 +3389,6 @@
             renderDashboard() {
                 return `
                     <div class="fade-in">
-                        <!-- Background -->
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?q=80&w=2028&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.15; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-
                         <div class="container" style="padding-top: 2rem; position: relative;">
                         <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
                             <div>
@@ -3632,10 +3691,6 @@
             renderFeed() {
                 return `
                     <div class="fade-in">
-                        <!-- Background -->
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.12; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-
                         <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
                             <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
                                 <div>
@@ -3691,10 +3746,6 @@
             renderAiPicks() {
                 return `
                     <div class="fade-in">
-                        <!-- Background -->
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.10; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-
                         <div class="container" style="padding-top: 1.25rem; padding-bottom: 2.6rem; position: relative;">
                             <div class="glass-panel" style="padding: 1.1rem 1.2rem; border-radius: 1.1rem; margin-bottom: 1rem; display:flex; flex-wrap: wrap; gap: 12px; align-items:center; justify-content: space-between;">
                                 <div>
@@ -3888,10 +3939,6 @@
             renderLibrary() {
                 return `
                     <div class="fade-in">
-                        <!-- Background -->
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.10; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-
                         <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
                             <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
                                 <div>
@@ -3904,7 +3951,7 @@
                                 </div>
                             </div>
 
-                            <div class="glass-panel" style="padding: 1rem; border-radius: 1rem;">
+                            <div class="glass-panel" id="theme-creator-search-panel" style="padding: 1rem; border-radius: 1rem;">
                                 <div class="flex justify-between items-center" style="gap: 12px; flex-wrap: wrap;">
                                     <div>
                                         <div class="text-white font-bold">Recent Watches</div>
@@ -3925,9 +3972,6 @@
             renderAccount() {
                 return `
                     <div class="fade-in">
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.10; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-
                         <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
                             <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
                                 <div>
@@ -3945,6 +3989,10 @@
                                     <div class="text-white font-bold">Profile</div>
                                     <div class="text-xs text-gray" style="margin-top: 0.35rem;">Username, display name, and icon.</div>
                                 </button>
+                                <button type="button" class="glass-panel hidden" id="theme-creator-card" data-account-action="theme_creator" style="padding: 1rem; border-radius: 1rem; text-align: left;">
+                                    <div class="text-white font-bold">Theme Creator</div>
+                                    <div class="text-xs text-gray" style="margin-top: 0.35rem;">Build themed backdrops from TMDb.</div>
+                                </button>
                                 <button type="button" class="glass-panel" data-account-action="open_security" style="padding: 1rem; border-radius: 1rem; text-align: left;">
                                     <div class="text-white font-bold">Security</div>
                                     <div class="text-xs text-gray" style="margin-top: 0.35rem;">Update your password and view email.</div>
@@ -3953,16 +4001,20 @@
                                     <div class="text-white font-bold">Feature Requests</div>
                                     <div class="text-xs text-gray" style="margin-top: 0.35rem;">Send ideas and suggestions.</div>
                                 </button>
-                                <button type="button" class="glass-panel" data-account-action="recalc_taste" style="padding: 1rem; border-radius: 1rem; text-align: left;">
-                                    <div class="text-white font-bold">Recalculate Taste Profile</div>
-                                    <div class="text-xs text-gray" style="margin-top: 0.35rem;">Refresh your AI taste profile data.</div>
-                                </button>
                                 <button type="button" class="glass-panel" data-account-action="logout" style="padding: 1rem; border-radius: 1rem; text-align: left;">
                                     <div class="text-white font-bold">Log out</div>
                                     <div class="text-xs text-gray" style="margin-top: 0.35rem;">Sign out of your account.</div>
                                 </button>
                             </div>
-                            <div id="account-taste-status" class="text-xs" style="margin-top: 0.85rem; color: rgba(255,255,255,0.60);"></div>
+                            <div class="glass-panel" id="theme-creator-backdrops-panel" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                <div class="text-white font-bold">Theme</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.35rem;">Choose a visual style for the site.</div>
+                                <div style="margin-top: 0.75rem; display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
+                                    <select id="account-theme-select" class="input-field" style="min-width: 220px;">
+                                        ${buildThemeCreatorOptions(themeOptions, getStoredTheme())}
+                                    </select>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -4054,13 +4106,154 @@
                 `;
             },
 
+            renderThemeCreator() {
+                return `
+                    <div class="fade-in">
+                        <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
+                            <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-white">Theme Creator</h1>
+                                    <p class="text-gray mt-2">Build a theme step by step: pick mode, name it, choose backdrops, pick the AI movie, then save.</p>
+                                </div>
+                                <div style="display:flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-outline" onclick="router.navigate('account')" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Back</button>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel" id="theme-creator-step-mode" style="padding: 1rem; border-radius: 1rem;">
+                                <div class="text-white font-bold">Step 1 — Mode</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.25rem;">Choose whether you are creating a new theme or editing an existing one.</div>
+                                <div style="margin-top: 0.75rem; display:flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                    <button type="button" class="btn btn-primary" id="theme-creator-mode-create" style="padding: 0.55rem 0.9rem; border-radius: 0.85rem;">Create New</button>
+                                    <button type="button" class="btn btn-outline" id="theme-creator-mode-edit" style="padding: 0.55rem 0.9rem; border-radius: 0.85rem;">Edit Existing</button>
+                                    <button type="button" class="btn btn-outline" id="theme-creator-mode-continue" style="padding: 0.55rem 0.9rem; border-radius: 0.85rem;">Continue</button>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel hidden" id="theme-creator-step-name" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                <div class="text-white font-bold">Step 2 — Name</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.25rem;">Set or select your theme name before adding assets.</div>
+
+                                <div id="theme-creator-create-panel" style="margin-top: 0.75rem; display:grid; gap: 8px;">
+                                    <label class="text-xs text-gray">New theme name</label>
+                                    <div style="display:flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                        <input id="theme-creator-new-name" type="text" class="input-field" placeholder="e.g. Neon Noir" style="min-width: 220px;">
+                                        <button type="button" class="btn btn-outline" id="theme-creator-create-btn" style="padding: 0.55rem 0.9rem; border-radius: 0.85rem;">Create Theme & Continue</button>
+                                    </div>
+                                </div>
+
+                                <div id="theme-creator-edit-panel" class="hidden" style="margin-top: 0.75rem; display:grid; gap: 8px;">
+                                    <label class="text-xs text-gray">Select theme</label>
+                                    <select id="theme-creator-edit-select" class="input-field" style="min-width: 220px;">
+                                        ${buildThemeCreatorOptions(getThemeCreatorThemeOptions(), '')}
+                                    </select>
+                                    <div style="display:flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                        <button type="button" class="btn btn-outline" id="theme-creator-edit-continue" style="padding: 0.55rem 0.9rem; border-radius: 0.85rem;">Continue to Backdrops</button>
+                                    </div>
+                                    <label class="text-xs text-gray">Rename theme</label>
+                                    <div style="display:flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                        <input id="theme-creator-edit-name" type="text" class="input-field" placeholder="New theme name" style="min-width: 220px;">
+                                        <button type="button" class="btn btn-outline" id="theme-creator-update-btn" style="padding: 0.55rem 0.9rem; border-radius: 0.85rem;">Update Name</button>
+                                    </div>
+                                    <div style="margin-top: 0.5rem; display:flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                        <button type="button" class="btn btn-outline" id="theme-creator-delete-theme" style="padding: 0.55rem 0.9rem; border-radius: 0.85rem;">Delete Theme</button>
+                                    </div>
+                                </div>
+
+                                <div id="theme-creator-theme-status" class="text-xs" style="margin-top: 0.6rem; color: rgba(255,255,255,0.60);"></div>
+                            </div>
+
+                            <div class="glass-panel hidden" id="theme-creator-step-backdrops" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                <div class="text-white font-bold">Step 3 — Backdrops</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.25rem;">Search multiple movies and pick up to 6 backdrops total.</div>
+                                <div style="margin-top: 0.75rem; position: relative;">
+                                    <div class="input-group">
+                                        <div class="input-icon">${icons.search}</div>
+                                        <input
+                                            type="text"
+                                            id="theme-creator-search-input"
+                                            autocomplete="off"
+                                            placeholder="Search a movie for backdrops..."
+                                            class="input-field glass-input"
+                                            style="border-radius: 0.85rem;"
+                                        >
+                                        <div id="theme-creator-search-results" class="search-dropdown hidden"></div>
+                                    </div>
+                                </div>
+
+                                <div class="glass-panel" id="theme-creator-selected-panel" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                    <div class="flex" style="justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                        <div>
+                                            <div class="text-white font-bold">Backdrops</div>
+                                            <div id="theme-creator-selected-movie" class="text-xs text-gray" style="margin-top: 0.25rem;">No backdrop movie selected yet.</div>
+                                        </div>
+                                        <div class="text-xs text-gray">Click up to 6 images.</div>
+                                    </div>
+                                    <div id="theme-creator-backdrops" style="margin-top: 0.9rem; display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;"></div>
+                                </div>
+
+                                <div class="glass-panel" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                    <div class="flex" style="justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                        <div>
+                                            <div class="text-white font-bold">Selected Images</div>
+                                            <div class="text-xs text-gray" style="margin-top: 0.25rem;">Assign a page for each selection.</div>
+                                            <div class="text-xs text-gray" style="margin-top: 0.25rem;">Active theme: <span id="theme-creator-active-name">None</span></div>
+                                        </div>
+                                        <div class="text-xs text-gray" id="theme-creator-count">0 / 6 selected</div>
+                                    </div>
+
+                                    <div id="theme-creator-selected" style="margin-top: 0.9rem; display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;"></div>
+
+                                    <div style="margin-top: 1rem; display:flex; gap: 10px; flex-wrap: wrap;">
+                                        <button type="button" class="btn btn-outline" id="theme-creator-clear" style="border-radius: 0.85rem;">Clear Selection</button>
+                                        <button type="button" class="btn btn-outline" id="theme-creator-backdrops-continue" style="border-radius: 0.85rem;">Continue to AI Movie</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel hidden" id="theme-creator-step-ai" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                <div class="text-white font-bold">Step 4 — AI Movie</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.25rem;">Pick the single movie that will drive the AI color palette.</div>
+                                <div style="margin-top: 0.75rem; position: relative;">
+                                    <div class="input-group">
+                                        <div class="input-icon">${icons.search}</div>
+                                        <input
+                                            type="text"
+                                            id="theme-creator-ai-search-input"
+                                            autocomplete="off"
+                                            placeholder="Search the AI palette movie..."
+                                            class="input-field glass-input"
+                                            style="border-radius: 0.85rem;"
+                                        >
+                                        <div id="theme-creator-ai-search-results" class="search-dropdown hidden"></div>
+                                    </div>
+                                </div>
+                                <div id="theme-creator-ai-selected-movie" class="text-xs text-gray" style="margin-top: 0.6rem;">No AI movie selected yet.</div>
+                                <div style="margin-top: 1rem; display:flex; gap: 10px; flex-wrap: wrap;">
+                                    <button type="button" class="btn btn-outline" id="theme-creator-ai-continue" style="border-radius: 0.85rem;">Continue to Prompt</button>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel hidden" id="theme-creator-step-prompt" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                <div class="text-white font-bold">Step 5 — Style Prompt & Save</div>
+                                <div class="text-xs text-gray" style="margin-top: 0.25rem;">Add any extra color direction, then save to trigger uploads + AI.</div>
+                                <label class="text-xs text-gray" style="margin-top: 0.75rem;">Color style prompt (optional)</label>
+                                <textarea id="theme-creator-style-prompt" class="input-field textarea-field" rows="3" placeholder="e.g. Moody noir with teal highlights, warm skin tones, subtle gold accents."></textarea>
+                                <div class="text-xs text-gray" style="margin-top: 0.4rem;">This helps the AI pick cohesive colors for the new theme.</div>
+                                <div style="margin-top: 1rem; display:flex; gap: 10px; flex-wrap: wrap;">
+                                    <button type="button" class="btn btn-primary" id="theme-creator-save" style="border-radius: 0.85rem;">Save Theme Assets + Colors</button>
+                                    <button type="button" class="btn btn-outline" id="theme-creator-regenerate" style="border-radius: 0.85rem;">Re-generate Colors</button>
+                                </div>
+                                <div id="theme-creator-status" class="text-xs" style="margin-top: 0.6rem; color: rgba(255,255,255,0.60);"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
             renderDashboardKpiDetail() {
                 return `
                     <div class="fade-in">
-                        <!-- Background -->
-                        <div style="position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?q=80&w=2028&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; opacity: 0.15; pointer-events: none;"></div>
-                        <div style="position: fixed; inset: 0; background: linear-gradient(to bottom, var(--bg-dark), transparent 20%, var(--bg-dark) 90%); z-index: -1; pointer-events: none;"></div>
-
                         <div class="container" style="padding-top: 2rem; position: relative;">
                             <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
                                 <div class="flex" style="gap: 12px; align-items: center;">
@@ -11892,6 +12085,44 @@
             return data;
         }
 
+        async function callColorThemeEdge(body, accessToken) {
+            const iss = decodeJwtPayload(accessToken)?.iss;
+            if (iss && typeof iss === 'string' && !iss.includes(SUPABASE_URL)) {
+                throw new Error(
+                    `Auth token is for a different Supabase project (iss=${iss}). Check SUPABASE_URL.`
+                );
+            }
+
+            const url = `${SUPABASE_URL}/functions/v1/color-theme`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            const text = await res.text();
+            let data = null;
+            try {
+                data = text ? JSON.parse(text) : null;
+            } catch (_) {
+                data = text;
+            }
+
+            if (!res.ok) {
+                const serverMsg =
+                    data && typeof data === 'object'
+                        ? (data.message || data.error || JSON.stringify(data))
+                        : String(data || '');
+                throw new Error(`color-theme failed (HTTP ${res.status}) - ${serverMsg}`);
+            }
+
+            return data;
+        }
+
         let cachedAuthUser = null;
         let cachedIsAuthed = false;
 
@@ -11905,6 +12136,663 @@
         const NEW_FEATURES_POPUP_PATH = 'new-features-popup.txt';
         const AI_HELP_POPUP_PATH = 'ai-help-popup.txt';
         const popupTextCache = new Map();
+        const THEME_STORAGE_KEY = 'ct_theme';
+        const DEFAULT_THEME_OPTIONS = [
+            {
+                id: null,
+                name: 'Original',
+                value: 'original',
+                label: 'Original',
+                slug: 'original',
+            },
+        ];
+        const DEFAULT_THEME_COLORS = {
+            bg_dark: '#09090b',
+            surface: '#18181b',
+            border: '#27272a',
+            text_main: '#e4e4e7',
+            text_muted: '#a1a1aa',
+            brand: '#14b8a6',
+            brand_hover: '#0d9488',
+            brand_2: 'rgba(168, 85, 247, 0.35)',
+            brand_3: 'rgba(59, 130, 246, 0.35)',
+            accent_1: '#5eead4',
+            accent_2: '#a78bfa',
+            nav_accent: '#74c6cd',
+            nav_title: '#fdfbf8',
+            brand_light: 'rgba(20, 184, 166, 0.1)',
+            brand_shadow: 'rgba(20, 184, 166, 0.3)',
+            nav_active_a: 'rgba(20, 184, 166, 0.28)',
+            nav_active_b: 'rgba(168, 85, 247, 0.22)',
+            glass_bg: 'rgba(24, 24, 27, 0.6)',
+            glass_border: 'rgba(255, 255, 255, 0.05)',
+            glass_shadow: 'rgba(0, 0, 0, 0.35)',
+            btn_outline_bg: 'rgba(24, 24, 27, 0.65)',
+            focus_ring: 'rgba(20, 184, 166, 0.6)',
+            bg_overlay: 'linear-gradient(to bottom, rgba(9, 9, 11, 0.1), rgba(9, 9, 11, 0.55) 50%, rgba(9, 9, 11, 0.9) 100%)',
+        };
+        let themeOptions = DEFAULT_THEME_OPTIONS.slice();
+        let themeOptionsById = new Map();
+        let themeOptionsByName = new Map();
+        let themeColorsById = new Map();
+        let themeCreatorThemes = [];
+
+        const THEME_CREATOR_OWNER_EMAIL = 'landon.talus@gmail.com';
+        const THEME_CREATOR_PAGES = [
+            { value: 'home', label: 'Home' },
+            { value: 'ai', label: 'AI' },
+            { value: 'lists', label: 'Lists' },
+            { value: 'feed', label: 'Feed' },
+            { value: 'mymovies', label: 'MyMovies' },
+            { value: 'dashboard', label: 'Data Dash' },
+        ];
+
+        function formatThemeLabel(raw) {
+            const name = String(raw || '').trim();
+            if (!name) return '';
+            if (/\s/.test(name)) return name;
+            return name
+                .split(/[-_]/g)
+                .map((part) => (part ? part[0].toUpperCase() + part.slice(1) : ''))
+                .join(' ');
+        }
+
+        function normalizeThemeName(raw) {
+            return String(raw || '').trim().toLowerCase();
+        }
+
+        function buildThemeOptionsFromRows(rows) {
+            const items = Array.isArray(rows) ? rows : [];
+            return items
+                .map((row) => {
+                    const id = String(row?.id || '').trim();
+                    const name = String(row?.name || '').trim();
+                    if (!id || !name) return null;
+                    const slug = slugifyThemeCreatorValue(name) || 'original';
+                    return {
+                        id,
+                        name,
+                        value: id,
+                        label: name,
+                        slug,
+                    };
+                })
+                .filter(Boolean);
+        }
+
+        function mergeThemeOptions(baseOptions, extraOptions) {
+            const merged = new Map();
+            (Array.isArray(baseOptions) ? baseOptions : []).forEach((opt) => {
+                if (opt?.value) merged.set(opt.value, opt);
+            });
+            (Array.isArray(extraOptions) ? extraOptions : []).forEach((opt) => {
+                if (opt?.value && !merged.has(opt.value)) merged.set(opt.value, opt);
+            });
+            return Array.from(merged.values());
+        }
+
+        function setThemeOptions(nextOptions) {
+            themeOptions = Array.isArray(nextOptions) ? nextOptions : DEFAULT_THEME_OPTIONS.slice();
+            themeOptionsById = new Map();
+            themeOptionsByName = new Map();
+            themeOptions.forEach((opt) => {
+                if (opt?.id) themeOptionsById.set(String(opt.id), opt);
+                if (opt?.name) themeOptionsByName.set(normalizeThemeName(opt.name), opt);
+            });
+            themeCreatorThemes = themeOptions.filter((opt) => opt.value !== 'original');
+            updateThemeOptionUIs();
+            if (themeCreatorActiveThemeId) {
+                setThemeCreatorActiveTheme(themeCreatorActiveThemeId);
+            }
+        }
+
+        function setThemeColorsMap(rows) {
+            const next = new Map();
+            const items = Array.isArray(rows) ? rows : [];
+            items.forEach((row) => {
+                const id = String(row?.id || '').trim();
+                if (!id) return;
+                const colors = row?.colors && typeof row.colors === 'object' ? row.colors : null;
+                if (colors) next.set(id, colors);
+            });
+            themeColorsById = next;
+        }
+
+        function updateThemeOptionUIs() {
+            const accountSelect = document.getElementById('account-theme-select');
+            if (accountSelect) {
+                const current = String(accountSelect.value || getStoredTheme()).trim();
+                accountSelect.innerHTML = buildThemeCreatorOptions(themeOptions, current);
+                if (current) accountSelect.value = current;
+            }
+
+            document.querySelectorAll('select[data-theme-creator-select="theme"]').forEach((select) => {
+                if (!(select instanceof HTMLSelectElement)) return;
+                const current = String(select.value || '').trim();
+                select.innerHTML = buildThemeCreatorOptions(themeCreatorThemes, current);
+                if (current) select.value = current;
+            });
+
+            const editSelect = document.getElementById('theme-creator-edit-select');
+            if (editSelect && editSelect instanceof HTMLSelectElement) {
+                const current = String(editSelect.value || '').trim();
+                editSelect.innerHTML = buildThemeCreatorOptions(themeCreatorThemes, current);
+                if (current) editSelect.value = current;
+            }
+        }
+
+        async function loadThemeOptions() {
+            const defaults = DEFAULT_THEME_OPTIONS.slice();
+            if (!supabaseClient) {
+                setThemeOptions(defaults);
+                return;
+            }
+
+            let rows = null;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Themes')
+                    .select('id, name, colors');
+                if (error) throw error;
+                rows = data;
+            } catch (_) {
+                setThemeOptions(defaults);
+                return;
+            }
+
+            const extras = buildThemeOptionsFromRows(rows);
+            setThemeColorsMap(rows);
+            setThemeOptions(mergeThemeOptions(defaults, extras));
+        }
+
+        function getThemeCreatorThemeOptions() {
+            return themeCreatorThemes;
+        }
+
+        function getThemeOptionById(themeId) {
+            if (!themeId) return DEFAULT_THEME_OPTIONS[0];
+            return themeOptionsById.get(String(themeId)) || null;
+        }
+
+        function getThemeOptionByName(name) {
+            const key = normalizeThemeName(name);
+            return themeOptionsByName.get(key) || null;
+        }
+
+        function addThemeOptionLocal(option) {
+            if (!option?.id || !option?.name) return;
+            const next = Array.isArray(themeOptions) ? themeOptions.slice() : [];
+            const idx = next.findIndex((opt) => String(opt?.value || '') === String(option.value));
+            if (idx >= 0) {
+                next[idx] = { ...next[idx], ...option };
+            } else {
+                next.push(option);
+            }
+            setThemeOptions(next);
+        }
+
+        function setThemeCreatorThemeStatus(message, level = 'info') {
+            const el = document.getElementById('theme-creator-theme-status');
+            if (!el) return;
+            el.textContent = String(message || '').trim();
+            if (level === 'error') el.style.color = 'rgba(239,68,68,0.95)';
+            else if (level === 'success') el.style.color = 'rgba(16,185,129,0.9)';
+            else el.style.color = 'rgba(255,255,255,0.60)';
+        }
+
+        function setThemeCreatorStep(step) {
+            const next = Number(step) || 1;
+            themeCreatorStep = next;
+            const steps = [
+                { id: 'theme-creator-step-mode', step: 1 },
+                { id: 'theme-creator-step-name', step: 2 },
+                { id: 'theme-creator-step-backdrops', step: 3 },
+                { id: 'theme-creator-step-ai', step: 4 },
+                { id: 'theme-creator-step-prompt', step: 5 },
+            ];
+            steps.forEach((item) => {
+                const el = document.getElementById(item.id);
+                if (!el) return;
+                el.classList.toggle('hidden', item.step !== next);
+            });
+        }
+
+        function setThemeCreatorMode(mode) {
+            const createPanel = document.getElementById('theme-creator-create-panel');
+            const editPanel = document.getElementById('theme-creator-edit-panel');
+            const createBtn = document.getElementById('theme-creator-mode-create');
+            const editBtn = document.getElementById('theme-creator-mode-edit');
+            const next = mode === 'edit' ? 'edit' : 'create';
+            if (createPanel) createPanel.classList.toggle('hidden', next !== 'create');
+            if (editPanel) editPanel.classList.toggle('hidden', next !== 'edit');
+            if (createBtn) createBtn.classList.toggle('btn-primary', next === 'create');
+            if (createBtn) createBtn.classList.toggle('btn-outline', next !== 'create');
+            if (editBtn) editBtn.classList.toggle('btn-primary', next === 'edit');
+            if (editBtn) editBtn.classList.toggle('btn-outline', next !== 'edit');
+            themeCreatorMode = next;
+            if (next === 'create') {
+                themeCreatorExisting = [];
+                renderThemeCreatorBackdrops(themeCreatorBackdrops);
+            }
+        }
+
+        function setThemeCreatorActiveTheme(themeId) {
+            themeCreatorActiveThemeId = themeId || null;
+            const opt = getThemeOptionById(themeCreatorActiveThemeId);
+            themeCreatorActiveThemeName = String(opt?.name || '').trim();
+            const editSelect = document.getElementById('theme-creator-edit-select');
+            const editName = document.getElementById('theme-creator-edit-name');
+            const activeLabel = document.getElementById('theme-creator-active-name');
+            if (editSelect && themeCreatorActiveThemeId) {
+                editSelect.value = String(themeCreatorActiveThemeId);
+            }
+            if (editName) editName.value = themeCreatorActiveThemeName;
+            if (activeLabel) activeLabel.textContent = themeCreatorActiveThemeName || 'None';
+            renderThemeCreatorSelected();
+            if (themeCreatorMode === 'edit' && themeCreatorActiveThemeId) {
+                loadThemeCreatorExistingBackdrops(themeCreatorActiveThemeId).catch(() => null);
+            }
+        }
+
+        function getThemeCreatorStylePrompt() {
+            const input = document.getElementById('theme-creator-style-prompt');
+            return String(input?.value || '').trim();
+        }
+
+        async function generateThemeCreatorColors({ themeId, themeName, stylePrompt }) {
+            if (!supabaseClient || !themeCreatorAiMovie?.tmdb_id) return false;
+
+            try {
+                const { data } = await supabaseClient.auth.getSession();
+                const token = data?.session?.access_token;
+                if (!token) throw new Error('Missing session token.');
+
+                let details = null;
+                try {
+                    details = await callSwiftApiGetMovieDetails({ tmdb_id: Number(themeCreatorAiMovie.tmdb_id) });
+                } catch (_) {
+                    details = null;
+                }
+
+                const genres = Array.isArray(details?.genres)
+                    ? details.genres.map((g) => String(g).trim()).filter(Boolean)
+                    : [];
+                const overview = String(details?.overview || '').trim();
+                const year = Number(details?.year ?? themeCreatorAiMovie?.year ?? null);
+                const movieYear = Number.isFinite(year) ? year : null;
+
+                const payload = {
+                    theme_id: themeId,
+                    theme_name: themeName,
+                    movie_title: String(details?.title || themeCreatorAiMovie?.title || '').trim(),
+                    movie_year: movieYear,
+                    movie_genres: genres,
+                    movie_overview: overview,
+                    style_prompt: String(stylePrompt || '').trim(),
+                };
+
+                setThemeCreatorThemeStatus('Generating theme colors…');
+                const result = await callColorThemeEdge(payload, token);
+                if (result?.colors && typeof result.colors === 'object') {
+                    themeColorsById.set(String(themeId), result.colors);
+                    if (String(getStoredTheme()) === String(themeId)) {
+                        applyTheme(themeId);
+                    }
+                }
+                setThemeCreatorThemeStatus('Theme colors generated.', 'success');
+                showToast('Theme colors generated.', { level: 'success' });
+                return true;
+            } catch (err) {
+                setThemeCreatorThemeStatus(`Color generation failed: ${String(err?.message || err)}`, 'error');
+                showToast(`Color generation failed: ${String(err?.message || err)}`, { level: 'warn' });
+                return false;
+            }
+        }
+
+        async function createThemeCreatorTheme({ advance = true } = {}) {
+            const input = document.getElementById('theme-creator-new-name');
+            const btn = document.getElementById('theme-creator-create-btn');
+            const name = String(input?.value || '').trim();
+
+            if (!name) {
+                setThemeCreatorThemeStatus('Enter a theme name first.', 'error');
+                return;
+            }
+
+            if (normalizeThemeName(name) === 'original') {
+                setThemeCreatorThemeStatus('Original is reserved.', 'error');
+                return;
+            }
+
+            if (getThemeOptionByName(name)) {
+                setThemeCreatorThemeStatus('That theme already exists.', 'error');
+                return;
+            }
+
+            if (!supabaseClient) {
+                setThemeCreatorThemeStatus('Supabase SDK failed to load.', 'error');
+                return;
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = 0.7;
+            }
+            setThemeCreatorThemeStatus('Creating theme…');
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Themes')
+                    .insert({ name })
+                    .select('id, name')
+                    .single();
+                if (error) throw error;
+
+                const themeId = String(data?.id || '').trim();
+                const themeName = String(data?.name || '').trim() || name;
+                if (!themeId) throw new Error('Theme id missing.');
+
+                addThemeOptionLocal({
+                    id: themeId,
+                    name: themeName,
+                    value: themeId,
+                    label: themeName,
+                    slug: slugifyThemeCreatorValue(themeName) || 'original',
+                });
+
+                if (input) input.value = '';
+                setThemeCreatorActiveTheme(themeId);
+                setThemeCreatorMode('edit');
+                setThemeCreatorThemeStatus('Theme created.', 'success');
+                showToast('Theme created.', { level: 'success' });
+                if (advance) setThemeCreatorStep(3);
+            } catch (err) {
+                const msg = String(err?.message || err);
+                if (/duplicate key|already exists|unique/i.test(msg)) {
+                    setThemeCreatorThemeStatus('That theme already exists.', 'error');
+                } else {
+                    setThemeCreatorThemeStatus(`Create failed: ${msg}`, 'error');
+                }
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = 1;
+                }
+            }
+        }
+
+        async function updateThemeCreatorThemeName() {
+            const select = document.getElementById('theme-creator-edit-select');
+            const input = document.getElementById('theme-creator-edit-name');
+            const btn = document.getElementById('theme-creator-update-btn');
+            const themeId = String(select?.value || '').trim();
+            const name = String(input?.value || '').trim();
+
+            if (!themeId) {
+                setThemeCreatorThemeStatus('Select a theme first.', 'error');
+                return;
+            }
+
+            if (!name) {
+                setThemeCreatorThemeStatus('Enter a new name.', 'error');
+                return;
+            }
+
+            if (normalizeThemeName(name) === 'original') {
+                setThemeCreatorThemeStatus('Original is reserved.', 'error');
+                return;
+            }
+
+            const existing = getThemeOptionByName(name);
+            if (existing && String(existing.id) !== themeId) {
+                setThemeCreatorThemeStatus('That theme name already exists.', 'error');
+                return;
+            }
+
+            if (!supabaseClient) {
+                setThemeCreatorThemeStatus('Supabase SDK failed to load.', 'error');
+                return;
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = 0.7;
+            }
+            setThemeCreatorThemeStatus('Updating theme…');
+
+            try {
+                const { error } = await supabaseClient
+                    .from('Themes')
+                    .update({ name })
+                    .eq('id', themeId);
+                if (error) throw error;
+
+                addThemeOptionLocal({
+                    id: themeId,
+                    name,
+                    value: themeId,
+                    label: name,
+                    slug: slugifyThemeCreatorValue(name) || 'original',
+                });
+                setThemeCreatorActiveTheme(themeId);
+                setThemeCreatorThemeStatus('Theme updated.', 'success');
+                showToast('Theme updated.', { level: 'success' });
+            } catch (err) {
+                const msg = String(err?.message || err);
+                setThemeCreatorThemeStatus(`Update failed: ${msg}`, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = 1;
+                }
+            }
+        }
+
+        async function loadThemeBackgroundImages() {
+            if (!supabaseClient) return;
+            try {
+                let data = null;
+                try {
+                    const res = await supabaseClient
+                        .from('Background Images')
+                        .select('theme_id, url, page');
+                    if (res.error) throw res.error;
+                    data = res.data;
+                } catch (err) {
+                    const msg = String(err?.message || err);
+                    if (/column\s+"?theme_id"?\s+does\s+not\s+exist/i.test(msg)) {
+                        const res2 = await supabaseClient
+                            .from('Background Images')
+                            .select('theme_id, url, page');
+                        if (res2.error) throw res2.error;
+                        data = res2.data;
+                    } else {
+                        throw err;
+                    }
+                }
+
+                const rows = Array.isArray(data) ? data : [];
+                const rules = [];
+
+                const normalizePage = (raw) => {
+                    const s = String(raw || '').trim().toLowerCase();
+                    const compact = s.replace(/\s+/g, '');
+                    if (!s) return '';
+                    if (s === 'home') return 'home';
+                    if (s === 'ai') return 'ai_picks';
+                    if (s === 'lists') return 'lists';
+                    if (s === 'feed') return 'feed';
+                    if (s === 'mymovies') return 'library';
+                    if (s === 'dashboard' || s === 'dashboard_kpi' || s === 'data' || compact === 'datadash' || compact === 'dashboardkpi') return 'dashboard';
+                    return '';
+                };
+
+                const buildPageSelectors = (pageKey) => {
+                    if (!pageKey) return [];
+                    if (pageKey === 'dashboard') return ['dashboard', 'dashboard_kpi'];
+                    return [pageKey];
+                };
+
+                rows.forEach((row) => {
+                    const themeIdRaw = row?.theme_id ?? null;
+                    const themeId = String(themeIdRaw || '').trim();
+                    const urlRaw = String(row?.url || '').trim();
+                    const pageRaw = normalizePage(row?.page);
+                    if (!urlRaw) return;
+
+                    const urlEscaped = urlRaw.replace(/"/g, '\\"');
+                    const pages = buildPageSelectors(pageRaw);
+                    if (!pages.length) return;
+
+                    if (!themeId) {
+                        pages.forEach((pageKey) => {
+                            rules.push(`body[data-page="${pageKey}"]{--bg-image:url("${urlEscaped}");}`);
+                        });
+                        return;
+                    }
+
+                    pages.forEach((pageKey) => {
+                        rules.push(`body[data-theme-id="${themeId}"][data-page="${pageKey}"]{--bg-image:url("${urlEscaped}");}`);
+                    });
+                });
+
+                const styleId = 'theme-background-images';
+                let styleEl = document.getElementById(styleId);
+                if (!styleEl) {
+                    styleEl = document.createElement('style');
+                    styleEl.id = styleId;
+                    document.head.appendChild(styleEl);
+                }
+                styleEl.textContent = rules.join('\n');
+            } catch (_) {
+                // No fallback if load fails.
+            }
+        }
+
+        function getStoredTheme() {
+            try {
+                const raw = String(localStorage.getItem(THEME_STORAGE_KEY) || '').trim();
+                return raw || 'original';
+            } catch (_) {
+                return 'original';
+            }
+        }
+
+        function applyThemeColors(colors) {
+            const c = colors && typeof colors === 'object' ? colors : DEFAULT_THEME_COLORS;
+            const root = document.documentElement;
+
+            const base = {
+                bg_dark: String(c.bg_dark || DEFAULT_THEME_COLORS.bg_dark),
+                surface: String(c.surface || DEFAULT_THEME_COLORS.surface),
+                border: String(c.border || DEFAULT_THEME_COLORS.border),
+                text_main: String(c.text_main || DEFAULT_THEME_COLORS.text_main),
+                text_muted: String(c.text_muted || DEFAULT_THEME_COLORS.text_muted),
+                brand: String(c.brand || DEFAULT_THEME_COLORS.brand),
+                brand_hover: String(c.brand_hover || DEFAULT_THEME_COLORS.brand_hover),
+                brand_2: String(c.brand_2 || DEFAULT_THEME_COLORS.brand_2),
+                brand_3: String(c.brand_3 || DEFAULT_THEME_COLORS.brand_3),
+                accent_1: String(c.accent_1 || DEFAULT_THEME_COLORS.accent_1),
+                accent_2: String(c.accent_2 || DEFAULT_THEME_COLORS.accent_2),
+                nav_accent: String(c.nav_accent || DEFAULT_THEME_COLORS.nav_accent),
+                nav_title: String(c.nav_title || DEFAULT_THEME_COLORS.nav_title),
+            };
+
+            root.style.setProperty('--bg-dark', base.bg_dark);
+            root.style.setProperty('--surface', base.surface);
+            root.style.setProperty('--border', base.border);
+            root.style.setProperty('--text-main', base.text_main);
+            root.style.setProperty('--text-muted', base.text_muted);
+            root.style.setProperty('--brand', base.brand);
+            root.style.setProperty('--brand-hover', base.brand_hover);
+            root.style.setProperty('--brand-2', base.brand_2);
+            root.style.setProperty('--brand-3', base.brand_3);
+            root.style.setProperty('--accent-1', base.accent_1);
+            root.style.setProperty('--accent-2', base.accent_2);
+            root.style.setProperty('--nav-accent', base.nav_accent);
+            root.style.setProperty('--nav-title', base.nav_title);
+
+            const derived = {
+                brand_light: String(c.brand_light || DEFAULT_THEME_COLORS.brand_light),
+                brand_shadow: String(c.brand_shadow || DEFAULT_THEME_COLORS.brand_shadow),
+                nav_active_a: String(c.nav_active_a || DEFAULT_THEME_COLORS.nav_active_a),
+                nav_active_b: String(c.nav_active_b || DEFAULT_THEME_COLORS.nav_active_b),
+                glass_bg: String(c.glass_bg || DEFAULT_THEME_COLORS.glass_bg),
+                glass_border: String(c.glass_border || DEFAULT_THEME_COLORS.glass_border),
+                glass_shadow: String(c.glass_shadow || DEFAULT_THEME_COLORS.glass_shadow),
+                btn_outline_bg: String(c.btn_outline_bg || DEFAULT_THEME_COLORS.btn_outline_bg),
+                focus_ring: String(c.focus_ring || DEFAULT_THEME_COLORS.focus_ring),
+                bg_overlay: String(c.bg_overlay || DEFAULT_THEME_COLORS.bg_overlay),
+            };
+
+            root.style.setProperty('--brand-light', derived.brand_light);
+            root.style.setProperty('--brand-shadow', derived.brand_shadow);
+            root.style.setProperty('--nav-active-a', derived.nav_active_a);
+            root.style.setProperty('--nav-active-b', derived.nav_active_b);
+            root.style.setProperty('--glass-bg', derived.glass_bg);
+            root.style.setProperty('--glass-border', derived.glass_border);
+            root.style.setProperty('--glass-shadow', derived.glass_shadow);
+            root.style.setProperty('--btn-outline-bg', derived.btn_outline_bg);
+            root.style.setProperty('--focus-ring', derived.focus_ring);
+            root.style.setProperty('--bg-overlay', derived.bg_overlay);
+        }
+
+        function applyTheme(theme) {
+            const t = String(theme || '').trim() || 'original';
+            if (t === 'original') {
+                document.body.removeAttribute('data-theme-id');
+                applyThemeColors(DEFAULT_THEME_COLORS);
+            } else {
+                document.body.setAttribute('data-theme-id', t);
+                const colors = themeColorsById.get(String(t)) || DEFAULT_THEME_COLORS;
+                applyThemeColors(colors);
+            }
+            try { localStorage.setItem(THEME_STORAGE_KEY, t); } catch (_) {}
+            const select = document.getElementById('account-theme-select');
+            if (select) {
+                const hasOption = Array.from(select.options || []).some((opt) => opt.value === t);
+                if (!hasOption && t !== 'original') {
+                    const label = getThemeOptionById(t)?.name || formatThemeLabel(t);
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = label;
+                    select.appendChild(opt);
+                }
+                select.value = t;
+            }
+        }
+
+        async function saveAccountThemeSelection(themeId) {
+            if (!supabaseClient || !cachedIsAuthed) return;
+            const uid = String(cachedAuthUser?.id || '').trim();
+            if (!uid) return;
+            const value = themeId === 'original' ? null : themeId;
+            try {
+                const { error } = await supabaseClient
+                    .from('Users')
+                    .update({ theme_id: value })
+                    .eq('id', uid);
+                if (error) throw error;
+            } catch (err) {
+                const msg = String(err?.message || err);
+                if (!/column\s+"?theme_id"?\s+does\s+not\s+exist/i.test(msg)) {
+                    showToast(`Theme update failed: ${msg}`, { level: 'warn' });
+                }
+            }
+        }
+
+        function canAccessThemeCreator(email) {
+            const e = String(email || cachedAuthUser?.email || '').trim().toLowerCase();
+            const allowed = String(THEME_CREATOR_OWNER_EMAIL || '').trim().toLowerCase();
+            return Boolean(e && allowed && e === allowed);
+        }
+
+        function updateThemeCreatorVisibility(email) {
+            const card = document.getElementById('theme-creator-card');
+            if (!card) return;
+            const canView = canAccessThemeCreator(email);
+            card.classList.toggle('hidden', !canView);
+        }
 
         function fallbackAccountName(user) {
             const email = String(user?.email || '').trim();
@@ -11987,14 +12875,32 @@
                     cachedUserDisplayNameLoaded = true;
                     cachedUserIconLoaded = true;
                     try {
-                        const { data: usersRows, error: usersErr } = await supabaseClient
-                            .from('Users')
-                            .select('display_name, icon')
-                            .eq('id', uid)
-                            .limit(1);
-                        if (!usersErr && Array.isArray(usersRows) && usersRows.length > 0) {
+                        let usersRows = null;
+                        try {
+                            const res = await supabaseClient
+                                .from('Users')
+                                .select('display_name, icon, theme_id')
+                                .eq('id', uid)
+                                .limit(1);
+                            if (res.error) throw res.error;
+                            usersRows = res.data;
+                        } catch (err) {
+                            const msg = String(err?.message || err);
+                            if (/column\s+"?theme_id"?\s+does\s+not\s+exist/i.test(msg)) {
+                                const res2 = await supabaseClient
+                                    .from('Users')
+                                    .select('display_name, icon')
+                                    .eq('id', uid)
+                                    .limit(1);
+                                if (!res2.error) usersRows = res2.data;
+                            }
+                        }
+
+                        if (Array.isArray(usersRows) && usersRows.length > 0) {
                             cachedUserDisplayName = String(usersRows[0]?.display_name || '').trim();
                             cachedUserIcon = String(usersRows[0]?.icon || '').trim();
+                            const themeId = String(usersRows[0]?.theme_id || '').trim();
+                            if (themeId) applyTheme(themeId);
                         }
                     } catch (_) {
                         try {
@@ -12567,9 +13473,9 @@
             btn.classList.toggle('btn-outline', !isOn);
             btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
             if (isOn) {
-                btn.style.backgroundColor = 'rgba(255,255,255,0.12)';
-                btn.style.borderColor = 'rgba(255,255,255,0.35)';
-                btn.style.boxShadow = '0 0 0 2px rgba(255,255,255,0.55), 0 10px 20px rgba(59,130,246,0.35)';
+                btn.style.backgroundColor = 'color-mix(in srgb, var(--brand-2) 20%, rgba(255,255,255,0.12))';
+                btn.style.borderColor = 'color-mix(in srgb, var(--brand) 40%, rgba(255,255,255,0.35))';
+                btn.style.boxShadow = '0 0 0 2px color-mix(in srgb, var(--brand) 45%, rgba(255,255,255,0.55)), 0 10px 20px var(--brand-shadow)';
                 btn.style.fontWeight = '700';
                 btn.style.color = '#ffffff';
             } else {
@@ -12588,9 +13494,9 @@
             btn.classList.toggle('btn-outline', !isOn);
             btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
             if (isOn) {
-                btn.style.backgroundColor = 'rgba(255,255,255,0.12)';
-                btn.style.borderColor = 'rgba(255,255,255,0.35)';
-                btn.style.boxShadow = '0 0 0 2px rgba(255,255,255,0.55), 0 10px 20px rgba(168,85,247,0.35)';
+                btn.style.backgroundColor = 'color-mix(in srgb, var(--brand-2) 20%, rgba(255,255,255,0.12))';
+                btn.style.borderColor = 'color-mix(in srgb, var(--brand) 40%, rgba(255,255,255,0.35))';
+                btn.style.boxShadow = '0 0 0 2px color-mix(in srgb, var(--brand) 45%, rgba(255,255,255,0.55)), 0 10px 20px var(--brand-shadow)';
                 btn.style.fontWeight = '700';
                 btn.style.color = '#ffffff';
             } else {
@@ -12959,6 +13865,21 @@
 
                     (async () => {
                         try {
+                            try {
+                                const { user, accessToken } = await requireAuthOrThrow();
+                                await fetch('https://dbxhaseoxpnmzdxbzdpj.supabase.co/functions/v1/swift-responder', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'apikey': SUPABASE_KEY,
+                                        'Authorization': `Bearer ${accessToken}`,
+                                    },
+                                    body: JSON.stringify({ user_id: user.id })
+                                });
+                            } catch (_) {
+                                // Best-effort; do not block AI picks.
+                            }
+
                             const payload = {
                                 action: 'ai_picks',
                                 mode: similarMovies.length ? 'similar_movie' : 'filters',
@@ -13004,6 +13925,1013 @@
             });
         }
 
+        let themeCreatorBackdropSearchItems = [];
+        let themeCreatorBackdropSearchDebounceTimer = null;
+        let themeCreatorBackdropSearchAbortController = null;
+        let themeCreatorBackdropAbortController = null;
+        let themeCreatorAiSearchItems = [];
+        let themeCreatorAiSearchDebounceTimer = null;
+        let themeCreatorAiSearchAbortController = null;
+        let themeCreatorBackdrops = [];
+        let themeCreatorExisting = [];
+        let themeCreatorSelected = [];
+        let themeCreatorBackdropMovie = null;
+        let themeCreatorAiMovie = null;
+        let themeCreatorStep = 1;
+        let themeCreatorMode = 'create';
+        let themeCreatorActiveThemeId = null;
+        let themeCreatorActiveThemeName = '';
+        let themeCreatorBound = false;
+        let themeCreatorBackdropDropdownDocked = false;
+        let themeCreatorBackdropDropdownParent = null;
+        let themeCreatorAiDropdownDocked = false;
+        let themeCreatorAiDropdownParent = null;
+
+        function buildThemeCreatorOptions(options, selected) {
+            const selectedVal = String(selected || '').trim();
+            return options
+                .map((opt) => {
+                    const val = String(opt.value || '').trim();
+                    const label = String(opt.label || '').trim() || val;
+                    const isSelected = val && val === selectedVal;
+                    return `<option value="${escapeHtml(val)}"${isSelected ? ' selected' : ''}>${escapeHtml(label)}</option>`;
+                })
+                .join('');
+        }
+
+        function buildThemeCreatorBackdropUrl(filePath, size = 'w780') {
+            const path = String(filePath || '').trim();
+            if (!path) return '';
+            return `https://image.tmdb.org/t/p/${size}${path.startsWith('/') ? path : `/${path}`}`;
+        }
+
+        function setThemeCreatorStatus(message) {
+            const el = document.getElementById('theme-creator-status');
+            if (el) el.textContent = String(message || '').trim();
+        }
+
+        function setThemeCreatorCount() {
+            const el = document.getElementById('theme-creator-count');
+            if (!el) return;
+            el.textContent = `${themeCreatorSelected.length} / 6 selected`;
+        }
+
+        function renderThemeCreatorExistingBackdrops() {
+            if (!themeCreatorExisting.length) return '';
+            const cards = themeCreatorExisting.map((item, idx) => {
+                const imgUrl = String(item?.url || '').trim();
+                const pageVal = String(item?.page || '').trim();
+                const name = String(item?.name || '').trim();
+                return `
+                    <div class="glass-panel" style="padding: 0.6rem; border-radius: 0.8rem; display:grid; gap: 8px;">
+                        <div style="width: 100%; aspect-ratio: 16 / 9; border-radius: 0.7rem; overflow: hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
+                            ${imgUrl
+                                ? `<img src="${imgUrl}" alt="Theme backdrop" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit: cover; display:block;">`
+                                : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No image</div>`
+                            }
+                        </div>
+                        <div class="text-xs text-gray" style="word-break: break-all;">${escapeHtml(name || '')}</div>
+                        <div style="display:grid; gap: 6px;">
+                            <label class="text-xs text-gray">Page</label>
+                            <select class="input-field" data-theme-existing-select="page" data-theme-existing-index="${idx}">
+                                ${buildThemeCreatorOptions(THEME_CREATOR_PAGES, pageVal)}
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-outline" data-theme-existing-remove="${idx}" style="padding: 0.35rem 0.6rem; border-radius: 0.7rem;">Remove</button>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div style="display:grid; gap: 10px;">
+                    <div class="text-xs text-gray">Current theme backdrops</div>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">${cards}</div>
+                </div>
+            `;
+        }
+
+        function renderThemeCreatorBackdropSearchResults(items) {
+            const results = document.getElementById('theme-creator-search-results');
+            if (!results) return;
+
+            themeCreatorBackdropSearchItems = Array.isArray(items) ? items.slice(0, 6) : [];
+            if (themeCreatorBackdropSearchItems.length === 0) {
+                results.innerHTML = `<div class="search-item text-gray justify-center">No movies found</div>`;
+                results.classList.remove('hidden');
+                return;
+            }
+
+            results.innerHTML = themeCreatorBackdropSearchItems.map((m, idx) => {
+                const title = String(m?.title || '').trim();
+                const year = m?.year ? String(m.year) : '';
+                const posterPath = String(m?.poster_path || '').trim();
+                const posterUrl = posterPath ? `https://image.tmdb.org/t/p/w154${posterPath}` : '';
+                const metaParts = [year].filter(Boolean);
+
+                return `
+                    <div class="search-item" data-theme-creator-idx="${idx}">
+                        <div style="display:flex; align-items:center; gap: 0.75rem;">
+                            <div style="width: 34px; height: 51px; flex: 0 0 34px; border-radius: 7px; overflow:hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+                                ${posterUrl
+                                    ? `<img src="${posterUrl}" alt="" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.style.display='none'; this.parentElement.style.opacity='0.6';">`
+                                    : `<div style="opacity:0.65; color: var(--text-muted); width: 16px; height: 16px; display:flex; align-items:center; justify-content:center;">${icons.film}</div>`
+                                }
+                            </div>
+                            <div>
+                                <div class="text-white font-semibold">${escapeHtml(title)}</div>
+                                <div class="text-xs text-gray">${escapeHtml(metaParts.join(' • '))}</div>
+                            </div>
+                        </div>
+                        <div style="color:var(--text-muted);">${icons.arrowRightCircle}</div>
+                    </div>
+                `;
+            }).join('');
+            results.classList.remove('hidden');
+            dockThemeCreatorBackdropDropdown();
+
+            if (!results.dataset.boundClicks) {
+                results.dataset.boundClicks = 'true';
+                results.addEventListener('click', (e) => {
+                    const row = e?.target?.closest ? e.target.closest('.search-item[data-theme-creator-idx]') : null;
+                    if (!row) return;
+                    const idx = Number(row.getAttribute('data-theme-creator-idx'));
+                    const picked = Number.isFinite(idx) ? themeCreatorBackdropSearchItems[idx] : null;
+                    if (!picked) return;
+
+                    const tmdb_id = Number(picked?.tmdb_id ?? picked?.tmdbId ?? picked?.id ?? null);
+                    const title = String(picked?.title || '').trim();
+                    const year = picked?.year ? String(picked.year) : '';
+                    if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return;
+
+                    themeCreatorBackdropMovie = { tmdb_id, title, year };
+                    const label = `${title}${year ? ` (${year})` : ''}`;
+                    const movieEl = document.getElementById('theme-creator-selected-movie');
+                    if (movieEl) movieEl.textContent = `Last backdrop movie: ${label}`;
+
+                    const input = document.getElementById('theme-creator-search-input');
+                    if (input) input.value = '';
+                    results.classList.add('hidden');
+                    results.innerHTML = '';
+                    undockThemeCreatorBackdropDropdown();
+
+                    loadThemeCreatorBackdrops(tmdb_id).catch(() => null);
+                });
+            }
+        }
+
+        function renderThemeCreatorAiSearchResults(items) {
+            const results = document.getElementById('theme-creator-ai-search-results');
+            if (!results) return;
+
+            themeCreatorAiSearchItems = Array.isArray(items) ? items.slice(0, 6) : [];
+            if (themeCreatorAiSearchItems.length === 0) {
+                results.innerHTML = `<div class="search-item text-gray justify-center">No movies found</div>`;
+                results.classList.remove('hidden');
+                return;
+            }
+
+            results.innerHTML = themeCreatorAiSearchItems.map((m, idx) => {
+                const title = String(m?.title || '').trim();
+                const year = m?.year ? String(m.year) : '';
+                const posterPath = String(m?.poster_path || '').trim();
+                const posterUrl = posterPath ? `https://image.tmdb.org/t/p/w154${posterPath}` : '';
+                const metaParts = [year].filter(Boolean);
+
+                return `
+                    <div class="search-item" data-theme-creator-ai-idx="${idx}">
+                        <div style="display:flex; align-items:center; gap: 0.75rem;">
+                            <div style="width: 34px; height: 51px; flex: 0 0 34px; border-radius: 7px; overflow:hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+                                ${posterUrl
+                                    ? `<img src="${posterUrl}" alt="" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.style.display='none'; this.parentElement.style.opacity='0.6';">`
+                                    : `<div style="opacity:0.65; color: var(--text-muted); width: 16px; height: 16px; display:flex; align-items:center; justify-content:center;">${icons.film}</div>`
+                                }
+                            </div>
+                            <div>
+                                <div class="text-white font-semibold">${escapeHtml(title)}</div>
+                                <div class="text-xs text-gray">${escapeHtml(metaParts.join(' • '))}</div>
+                            </div>
+                        </div>
+                        <div style="color:var(--text-muted);">${icons.arrowRightCircle}</div>
+                    </div>
+                `;
+            }).join('');
+            results.classList.remove('hidden');
+            dockThemeCreatorAiDropdown();
+
+            if (!results.dataset.boundClicks) {
+                results.dataset.boundClicks = 'true';
+                results.addEventListener('click', (e) => {
+                    const row = e?.target?.closest ? e.target.closest('.search-item[data-theme-creator-ai-idx]') : null;
+                    if (!row) return;
+                    const idx = Number(row.getAttribute('data-theme-creator-ai-idx'));
+                    const picked = Number.isFinite(idx) ? themeCreatorAiSearchItems[idx] : null;
+                    if (!picked) return;
+
+                    const tmdb_id = Number(picked?.tmdb_id ?? picked?.tmdbId ?? picked?.id ?? null);
+                    const title = String(picked?.title || '').trim();
+                    const year = picked?.year ? String(picked.year) : '';
+                    if (!Number.isFinite(tmdb_id) || tmdb_id <= 0) return;
+
+                    themeCreatorAiMovie = { tmdb_id, title, year };
+                    const label = `${title}${year ? ` (${year})` : ''}`;
+                    const movieEl = document.getElementById('theme-creator-ai-selected-movie');
+                    if (movieEl) movieEl.textContent = label;
+
+                    const input = document.getElementById('theme-creator-ai-search-input');
+                    if (input) input.value = '';
+                    results.classList.add('hidden');
+                    results.innerHTML = '';
+                    undockThemeCreatorAiDropdown();
+                });
+            }
+        }
+
+        function clearThemeCreatorBackdropSearchUI() {
+            const results = document.getElementById('theme-creator-search-results');
+            if (results) results.classList.add('hidden');
+            undockThemeCreatorBackdropDropdown();
+            themeCreatorBackdropSearchItems = [];
+        }
+
+        function clearThemeCreatorAiSearchUI() {
+            const results = document.getElementById('theme-creator-ai-search-results');
+            if (results) results.classList.add('hidden');
+            undockThemeCreatorAiDropdown();
+            themeCreatorAiSearchItems = [];
+        }
+
+        function dockThemeCreatorBackdropDropdown() {
+            const input = document.getElementById('theme-creator-search-input');
+            const results = document.getElementById('theme-creator-search-results');
+            if (!input || !results) return;
+
+            if (!themeCreatorBackdropDropdownDocked) {
+                themeCreatorBackdropDropdownParent = results.parentElement;
+                document.body.appendChild(results);
+                themeCreatorBackdropDropdownDocked = true;
+            }
+
+            const rect = input.getBoundingClientRect();
+            results.style.position = 'fixed';
+            results.style.top = `${Math.round(rect.bottom + 8)}px`;
+            results.style.left = `${Math.round(rect.left)}px`;
+            results.style.width = `${Math.round(rect.width)}px`;
+            results.style.zIndex = '20000';
+        }
+
+        function undockThemeCreatorBackdropDropdown() {
+            const results = document.getElementById('theme-creator-search-results');
+            if (!results) return;
+            if (themeCreatorBackdropDropdownDocked && themeCreatorBackdropDropdownParent) {
+                themeCreatorBackdropDropdownParent.appendChild(results);
+            }
+            themeCreatorBackdropDropdownDocked = false;
+            themeCreatorBackdropDropdownParent = null;
+            results.style.position = '';
+            results.style.top = '';
+            results.style.left = '';
+            results.style.width = '';
+            results.style.zIndex = '';
+        }
+
+        function dockThemeCreatorAiDropdown() {
+            const input = document.getElementById('theme-creator-ai-search-input');
+            const results = document.getElementById('theme-creator-ai-search-results');
+            if (!input || !results) return;
+
+            if (!themeCreatorAiDropdownDocked) {
+                themeCreatorAiDropdownParent = results.parentElement;
+                document.body.appendChild(results);
+                themeCreatorAiDropdownDocked = true;
+            }
+
+            const rect = input.getBoundingClientRect();
+            results.style.position = 'fixed';
+            results.style.top = `${Math.round(rect.bottom + 8)}px`;
+            results.style.left = `${Math.round(rect.left)}px`;
+            results.style.width = `${Math.round(rect.width)}px`;
+            results.style.zIndex = '20000';
+        }
+
+        function undockThemeCreatorAiDropdown() {
+            const results = document.getElementById('theme-creator-ai-search-results');
+            if (!results) return;
+            if (themeCreatorAiDropdownDocked && themeCreatorAiDropdownParent) {
+                themeCreatorAiDropdownParent.appendChild(results);
+            }
+            themeCreatorAiDropdownDocked = false;
+            themeCreatorAiDropdownParent = null;
+            results.style.position = '';
+            results.style.top = '';
+            results.style.left = '';
+            results.style.width = '';
+            results.style.zIndex = '';
+        }
+
+        function renderThemeCreatorBackdrops(items) {
+            const wrap = document.getElementById('theme-creator-backdrops');
+            if (!wrap) return;
+
+            const safe = Array.isArray(items) ? items : [];
+            const existingHtml = themeCreatorMode === 'edit' ? renderThemeCreatorExistingBackdrops() : '';
+            const searchHtml = safe.length
+                ? safe.map((b, idx) => {
+                const filePath = String(b?.file_path || '').trim();
+                const vote = Number(b?.vote_average ?? 0);
+                const voteText = Number.isFinite(vote) ? vote.toFixed(1) : '';
+                const imgUrl = buildThemeCreatorBackdropUrl(filePath, 'w780');
+                const isSelected = themeCreatorSelected.some((s) => String(s.file_path) === filePath);
+                return `
+                    <div class="glass-panel" style="padding: 0.6rem; border-radius: 0.8rem; display:grid; gap: 8px;">
+                        <div style="width: 100%; aspect-ratio: 16 / 9; border-radius: 0.7rem; overflow: hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
+                            ${imgUrl
+                                ? `<img src="${imgUrl}" alt="Backdrop" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit: cover; display:block;">`
+                                : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No image</div>`
+                            }
+                        </div>
+                        <div style="display:flex; justify-content: space-between; align-items: center; gap: 8px;">
+                            <div class="text-xs text-gray">${voteText ? `Rating ${escapeHtml(voteText)}` : 'Unrated'}</div>
+                            <button type="button" class="btn ${isSelected ? 'btn-glass' : 'btn-outline'}" data-theme-creator-backdrop="${idx}" style="padding: 0.35rem 0.6rem; border-radius: 0.7rem;">${isSelected ? 'Selected' : 'Select'}</button>
+                        </div>
+                    </div>
+                `;
+            }).join('')
+                : '';
+
+            if (!existingHtml && !searchHtml) {
+                wrap.innerHTML = `<div class="text-gray">No backdrops found.</div>`;
+                return;
+            }
+
+            const searchSection = searchHtml
+                ? `
+                    <div style="display:grid; gap: 10px; margin-top: ${existingHtml ? '12px' : '0'};">
+                        <div class="text-xs text-gray">Search results</div>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">${searchHtml}</div>
+                    </div>
+                `
+                : '';
+
+            wrap.innerHTML = `${existingHtml}${searchSection}`;
+        }
+
+        async function loadThemeCreatorExistingBackdrops(themeId) {
+            if (!supabaseClient || !themeId) {
+                themeCreatorExisting = [];
+                renderThemeCreatorBackdrops(themeCreatorBackdrops);
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Background Images')
+                    .select('id, name, url, page, theme_id')
+                    .eq('theme_id', themeId)
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                themeCreatorExisting = Array.isArray(data) ? data : [];
+            } catch (err) {
+                themeCreatorExisting = [];
+                showToast(`Theme backdrops failed: ${String(err?.message || err)}`, { level: 'warn' });
+            }
+
+            renderThemeCreatorBackdrops(themeCreatorBackdrops);
+        }
+
+        async function updateThemeCreatorExistingPage(idx, pageVal) {
+            const row = themeCreatorExisting[idx] || null;
+            if (!row || !supabaseClient) return;
+            const page = String(pageVal || '').trim();
+            if (!page) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('Background Images')
+                    .update({ page })
+                    .eq('id', row.id);
+                if (error) throw error;
+                themeCreatorExisting = themeCreatorExisting.map((item, i) => (i === idx ? { ...item, page } : item));
+                showToast('Page updated.', { level: 'success' });
+            } catch (err) {
+                showToast(`Page update failed: ${String(err?.message || err)}`, { level: 'warn' });
+            }
+        }
+
+        async function deleteThemeCreatorExistingBackdrop(idx) {
+            const row = themeCreatorExisting[idx] || null;
+            if (!row || !supabaseClient) return;
+            const name = String(row?.name || '').trim();
+
+            try {
+                if (name) {
+                    const { error: storageErr } = await supabaseClient
+                        .storage
+                        .from('Background Images')
+                        .remove([name]);
+                    if (storageErr) throw storageErr;
+                }
+
+                const { error } = await supabaseClient
+                    .from('Background Images')
+                    .delete()
+                    .eq('id', row.id);
+                if (error) throw error;
+
+                themeCreatorExisting = themeCreatorExisting.filter((_, i) => i !== idx);
+                renderThemeCreatorBackdrops(themeCreatorBackdrops);
+                showToast('Backdrop removed.', { level: 'success' });
+            } catch (err) {
+                showToast(`Remove failed: ${String(err?.message || err)}`, { level: 'warn' });
+            }
+        }
+
+        async function deleteThemeCreatorTheme() {
+            if (!supabaseClient || !themeCreatorActiveThemeId) return;
+            const name = themeCreatorActiveThemeName || 'this theme';
+            const ok = window.confirm(`Delete ${name} and all its backdrops? This cannot be undone.`);
+            if (!ok) return;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Background Images')
+                    .select('id, name')
+                    .eq('theme_id', themeCreatorActiveThemeId);
+                if (error) throw error;
+
+                const rows = Array.isArray(data) ? data : [];
+                const names = rows.map((r) => String(r?.name || '').trim()).filter(Boolean);
+
+                if (names.length) {
+                    const { error: storageErr } = await supabaseClient
+                        .storage
+                        .from('Background Images')
+                        .remove(names);
+                    if (storageErr) throw storageErr;
+                }
+
+                if (rows.length) {
+                    const ids = rows.map((r) => r.id).filter(Boolean);
+                    const { error: delErr } = await supabaseClient
+                        .from('Background Images')
+                        .delete()
+                        .in('id', ids);
+                    if (delErr) throw delErr;
+                }
+
+                const { error: themeErr } = await supabaseClient
+                    .from('Themes')
+                    .delete()
+                    .eq('id', themeCreatorActiveThemeId);
+                if (themeErr) throw themeErr;
+
+                themeCreatorActiveThemeId = null;
+                themeCreatorActiveThemeName = '';
+                themeCreatorExisting = [];
+                themeCreatorSelected = [];
+                loadThemeOptions().catch(() => null);
+                renderThemeCreatorSelected();
+                renderThemeCreatorBackdrops(themeCreatorBackdrops);
+                setThemeCreatorMode('create');
+                setThemeCreatorThemeStatus('Theme deleted.', 'success');
+                showToast('Theme deleted.', { level: 'success' });
+            } catch (err) {
+                showToast(`Theme delete failed: ${String(err?.message || err)}`, { level: 'warn' });
+            }
+        }
+
+        function renderThemeCreatorSelected() {
+            const wrap = document.getElementById('theme-creator-selected');
+            if (!wrap) return;
+
+            setThemeCreatorCount();
+
+            if (themeCreatorSelected.length === 0) {
+                wrap.innerHTML = `<div class="text-gray">No images selected yet.</div>`;
+                return;
+            }
+
+            wrap.innerHTML = themeCreatorSelected.map((item, idx) => {
+                const filePath = String(item?.file_path || '').trim();
+                const imgUrl = buildThemeCreatorBackdropUrl(filePath, 'w780');
+                const pageVal = String(item?.page || '').trim();
+                const themeName = String(themeCreatorActiveThemeName || '').trim();
+                return `
+                    <div class="glass-panel" style="padding: 0.6rem; border-radius: 0.8rem; display:grid; gap: 8px;">
+                        <div style="width: 100%; aspect-ratio: 16 / 9; border-radius: 0.7rem; overflow: hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
+                            ${imgUrl
+                                ? `<img src="${imgUrl}" alt="Selected backdrop" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit: cover; display:block;">`
+                                : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No image</div>`
+                            }
+                        </div>
+                        <div class="text-xs text-gray">Theme: ${escapeHtml(themeName || 'None')}</div>
+                        <div style="display:grid; gap: 6px;">
+                            <label class="text-xs text-gray">Page</label>
+                            <select class="input-field" data-theme-creator-select="page" data-theme-creator-index="${idx}">
+                                ${buildThemeCreatorOptions(THEME_CREATOR_PAGES, pageVal)}
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-outline" data-theme-creator-remove="${idx}" style="padding: 0.35rem 0.6rem; border-radius: 0.7rem;">Remove</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addThemeCreatorSelection(backdrop) {
+            if (themeCreatorSelected.length >= 6) {
+                showToast('You can select up to 6 images.', { level: 'warn' });
+                return;
+            }
+            const filePath = String(backdrop?.file_path || '').trim();
+            if (!filePath) return;
+            const exists = themeCreatorSelected.some((s) => String(s.file_path) === filePath);
+            if (exists) return;
+
+            const defaultPage = THEME_CREATOR_PAGES[0]?.value || '';
+            const tmdbId = Number(themeCreatorBackdropMovie?.tmdb_id ?? null);
+
+            themeCreatorSelected = [
+                ...themeCreatorSelected,
+                {
+                    file_path: filePath,
+                    vote_average: Number(backdrop?.vote_average ?? 0) || 0,
+                    page: defaultPage,
+                    tmdb_id: Number.isFinite(tmdbId) ? tmdbId : null,
+                },
+            ];
+            renderThemeCreatorSelected();
+            renderThemeCreatorBackdrops(themeCreatorBackdrops);
+        }
+
+        function removeThemeCreatorSelection(idx) {
+            themeCreatorSelected = themeCreatorSelected.filter((_, i) => i !== idx);
+            renderThemeCreatorSelected();
+            renderThemeCreatorBackdrops(themeCreatorBackdrops);
+        }
+
+        async function loadThemeCreatorBackdrops(tmdbId) {
+            const wrap = document.getElementById('theme-creator-backdrops');
+            if (wrap) {
+                wrap.innerHTML = `<div class="text-gray">Loading backdrops…</div>`;
+            }
+            setThemeCreatorStatus('');
+
+            if (themeCreatorBackdropAbortController) themeCreatorBackdropAbortController.abort();
+            themeCreatorBackdropAbortController = new AbortController();
+
+            try {
+                const data = await callSwiftApiPublic(
+                    { action: 'backdrops', tmdb_id: tmdbId },
+                    { signal: themeCreatorBackdropAbortController.signal }
+                );
+                const items = Array.isArray(data?.backdrops) ? data.backdrops : [];
+                themeCreatorBackdrops = items;
+                renderThemeCreatorBackdrops(items);
+            } catch (err) {
+                if (String(err?.name || '').toLowerCase() === 'aborterror') return;
+                if (wrap) wrap.innerHTML = `<div class="text-gray">Backdrops unavailable.</div>`;
+                showToast(`Backdrops failed: ${String(err?.message || err)}`, { level: 'warn' });
+            }
+        }
+
+        function handleThemeCreatorBackdropSearch(query, opts = {}) {
+            const inputEl = document.getElementById('theme-creator-search-input');
+            const results = document.getElementById('theme-creator-search-results');
+            if (!inputEl || !results) return;
+
+            const q = String(query || '').trim();
+            if (!q || q.length < 1) {
+                if (themeCreatorBackdropSearchDebounceTimer) clearTimeout(themeCreatorBackdropSearchDebounceTimer);
+                if (themeCreatorBackdropSearchAbortController) themeCreatorBackdropSearchAbortController.abort();
+                clearThemeCreatorBackdropSearchUI();
+                return;
+            }
+
+            if (themeCreatorBackdropSearchDebounceTimer) clearTimeout(themeCreatorBackdropSearchDebounceTimer);
+            if (themeCreatorBackdropSearchAbortController) themeCreatorBackdropSearchAbortController.abort();
+            themeCreatorBackdropSearchAbortController = new AbortController();
+
+            if (q.length < 3) {
+                results.classList.add('hidden');
+                themeCreatorBackdropSearchItems = [];
+                return;
+            }
+
+            const debounceMs = opts?.force ? 0 : 320;
+            themeCreatorBackdropSearchDebounceTimer = setTimeout(async () => {
+                try {
+                    results.innerHTML = `
+                        <div class="search-item text-gray justify-center" style="gap:0.5rem;">
+                            <span class="icon-sm">${icons.loader}</span>
+                            Searching…
+                        </div>
+                    `;
+                    results.classList.remove('hidden');
+
+                    const data = await callSwiftApiPublic(
+                        { action: 'search', query: q, page: 1, limit: 8 },
+                        { signal: themeCreatorBackdropSearchAbortController.signal }
+                    );
+                    const items = Array.isArray(data?.results) ? data.results : [];
+                    renderThemeCreatorBackdropSearchResults(items);
+                } catch (err) {
+                    if (String(err?.name || '').toLowerCase() === 'aborterror') return;
+                    results.innerHTML = `<div class="search-item text-gray justify-center">Search unavailable — please try again</div>`;
+                    results.classList.remove('hidden');
+                }
+            }, debounceMs);
+        }
+
+        function handleThemeCreatorAiSearch(query, opts = {}) {
+            const inputEl = document.getElementById('theme-creator-ai-search-input');
+            const results = document.getElementById('theme-creator-ai-search-results');
+            if (!inputEl || !results) return;
+
+            const q = String(query || '').trim();
+            if (!q || q.length < 1) {
+                if (themeCreatorAiSearchDebounceTimer) clearTimeout(themeCreatorAiSearchDebounceTimer);
+                if (themeCreatorAiSearchAbortController) themeCreatorAiSearchAbortController.abort();
+                clearThemeCreatorAiSearchUI();
+                return;
+            }
+
+            if (themeCreatorAiSearchDebounceTimer) clearTimeout(themeCreatorAiSearchDebounceTimer);
+            if (themeCreatorAiSearchAbortController) themeCreatorAiSearchAbortController.abort();
+            themeCreatorAiSearchAbortController = new AbortController();
+
+            if (q.length < 3) {
+                results.classList.add('hidden');
+                themeCreatorAiSearchItems = [];
+                return;
+            }
+
+            const debounceMs = opts?.force ? 0 : 320;
+            themeCreatorAiSearchDebounceTimer = setTimeout(async () => {
+                try {
+                    results.innerHTML = `
+                        <div class="search-item text-gray justify-center" style="gap:0.5rem;">
+                            <span class="icon-sm">${icons.loader}</span>
+                            Searching…
+                        </div>
+                    `;
+                    results.classList.remove('hidden');
+
+                    const data = await callSwiftApiPublic(
+                        { action: 'search', query: q, page: 1, limit: 8 },
+                        { signal: themeCreatorAiSearchAbortController.signal }
+                    );
+                    const items = Array.isArray(data?.results) ? data.results : [];
+                    renderThemeCreatorAiSearchResults(items);
+                } catch (err) {
+                    if (String(err?.name || '').toLowerCase() === 'aborterror') return;
+                    results.innerHTML = `<div class="search-item text-gray justify-center">Search unavailable — please try again</div>`;
+                    results.classList.remove('hidden');
+                }
+            }, debounceMs);
+        }
+
+        function slugifyThemeCreatorValue(raw) {
+            return String(raw || '')
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '')
+                .replace(/[^a-z0-9_-]/g, '');
+        }
+
+        function getThemeCreatorFileExtension(filePath) {
+            const raw = String(filePath || '').trim();
+            const dot = raw.lastIndexOf('.');
+            if (dot === -1) return '.jpg';
+            const ext = raw.slice(dot).toLowerCase();
+            return ext.match(/\.jpe?g|\.png|\.webp/) ? ext : '.jpg';
+        }
+
+        async function saveThemeCreatorSelections() {
+            if (!supabaseClient) {
+                showToast('Supabase SDK failed to load.', { level: 'warn' });
+                return;
+            }
+
+            const selections = Array.isArray(themeCreatorSelected) ? themeCreatorSelected : [];
+            if (selections.length === 0) {
+                showToast('Select at least one image.', { level: 'warn' });
+                return;
+            }
+
+            if (!themeCreatorActiveThemeId) {
+                showToast('Select or create a theme first.', { level: 'warn' });
+                return;
+            }
+
+            if (!themeCreatorAiMovie?.tmdb_id) {
+                showToast('Pick the AI movie first.', { level: 'warn' });
+                return;
+            }
+
+            const bad = selections.find((s) => !String(s?.page || '').trim());
+            if (bad) {
+                showToast('Assign a page for each selection.', { level: 'warn' });
+                return;
+            }
+
+            const missingTmdb = selections.find((s) => !Number.isFinite(Number(s?.tmdb_id)));
+            if (missingTmdb) {
+                showToast('Each backdrop needs a source movie. Search and select backdrops again.', { level: 'warn' });
+                return;
+            }
+
+            const btn = document.getElementById('theme-creator-save');
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = 0.7;
+            }
+
+            setThemeCreatorStatus('Uploading images…');
+
+            try {
+                let uploaded = 0;
+
+                for (let i = 0; i < selections.length; i += 1) {
+                    const s = selections[i];
+                    const filePath = String(s?.file_path || '').trim();
+                    if (!filePath) continue;
+                    const tmdbId = Number(s?.tmdb_id ?? null);
+                    if (!Number.isFinite(tmdbId) || tmdbId <= 0) continue;
+                    const pageSlug = slugifyThemeCreatorValue(s.page);
+                    const ext = getThemeCreatorFileExtension(filePath);
+                    const objectName = `${themeCreatorActiveThemeId}__${pageSlug}__${tmdbId}__${i + 1}${ext}`;
+                    const srcUrl = buildThemeCreatorBackdropUrl(filePath, 'w1280');
+
+                    const imgRes = await fetch(srcUrl);
+                    if (!imgRes.ok) throw new Error(`Failed to download backdrop (${imgRes.status}).`);
+                    const blob = await imgRes.blob();
+
+                    const { error } = await supabaseClient
+                        .storage
+                        .from('Background Images')
+                        .upload(objectName, blob, {
+                            upsert: true,
+                            contentType: blob.type || 'image/jpeg',
+                        });
+                    if (error) throw error;
+
+                    uploaded += 1;
+                    setThemeCreatorStatus(`Uploaded ${uploaded} of ${selections.length}…`);
+                }
+
+                setThemeCreatorStatus(`Uploaded ${uploaded} image${uploaded === 1 ? '' : 's'}. Generating colors…`);
+                showToast('Theme images uploaded!', { level: 'success' });
+
+                const stylePrompt = getThemeCreatorStylePrompt();
+                const colorOk = await generateThemeCreatorColors({
+                    themeId: themeCreatorActiveThemeId,
+                    themeName: themeCreatorActiveThemeName,
+                    stylePrompt,
+                });
+
+                themeCreatorSelected = [];
+                renderThemeCreatorSelected();
+                loadThemeBackgroundImages().catch(() => null);
+                if (colorOk) {
+                    setThemeCreatorStatus('All done.');
+                }
+            } catch (err) {
+                setThemeCreatorStatus('Upload failed.');
+                showToast(`Upload failed: ${String(err?.message || err)}`, { level: 'warn' });
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = 1;
+                }
+            }
+        }
+
+        function initThemeCreatorPage() {
+            const email = String(cachedAuthUser?.email || '').trim();
+            if (!canAccessThemeCreator(email)) {
+                showToast('Theme Creator is restricted to this account.', { level: 'warn' });
+                router.navigate('account');
+                return;
+            }
+
+            renderThemeCreatorSelected();
+            setThemeCreatorStatus('');
+            setThemeCreatorThemeStatus('');
+            setThemeCreatorMode('create');
+            setThemeCreatorActiveTheme(null);
+            themeCreatorBackdropMovie = null;
+            themeCreatorAiMovie = null;
+            themeCreatorSelected = [];
+            themeCreatorBackdrops = [];
+            themeCreatorExisting = [];
+            setThemeCreatorStep(1);
+            loadThemeOptions().catch(() => null);
+
+            const backdropLabel = document.getElementById('theme-creator-selected-movie');
+            if (backdropLabel) backdropLabel.textContent = 'No backdrop movie selected yet.';
+            const aiLabel = document.getElementById('theme-creator-ai-selected-movie');
+            if (aiLabel) aiLabel.textContent = 'No AI movie selected yet.';
+
+            if (themeCreatorBound) return;
+            themeCreatorBound = true;
+
+            document.addEventListener('input', (e) => {
+                const el = e?.target;
+                if (!el || !(el instanceof HTMLElement)) return;
+                if (el.id === 'theme-creator-search-input') {
+                    handleThemeCreatorBackdropSearch(el.value || '');
+                    dockThemeCreatorBackdropDropdown();
+                }
+                if (el.id === 'theme-creator-ai-search-input') {
+                    handleThemeCreatorAiSearch(el.value || '');
+                    dockThemeCreatorAiDropdown();
+                }
+            });
+
+            window.addEventListener('scroll', () => {
+                const results = document.getElementById('theme-creator-search-results');
+                if (results && !results.classList.contains('hidden')) {
+                    dockThemeCreatorBackdropDropdown();
+                }
+                const aiResults = document.getElementById('theme-creator-ai-search-results');
+                if (aiResults && !aiResults.classList.contains('hidden')) {
+                    dockThemeCreatorAiDropdown();
+                }
+            }, true);
+
+            window.addEventListener('resize', () => {
+                const results = document.getElementById('theme-creator-search-results');
+                if (results && !results.classList.contains('hidden')) {
+                    dockThemeCreatorBackdropDropdown();
+                }
+                const aiResults = document.getElementById('theme-creator-ai-search-results');
+                if (aiResults && !aiResults.classList.contains('hidden')) {
+                    dockThemeCreatorAiDropdown();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const modeCreateBtn = e?.target?.closest ? e.target.closest('#theme-creator-mode-create') : null;
+                if (modeCreateBtn) {
+                    setThemeCreatorMode('create');
+                    return;
+                }
+
+                const modeEditBtn = e?.target?.closest ? e.target.closest('#theme-creator-mode-edit') : null;
+                if (modeEditBtn) {
+                    setThemeCreatorMode('edit');
+                    return;
+                }
+
+                const modeContinueBtn = e?.target?.closest ? e.target.closest('#theme-creator-mode-continue') : null;
+                if (modeContinueBtn) {
+                    setThemeCreatorStep(2);
+                    return;
+                }
+
+                const themeCreateBtn = e?.target?.closest ? e.target.closest('#theme-creator-create-btn') : null;
+                if (themeCreateBtn) {
+                    createThemeCreatorTheme({ advance: true }).catch(() => null);
+                    return;
+                }
+
+                const editContinueBtn = e?.target?.closest ? e.target.closest('#theme-creator-edit-continue') : null;
+                if (editContinueBtn) {
+                    const select = document.getElementById('theme-creator-edit-select');
+                    const themeId = String(select?.value || '').trim();
+                    if (!themeId) {
+                        setThemeCreatorThemeStatus('Select a theme first.', 'error');
+                        return;
+                    }
+                    setThemeCreatorActiveTheme(themeId);
+                    setThemeCreatorStep(3);
+                    return;
+                }
+
+                const themeUpdateBtn = e?.target?.closest ? e.target.closest('#theme-creator-update-btn') : null;
+                if (themeUpdateBtn) {
+                    updateThemeCreatorThemeName().catch(() => null);
+                    return;
+                }
+
+                const themeDeleteBtn = e?.target?.closest ? e.target.closest('#theme-creator-delete-theme') : null;
+                if (themeDeleteBtn) {
+                    deleteThemeCreatorTheme().catch(() => null);
+                    return;
+                }
+
+                const selectBtn = e?.target?.closest ? e.target.closest('[data-theme-creator-backdrop]') : null;
+                if (selectBtn) {
+                    const idx = Number(selectBtn.getAttribute('data-theme-creator-backdrop'));
+                    const picked = Number.isFinite(idx) ? themeCreatorBackdrops[idx] : null;
+                    if (picked) addThemeCreatorSelection(picked);
+                    return;
+                }
+
+                const removeBtn = e?.target?.closest ? e.target.closest('[data-theme-creator-remove]') : null;
+                if (removeBtn) {
+                    const idx = Number(removeBtn.getAttribute('data-theme-creator-remove'));
+                    if (Number.isFinite(idx)) removeThemeCreatorSelection(idx);
+                    return;
+                }
+
+                const existingRemoveBtn = e?.target?.closest ? e.target.closest('[data-theme-existing-remove]') : null;
+                if (existingRemoveBtn) {
+                    const idx = Number(existingRemoveBtn.getAttribute('data-theme-existing-remove'));
+                    if (Number.isFinite(idx)) deleteThemeCreatorExistingBackdrop(idx).catch(() => null);
+                    return;
+                }
+
+                const clearBtn = e?.target?.closest ? e.target.closest('#theme-creator-clear') : null;
+                if (clearBtn) {
+                    themeCreatorSelected = [];
+                    renderThemeCreatorSelected();
+                    renderThemeCreatorBackdrops(themeCreatorBackdrops);
+                    setThemeCreatorStatus('');
+                    return;
+                }
+
+                const backdropsContinueBtn = e?.target?.closest ? e.target.closest('#theme-creator-backdrops-continue') : null;
+                if (backdropsContinueBtn) {
+                    if (themeCreatorSelected.length === 0) {
+                        showToast('Select at least one backdrop.', { level: 'warn' });
+                        return;
+                    }
+                    setThemeCreatorStep(4);
+                    return;
+                }
+
+                const aiContinueBtn = e?.target?.closest ? e.target.closest('#theme-creator-ai-continue') : null;
+                if (aiContinueBtn) {
+                    if (!themeCreatorAiMovie?.tmdb_id) {
+                        showToast('Select the AI movie first.', { level: 'warn' });
+                        return;
+                    }
+                    setThemeCreatorStep(5);
+                    return;
+                }
+
+                const saveBtn = e?.target?.closest ? e.target.closest('#theme-creator-save') : null;
+                if (saveBtn) {
+                    saveThemeCreatorSelections().catch(() => null);
+                }
+
+                const regenBtn = e?.target?.closest ? e.target.closest('#theme-creator-regenerate') : null;
+                if (regenBtn) {
+                    if (!themeCreatorActiveThemeId) {
+                        showToast('Select or create a theme first.', { level: 'warn' });
+                        return;
+                    }
+                    if (!themeCreatorAiMovie?.tmdb_id) {
+                        showToast('Select the AI movie first.', { level: 'warn' });
+                        return;
+                    }
+                    const stylePrompt = getThemeCreatorStylePrompt();
+                    generateThemeCreatorColors({
+                        themeId: themeCreatorActiveThemeId,
+                        themeName: themeCreatorActiveThemeName,
+                        stylePrompt,
+                    }).catch(() => null);
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                const target = e?.target;
+                if (e.key !== 'Enter' || !target || !(target instanceof HTMLElement)) return;
+                if (target.id === 'theme-creator-new-name') {
+                    e.preventDefault();
+                    createThemeCreatorTheme().catch(() => null);
+                }
+                if (target.id === 'theme-creator-edit-name') {
+                    e.preventDefault();
+                    updateThemeCreatorThemeName().catch(() => null);
+                }
+            });
+
+            document.addEventListener('change', (e) => {
+                const el = e?.target;
+                if (!el || !(el instanceof HTMLSelectElement)) return;
+                if (el.id === 'theme-creator-edit-select') {
+                    const themeId = String(el.value || '').trim();
+                    setThemeCreatorActiveTheme(themeId || null);
+                    return;
+                }
+                if (el.hasAttribute('data-theme-existing-select')) {
+                    const idx = Number(el.getAttribute('data-theme-existing-index'));
+                    const value = String(el.value || '').trim();
+                    if (Number.isFinite(idx)) updateThemeCreatorExistingPage(idx, value).catch(() => null);
+                    return;
+                }
+                const kind = el.getAttribute('data-theme-creator-select');
+                const idx = Number(el.getAttribute('data-theme-creator-index'));
+                if (!kind || !Number.isFinite(idx)) return;
+                const value = String(el.value || '').trim();
+                themeCreatorSelected = themeCreatorSelected.map((item, i) => {
+                    if (i !== idx) return item;
+                    return { ...item, [kind]: value };
+                });
+            });
+        }
+
         function initAccountPage() {
             if (accountBound) return;
             accountBound = true;
@@ -13033,8 +14961,8 @@
                     return;
                 }
 
-                if (action === 'recalc_taste') {
-                    await recalculateTasteProfile();
+                if (action === 'theme_creator') {
+                    router.navigate('theme_creator');
                     return;
                 }
 
@@ -13080,52 +15008,18 @@
                     updateFeatureRequestCounter();
                 }
             });
-        }
 
-        async function recalculateTasteProfile() {
-            const statusEl = document.getElementById('account-taste-status');
-            if (!supabaseClient || !cachedIsAuthed) {
-                if (statusEl) statusEl.textContent = 'Please log in first.';
-                showToast('Please log in first.', { level: 'warn' });
-                openAuthModal();
-                return;
-            }
-
-            try {
-                if (statusEl) statusEl.textContent = 'Recalculating taste profile…';
-                const { user, accessToken } = await requireAuthOrThrow();
-                const res = await fetch('https://dbxhaseoxpnmzdxbzdpj.supabase.co/functions/v1/swift-responder', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${accessToken}`,
-                    },
-                    body: JSON.stringify({ user_id: user.id })
-                });
-
-                const text = await res.text();
-                let data = null;
-                try {
-                    data = text ? JSON.parse(text) : null;
-                } catch (_) {
-                    data = text;
+            document.addEventListener('change', (e) => {
+                const el = e?.target;
+                if (!el || !(el instanceof HTMLElement)) return;
+                if (el.id === 'account-theme-select' && el instanceof HTMLSelectElement) {
+                    const value = String(el.value || '').trim();
+                    applyTheme(value);
+                    saveAccountThemeSelection(value).catch(() => null);
                 }
+            });
 
-                if (!res.ok) {
-                    const msg = data && typeof data === 'object'
-                        ? (data.message || data.error || JSON.stringify(data))
-                        : String(data || `HTTP ${res.status}`);
-                    throw new Error(msg);
-                }
-
-                if (statusEl) statusEl.textContent = 'Taste profile refreshed.';
-                showToast('Taste profile refreshed.');
-            } catch (err) {
-                const msg = String(err?.message || err);
-                if (statusEl) statusEl.textContent = `Recalc failed: ${msg}`;
-                showToast(`Recalc failed: ${msg}`, { level: 'warn' });
-            }
+            applyTheme(getStoredTheme());
         }
 
         async function loadAccountPage() {
@@ -13154,6 +15048,7 @@
             const uid = String(user?.id || '').trim();
             const email = String(user?.email || '').trim();
             if (emailEl) emailEl.textContent = email || '(no email)';
+            updateThemeCreatorVisibility(email);
 
             if (!uid) {
                 if (profileStatus) profileStatus.textContent = 'Auth session missing user id.';
@@ -13167,7 +15062,7 @@
                 try {
                     const r1 = await supabaseClient
                         .from('Users')
-                        .select('username, display_name, icon')
+                        .select('username, display_name, icon, theme_id')
                         .eq('id', uid)
                         .limit(1);
                     if (r1.error) throw r1.error;
@@ -13177,7 +15072,15 @@
                     if (/column\s+"?icon"?\s+does\s+not\s+exist/i.test(msg1)) {
                         const r2 = await supabaseClient
                             .from('Users')
-                            .select('username, display_name')
+                            .select('username, display_name, theme_id')
+                            .eq('id', uid)
+                            .limit(1);
+                        if (r2.error) throw r2.error;
+                        data = r2.data;
+                    } else if (/column\s+"?theme_id"?\s+does\s+not\s+exist/i.test(msg1)) {
+                        const r2 = await supabaseClient
+                            .from('Users')
+                            .select('username, display_name, icon')
                             .eq('id', uid)
                             .limit(1);
                         if (r2.error) throw r2.error;
@@ -13190,8 +15093,15 @@
                 const row = Array.isArray(data) && data.length ? data[0] : null;
                 const username = String(row?.username || '').trim();
                 const displayName = String(row?.display_name || '').trim();
+                const themeId = String(row?.theme_id || '').trim();
                 if (usernameEl) usernameEl.value = username;
                 if (dnEl) dnEl.value = displayName;
+                const themeSelect = document.getElementById('account-theme-select');
+                if (themeSelect) {
+                    const value = themeId || 'original';
+                    themeSelect.value = value;
+                    applyTheme(value);
+                }
 
                 if (profileStatus) profileStatus.textContent = 'Profile loaded.';
             } catch (err) {
@@ -13614,6 +15524,7 @@
         if (supabaseClient?.auth?.onAuthStateChange) {
             supabaseClient.auth.onAuthStateChange(() => {
                 refreshAuthStateAndUI();
+                loadThemeOptions().catch(() => null);
             });
         }
 
@@ -13655,7 +15566,9 @@
                     return false;
                 }
             })();
-
+            await loadThemeOptions();
+            await loadThemeBackgroundImages();
+            applyTheme(getStoredTheme());
             await refreshAuthStateAndUI();
             initListsPage();
             router.init();
