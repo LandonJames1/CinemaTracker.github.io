@@ -10,11 +10,11 @@
             To change it later: replace the embedded SVG inside the href="data:image/svg+xml,..." below.
             Tip: If you prefer a file instead of inline, swap these for: <link rel="icon" href="/favicon.ico">.
         ========================== FAVICON (BOOKMARK/TAB ICON) START ========================== -->
-        <link rel="icon" type="image/png" sizes="32x32" href="/CT_Logo.png?v=1">
-        <link rel="icon" type="image/png" sizes="16x16" href="/CT_Logo.png?v=1">
-        <link rel="icon" type="image/png" href="CT_Logo.png?v=1">
-        <link rel="shortcut icon" href="/CT_Logo.png?v=1">
-        <link rel="apple-touch-icon" sizes="180x180" href="/CT_Logo.png?v=1">
+        <link rel="icon" type="image/png" sizes="32x32" href="/Black%20Back.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/Black%20Back.png">
+        <link rel="icon" type="image/png" href="Black%20Back.png">
+        <link rel="shortcut icon" href="/Black%20Back.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/Black%20Back.png">
         <!-- ========================== FAVICON (BOOKMARK/TAB ICON) END ========================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -2283,7 +2283,38 @@
             user: `<svg viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>`,
             loader: `<svg viewBox="0 0 24 24" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>`
         };
-        document.getElementById('nav-logo-icon').innerHTML = `<img src="CT_Logo_Transparent.png" alt="CinemaTracker" />`;
+        const navLogoEl = document.getElementById('nav-logo-icon');
+        if (navLogoEl) {
+            navLogoEl.innerHTML = '';
+        }
+
+        async function fetchNavLogoUrl(themeId) {
+            if (!supabaseClient) return null;
+            const themeKey = String(themeId || '').trim();
+            if (!themeKey) return null;
+            const query = supabaseClient
+                .from('Logos')
+                .select('url')
+                .order('created_at', { ascending: false })
+                .limit(1);
+
+            const { data, error } = await query.eq('theme_id', themeKey).maybeSingle();
+            if (error || !data?.url) return null;
+            return data.url;
+        }
+
+        async function loadNavLogoForTheme(themeId) {
+            if (!navLogoEl) return;
+            try {
+                const themeKey = String(themeId || '').trim();
+                let url = await fetchNavLogoUrl(themeKey);
+                navLogoEl.innerHTML = url
+                    ? `<img src="${url}" alt="CinemaTracker" loading="lazy" decoding="async" />`
+                    : '';
+            } catch (_) {
+                navLogoEl.innerHTML = '';
+            }
+        }
         document.getElementById('menu-icon-btn').innerHTML = icons.menu;
         document.getElementById('toast-icon').innerHTML = icons.checkCircle;
         document.getElementById('footer-icons').innerHTML = `
@@ -12202,40 +12233,7 @@
         const AI_HELP_POPUP_PATH = 'ai-help-popup.txt';
         const popupTextCache = new Map();
         const THEME_STORAGE_KEY = 'ct_theme';
-        const DEFAULT_THEME_OPTIONS = [
-            {
-                id: null,
-                name: 'Original',
-                value: 'original',
-                label: 'Original',
-                slug: 'original',
-            },
-        ];
-        const DEFAULT_THEME_COLORS = {
-            bg_dark: '#09090b',
-            surface: '#18181b',
-            border: '#27272a',
-            text_main: '#e4e4e7',
-            text_muted: '#a1a1aa',
-            brand: '#14b8a6',
-            brand_hover: '#0d9488',
-            brand_2: 'rgba(168, 85, 247, 0.35)',
-            brand_3: 'rgba(59, 130, 246, 0.35)',
-            accent_1: '#5eead4',
-            accent_2: '#a78bfa',
-            nav_accent: '#74c6cd',
-            nav_title: '#fdfbf8',
-            brand_light: 'rgba(20, 184, 166, 0.1)',
-            brand_shadow: 'rgba(20, 184, 166, 0.3)',
-            nav_active_a: 'rgba(20, 184, 166, 0.28)',
-            nav_active_b: 'rgba(168, 85, 247, 0.22)',
-            glass_bg: 'rgba(24, 24, 27, 0.6)',
-            glass_border: 'rgba(255, 255, 255, 0.05)',
-            glass_shadow: 'rgba(0, 0, 0, 0.35)',
-            btn_outline_bg: 'rgba(24, 24, 27, 0.65)',
-            focus_ring: 'rgba(20, 184, 166, 0.6)',
-            bg_overlay: 'linear-gradient(to bottom, rgba(9, 9, 11, 0.1), rgba(9, 9, 11, 0.55) 50%, rgba(9, 9, 11, 0.9) 100%)',
-        };
+        const DEFAULT_THEME_OPTIONS = [];
         let themeOptions = DEFAULT_THEME_OPTIONS.slice();
         let themeOptionsById = new Map();
         let themeOptionsByName = new Map();
@@ -12273,7 +12271,7 @@
                     const id = String(row?.id || '').trim();
                     const name = String(row?.name || '').trim();
                     if (!id || !name) return null;
-                    const slug = slugifyThemeCreatorValue(name) || 'original';
+                    const slug = slugifyThemeCreatorValue(name) || 'theme';
                     return {
                         id,
                         name,
@@ -12304,7 +12302,7 @@
                 if (opt?.id) themeOptionsById.set(String(opt.id), opt);
                 if (opt?.name) themeOptionsByName.set(normalizeThemeName(opt.name), opt);
             });
-            themeCreatorThemes = themeOptions.filter((opt) => opt.value !== 'original');
+            themeCreatorThemes = themeOptions.slice();
             updateThemeOptionUIs();
             if (themeCreatorActiveThemeId) {
                 setThemeCreatorActiveTheme(themeCreatorActiveThemeId);
@@ -12375,7 +12373,7 @@
         }
 
         function getThemeOptionById(themeId) {
-            if (!themeId) return DEFAULT_THEME_OPTIONS[0];
+            if (!themeId) return null;
             return themeOptionsById.get(String(themeId)) || null;
         }
 
@@ -12524,10 +12522,6 @@
                 return;
             }
 
-            if (normalizeThemeName(name) === 'original') {
-                setThemeCreatorThemeStatus('Original is reserved.', 'error');
-                return;
-            }
 
             if (getThemeOptionByName(name)) {
                 setThemeCreatorThemeStatus('That theme already exists.', 'error');
@@ -12562,7 +12556,7 @@
                     name: themeName,
                     value: themeId,
                     label: themeName,
-                    slug: slugifyThemeCreatorValue(themeName) || 'original',
+                    slug: slugifyThemeCreatorValue(themeName) || 'theme',
                 });
 
                 if (input) input.value = '';
@@ -12603,10 +12597,6 @@
                 return;
             }
 
-            if (normalizeThemeName(name) === 'original') {
-                setThemeCreatorThemeStatus('Original is reserved.', 'error');
-                return;
-            }
 
             const existing = getThemeOptionByName(name);
             if (existing && String(existing.id) !== themeId) {
@@ -12637,7 +12627,7 @@
                     name,
                     value: themeId,
                     label: name,
-                    slug: slugifyThemeCreatorValue(name) || 'original',
+                    slug: slugifyThemeCreatorValue(name) || 'theme',
                 });
                 setThemeCreatorActiveTheme(themeId);
                 setThemeCreatorThemeStatus('Theme updated.', 'success');
@@ -12737,86 +12727,91 @@
         function getStoredTheme() {
             try {
                 const raw = String(localStorage.getItem(THEME_STORAGE_KEY) || '').trim();
-                return raw || 'original';
+                return raw || '';
             } catch (_) {
-                return 'original';
+                return '';
             }
+        }
+
+        function resolveThemeId(input) {
+            const candidate = String(input || '').trim();
+            if (candidate && themeOptionsById.has(candidate)) return candidate;
+            const first = themeOptions[0];
+            return String(first?.value || first?.id || '').trim();
         }
 
         function applyThemeColors(colors) {
-            const c = colors && typeof colors === 'object' ? colors : DEFAULT_THEME_COLORS;
+            const c = colors && typeof colors === 'object' ? colors : null;
+            if (!c) return;
             const root = document.documentElement;
 
             const base = {
-                bg_dark: String(c.bg_dark || DEFAULT_THEME_COLORS.bg_dark),
-                surface: String(c.surface || DEFAULT_THEME_COLORS.surface),
-                border: String(c.border || DEFAULT_THEME_COLORS.border),
-                text_main: String(c.text_main || DEFAULT_THEME_COLORS.text_main),
-                text_muted: String(c.text_muted || DEFAULT_THEME_COLORS.text_muted),
-                brand: String(c.brand || DEFAULT_THEME_COLORS.brand),
-                brand_hover: String(c.brand_hover || DEFAULT_THEME_COLORS.brand_hover),
-                brand_2: String(c.brand_2 || DEFAULT_THEME_COLORS.brand_2),
-                brand_3: String(c.brand_3 || DEFAULT_THEME_COLORS.brand_3),
-                accent_1: String(c.accent_1 || DEFAULT_THEME_COLORS.accent_1),
-                accent_2: String(c.accent_2 || DEFAULT_THEME_COLORS.accent_2),
-                nav_accent: String(c.nav_accent || DEFAULT_THEME_COLORS.nav_accent),
-                nav_title: String(c.nav_title || DEFAULT_THEME_COLORS.nav_title),
+                bg_dark: String(c.bg_dark || ''),
+                surface: String(c.surface || ''),
+                border: String(c.border || ''),
+                text_main: String(c.text_main || ''),
+                text_muted: String(c.text_muted || ''),
+                brand: String(c.brand || ''),
+                brand_hover: String(c.brand_hover || ''),
+                brand_2: String(c.brand_2 || ''),
+                brand_3: String(c.brand_3 || ''),
+                accent_1: String(c.accent_1 || ''),
+                accent_2: String(c.accent_2 || ''),
+                nav_accent: String(c.nav_accent || ''),
+                nav_title: String(c.nav_title || ''),
             };
 
-            root.style.setProperty('--bg-dark', base.bg_dark);
-            root.style.setProperty('--surface', base.surface);
-            root.style.setProperty('--border', base.border);
-            root.style.setProperty('--text-main', base.text_main);
-            root.style.setProperty('--text-muted', base.text_muted);
-            root.style.setProperty('--brand', base.brand);
-            root.style.setProperty('--brand-hover', base.brand_hover);
-            root.style.setProperty('--brand-2', base.brand_2);
-            root.style.setProperty('--brand-3', base.brand_3);
-            root.style.setProperty('--accent-1', base.accent_1);
-            root.style.setProperty('--accent-2', base.accent_2);
-            root.style.setProperty('--nav-accent', base.nav_accent);
-            root.style.setProperty('--nav-title', base.nav_title);
+            if (base.bg_dark) root.style.setProperty('--bg-dark', base.bg_dark);
+            if (base.surface) root.style.setProperty('--surface', base.surface);
+            if (base.border) root.style.setProperty('--border', base.border);
+            if (base.text_main) root.style.setProperty('--text-main', base.text_main);
+            if (base.text_muted) root.style.setProperty('--text-muted', base.text_muted);
+            if (base.brand) root.style.setProperty('--brand', base.brand);
+            if (base.brand_hover) root.style.setProperty('--brand-hover', base.brand_hover);
+            if (base.brand_2) root.style.setProperty('--brand-2', base.brand_2);
+            if (base.brand_3) root.style.setProperty('--brand-3', base.brand_3);
+            if (base.accent_1) root.style.setProperty('--accent-1', base.accent_1);
+            if (base.accent_2) root.style.setProperty('--accent-2', base.accent_2);
+            if (base.nav_accent) root.style.setProperty('--nav-accent', base.nav_accent);
+            if (base.nav_title) root.style.setProperty('--nav-title', base.nav_title);
 
             const derived = {
-                brand_light: String(c.brand_light || DEFAULT_THEME_COLORS.brand_light),
-                brand_shadow: String(c.brand_shadow || DEFAULT_THEME_COLORS.brand_shadow),
-                nav_active_a: String(c.nav_active_a || DEFAULT_THEME_COLORS.nav_active_a),
-                nav_active_b: String(c.nav_active_b || DEFAULT_THEME_COLORS.nav_active_b),
-                glass_bg: String(c.glass_bg || DEFAULT_THEME_COLORS.glass_bg),
-                glass_border: String(c.glass_border || DEFAULT_THEME_COLORS.glass_border),
-                glass_shadow: String(c.glass_shadow || DEFAULT_THEME_COLORS.glass_shadow),
-                btn_outline_bg: String(c.btn_outline_bg || DEFAULT_THEME_COLORS.btn_outline_bg),
-                focus_ring: String(c.focus_ring || DEFAULT_THEME_COLORS.focus_ring),
-                bg_overlay: String(c.bg_overlay || DEFAULT_THEME_COLORS.bg_overlay),
+                brand_light: String(c.brand_light || ''),
+                brand_shadow: String(c.brand_shadow || ''),
+                nav_active_a: String(c.nav_active_a || ''),
+                nav_active_b: String(c.nav_active_b || ''),
+                glass_bg: String(c.glass_bg || ''),
+                glass_border: String(c.glass_border || ''),
+                glass_shadow: String(c.glass_shadow || ''),
+                btn_outline_bg: String(c.btn_outline_bg || ''),
+                focus_ring: String(c.focus_ring || ''),
+                bg_overlay: String(c.bg_overlay || ''),
             };
 
-            root.style.setProperty('--brand-light', derived.brand_light);
-            root.style.setProperty('--brand-shadow', derived.brand_shadow);
-            root.style.setProperty('--nav-active-a', derived.nav_active_a);
-            root.style.setProperty('--nav-active-b', derived.nav_active_b);
-            root.style.setProperty('--glass-bg', derived.glass_bg);
-            root.style.setProperty('--glass-border', derived.glass_border);
-            root.style.setProperty('--glass-shadow', derived.glass_shadow);
-            root.style.setProperty('--btn-outline-bg', derived.btn_outline_bg);
-            root.style.setProperty('--focus-ring', derived.focus_ring);
-            root.style.setProperty('--bg-overlay', derived.bg_overlay);
+            if (derived.brand_light) root.style.setProperty('--brand-light', derived.brand_light);
+            if (derived.brand_shadow) root.style.setProperty('--brand-shadow', derived.brand_shadow);
+            if (derived.nav_active_a) root.style.setProperty('--nav-active-a', derived.nav_active_a);
+            if (derived.nav_active_b) root.style.setProperty('--nav-active-b', derived.nav_active_b);
+            if (derived.glass_bg) root.style.setProperty('--glass-bg', derived.glass_bg);
+            if (derived.glass_border) root.style.setProperty('--glass-border', derived.glass_border);
+            if (derived.glass_shadow) root.style.setProperty('--glass-shadow', derived.glass_shadow);
+            if (derived.btn_outline_bg) root.style.setProperty('--btn-outline-bg', derived.btn_outline_bg);
+            if (derived.focus_ring) root.style.setProperty('--focus-ring', derived.focus_ring);
+            if (derived.bg_overlay) root.style.setProperty('--bg-overlay', derived.bg_overlay);
         }
 
         function applyTheme(theme) {
-            const t = String(theme || '').trim() || 'original';
-            if (t === 'original') {
-                document.body.removeAttribute('data-theme-id');
-                applyThemeColors(DEFAULT_THEME_COLORS);
-            } else {
-                document.body.setAttribute('data-theme-id', t);
-                const colors = themeColorsById.get(String(t)) || DEFAULT_THEME_COLORS;
-                applyThemeColors(colors);
-            }
+            const t = resolveThemeId(theme);
+            if (!t) return;
+            document.body.setAttribute('data-theme-id', t);
+            const colors = themeColorsById.get(String(t)) || null;
+            applyThemeColors(colors);
+            loadNavLogoForTheme(t);
             try { localStorage.setItem(THEME_STORAGE_KEY, t); } catch (_) {}
             const select = document.getElementById('account-theme-select');
             if (select) {
                 const hasOption = Array.from(select.options || []).some((opt) => opt.value === t);
-                if (!hasOption && t !== 'original') {
+                if (!hasOption) {
                     const label = getThemeOptionById(t)?.name || formatThemeLabel(t);
                     const opt = document.createElement('option');
                     opt.value = t;
@@ -12831,7 +12826,7 @@
             if (!supabaseClient || !cachedIsAuthed) return;
             const uid = String(cachedAuthUser?.id || '').trim();
             if (!uid) return;
-            const value = themeId === 'original' ? null : themeId;
+            const value = themeId || null;
             try {
                 const { error } = await supabaseClient
                     .from('Users')
@@ -15163,9 +15158,11 @@
                 if (dnEl) dnEl.value = displayName;
                 const themeSelect = document.getElementById('account-theme-select');
                 if (themeSelect) {
-                    const value = themeId || 'original';
-                    themeSelect.value = value;
-                    applyTheme(value);
+                    const value = resolveThemeId(themeId || getStoredTheme());
+                    if (value) {
+                        themeSelect.value = value;
+                        applyTheme(value);
+                    }
                 }
 
                 if (profileStatus) profileStatus.textContent = 'Profile loaded.';
