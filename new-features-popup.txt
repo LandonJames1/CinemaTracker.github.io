@@ -1,29 +1,29 @@
 <div style="text-align:center;">
-  <div style="font-weight: 900; font-size: 1.1rem; letter-spacing: 0.08em; text-transform: uppercase;">Themes Themes Themes</div>
-  <div style="margin-top: 0.35rem; font-weight: 700; opacity: 0.9;">Pick a vibe. Hit play.</div>
+  <div style="font-weight: 900; font-size: 1.1rem; letter-spacing: 0.08em; text-transform: uppercase;">Achievements Are Here</div>
+  <div style="margin-top: 0.35rem; font-weight: 700; opacity: 0.9;">Watch, earn, repeat.</div>
 </div>
 
-<div style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 0.95rem; background: linear-gradient(135deg, rgba(20,184,166,0.20), rgba(59,130,246,0.18)); border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 12px 30px rgba(0,0,0,0.28);">
-  <div style="font-weight: 900;">New look, same movie magic.</div>
-  <div style="margin-top: 0.35rem; opacity: 0.9;">You can now switch themes any time from your Account page.</div>
+<div style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 0.95rem; background: linear-gradient(135deg, rgba(56,189,248,0.18), rgba(168,85,247,0.18)); border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 12px 30px rgba(0,0,0,0.28);">
+  <div style="font-weight: 900;">New unlockables, same movie magic.</div>
+  <div style="margin-top: 0.35rem; opacity: 0.9;">Every watch can earn achievements. Just keep logging and the badges will follow.</div>
 </div>
 
 <div style="margin-top: 0.7rem; display:grid; gap: 0.5rem;">
   <div style="display:flex; gap: 8px; align-items:center; padding: 0.55rem 0.7rem; border-radius: 0.75rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
-    <div style="width: 10px; height: 10px; border-radius: 999px; background: #22d3ee;"></div>
-    <div style="font-weight: 800;">Go to Account</div>
+    <div style="width: 10px; height: 10px; border-radius: 999px; background: #38bdf8;"></div>
+    <div style="font-weight: 800;">Earn achievements as you watch</div>
   </div>
   <div style="display:flex; gap: 8px; align-items:center; padding: 0.55rem 0.7rem; border-radius: 0.75rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
     <div style="width: 10px; height: 10px; border-radius: 999px; background: #a78bfa;"></div>
-    <div style="font-weight: 800;">Choose a Theme</div>
+    <div style="font-weight: 800;">Achievements grant points</div>
   </div>
   <div style="display:flex; gap: 8px; align-items:center; padding: 0.55rem 0.7rem; border-radius: 0.75rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
     <div style="width: 10px; height: 10px; border-radius: 999px; background: #fbbf24;"></div>
-    <div style="font-weight: 800;">Enjoy the glow</div>
+    <div style="font-weight: 800;">Tier up as your points grow</div>
   </div>
 </div>
 
 <div style="margin-top: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 0.75rem; background: rgba(255,255,255,0.05); text-align:center;">
   <span style="letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px;">Tip</span><br>
-  Try a few and keep the one that feels most you.
+  Keep watching to climb the tiers and flex your progress.
 </div>
