@@ -120,6 +120,13 @@
         .grid-3 { grid-template-columns: repeat(1, 1fr); } /* Mobile default */
         .grid-4 { grid-template-columns: repeat(2, 1fr); } /* Mobile default */
 
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
         @media (min-width: 768px) {
             .grid-3 { grid-template-columns: repeat(3, 1fr); }
             .grid-4 { grid-template-columns: repeat(4, 1fr); }
