@@ -10,13 +10,14 @@
             To change it later: replace the embedded SVG inside the href="data:image/svg+xml,..." below.
             Tip: If you prefer a file instead of inline, swap these for: <link rel="icon" href="/favicon.ico">.
         ========================== FAVICON (BOOKMARK/TAB ICON) START ========================== -->
-        <link rel="icon" type="image/png" sizes="32x32" href="/FaviconWhite.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/FaviconWhite.png">
-        <link rel="icon" type="image/png" href="FaviconWhite.png">
-        <link rel="shortcut icon" href="/FaviconWhite.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/FaviconWhite.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/Black%20Back.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/Black%20Back.png">
+        <link rel="icon" type="image/png" href="Black%20Back.png">
+        <link rel="shortcut icon" href="/Black%20Back.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/Black%20Back.png">
         <!-- ========================== FAVICON (BOOKMARK/TAB ICON) END ========================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -98,16 +99,6 @@
         body::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        a { text-decoration: none; color: inherit; }
-        button { cursor: pointer; border: none; background: none; font-family: inherit; }
-        input, select, textarea { font-family: inherit; }
-        .container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            width: 100%;
-        }
-
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
         .items-center { align-items: center; }
@@ -149,7 +140,7 @@
         .animate-marquee {
             display: flex;
             width: max-content;
-            animation: marquee 40s linear infinite;
+            animation: marquee 60s linear infinite;
         }
         .animate-marquee:hover { animation-play-state: paused; }
         @keyframes marquee {
@@ -449,6 +440,7 @@
             background: var(--surface);
             cursor: pointer;
             transition: transform 0.3s;
+            will-change: transform;
         }
         .trending-card:hover { transform: scale(1.05); }
         .trending-card img { width: 100%; height: 100%; object-fit: cover; }
@@ -615,6 +607,427 @@
             margin-top: 0.75rem;
             flex-wrap: wrap;
         }
+
+        /* Achievements */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 0.9rem;
+            margin-top: 0.85rem;
+        }
+        .achievement-card {
+            --tier-rgb: 148, 163, 184;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            padding: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            min-height: 150px;
+        }
+        .achievement-card::after {
+            content: '';
+            position: absolute;
+            inset: -20% -20% auto auto;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(var(--tier-rgb), 0.35), transparent 65%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .achievement-card.locked {
+            opacity: 0.35;
+            filter: grayscale(0.75) saturate(0.6);
+            background: rgba(0,0,0,0.22);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .achievement-card[data-tier="Bronze"] { --tier-rgb: 206, 137, 70; }
+        .achievement-card[data-tier="Silver"] { --tier-rgb: 196, 196, 196; }
+        .achievement-card[data-tier="Gold"] { --tier-rgb: 239, 191, 4; }
+        .achievement-card[data-tier="Platinum"] { --tier-rgb: 164, 200, 225; }
+        .achievement-card[data-tier="Diamond"] { --tier-rgb: 15, 82, 186; }
+        .achievement-card[data-tier="Emerald"] { --tier-rgb: 80, 200, 120; }
+        .achievement-card[data-tier="Ruby"] { --tier-rgb: 224, 17, 95; }
+        .achievement-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+        }
+        .achievement-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            line-height: 1;
+        }
+        .achievement-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transform: translateY(6px);
+        }
+        .achievement-badge {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(var(--tier-rgb), 0.18);
+            border: 1px solid rgba(var(--tier-rgb), 0.45);
+            color: rgba(255,255,255,0.95);
+        }
+        .achievement-title {
+            font-weight: 800;
+            color: #fff;
+        }
+        .achievement-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        #achievement-earned-body {
+            --tier-rgb: 148, 163, 184;
+            border: 1px solid rgba(var(--tier-rgb), 0.45);
+            background: linear-gradient(135deg, rgba(var(--tier-rgb), 0.18), rgba(0,0,0,0.22));
+        }
+        #achievement-earned-body .achievement-icon {
+            width: 150px;
+            height: 150px;
+            border-radius: 32px;
+        }
+        #achievement-earned-modal {
+            --tier-rgb: 148, 163, 184;
+            background: radial-gradient(circle at top left, rgba(var(--tier-rgb), 0.28), rgba(24, 24, 27, 0.96) 55%);
+            border: 1px solid rgba(var(--tier-rgb), 0.5);
+            box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+            position: relative;
+            overflow: hidden;
+        }
+        #achievement-earned-modal.achievement-modal {
+            max-width: 520px;
+            min-height: unset;
+        }
+        #achievement-earned-modal.achievement-modal .auth-modal-title {
+            font-size: 1.2rem;
+        }
+        #achievement-earned-modal.achievement-modal .achievement-title {
+            font-size: 1.25rem;
+        }
+        #achievement-earned-modal.achievement-modal .achievement-meta {
+            font-size: 0.9rem;
+        }
+        #achievement-splash {
+            position: absolute;
+            inset: -25% -15%;
+            background: conic-gradient(from 120deg, rgba(var(--tier-rgb), 0.25), rgba(255,255,255,0.1), rgba(var(--tier-rgb), 0.35), rgba(0,0,0,0.05), rgba(var(--tier-rgb), 0.28));
+            opacity: 0;
+            transform: scale(0.7) rotate(-12deg);
+            filter: blur(4px) saturate(1.2);
+            pointer-events: none;
+            z-index: 0;
+            will-change: transform, opacity, filter;
+        }
+        #achievement-swipe {
+            position: absolute;
+            inset: -10% -10%;
+            width: 120%;
+            height: 120%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .achievement-swipe-path {
+            fill: rgba(var(--tier-rgb), 0.35);
+            mix-blend-mode: screen;
+            will-change: d, opacity, transform;
+        }
+        .achievement-swipe-stroke {
+            fill: none;
+            stroke: rgba(var(--tier-rgb), 0.8);
+            stroke-width: 18;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0;
+            filter: drop-shadow(0 6px 16px rgba(0,0,0,0.3));
+            will-change: opacity, stroke-dasharray, stroke-dashoffset;
+        }
+        .achievement-motion-path {
+            fill: none;
+            stroke: none;
+        }
+        #achievement-pieces {
+            position: absolute;
+            inset: -10% 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .achievement-piece {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+            background: rgba(var(--tier-rgb), 0.9);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+            mix-blend-mode: screen;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+        #achievement-earned-modal {
+            z-index: 2;
+        }
+        #achievement-earned-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.75rem;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        #achievement-earned-actions .btn {
+            flex: 1 1 auto;
+            min-width: 160px;
+        }
+        #achievement-earned-actions .btn-primary {
+            background: rgba(var(--tier-rgb), 0.35);
+            border: 1px solid rgba(var(--tier-rgb), 0.6);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+        }
+        #achievement-earned-actions .btn-primary:hover {
+            background: rgba(var(--tier-rgb), 0.5);
+        }
+        #achievement-earned-actions .btn-outline {
+            background: rgba(var(--tier-rgb), 0.12);
+            border: 1px solid rgba(var(--tier-rgb), 0.35);
+        }
+        #achievement-earned-modal::before {
+            content: '';
+            position: absolute;
+            inset: -60% -30% auto auto;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(var(--tier-rgb), 0.35), transparent 70%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #achievement-earned-modal::after {
+            content: '';
+            position: absolute;
+            inset: auto -20% -50% auto;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #achievement-earned-modal[data-tier="Bronze"] { --tier-rgb: 206, 137, 70; }
+        #achievement-earned-modal[data-tier="Silver"] { --tier-rgb: 196, 196, 196; }
+        #achievement-earned-modal[data-tier="Gold"] { --tier-rgb: 239, 191, 4; }
+        #achievement-earned-modal[data-tier="Platinum"] { --tier-rgb: 164, 200, 225; }
+        #achievement-earned-modal[data-tier="Diamond"] { --tier-rgb: 15, 82, 186; }
+        #achievement-earned-modal[data-tier="Emerald"] { --tier-rgb: 80, 200, 120; }
+        #achievement-earned-modal[data-tier="Ruby"] { --tier-rgb: 224, 17, 95; }
+        #achievement-earned-overlay[data-tier="Bronze"] { --tier-rgb: 206, 137, 70; }
+        #achievement-earned-overlay[data-tier="Silver"] { --tier-rgb: 196, 196, 196; }
+        #achievement-earned-overlay[data-tier="Gold"] { --tier-rgb: 239, 191, 4; }
+        #achievement-earned-overlay[data-tier="Platinum"] { --tier-rgb: 164, 200, 225; }
+        #achievement-earned-overlay[data-tier="Diamond"] { --tier-rgb: 15, 82, 186; }
+        #achievement-earned-overlay[data-tier="Emerald"] { --tier-rgb: 80, 200, 120; }
+        #achievement-earned-overlay[data-tier="Ruby"] { --tier-rgb: 224, 17, 95; }
+        #achievement-earned-body[data-tier="Bronze"] { --tier-rgb: 206, 137, 70; }
+        #achievement-earned-body[data-tier="Silver"] { --tier-rgb: 196, 196, 196; }
+        #achievement-earned-body[data-tier="Gold"] { --tier-rgb: 239, 191, 4; }
+        #achievement-earned-body[data-tier="Platinum"] { --tier-rgb: 164, 200, 225; }
+        #achievement-earned-body[data-tier="Diamond"] { --tier-rgb: 15, 82, 186; }
+        #achievement-earned-body[data-tier="Emerald"] { --tier-rgb: 80, 200, 120; }
+        #achievement-earned-body[data-tier="Ruby"] { --tier-rgb: 224, 17, 95; }
+        .tier-summary-card {
+            --tier-rgb: 156, 163, 175;
+            border-radius: 1rem;
+            padding: 0.85rem;
+            border: 1px solid rgba(var(--tier-rgb), 0.45);
+            background: linear-gradient(135deg, rgba(var(--tier-rgb), 0.14), rgba(255,255,255,0.03));
+            display: grid;
+            gap: 0.65rem;
+            margin-top: 0.75rem;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        #account-tier-summary {
+            max-width: 360px;
+            flex: 0 0 360px;
+            min-height: 320px;
+            height: 360px;
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
+        }
+        .tier-summary-card::after {
+            content: '';
+            position: absolute;
+            inset: -40% -10% auto auto;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(var(--tier-rgb), 0.35), transparent 70%);
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        .tier-summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+        }
+        #account-tier-summary .tier-summary-header {
+            align-items: center;
+            justify-content: space-between;
+        }
+        #account-tier-summary .tier-summary-title {
+            margin-right: 0.5rem;
+        }
+        #account-tier-summary .tier-summary-name {
+            margin-top: 0;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .tier-summary-title {
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+        }
+        .tier-summary-name {
+            font-size: 1.55rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 0.01em;
+            text-shadow: 0 6px 20px rgba(var(--tier-rgb), 0.6);
+        }
+        .tier-summary-badge {
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(var(--tier-rgb), 0.18);
+            border: 1px solid rgba(var(--tier-rgb), 0.45);
+            color: rgba(255,255,255,0.95);
+        }
+        .tier-summary-body {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: space-between;
+        }
+        .tier-summary-icon {
+            width: 88px;
+            height: 88px;
+            border-radius: 20px;
+            background: rgba(var(--tier-rgb), 0.18);
+            border: 1px solid rgba(var(--tier-rgb), 0.45);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: rgba(255,255,255,0.6);
+            font-weight: 800;
+            line-height: 1;
+        }
+        #account-tier-summary .tier-summary-icon {
+            width: 180px;
+            height: 180px;
+            border-radius: 38px;
+            margin-top: 0.9rem;
+        }
+        #account-tier-summary .tier-summary-body {
+            margin-top: 0.5rem;
+        }
+        #account-tier-summary .tier-summary-bar {
+            height: 24px;
+            margin-top: auto;
+        }
+        .tier-summary-stats {
+            margin-left: auto;
+            text-align: right;
+        }
+        #account-tier-summary .tier-summary-points {
+            font-size: 1.15rem;
+        }
+        #account-tier-summary .tier-summary-next {
+            font-size: 0.95rem;
+        }
+        .account-achievements-layout {
+            display: flex;
+            gap: 1rem;
+            align-items: stretch;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+        .account-achievements-layout #account-tier-summary {
+            margin-top: 0;
+        }
+        .account-achievements-layout #account-achievements-list {
+            flex: 1 1 320px;
+            margin-top: 0;
+        }
+        @media (max-width: 900px) {
+            .account-achievements-layout {
+                flex-direction: column;
+            }
+            .account-achievements-layout #account-tier-summary {
+                max-width: 100%;
+                flex: 1 1 auto;
+            }
+        }
+        .tier-summary-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transform: translateY(6px);
+        }
+        .tier-summary-points {
+            font-weight: 800;
+            color: #fff;
+        }
+        .tier-summary-next {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .tier-summary-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            overflow: hidden;
+        }
+        .tier-summary-progress {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(var(--tier-rgb), 0.35), rgba(var(--tier-rgb), 0.9));
+            transition: width 0.4s ease;
+        }
+        .tier-summary-card[data-tier="Extra"] { --tier-rgb: 156, 163, 175; }
+        .tier-summary-card[data-tier="Supporting Cast"] { --tier-rgb: 37, 99, 235; }
+        .tier-summary-card[data-tier="Co-Star"] { --tier-rgb: 124, 58, 237; }
+        .tier-summary-card[data-tier="Lead"] { --tier-rgb: 185, 28, 28; }
+        .tier-summary-card[data-tier="Box Office Icon"] { --tier-rgb: 231, 97, 67; }
+        .tier-summary-card[data-tier="Oscar Nominee"] { --tier-rgb: 15, 118, 110; }
+        .tier-summary-card[data-tier="Oscar Winner"] { --tier-rgb: 235, 186, 3; }
 
         /* Lists Page */
         .lists-grid {
@@ -1687,6 +2100,33 @@
             </div>
             <div class="text-sm" style="color: var(--text-muted); margin-top: 0.25rem;">
                 Your diary has been updated.
+            </div>
+        </div>
+    </div>
+
+    <div id="achievement-earned-overlay" class="auth-overlay" onclick="if(event.target === this) closeAchievementPopup();" style="display:none;">
+        <div id="achievement-splash" aria-hidden="true"></div>
+        <svg id="achievement-swipe" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+            <path id="achievement-swipe-path" class="achievement-swipe-path" d="M0,340 C210,120 380,120 580,220 C780,320 860,520 1000,470 L1000,600 L0,600 Z"></path>
+            <path id="achievement-swipe-stroke" class="achievement-swipe-stroke" d="M0,340 C210,120 380,120 580,220 C780,320 860,520 1000,470"></path>
+            <path id="achievement-motion-path" class="achievement-motion-path" d="M-40,520 C180,120 420,60 720,200 C980,340 900,520 1040,620"></path>
+        </svg>
+        <div id="achievement-pieces" aria-hidden="true"></div>
+        <div id="achievement-earned-modal" class="auth-modal achievement-modal" role="dialog" aria-modal="true" aria-labelledby="achievement-earned-title" style="max-width: 520px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="achievement-earned-title">Achievement Unlocked</div>
+                <button class="auth-modal-close" type="button" onclick="closeAchievementPopup()">Close</button>
+            </div>
+            <div id="achievement-earned-body" class="glass-panel" style="margin-top: 0.65rem; padding: 0.85rem; border-radius: 0.85rem; background: rgba(0,0,0,0.12); display:flex; gap: 0.85rem; align-items:center;">
+                <div class="achievement-icon" id="achievement-earned-icon"></div>
+                <div>
+                    <div class="achievement-title" id="achievement-earned-name">Achievement</div>
+                    <div class="achievement-meta" id="achievement-earned-desc">Keep rating movies to unlock more.</div>
+                </div>
+            </div>
+            <div id="achievement-earned-actions" class="auth-modal-actions">
+                <button id="achievement-replay" type="button" class="btn btn-outline" onclick="replayAchievementCelebration()">Replay Celebration</button>
+                <button id="achievement-view" type="button" class="btn btn-primary" onclick="closeAchievementPopup(); router.navigate('account');">View Achievements</button>
             </div>
         </div>
     </div>
@@ -4101,14 +4541,46 @@
                                     <div class="text-white font-bold">Log out</div>
                                     <div class="text-xs text-gray" style="margin-top: 0.35rem;">Sign out of your account.</div>
                                 </button>
-                            </div>
-                            <div class="glass-panel" id="theme-creator-backdrops-panel" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
-                                <div class="text-white font-bold">Theme</div>
-                                <div class="text-xs text-gray" style="margin-top: 0.35rem;">Choose a visual style for the site.</div>
-                                <div style="margin-top: 0.75rem; display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
-                                    <select id="account-theme-select" class="input-field" style="min-width: 220px;">
+                                <div class="glass-panel" id="account-theme-panel" style="padding: 1rem; border-radius: 1rem; display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                                    <div>
+                                        <div class="text-white font-bold">Theme</div>
+                                        <div class="text-xs text-gray" style="margin-top: 0.35rem;">Choose a visual style.</div>
+                                    </div>
+                                    <select id="account-theme-select" class="input-field" style="min-width: 120px; width: 150px;">
                                         ${buildThemeCreatorOptions(themeOptions, getStoredTheme())}
                                     </select>
+                                </div>
+                            </div>
+                            <div class="glass-panel" id="account-achievements-panel" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem;">
+                                <div style="display:flex; align-items:center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;">
+                                    <div class="text-white font-bold">Achievements</div>
+                                    <div style="display:flex; gap: 0.4rem; align-items:center; flex-wrap: wrap;">
+                                        <select id="account-test-achievement-select" class="input-field" style="min-width: 180px; display:none;"></select>
+                                        <select id="account-test-achievement-anim" class="input-field" style="min-width: 170px; display:none;"></select>
+                                        <button id="account-test-achievement-btn" type="button" class="btn btn-outline" style="padding: 0.35rem 0.6rem; border-radius: 0.75rem; display:none;" onclick="triggerTestAchievementPopup()">Test Achievement</button>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray" style="margin-top: 0.35rem;">Earn badges by rating movies.</div>
+                                <div class="account-achievements-layout">
+                                    <div id="account-tier-summary" class="tier-summary-card" aria-live="polite" data-tier="Extra">
+                                        <div class="tier-summary-header">
+                                            <div class="tier-summary-title">Current Tier</div>
+                                            <div class="tier-summary-name" id="account-tier-name">—</div>
+                                        </div>
+                                        <div class="tier-summary-body">
+                                            <div class="tier-summary-icon" id="account-tier-icon">?</div>
+                                            <div class="tier-summary-stats">
+                                                <div class="tier-summary-points" id="account-tier-points">0 pts</div>
+                                                <div class="tier-summary-next" id="account-tier-next">Earn more points to level up.</div>
+                                            </div>
+                                        </div>
+                                        <div class="tier-summary-bar">
+                                            <div class="tier-summary-progress" id="account-tier-progress"></div>
+                                        </div>
+                                    </div>
+                                    <div id="account-achievements-list" class="achievement-grid">
+                                        <div class="text-xs text-gray">Loading achievements…</div>
+                                    </div>
                                 </div>
                             </div>
                             </div>
@@ -9808,7 +10280,7 @@
             track2.innerHTML = `<div class="text-gray" style="padding: 0 1.5rem;">Loading trending…</div>`;
 
             try {
-                const data = await callSwiftApiGetTrendingMovies({ time_window: 'day', limit: 10, signal: homeTrendingAbortController.signal });
+                const data = await callSwiftApiGetTrendingMovies({ time_window: 'day', limit: 20, signal: homeTrendingAbortController.signal });
                 const items = Array.isArray(data?.results) ? data.results : [];
                 homeTrendingItems = items;
                 renderTrendingNow(items);
@@ -11096,6 +11568,8 @@
                         await removeMovieFromBucketList({ user_id: authedUser.id, movie_id });
                     } catch (_) {}
 
+                    checkAndAwardRatingMilestones().catch(() => null);
+
                     openRatingsSuccessModal('updated');
                     return;
                 }
@@ -11147,6 +11621,8 @@
                     await removeMovieFromBucketList({ user_id: authedUser.id, movie_id });
                 } catch (_) {}
 
+                checkAndAwardRatingMilestones().catch(() => null);
+
                 openRatingsSuccessModal('saved');
                 return;
             } catch (err) {
@@ -11181,6 +11657,677 @@
         let priorWatchesPendingCount = 0;
 
         let ratingsSuccessTimer = null;
+        let achievementPopupQueue = [];
+        let achievementPopupOpen = false;
+        let achievementsByName = new Map();
+        let achievementsList = [];
+        let userAchievementIds = new Set();
+        let userTierSummary = null;
+        let userTiersList = [];
+        const TEST_ACHIEVEMENT_EMAIL = 'landon.talus@gmail.com';
+        let testAchievementEnabled = false;
+
+        const RATING_MILESTONES = [10, 25, 50, 100, 150, 250, 500, 1000];
+
+        function buildRatingAchievementName(count) {
+            return `Rated ${count} Movies`;
+        }
+
+        async function loadAchievementsDefinitions() {
+            if (!supabaseClient) return;
+            const { data, error } = await supabaseClient
+                .from('Achievements')
+                .select('id, name, description, icon_url, tier, points, is_active')
+                .order('points', { ascending: true });
+            if (error || !Array.isArray(data)) return;
+
+            const nextList = data.filter((row) => row?.is_active !== false);
+            const nextMap = new Map();
+            nextList.forEach((row) => {
+                const name = String(row?.name || '').trim();
+                if (name) nextMap.set(name, row);
+            });
+            achievementsList = nextList;
+            achievementsByName = nextMap;
+        }
+
+        async function loadUserAchievements(userId) {
+            if (!supabaseClient || !userId) return;
+            const { data, error } = await supabaseClient
+                .from('User Achievements')
+                .select('achievement_id, earned_at')
+                .eq('user_id', userId);
+            if (error || !Array.isArray(data)) return;
+
+            userAchievementIds = new Set(data.map((row) => String(row?.achievement_id || '')).filter(Boolean));
+        }
+
+        async function loadUserTierSummary(userId) {
+            if (!supabaseClient || !userId) return;
+
+            const { data: userData, error: userError } = await supabaseClient
+                .from('Users')
+                .select('achievement_points, tier_id')
+                .eq('id', userId)
+                .limit(1);
+            if (userError || !Array.isArray(userData)) return;
+
+            const userRow = userData[0] || null;
+            const points = Number(userRow?.achievement_points || 0) || 0;
+            const tierId = String(userRow?.tier_id || '').trim();
+
+            const { data: tiersData, error: tiersError } = await supabaseClient
+                .from('User Tiers')
+                .select('id, name, tier_icon_url, points_needed')
+                .order('points_needed', { ascending: true });
+            if (tiersError || !Array.isArray(tiersData)) return;
+
+            userTiersList = tiersData;
+
+            let currentTier = tiersData.find((t) => String(t?.id || '').trim() === tierId) || null;
+            if (!currentTier) {
+                currentTier = tiersData
+                    .filter((t) => Number(t?.points_needed || 0) <= points)
+                    .slice(-1)[0] || tiersData[0] || null;
+            }
+
+            const currentPointsNeeded = Number(currentTier?.points_needed || 0) || 0;
+            const nextTier = tiersData.find((t) => Number(t?.points_needed || 0) > points) || null;
+            const nextPointsNeeded = Number(nextTier?.points_needed || 0) || 0;
+            const span = Math.max(1, nextPointsNeeded - currentPointsNeeded);
+            const progress = nextTier ? Math.min(1, Math.max(0, (points - currentPointsNeeded) / span)) : 1;
+
+            userTierSummary = {
+                points,
+                currentTier,
+                nextTier,
+                progress,
+            };
+        }
+
+        function updateTestAchievementVisibility(email) {
+            const btn = document.getElementById('account-test-achievement-btn');
+            const select = document.getElementById('account-test-achievement-select');
+            if (!btn || !select) return;
+            const target = String(TEST_ACHIEVEMENT_EMAIL || '').trim().toLowerCase();
+            const current = String(email || '').trim().toLowerCase();
+            const shouldShow = Boolean(target && current && target === current);
+            testAchievementEnabled = shouldShow;
+            btn.style.display = shouldShow ? 'inline-flex' : 'none';
+            select.style.display = shouldShow ? 'inline-flex' : 'none';
+            if (shouldShow) {
+                syncTestAchievementOptions();
+            }
+        }
+
+        function syncTestAchievementOptions() {
+            const select = document.getElementById('account-test-achievement-select');
+            if (!select) return;
+            if (!Array.isArray(achievementsList) || achievementsList.length === 0) {
+                select.innerHTML = '<option value="">No achievements loaded</option>';
+                return;
+            }
+
+            const currentValue = String(select.value || '').trim();
+            const options = ['<option value="">Select achievement...</option>'];
+            achievementsList.forEach((row) => {
+                const id = String(row?.id || '').trim();
+                const name = String(row?.name || '').trim();
+                const tier = String(row?.tier || '').trim();
+                const points = Number(row?.points || 0) || 0;
+                if (!id || !name) return;
+                const label = [name, tier ? `(${tier})` : '', points ? `- ${points} pts` : ''].filter(Boolean).join(' ');
+                options.push(`<option value="${escapeHtml(id)}">${escapeHtml(label)}</option>`);
+            });
+            select.innerHTML = options.join('');
+            if (currentValue) select.value = currentValue;
+        }
+
+
+        async function triggerTestAchievementPopup() {
+            if (!cachedIsAuthed || !testAchievementEnabled) return;
+            if (!achievementsList.length) {
+                await loadAchievementsDefinitions();
+                syncTestAchievementOptions();
+            }
+
+            const select = document.getElementById('account-test-achievement-select');
+            const selectedId = String(select?.value || '').trim();
+            let def = null;
+
+            if (selectedId) {
+                def = achievementsList.find((row) => String(row?.id || '').trim() === selectedId) || null;
+            }
+
+            if (!def && achievementsList.length > 0) {
+                def = achievementsList[0];
+            }
+
+            if (!def) return;
+            enqueueAchievementPopup(def);
+        }
+
+        function renderAccountTierSummary() {
+            const card = document.getElementById('account-tier-summary');
+            if (!card) return;
+
+            const nameEl = document.getElementById('account-tier-name');
+            const iconEl = document.getElementById('account-tier-icon');
+            const pointsEl = document.getElementById('account-tier-points');
+            const nextEl = document.getElementById('account-tier-next');
+            const progressEl = document.getElementById('account-tier-progress');
+
+            if (!cachedIsAuthed) {
+                if (nameEl) nameEl.textContent = '—';
+                if (pointsEl) pointsEl.textContent = 'Log in to view points.';
+                if (nextEl) nextEl.textContent = '';
+                if (progressEl) progressEl.style.width = '0%';
+                if (iconEl) iconEl.textContent = '?';
+                card.dataset.tier = 'Extra';
+                return;
+            }
+
+            const summary = userTierSummary || null;
+            const tierName = String(summary?.currentTier?.name || '').trim() || 'Unranked';
+            const tierIconUrl = String(summary?.currentTier?.tier_icon_url || '').trim();
+            const points = Number(summary?.points || 0) || 0;
+            const nextTierName = String(summary?.nextTier?.name || '').trim();
+            const nextPointsNeeded = Number(summary?.nextTier?.points_needed || 0) || 0;
+            const pct = Math.round((Number(summary?.progress || 0) || 0) * 100);
+
+            if (nameEl) nameEl.textContent = tierName;
+            if (pointsEl) pointsEl.textContent = `${points} pts`;
+            if (nextEl) {
+                nextEl.textContent = nextTierName
+                    ? `${nextPointsNeeded - points} to next tier`
+                    : 'Top tier achieved.';
+            }
+            if (progressEl) progressEl.style.width = `${pct}%`;
+            card.dataset.tier = tierName || 'Extra';
+
+            if (iconEl) {
+                iconEl.innerHTML = tierIconUrl
+                    ? `<img src="${tierIconUrl}" alt="${escapeHtml(tierName)}">`
+                    : '?';
+            }
+        }
+
+        function renderAccountAchievements() {
+            const list = document.getElementById('account-achievements-list');
+            if (!list) return;
+
+            if (!cachedIsAuthed) {
+                list.innerHTML = '<div class="text-xs text-gray">Log in to view your achievements.</div>';
+                return;
+            }
+
+            if (!achievementsList.length) {
+                list.innerHTML = '<div class="text-xs text-gray">No achievements found.</div>';
+                return;
+            }
+
+            list.innerHTML = achievementsList.map((row) => {
+                const id = String(row?.id || '').trim();
+                const name = String(row?.name || '').trim() || 'Achievement';
+                const desc = String(row?.description || '').trim();
+                const iconUrl = String(row?.icon_url || '').trim();
+                const tier = String(row?.tier || '').trim();
+                const points = Number(row?.points || 0) || 0;
+                const earned = id && userAchievementIds.has(id);
+                const meta = [points ? `${points} pts` : '', earned ? 'Earned' : 'Locked'].filter(Boolean).join(' • ');
+                const tierLabel = tier || 'Achievement';
+
+                return `
+                    <div class="achievement-card ${earned ? '' : 'locked'}" data-tier="${escapeHtml(tierLabel)}">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                ${iconUrl ? `<img src="${iconUrl}" alt="${escapeHtml(name)}">` : '<span class="text-xs text-gray">?</span>'}
+                            </div>
+                            <div class="achievement-badge">${escapeHtml(tierLabel)}</div>
+                        </div>
+                        <div class="achievement-title">${escapeHtml(name)}</div>
+                        ${desc ? `<div class="achievement-meta">${escapeHtml(desc)}</div>` : ''}
+                        ${meta ? `<div class="achievement-meta">${escapeHtml(meta)}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function refreshAchievementsUI() {
+            if (!cachedIsAuthed) {
+                renderAccountTierSummary();
+                renderAccountAchievements();
+                return;
+            }
+            const uid = String(cachedAuthUser?.id || '').trim();
+            if (!uid) return;
+            await Promise.all([
+                loadAchievementsDefinitions(),
+                loadUserAchievements(uid),
+                loadUserTierSummary(uid),
+            ]);
+            if (testAchievementEnabled) syncTestAchievementOptions();
+            renderAccountTierSummary();
+            renderAccountAchievements();
+        }
+
+        function enqueueAchievementPopup(achievement) {
+            if (!achievement) return;
+            achievementPopupQueue.push(achievement);
+            if (!achievementPopupOpen) showNextAchievementPopup();
+        }
+
+        let achievementCloseAnimating = false;
+
+        const ACHIEVEMENT_SWIPE_PATHS = {
+            start: 'M0,340 C210,120 380,120 580,220 C780,320 860,520 1000,470 L1000,600 L0,600 Z',
+            mid: 'M0,260 C240,60 420,140 640,260 C820,380 860,540 1000,520 L1000,600 L0,600 Z',
+            end: 'M0,180 C260,40 480,160 700,300 C860,440 880,600 1000,600 L1000,600 L0,600 Z',
+        };
+        const ACHIEVEMENT_MOTION_PATH = 'M-40,520 C180,120 420,60 720,200 C980,340 900,520 1040,620';
+        const ACHIEVEMENT_ANIM_SLOWDOWN = 3;
+        const ACHIEVEMENT_ANIM_TIME_SCALE = 1 / ACHIEVEMENT_ANIM_SLOWDOWN;
+
+        function registerAchievementPlugins() {
+            if (!window.gsap) return;
+            const plugins = [];
+            if (window.MorphSVGPlugin) plugins.push(window.MorphSVGPlugin);
+            if (window.MotionPathPlugin) plugins.push(window.MotionPathPlugin);
+            if (window.DrawSVGPlugin) plugins.push(window.DrawSVGPlugin);
+            if (plugins.length) gsap.registerPlugin(...plugins);
+        }
+
+        function buildAchievementPieces(overlay) {
+            const container = document.getElementById('achievement-pieces');
+            if (!container) return [];
+
+            container.innerHTML = '';
+            const pieces = [];
+            const pieceCount = 22;
+            const tierRgb = getComputedStyle(overlay).getPropertyValue('--tier-rgb').trim() || '148, 163, 184';
+            const colors = [
+                `rgba(${tierRgb}, 0.95)`,
+                'rgba(255, 255, 255, 0.9)',
+                `rgba(${tierRgb}, 0.65)`,
+            ];
+
+            for (let i = 0; i < pieceCount; i += 1) {
+                const piece = document.createElement('div');
+                piece.className = 'achievement-piece';
+                const size = 8 + Math.random() * 18;
+                const radius = Math.random() > 0.6 ? size * 0.5 : size * 0.2;
+                piece.style.width = `${size}px`;
+                piece.style.height = `${size}px`;
+                piece.style.borderRadius = `${radius}px`;
+                piece.style.background = colors[i % colors.length];
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.top = `${Math.random() * 100}%`;
+                container.appendChild(piece);
+                pieces.push(piece);
+            }
+
+            return pieces;
+        }
+
+        function playAchievementCelebrationBurst({ overlay, splashEl, swipeEl, swipePathEl, swipeStrokeEl, motionPathEl, modal, iconEl }) {
+            if (!window.gsap) return;
+
+            registerAchievementPlugins();
+            const canMorph = !!window.MorphSVGPlugin;
+            const canMotion = !!window.MotionPathPlugin;
+            const canDraw = !!window.DrawSVGPlugin;
+
+            const pieces = buildAchievementPieces(overlay);
+            gsap.killTweensOf([overlay, splashEl, swipeEl, swipePathEl, swipeStrokeEl, motionPathEl, pieces, modal, iconEl]);
+
+            gsap.set(splashEl, { opacity: 0, scale: 0.35, rotate: -20, filter: 'blur(8px) saturate(1.2)', force3D: true });
+            gsap.set(swipeEl, { opacity: 0, scaleX: 0.9, scaleY: 0.95, force3D: true });
+            gsap.set(swipePathEl, { attr: { d: ACHIEVEMENT_SWIPE_PATHS.start } });
+            gsap.set(swipeStrokeEl, { opacity: 0, force3D: true });
+            gsap.set(motionPathEl, { attr: { d: ACHIEVEMENT_MOTION_PATH } });
+            gsap.set(pieces, { opacity: 0, scale: 0.2, xPercent: -50, yPercent: -50, force3D: true });
+
+            if (canDraw && swipeStrokeEl) {
+                gsap.set(swipeStrokeEl, { drawSVG: '0% 0%' });
+            }
+
+            const timeline = gsap.timeline()
+                .to(splashEl, { opacity: 0.9, scale: 1.2, rotate: 14, duration: 0.5, ease: 'expo.out' }, 0)
+                .to(splashEl, { opacity: 0.35, scale: 1.45, rotate: 28, duration: 0.6, ease: 'sine.out' }, 0.45)
+                .to(splashEl, { opacity: 0, scale: 1.7, rotate: 40, duration: 0.5, ease: 'expo.out' }, 1)
+                .to(swipeEl, { opacity: 1, scaleX: 1.05, scaleY: 1.05, duration: 0.3, ease: 'sine.out' }, 0)
+                .to(swipePathEl, canMorph ? { morphSVG: ACHIEVEMENT_SWIPE_PATHS.mid, duration: 0.45, ease: 'expo.out' } : { attr: { d: ACHIEVEMENT_SWIPE_PATHS.mid }, duration: 0.45, ease: 'expo.out' }, 0)
+                .to(swipePathEl, canMorph ? { morphSVG: ACHIEVEMENT_SWIPE_PATHS.end, duration: 0.45, ease: 'expo.inOut' } : { attr: { d: ACHIEVEMENT_SWIPE_PATHS.end }, duration: 0.45, ease: 'expo.inOut' }, 0.45)
+                .to(swipeEl, { opacity: 0, duration: 0.35, ease: 'sine.out' }, 0.8)
+                .to(pieces, {
+                    opacity: 1,
+                    scale: 1,
+                    x: () => gsap.utils.random(-380, 380),
+                    y: () => gsap.utils.random(-260, 260),
+                    rotation: () => gsap.utils.random(-200, 200),
+                    duration: 0.75,
+                    ease: 'back.out(2.2)',
+                    stagger: { each: 0.012, from: 'random' },
+                }, 0.1)
+                .to(pieces, {
+                    y: '+=220',
+                    x: () => gsap.utils.random(-140, 140),
+                    rotation: () => gsap.utils.random(-160, 160),
+                    duration: 0.95,
+                    ease: 'power2.in',
+                    stagger: { each: 0.02, from: 'random' },
+                }, 0.85)
+                .to(pieces, { opacity: 0, duration: 0.35, ease: 'power1.out', stagger: 0.01 }, 1.35)
+                .to(modal, { scale: 1.03, duration: 0.18, ease: 'power1.out' }, 0.25)
+                .to(modal, { scale: 1, duration: 0.2, ease: 'power1.inOut' }, 0.43)
+                .to(iconEl, { rotate: 8, duration: 0.12, ease: 'power1.out' }, 0.3)
+                .to(iconEl, { rotate: 0, duration: 0.18, ease: 'power1.inOut' }, 0.42);
+
+            timeline.timeScale(ACHIEVEMENT_ANIM_TIME_SCALE);
+
+            if (canDraw && swipeStrokeEl) {
+                timeline
+                    .to(swipeStrokeEl, { opacity: 1, drawSVG: '0% 100%', duration: 0.55, ease: 'power2.out' }, 0.05)
+                    .to(swipeStrokeEl, { opacity: 0, duration: 0.3, ease: 'power1.out' }, 0.7);
+            }
+
+            if (canMotion && motionPathEl && pieces.length) {
+                const motionPieces = pieces.slice(0, 8);
+                timeline.to(motionPieces, {
+                    opacity: 1,
+                    motionPath: {
+                        path: motionPathEl,
+                        align: motionPathEl,
+                        autoRotate: true,
+                        alignOrigin: [0.5, 0.5],
+                    },
+                    duration: 1.1,
+                    ease: 'power2.out',
+                    stagger: 0.03,
+                }, 0.2);
+            }
+        }
+
+        function replayAchievementCelebration() {
+            const overlay = document.getElementById('achievement-earned-overlay');
+            if (!overlay || overlay.style.display === 'none') return;
+
+            const splashEl = document.getElementById('achievement-splash');
+            const swipeEl = document.getElementById('achievement-swipe');
+            const swipePathEl = document.getElementById('achievement-swipe-path');
+            const swipeStrokeEl = document.getElementById('achievement-swipe-stroke');
+            const motionPathEl = document.getElementById('achievement-motion-path');
+            const modalEl = document.getElementById('achievement-earned-modal');
+            const iconEl = document.getElementById('achievement-earned-icon');
+            if (!splashEl || !swipeEl || !swipePathEl || !swipeStrokeEl || !motionPathEl || !modalEl || !iconEl) return;
+
+            playAchievementCelebrationBurst({
+                overlay,
+                splashEl,
+                swipeEl,
+                swipePathEl,
+                swipeStrokeEl,
+                motionPathEl,
+                modal: modalEl,
+                iconEl,
+            });
+        }
+
+        function playAchievementPopupOpen({ overlay, modal, iconEl, titleEl, nameEl, descEl, bodyEl, splashEl, swipeEl, swipePathEl, swipeStrokeEl, motionPathEl }) {
+            overlay.style.display = 'flex';
+            overlay.classList.add('open');
+
+            if (!window.gsap) return;
+
+            registerAchievementPlugins();
+            const canMorph = !!window.MorphSVGPlugin;
+            const canDraw = !!window.DrawSVGPlugin;
+
+            const pieces = buildAchievementPieces(overlay);
+            gsap.killTweensOf([overlay, modal, iconEl, titleEl, nameEl, descEl, bodyEl, splashEl, swipeEl, swipePathEl, swipeStrokeEl, motionPathEl, pieces]);
+            gsap.set(overlay, { opacity: 0 });
+            gsap.set(splashEl, { opacity: 0, scale: 0.25, rotate: -25, filter: 'blur(8px) saturate(1.2)', force3D: true });
+            gsap.set(swipeEl, { opacity: 0, scaleX: 0.9, scaleY: 0.95, force3D: true });
+            gsap.set(swipePathEl, { attr: { d: ACHIEVEMENT_SWIPE_PATHS.start } });
+            gsap.set(swipeStrokeEl, { opacity: 0, force3D: true });
+            gsap.set(motionPathEl, { attr: { d: ACHIEVEMENT_MOTION_PATH } });
+            gsap.set(modal, { opacity: 0, y: 180, scale: 0.3, rotate: -8, force3D: true });
+            gsap.set(iconEl, { opacity: 0, scale: 0.2, rotate: -90, force3D: true });
+            gsap.set([titleEl, nameEl, descEl], { opacity: 0, y: 24 });
+            gsap.set(bodyEl, { opacity: 0, scale: 0.9, force3D: true });
+            gsap.set(pieces, { opacity: 0, scale: 0.2, xPercent: -50, yPercent: -50, force3D: true });
+
+            if (canDraw && swipeStrokeEl) {
+                gsap.set(swipeStrokeEl, { drawSVG: '0% 0%' });
+            }
+
+            const timeline = gsap.timeline()
+                .to(overlay, { opacity: 1, duration: 0.2, ease: 'power2.out' }, 0)
+                .to(splashEl, { opacity: 0.9, scale: 1.25, rotate: 18, duration: 0.65, ease: 'expo.out' }, 0)
+                .to(splashEl, { opacity: 0.35, scale: 1.45, rotate: 36, duration: 0.6, ease: 'sine.out' }, 0.65)
+                .to(splashEl, { opacity: 0.28, scale: 1.6, rotate: 52, duration: 0.85, ease: 'expo.out' }, 1.15)
+                .to(swipeEl, { opacity: 1, scaleX: 1.05, scaleY: 1.05, duration: 0.3, ease: 'sine.out' }, 0)
+                .to(swipePathEl, canMorph ? { morphSVG: ACHIEVEMENT_SWIPE_PATHS.mid, duration: 0.45, ease: 'expo.out' } : { attr: { d: ACHIEVEMENT_SWIPE_PATHS.mid }, duration: 0.45, ease: 'expo.out' }, 0)
+                .to(swipePathEl, canMorph ? { morphSVG: ACHIEVEMENT_SWIPE_PATHS.end, duration: 0.45, ease: 'expo.inOut' } : { attr: { d: ACHIEVEMENT_SWIPE_PATHS.end }, duration: 0.45, ease: 'expo.inOut' }, 0.45)
+                .to(swipeEl, { opacity: 0, duration: 0.6, ease: 'sine.out' }, 1.8)
+                .to(pieces, {
+                    opacity: 1,
+                    scale: 1,
+                    x: () => gsap.utils.random(-380, 380),
+                    y: () => gsap.utils.random(-260, 260),
+                    rotation: () => gsap.utils.random(-200, 200),
+                    duration: 0.8,
+                    ease: 'back.out(2.2)',
+                    stagger: { each: 0.012, from: 'random' },
+                }, 0.1)
+                .to(pieces, {
+                    y: '+=220',
+                    x: () => gsap.utils.random(-140, 140),
+                    rotation: () => gsap.utils.random(-160, 160),
+                    duration: 0.95,
+                    ease: 'power2.in',
+                    stagger: { each: 0.02, from: 'random' },
+                }, 0.85)
+                .to(pieces, { opacity: 0, duration: 0.6, ease: 'power1.out', stagger: 0.01 }, 2.35)
+                .to(modal, { opacity: 1, y: 0, scale: 1.08, rotate: 0, duration: 0.8, ease: 'back.out(1.7)' }, 0.5)
+                .to(modal, { scale: 1, duration: 0.25, ease: 'power2.out' }, 1.15)
+                .to(iconEl, { opacity: 1, scale: 1.2, rotate: 0, duration: 0.6, ease: 'back.out(2.2)' }, 0.55)
+                .to(iconEl, { scale: 1, duration: 0.2, ease: 'power2.out' }, 1.12)
+                .to(bodyEl, { opacity: 1, scale: 1, duration: 0.22, ease: 'power2.out' }, 0.45)
+                .to([titleEl, nameEl, descEl], { opacity: 1, y: 0, duration: 0.24, stagger: 0.05, ease: 'power2.out' }, 0.5)
+                .to(splashEl, { opacity: 0, scale: 1.9, duration: 0.8, ease: 'sine.out' }, 2.2);
+
+            timeline.timeScale(ACHIEVEMENT_ANIM_TIME_SCALE);
+
+            if (canDraw && swipeStrokeEl) {
+                timeline
+                    .to(swipeStrokeEl, { opacity: 1, drawSVG: '0% 100%', duration: 0.55, ease: 'power2.out' }, 0.05)
+                    .to(swipeStrokeEl, { opacity: 0, duration: 0.3, ease: 'power1.out' }, 0.7);
+            }
+        }
+
+        function playAchievementPopupClose({ overlay, modal, iconEl, titleEl, nameEl, descEl, bodyEl, splashEl, swipeEl, swipePathEl, swipeStrokeEl, motionPathEl }) {
+            if (!window.gsap) {
+                overlay.classList.remove('open');
+                overlay.style.display = 'none';
+                return;
+            }
+
+            const pieces = Array.from(document.querySelectorAll('#achievement-pieces .achievement-piece'));
+            gsap.killTweensOf([overlay, modal, iconEl, titleEl, nameEl, descEl, bodyEl, splashEl, swipeEl, swipePathEl, swipeStrokeEl, motionPathEl, pieces]);
+            const timeline = gsap.timeline()
+                .set(splashEl, { opacity: 0, scale: 0.8, rotate: -12 }, 0)
+                .set(swipeEl, { opacity: 0, scaleX: 0.9, scaleY: 0.95 }, 0)
+                .set(swipePathEl, { attr: { d: ACHIEVEMENT_SWIPE_PATHS.start } }, 0)
+                .set(swipeStrokeEl, { opacity: 0 }, 0)
+                .set(motionPathEl, { attr: { d: ACHIEVEMENT_MOTION_PATH } }, 0)
+                .to([titleEl, nameEl, descEl, bodyEl], { opacity: 0, y: -10, duration: 0.18, ease: 'power1.in' }, 0)
+                .to(iconEl, { opacity: 0, scale: 0.6, rotate: -18, duration: 0.2, ease: 'power1.in' }, 0)
+                .to(modal, { opacity: 0, y: 60, scale: 0.85, rotate: 6, duration: 0.28, ease: 'power2.in' }, 0.05)
+                .to(splashEl, { opacity: 0.35, scale: 1.1, rotate: -28, duration: 0.18, ease: 'power1.out' }, 0.02)
+                .to(splashEl, { opacity: 0, scale: 1.4, rotate: -40, duration: 0.26, ease: 'power2.in' }, 0.2)
+                .to(pieces, { opacity: 0, duration: 0.2, ease: 'power1.out' }, 0)
+                .to(overlay, { opacity: 0, duration: 0.25, ease: 'power1.in' }, 0.12);
+            timeline.timeScale(ACHIEVEMENT_ANIM_TIME_SCALE);
+        }
+
+        function showNextAchievementPopup() {
+            if (achievementPopupOpen) return;
+            const next = achievementPopupQueue.shift();
+            if (!next) return;
+            achievementPopupOpen = true;
+
+            const overlay = document.getElementById('achievement-earned-overlay');
+            const nameEl = document.getElementById('achievement-earned-name');
+            const descEl = document.getElementById('achievement-earned-desc');
+            const iconEl = document.getElementById('achievement-earned-icon');
+            const bodyEl = document.getElementById('achievement-earned-body');
+            const modalEl = document.getElementById('achievement-earned-modal');
+            const splashEl = document.getElementById('achievement-splash');
+            const swipeEl = document.getElementById('achievement-swipe');
+            const swipePathEl = document.getElementById('achievement-swipe-path');
+            const swipeStrokeEl = document.getElementById('achievement-swipe-stroke');
+            const motionPathEl = document.getElementById('achievement-motion-path');
+            if (!overlay || !nameEl || !descEl || !iconEl || !bodyEl || !modalEl || !splashEl || !swipeEl || !swipePathEl || !swipeStrokeEl || !motionPathEl) return;
+
+            const normalizeAchievementTier = (raw) => {
+                const key = String(raw || '').trim().toLowerCase();
+                const map = {
+                    bronze: 'Bronze',
+                    silver: 'Silver',
+                    gold: 'Gold',
+                    platinum: 'Platinum',
+                    diamond: 'Diamond',
+                    emerald: 'Emerald',
+                    ruby: 'Ruby',
+                };
+                return map[key] || '';
+            };
+
+            const name = String(next?.name || '').trim() || 'Achievement';
+            const desc = String(next?.description || '').trim() || 'Achievement earned.';
+            const iconUrl = String(next?.icon_url || '').trim();
+            const tier = normalizeAchievementTier(next?.tier);
+            nameEl.textContent = name;
+            descEl.textContent = desc;
+            iconEl.innerHTML = iconUrl
+                ? `<img src="${iconUrl}" alt="${escapeHtml(name)}">`
+                : '<span class="text-xs text-gray">?</span>';
+            bodyEl.setAttribute('data-tier', tier || '');
+            modalEl.setAttribute('data-tier', tier || '');
+            overlay.setAttribute('data-tier', tier || '');
+
+            playAchievementPopupOpen({
+                overlay,
+                modal: modalEl,
+                iconEl,
+                titleEl: document.getElementById('achievement-earned-title'),
+                nameEl,
+                descEl,
+                bodyEl,
+                splashEl,
+                swipeEl,
+                swipePathEl,
+                swipeStrokeEl,
+                motionPathEl,
+            });
+        }
+
+        function closeAchievementPopup() {
+            const overlay = document.getElementById('achievement-earned-overlay');
+            if (!overlay || achievementCloseAnimating) return;
+
+            const modalEl = document.getElementById('achievement-earned-modal');
+            const iconEl = document.getElementById('achievement-earned-icon');
+            const titleEl = document.getElementById('achievement-earned-title');
+            const nameEl = document.getElementById('achievement-earned-name');
+            const descEl = document.getElementById('achievement-earned-desc');
+            const bodyEl = document.getElementById('achievement-earned-body');
+            const splashEl = document.getElementById('achievement-splash');
+            const swipeEl = document.getElementById('achievement-swipe');
+            const swipePathEl = document.getElementById('achievement-swipe-path');
+            const swipeStrokeEl = document.getElementById('achievement-swipe-stroke');
+            const motionPathEl = document.getElementById('achievement-motion-path');
+
+            achievementCloseAnimating = true;
+            playAchievementPopupClose({
+                overlay,
+                modal: modalEl,
+                iconEl,
+                titleEl,
+                nameEl,
+                descEl,
+                bodyEl,
+                splashEl,
+                swipeEl,
+                swipePathEl,
+                swipeStrokeEl,
+                motionPathEl,
+            });
+
+            const finalize = () => {
+                overlay.classList.remove('open');
+                overlay.style.display = 'none';
+                achievementPopupOpen = false;
+                achievementCloseAnimating = false;
+                if (achievementPopupQueue.length) {
+                    setTimeout(showNextAchievementPopup, 150);
+                }
+            };
+
+            if (!window.gsap) {
+                finalize();
+                return;
+            }
+
+            gsap.delayedCall(0.25 * ACHIEVEMENT_ANIM_SLOWDOWN, finalize);
+        }
+
+        async function checkAndAwardRatingMilestones() {
+            if (!supabaseClient || !cachedIsAuthed) return;
+            const uid = String(cachedAuthUser?.id || '').trim();
+            if (!uid) return;
+
+            await loadAchievementsDefinitions();
+            await loadUserAchievements(uid);
+
+            const { count, error } = await supabaseClient
+                .from('Movie Ratings')
+                .select('movie_id', { count: 'exact', head: true })
+                .eq('user_id', uid);
+
+            if (error || !Number.isFinite(count)) return;
+
+            const newlyEarned = [];
+            for (const milestone of RATING_MILESTONES) {
+                if (count < milestone) continue;
+                const name = buildRatingAchievementName(milestone);
+                const def = achievementsByName.get(name);
+                const achievementId = String(def?.id || '').trim();
+                if (!achievementId || userAchievementIds.has(achievementId)) continue;
+                newlyEarned.push({ def, achievementId });
+            }
+
+            if (!newlyEarned.length) return;
+
+            const rows = newlyEarned.map((item) => ({
+                user_id: uid,
+                achievement_id: item.achievementId,
+            }));
+
+            const { error: insertError } = await supabaseClient
+                .from('User Achievements')
+                .insert(rows);
+
+            if (insertError) return;
+
+            newlyEarned.forEach((item) => {
+                if (item.achievementId) userAchievementIds.add(item.achievementId);
+                if (item.def) enqueueAchievementPopup(item.def);
+            });
+
+            renderAccountAchievements();
+        }
 
         function openRatingsSuccessModal(kind) {
             const overlay = document.getElementById('ratings-success-overlay');
@@ -12742,23 +13889,26 @@
 
         function applyThemeColors(colors) {
             const c = colors && typeof colors === 'object' ? colors : null;
-            if (!c) return;
+            if (!c) {
+                showToast('Theme colors are missing. Add colors in Supabase.', { level: 'warn' });
+                return;
+            }
             const root = document.documentElement;
 
             const base = {
-                bg_dark: String(c.bg_dark || ''),
-                surface: String(c.surface || ''),
-                border: String(c.border || ''),
-                text_main: String(c.text_main || ''),
-                text_muted: String(c.text_muted || ''),
-                brand: String(c.brand || ''),
-                brand_hover: String(c.brand_hover || ''),
-                brand_2: String(c.brand_2 || ''),
-                brand_3: String(c.brand_3 || ''),
-                accent_1: String(c.accent_1 || ''),
-                accent_2: String(c.accent_2 || ''),
-                nav_accent: String(c.nav_accent || ''),
-                nav_title: String(c.nav_title || ''),
+                bg_dark: String(c.bg_dark || '').trim(),
+                surface: String(c.surface || '').trim(),
+                border: String(c.border || '').trim(),
+                text_main: String(c.text_main || '').trim(),
+                text_muted: String(c.text_muted || '').trim(),
+                brand: String(c.brand || '').trim(),
+                brand_hover: String(c.brand_hover || '').trim(),
+                brand_2: String(c.brand_2 || '').trim(),
+                brand_3: String(c.brand_3 || '').trim(),
+                accent_1: String(c.accent_1 || '').trim(),
+                accent_2: String(c.accent_2 || '').trim(),
+                nav_accent: String(c.nav_accent || '').trim(),
+                nav_title: String(c.nav_title || '').trim(),
             };
 
             if (base.bg_dark) root.style.setProperty('--bg-dark', base.bg_dark);
@@ -12776,16 +13926,16 @@
             if (base.nav_title) root.style.setProperty('--nav-title', base.nav_title);
 
             const derived = {
-                brand_light: String(c.brand_light || ''),
-                brand_shadow: String(c.brand_shadow || ''),
-                nav_active_a: String(c.nav_active_a || ''),
-                nav_active_b: String(c.nav_active_b || ''),
-                glass_bg: String(c.glass_bg || ''),
-                glass_border: String(c.glass_border || ''),
-                glass_shadow: String(c.glass_shadow || ''),
-                btn_outline_bg: String(c.btn_outline_bg || ''),
-                focus_ring: String(c.focus_ring || ''),
-                bg_overlay: String(c.bg_overlay || ''),
+                brand_light: String(c.brand_light || '').trim(),
+                brand_shadow: String(c.brand_shadow || '').trim(),
+                nav_active_a: String(c.nav_active_a || '').trim(),
+                nav_active_b: String(c.nav_active_b || '').trim(),
+                glass_bg: String(c.glass_bg || '').trim(),
+                glass_border: String(c.glass_border || '').trim(),
+                glass_shadow: String(c.glass_shadow || '').trim(),
+                btn_outline_bg: String(c.btn_outline_bg || '').trim(),
+                focus_ring: String(c.focus_ring || '').trim(),
+                bg_overlay: String(c.bg_overlay || '').trim(),
             };
 
             if (derived.brand_light) root.style.setProperty('--brand-light', derived.brand_light);
@@ -15080,6 +16230,7 @@
             });
 
             applyTheme(getStoredTheme());
+            refreshAchievementsUI().catch(() => null);
         }
 
         async function loadAccountPage() {
@@ -15096,6 +16247,7 @@
             if (!supabaseClient || !cachedIsAuthed) {
                 if (profileStatus) profileStatus.textContent = 'Log in to manage your account.';
                 if (emailEl) emailEl.textContent = '';
+                updateTestAchievementVisibility('');
                 return;
             }
 
@@ -15109,6 +16261,8 @@
             const email = String(user?.email || '').trim();
             if (emailEl) emailEl.textContent = email || '(no email)';
             updateThemeCreatorVisibility(email);
+            updateTestAchievementVisibility(email);
+            refreshAchievementsUI().catch(() => null);
 
             if (!uid) {
                 if (profileStatus) profileStatus.textContent = 'Auth session missing user id.';
