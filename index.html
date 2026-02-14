@@ -617,23 +617,52 @@
 
         /* Achievements */
         .achievement-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 0.9rem;
-            margin-top: 0.85rem;
+            display: contents;
         }
         .achievement-card {
             --tier-rgb: 148, 163, 184;
             position: relative;
             overflow: hidden;
             border-radius: 1rem;
-            padding: 0.9rem;
+            padding: 0.7rem;
             border: 1px solid rgba(255,255,255,0.12);
             background: rgba(255,255,255,0.05);
-            display: flex;
+            display: inline-flex;
             flex-direction: column;
+            gap: 0.45rem;
+            width: 219px;
+            height: 175px;
+            margin: 0 0.9rem 0.9rem 0;
+            vertical-align: top;
+            cursor: pointer;
+        }
+        .achievement-card:hover {
+            border-color: rgba(var(--tier-rgb), 0.5);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+            transform: translateY(-2px);
+        }
+        .achievement-detail-list {
+            display: grid;
             gap: 0.6rem;
-            min-height: 150px;
+            margin-top: 0.6rem;
+        }
+        .achievement-detail-item {
+            padding: 0.6rem 0.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .achievement-detail-label {
+            font-weight: 800;
+            color: #fff;
+        }
+        .achievement-detail-value {
+            color: var(--text-muted);
+            text-align: right;
         }
         .achievement-card::after {
             content: '';
@@ -698,10 +727,13 @@
         .achievement-title {
             font-weight: 800;
             color: #fff;
+            font-size: 0.95rem;
+            line-height: 1.2;
         }
         .achievement-meta {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
+            line-height: 1.2;
         }
         #achievement-earned-body {
             --tier-rgb: 148, 163, 184;
@@ -861,21 +893,21 @@
         .tier-summary-card {
             --tier-rgb: 156, 163, 175;
             border-radius: 1rem;
-            padding: 0.85rem;
+            padding: 0.6rem;
             border: 1px solid rgba(var(--tier-rgb), 0.45);
             background: linear-gradient(135deg, rgba(var(--tier-rgb), 0.14), rgba(255,255,255,0.03));
             display: grid;
-            gap: 0.65rem;
+            gap: 0.5rem;
             margin-top: 0.75rem;
             box-shadow: 0 12px 30px rgba(0,0,0,0.35);
             position: relative;
             overflow: hidden;
         }
         #account-tier-summary {
-            max-width: 360px;
-            flex: 0 0 360px;
-            min-height: 320px;
-            height: 360px;
+            max-width: 456px;
+            width: 456px;
+            min-height: 362px;
+            height: 362px;
             align-self: stretch;
             display: flex;
             flex-direction: column;
@@ -954,50 +986,104 @@
             line-height: 1;
         }
         #account-tier-summary .tier-summary-icon {
-            width: 180px;
-            height: 180px;
+            width: 220px;
+            height: 220px;
             border-radius: 38px;
-            margin-top: 0.9rem;
-        }
-        #account-tier-summary .tier-summary-body {
             margin-top: 0.5rem;
         }
+        #account-tier-summary .tier-summary-body {
+            margin-top: 0.45rem;
+        }
         #account-tier-summary .tier-summary-bar {
-            height: 24px;
+            height: 28px;
             margin-top: auto;
+            width: 100%;
+            display: block;
+            flex-shrink: 0;
         }
         .tier-summary-stats {
             margin-left: auto;
             text-align: right;
         }
         #account-tier-summary .tier-summary-points {
-            font-size: 1.15rem;
+            font-size: 1.45rem;
         }
         #account-tier-summary .tier-summary-next {
-            font-size: 0.95rem;
+            font-size: 1.05rem;
         }
         .account-achievements-layout {
-            display: flex;
-            gap: 1rem;
-            align-items: stretch;
-            flex-wrap: wrap;
-            margin-top: 0.75rem;
+            position: relative;
+            margin-top: 0.75r432em;
+        }
+        .account-achievements-layout::after {
+            content: '';
+            display: block;
+            clear: both;
         }
         .account-achievements-layout #account-tier-summary {
             margin-top: 0;
+            float: left;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
         }
         .account-achievements-layout #account-achievements-list {
-            flex: 1 1 320px;
             margin-top: 0;
+        }
+        .account-achievements-layout #account-achievements-list .text-xs {
+            display: block;
+            margin-top: 0.85rem;
+        }
+        @media (max-width: 900px) {
+            .achievement-card {
+                width: min(100%, 360px);
+                margin-right: 0;
+            }
         }
         @media (max-width: 900px) {
             .account-achievements-layout {
-                flex-direction: column;
+                display: block;
             }
             .account-achievements-layout #account-tier-summary {
+                float: none;
+                margin-right: 0;
                 max-width: 100%;
-                flex: 1 1 auto;
+                width: 100%;
             }
+        }
+        .achievement-filter-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .achievement-filters-pop {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            min-width: 240px;
+            padding: 0.75rem;
+            border-radius: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(15, 15, 18, 0.92);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+            display: none;
+            z-index: 20;
+        }
+        .achievement-filters-pop.is-open {
+            display: block;
+        }
+        .achievement-filters-row {
+            display: grid;
+            gap: 0.4rem;
+        }
+        .achievement-filters-row + .achievement-filters-row {
+            margin-top: 0.6rem;
+        }
+        .achievement-filters-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 800;
+            color: rgba(255,255,255,0.7);
         }
         .tier-summary-icon img {
             width: 100%;
@@ -1330,6 +1416,12 @@
             border-top: 1px solid var(--border);
             margin-top: auto;
             padding: 2rem 0;
+        }
+        footer #footer-icons a {
+            color: var(--text-muted);
+        }
+        footer #footer-icons a:hover {
+            color: #fff;
         }
 
         /* Typography Helpers */
@@ -2135,6 +2227,16 @@
                 <button id="achievement-replay" type="button" class="btn btn-outline" onclick="replayAchievementCelebration()">Replay Celebration</button>
                 <button id="achievement-view" type="button" class="btn btn-primary" onclick="closeAchievementPopup(); router.navigate('account');">View Achievements</button>
             </div>
+        </div>
+    </div>
+
+    <div id="achievement-detail-overlay" class="auth-overlay" onclick="if(event.target === this) closeAchievementDetail();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="achievement-detail-title" style="max-width: 640px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="achievement-detail-title">Achievement Details</div>
+                <button class="auth-modal-close" type="button" onclick="closeAchievementDetail()">Close</button>
+            </div>
+            <div id="achievement-detail-body" class="text-sm" style="color: var(--text-muted);"></div>
         </div>
     </div>
 
@@ -4562,12 +4664,26 @@
                                 <div style="display:flex; align-items:center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;">
                                     <div class="text-white font-bold">Achievements</div>
                                     <div style="display:flex; gap: 0.4rem; align-items:center; flex-wrap: wrap;">
-                                        <select id="account-test-achievement-select" class="input-field" style="min-width: 180px; display:none;"></select>
-                                        <select id="account-test-achievement-anim" class="input-field" style="min-width: 170px; display:none;"></select>
-                                        <button id="account-test-achievement-btn" type="button" class="btn btn-outline" style="padding: 0.35rem 0.6rem; border-radius: 0.75rem; display:none;" onclick="triggerTestAchievementPopup()">Test Achievement</button>
+                                        <div class="achievement-filter-wrap">
+                                            <button id="account-achievement-filters-btn" type="button" class="btn btn-outline" style="padding: 0.35rem 0.6rem; border-radius: 0.75rem;">Sort/Filter</button>
+                                            <div id="account-achievement-filters-pop" class="achievement-filters-pop" aria-hidden="true">
+                                                <div class="achievement-filters-row">
+                                                    <div class="achievement-filters-label">Sort</div>
+                                                    <select id="account-achievement-sort" class="input-field">
+                                                        <option value="points_asc" selected>Points: Low to High</option>
+                                                        <option value="points_desc">Points: High to Low</option>
+                                                    </select>
+                                                </div>
+                                                <div class="achievement-filters-row">
+                                                    <div class="achievement-filters-label">Type</div>
+                                                    <select id="account-achievement-filter" class="input-field">
+                                                        <option value="all">All types</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="text-xs text-gray" style="margin-top: 0.35rem;">Earn badges by rating movies.</div>
                                 <div class="account-achievements-layout">
                                     <div id="account-tier-summary" class="tier-summary-card" aria-live="polite" data-tier="Extra">
                                         <div class="tier-summary-header">
@@ -4587,6 +4703,18 @@
                                     </div>
                                     <div id="account-achievements-list" class="achievement-grid">
                                         <div class="text-xs text-gray">Loading achievements…</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="glass-panel" id="account-achievement-test-panel" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem; display:none;">
+                                <div style="display:flex; align-items:center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;">
+                                    <div>
+                                        <div class="text-white font-bold">Achievement Testing</div>
+                                        <div class="text-xs text-gray" style="margin-top: 0.35rem;">Trigger a test popup on demand.</div>
+                                    </div>
+                                    <div style="display:flex; gap: 0.4rem; align-items:center; flex-wrap: wrap;">
+                                        <select id="account-test-achievement-select" class="input-field" style="min-width: 180px;"></select>
+                                        <button id="account-test-achievement-btn" type="button" class="btn btn-outline" style="padding: 0.35rem 0.6rem; border-radius: 0.75rem;" onclick="triggerTestAchievementPopup()">Test Achievement</button>
                                     </div>
                                 </div>
                             </div>
@@ -11684,7 +11812,7 @@
             if (!supabaseClient) return;
             const { data, error } = await supabaseClient
                 .from('Achievements')
-                .select('id, name, description, icon_url, tier, points, is_active')
+                .select('id, name, description, icon_url, tier, type, points, is_active')
                 .order('points', { ascending: true });
             if (error || !Array.isArray(data)) return;
 
@@ -11696,6 +11824,7 @@
             });
             achievementsList = nextList;
             achievementsByName = nextMap;
+            syncAchievementFilterOptions();
         }
 
         async function loadUserAchievements(userId) {
@@ -11755,6 +11884,7 @@
         function updateTestAchievementVisibility(email) {
             const btn = document.getElementById('account-test-achievement-btn');
             const select = document.getElementById('account-test-achievement-select');
+            const panel = document.getElementById('account-achievement-test-panel');
             if (!btn || !select) return;
             const target = String(TEST_ACHIEVEMENT_EMAIL || '').trim().toLowerCase();
             const current = String(email || '').trim().toLowerCase();
@@ -11762,6 +11892,7 @@
             testAchievementEnabled = shouldShow;
             btn.style.display = shouldShow ? 'inline-flex' : 'none';
             select.style.display = shouldShow ? 'inline-flex' : 'none';
+            if (panel) panel.style.display = shouldShow ? 'block' : 'none';
             if (shouldShow) {
                 syncTestAchievementOptions();
             }
@@ -11788,6 +11919,70 @@
             });
             select.innerHTML = options.join('');
             if (currentValue) select.value = currentValue;
+        }
+
+        let achievementSortMode = 'points_asc';
+        let achievementTypeFilter = 'all';
+        let achievementFiltersOpen = false;
+
+        function syncAchievementFilterOptions() {
+            const select = document.getElementById('account-achievement-filter');
+            if (!select) return;
+            if (!Array.isArray(achievementsList) || achievementsList.length === 0) {
+                select.innerHTML = '<option value="all">All types</option>';
+                return;
+            }
+
+            const currentValue = String(select.value || achievementTypeFilter || 'all').trim();
+            const types = Array.from(new Set(achievementsList
+                .map((row) => String(row?.type || '').trim())
+                .filter(Boolean))).sort();
+
+            const options = ['<option value="all">All types</option>'];
+            types.forEach((type) => {
+                options.push(`<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`);
+            });
+            select.innerHTML = options.join('');
+            select.value = types.includes(currentValue) ? currentValue : 'all';
+            achievementTypeFilter = select.value;
+        }
+
+        function syncAchievementSortControl() {
+            const select = document.getElementById('account-achievement-sort');
+            if (!select) return;
+            const value = String(achievementSortMode || 'points_desc').trim();
+            if (select.value !== value) select.value = value;
+        }
+
+        function setAchievementFiltersOpen(isOpen) {
+            const pop = document.getElementById('account-achievement-filters-pop');
+            const btn = document.getElementById('account-achievement-filters-btn');
+            if (!pop || !btn) return;
+            achievementFiltersOpen = Boolean(isOpen);
+            pop.classList.toggle('is-open', achievementFiltersOpen);
+            pop.setAttribute('aria-hidden', achievementFiltersOpen ? 'false' : 'true');
+            btn.setAttribute('aria-expanded', achievementFiltersOpen ? 'true' : 'false');
+        }
+
+        function toggleAchievementFiltersOpen() {
+            setAchievementFiltersOpen(!achievementFiltersOpen);
+        }
+
+        function getFilteredAchievementsList() {
+            const filtered = achievementsList.filter((row) => {
+                if (!achievementTypeFilter || achievementTypeFilter === 'all') return true;
+                const type = String(row?.type || '').trim();
+                return type === achievementTypeFilter;
+            });
+
+            const sorted = filtered.slice().sort((a, b) => {
+                const pointsA = Number(a?.points || 0) || 0;
+                const pointsB = Number(b?.points || 0) || 0;
+                if (pointsA === pointsB) return String(a?.name || '').localeCompare(String(b?.name || ''));
+                return achievementSortMode === 'points_asc' ? pointsA - pointsB : pointsB - pointsA;
+            });
+
+            return sorted;
         }
 
 
@@ -11863,6 +12058,9 @@
             const list = document.getElementById('account-achievements-list');
             if (!list) return;
 
+            syncAchievementSortControl();
+            syncAchievementFilterOptions();
+
             if (!cachedIsAuthed) {
                 list.innerHTML = '<div class="text-xs text-gray">Log in to view your achievements.</div>';
                 return;
@@ -11873,19 +12071,26 @@
                 return;
             }
 
-            list.innerHTML = achievementsList.map((row) => {
+            const filtered = getFilteredAchievementsList();
+            if (!filtered.length) {
+                list.innerHTML = '<div class="text-xs text-gray">No achievements match those filters.</div>';
+                return;
+            }
+
+            list.innerHTML = filtered.map((row) => {
                 const id = String(row?.id || '').trim();
                 const name = String(row?.name || '').trim() || 'Achievement';
                 const desc = String(row?.description || '').trim();
                 const iconUrl = String(row?.icon_url || '').trim();
                 const tier = String(row?.tier || '').trim();
+                const type = String(row?.type || '').trim();
                 const points = Number(row?.points || 0) || 0;
                 const earned = id && userAchievementIds.has(id);
                 const meta = [points ? `${points} pts` : '', earned ? 'Earned' : 'Locked'].filter(Boolean).join(' • ');
                 const tierLabel = tier || 'Achievement';
 
                 return `
-                    <div class="achievement-card ${earned ? '' : 'locked'}" data-tier="${escapeHtml(tierLabel)}">
+                    <div class="achievement-card ${earned ? '' : 'locked'}" data-tier="${escapeHtml(tierLabel)}" data-type="${escapeHtml(type)}" data-achievement-id="${escapeHtml(id)}">
                         <div class="achievement-header">
                             <div class="achievement-icon">
                                 ${iconUrl ? `<img src="${iconUrl}" alt="${escapeHtml(name)}">` : '<span class="text-xs text-gray">?</span>'}
@@ -11898,6 +12103,589 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        let achievementEvidenceCache = null;
+        let achievementEvidenceCacheUserId = null;
+        let achievementEvidenceLoading = null;
+
+        function closeAchievementDetail() {
+            const overlay = document.getElementById('achievement-detail-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+        }
+
+        async function openAchievementDetail(achievementId) {
+            if (!achievementId || !cachedIsAuthed || !supabaseClient) return;
+            const overlay = document.getElementById('achievement-detail-overlay');
+            const titleEl = document.getElementById('achievement-detail-title');
+            const bodyEl = document.getElementById('achievement-detail-body');
+            if (!overlay || !titleEl || !bodyEl) return;
+
+            const achievement = achievementsList.find((row) => String(row?.id || '').trim() === achievementId) || null;
+            if (!achievement) return;
+
+            titleEl.textContent = String(achievement?.name || 'Achievement Details');
+            bodyEl.innerHTML = '<div class="text-xs text-gray">Loading details...</div>';
+            overlay.style.display = 'flex';
+
+            const uid = String(cachedAuthUser?.id || '').trim();
+            if (!uid) return;
+
+            const data = (await loadAchievementEvidence(uid)) || getEmptyAchievementEvidence();
+            const earned = userAchievementIds.has(achievementId);
+            bodyEl.innerHTML = buildAchievementEvidenceHtml(achievement, data, earned);
+        }
+
+        async function loadAchievementEvidence(userId) {
+            if (achievementEvidenceCache && achievementEvidenceCacheUserId === userId) return achievementEvidenceCache;
+            if (achievementEvidenceLoading && achievementEvidenceCacheUserId === userId) return achievementEvidenceLoading;
+
+            achievementEvidenceCache = null;
+            achievementEvidenceLoading = null;
+            achievementEvidenceCacheUserId = userId;
+
+            achievementEvidenceLoading = (async () => {
+                const ratingsRes = await supabaseClient
+                    .from('Movie Ratings')
+                    .select('movie_id, watch_date')
+                    .eq('user_id', userId);
+                const watchRes = await supabaseClient
+                    .from('Watch Logs')
+                    .select('movie_id, watch_date')
+                    .eq('user_id', userId);
+
+                const ratings = Array.isArray(ratingsRes?.data) ? ratingsRes.data : [];
+                const watchLogs = Array.isArray(watchRes?.data) ? watchRes.data : [];
+
+                const ratedMovieIds = Array.from(new Set(ratings.map((row) => String(row?.movie_id || '')).filter(Boolean)));
+                const watchedMovieIds = Array.from(new Set(watchLogs.map((row) => String(row?.movie_id || '')).filter(Boolean)));
+                const allMovieIds = Array.from(new Set([...ratedMovieIds, ...watchedMovieIds]));
+
+                let movies = [];
+                if (allMovieIds.length) {
+                    const moviesRes = await supabaseClient
+                        .from('Movies')
+                        .select('id, title, release_year')
+                        .in('id', allMovieIds);
+                    movies = Array.isArray(moviesRes?.data) ? moviesRes.data : [];
+                }
+                const moviesById = new Map(movies.map((m) => [String(m?.id || ''), m]));
+
+                let movieGenres = [];
+                if (ratedMovieIds.length) {
+                    const mgRes = await supabaseClient
+                        .from('Movie Genres')
+                        .select('movie_id, genre_id')
+                        .in('movie_id', ratedMovieIds);
+                    movieGenres = Array.isArray(mgRes?.data) ? mgRes.data : [];
+                }
+
+                const genreIds = Array.from(new Set(movieGenres.map((row) => String(row?.genre_id || '')).filter(Boolean)));
+                let genres = [];
+                if (genreIds.length) {
+                    const genresRes = await supabaseClient
+                        .from('Genres')
+                        .select('id, name')
+                        .in('id', genreIds);
+                    genres = Array.isArray(genresRes?.data) ? genresRes.data : [];
+                }
+                const genreNamesById = new Map(genres.map((g) => [String(g?.id || ''), String(g?.name || '')]));
+
+                const allGenresRes = await supabaseClient
+                    .from('Genres')
+                    .select('id, name');
+                const allGenres = Array.isArray(allGenresRes?.data) ? allGenresRes.data : [];
+                const allGenreNames = allGenres.map((g) => String(g?.name || '')).filter(Boolean).sort();
+
+                let movieCrew = [];
+                if (ratedMovieIds.length) {
+                    const crewRes = await supabaseClient
+                        .from('Movie Crew')
+                        .select('movie_id, person_id, job')
+                        .eq('job', 'Director')
+                        .in('movie_id', ratedMovieIds);
+                    movieCrew = Array.isArray(crewRes?.data) ? crewRes.data : [];
+                }
+
+                const directorIds = Array.from(new Set(movieCrew.map((row) => String(row?.person_id || '')).filter(Boolean)));
+                let people = [];
+                if (directorIds.length) {
+                    const peopleRes = await supabaseClient
+                        .from('People')
+                        .select('id, name')
+                        .in('id', directorIds);
+                    people = Array.isArray(peopleRes?.data) ? peopleRes.data : [];
+                }
+                const peopleById = new Map(people.map((p) => [String(p?.id || ''), String(p?.name || '')]));
+
+                const ratingsCount = ratedMovieIds.length;
+
+                const genreSet = new Set();
+                movieGenres.forEach((row) => {
+                    const name = genreNamesById.get(String(row?.genre_id || ''));
+                    if (name) genreSet.add(name);
+                });
+                const genreList = Array.from(genreSet).sort();
+
+                const decadeSet = new Set();
+                ratedMovieIds.forEach((movieId) => {
+                    const year = Number(moviesById.get(movieId)?.release_year);
+                    if (Number.isFinite(year) && year > 0) {
+                        decadeSet.add(Math.floor(year / 10) * 10);
+                    }
+                });
+                const decadeList = Array.from(decadeSet).sort((a, b) => a - b);
+
+                const directorMovieMap = new Map();
+                movieCrew.forEach((row) => {
+                    const personId = String(row?.person_id || '');
+                    const movieId = String(row?.movie_id || '');
+                    if (!personId || !movieId) return;
+                    if (!directorMovieMap.has(personId)) directorMovieMap.set(personId, new Set());
+                    directorMovieMap.get(personId).add(movieId);
+                });
+                const directorCounts = Array.from(directorMovieMap.entries()).map(([personId, movieSet]) => ({
+                    personId,
+                    count: movieSet.size,
+                    name: peopleById.get(personId) || 'Unknown Director',
+                })).sort((a, b) => b.count - a.count);
+                const topDirector = directorCounts[0] || null;
+
+                const rewatchMap = new Map();
+                watchLogs.forEach((row) => {
+                    const movieId = String(row?.movie_id || '');
+                    if (!movieId) return;
+                    rewatchMap.set(movieId, (rewatchMap.get(movieId) || 0) + 1);
+                });
+                let topRewatch = null;
+                let topRewatchIds = [];
+                rewatchMap.forEach((count, movieId) => {
+                    if (!topRewatch || count > topRewatch.count) {
+                        topRewatch = { movieId, count };
+                        topRewatchIds = [movieId];
+                    } else if (topRewatch && count === topRewatch.count) {
+                        topRewatchIds.push(movieId);
+                    }
+                });
+                const topRewatchTitles = topRewatchIds.map((movieId) => String(moviesById.get(movieId)?.title || 'Unknown Movie'));
+
+                const dailyCounts = new Map();
+                const watchLogsByDay = new Map();
+                watchLogs.forEach((row) => {
+                    const dayNum = toDayNumber(row?.watch_date);
+                    const movieId = String(row?.movie_id || '');
+                    if (dayNum === null || !movieId) return;
+                    dailyCounts.set(dayNum, (dailyCounts.get(dayNum) || 0) + 1);
+                    if (!watchLogsByDay.has(dayNum)) watchLogsByDay.set(dayNum, []);
+                    watchLogsByDay.get(dayNum).push(movieId);
+                });
+                const dailyEntries = Array.from(dailyCounts.entries()).sort((a, b) => a[0] - b[0]);
+
+                let maxDayCount = 0;
+                let maxDayNum = null;
+                dailyEntries.forEach(([dayNum, count]) => {
+                    if (count > maxDayCount) {
+                        maxDayCount = count;
+                        maxDayNum = dayNum;
+                    }
+                });
+
+                let rollingWeekMax = 0;
+                let rollingWeekEnd = null;
+                let startIdx = 0;
+                let sum = 0;
+                for (let i = 0; i < dailyEntries.length; i += 1) {
+                    const [dayNum, count] = dailyEntries[i];
+                    sum += count;
+                    while (dayNum - dailyEntries[startIdx][0] > 6) {
+                        sum -= dailyEntries[startIdx][1];
+                        startIdx += 1;
+                    }
+                    if (sum > rollingWeekMax) {
+                        rollingWeekMax = sum;
+                        rollingWeekEnd = dayNum;
+                    }
+                }
+
+                let dailyStreakMax = 0;
+                let bestStreakStart = null;
+                let bestStreakEnd = null;
+                let currentStreak = 0;
+                let currentStreakStart = null;
+                let prevDay = null;
+                dailyEntries.forEach(([dayNum]) => {
+                    if (prevDay === null || dayNum !== prevDay + 1) {
+                        currentStreak = 1;
+                        currentStreakStart = dayNum;
+                    } else {
+                        currentStreak += 1;
+                    }
+                    if (currentStreak > dailyStreakMax) {
+                        dailyStreakMax = currentStreak;
+                        bestStreakStart = currentStreakStart;
+                        bestStreakEnd = dayNum;
+                    }
+                    prevDay = dayNum;
+                });
+
+                let currentDailyStreak = 0;
+                let currentDailyStreakStart = null;
+                let currentDailyStreakEnd = null;
+                if (dailyEntries.length) {
+                    currentDailyStreakEnd = dailyEntries[dailyEntries.length - 1][0];
+                    currentDailyStreak = 1;
+                    for (let i = dailyEntries.length - 2; i >= 0; i -= 1) {
+                        const dayNum = dailyEntries[i][0];
+                        const nextDay = dailyEntries[i + 1][0];
+                        if (nextDay - dayNum === 1) {
+                            currentDailyStreak += 1;
+                        } else {
+                            break;
+                        }
+                    }
+                    currentDailyStreakStart = currentDailyStreakEnd - (currentDailyStreak - 1);
+                }
+
+                const weekStarts = Array.from(new Set(dailyEntries.map(([dayNum]) => getWeekStart(dayNum)))).sort((a, b) => a - b);
+                let weeklyStreakMax = 0;
+                let bestWeekStart = null;
+                let bestWeekEnd = null;
+                let currentWeekStreak = 0;
+                let currentWeekStart = null;
+                let prevWeek = null;
+                weekStarts.forEach((weekStart) => {
+                    if (prevWeek === null || weekStart !== prevWeek + 7) {
+                        currentWeekStreak = 1;
+                        currentWeekStart = weekStart;
+                    } else {
+                        currentWeekStreak += 1;
+                    }
+                    if (currentWeekStreak > weeklyStreakMax) {
+                        weeklyStreakMax = currentWeekStreak;
+                        bestWeekStart = currentWeekStart;
+                        bestWeekEnd = weekStart;
+                    }
+                    prevWeek = weekStart;
+                });
+
+                let currentWeeklyStreak = 0;
+                let currentWeeklyStreakStart = null;
+                let currentWeeklyStreakEnd = null;
+                if (weekStarts.length) {
+                    currentWeeklyStreakEnd = weekStarts[weekStarts.length - 1];
+                    currentWeeklyStreak = 1;
+                    for (let i = weekStarts.length - 2; i >= 0; i -= 1) {
+                        const weekStart = weekStarts[i];
+                        const nextWeek = weekStarts[i + 1];
+                        if (nextWeek - weekStart === 7) {
+                            currentWeeklyStreak += 1;
+                        } else {
+                            break;
+                        }
+                    }
+                    currentWeeklyStreakStart = currentWeeklyStreakEnd - (currentWeeklyStreak - 1) * 7;
+                }
+
+                let rollingWeekCurrent = 0;
+                let rollingWeekCurrentEnd = null;
+                if (dailyEntries.length) {
+                    rollingWeekCurrentEnd = dailyEntries[dailyEntries.length - 1][0];
+                    dailyEntries.forEach(([dayNum, count]) => {
+                        if (dayNum >= rollingWeekCurrentEnd - 6 && dayNum <= rollingWeekCurrentEnd) {
+                            rollingWeekCurrent += count;
+                        }
+                    });
+                }
+
+                const bestDayMovies = maxDayNum !== null
+                    ? Array.from(new Set((watchLogsByDay.get(maxDayNum) || []).map((movieId) => String(moviesById.get(movieId)?.title || 'Unknown Movie'))))
+                    : [];
+
+                const rollingWeekMovies = rollingWeekEnd !== null
+                    ? Array.from(new Set(Array.from(watchLogsByDay.entries())
+                        .filter(([dayNum]) => dayNum >= rollingWeekEnd - 6 && dayNum <= rollingWeekEnd)
+                        .flatMap(([, movieIds]) => movieIds)
+                        .map((movieId) => String(moviesById.get(movieId)?.title || 'Unknown Movie'))))
+                    : [];
+
+                const bestDailyStreakMovies = (bestStreakStart !== null && bestStreakEnd !== null)
+                    ? Array.from(new Set(Array.from(watchLogsByDay.entries())
+                        .filter(([dayNum]) => dayNum >= bestStreakStart && dayNum <= bestStreakEnd)
+                        .flatMap(([, movieIds]) => movieIds)
+                        .map((movieId) => String(moviesById.get(movieId)?.title || 'Unknown Movie'))))
+                    : [];
+
+                achievementEvidenceCache = {
+                    ratingsCount,
+                    genreList,
+                    decadeList,
+                    directorCounts,
+                    topDirector,
+                    rewatchMax: topRewatch ? topRewatch.count : 0,
+                    topRewatchTitle: topRewatchTitles[0] || null,
+                    topRewatchTitles,
+                    maxDayCount,
+                    maxDayDate: maxDayNum !== null ? dayNumberToDate(maxDayNum) : null,
+                    bestDayMovies,
+                    rollingWeekMax,
+                    rollingWeekEnd: rollingWeekEnd !== null ? dayNumberToDate(rollingWeekEnd) : null,
+                    rollingWeekMovies,
+                    rollingWeekCurrent,
+                    rollingWeekCurrentEnd: rollingWeekCurrentEnd !== null ? dayNumberToDate(rollingWeekCurrentEnd) : null,
+                    dailyStreakMax,
+                    bestDailyStreakStart: bestStreakStart !== null ? dayNumberToDate(bestStreakStart) : null,
+                    bestDailyStreakEnd: bestStreakEnd !== null ? dayNumberToDate(bestStreakEnd) : null,
+                    bestDailyStreakMovies,
+                    currentDailyStreak,
+                    currentDailyStreakStart: currentDailyStreakStart !== null ? dayNumberToDate(currentDailyStreakStart) : null,
+                    currentDailyStreakEnd: currentDailyStreakEnd !== null ? dayNumberToDate(currentDailyStreakEnd) : null,
+                    weeklyStreakMax,
+                    bestWeeklyStreakStart: bestWeekStart !== null ? dayNumberToDate(bestWeekStart) : null,
+                    bestWeeklyStreakEnd: bestWeekEnd !== null ? dayNumberToDate(bestWeekEnd + 6) : null,
+                    currentWeeklyStreak,
+                    currentWeeklyStreakStart: currentWeeklyStreakStart !== null ? dayNumberToDate(currentWeeklyStreakStart) : null,
+                    currentWeeklyStreakEnd: currentWeeklyStreakEnd !== null ? dayNumberToDate(currentWeeklyStreakEnd + 6) : null,
+                    allGenres: allGenreNames,
+                    missingGenres: allGenreNames.filter((genre) => !genreSet.has(genre)),
+                };
+
+                achievementEvidenceLoading = null;
+                return achievementEvidenceCache;
+            })();
+
+            return achievementEvidenceLoading;
+        }
+
+        function getEmptyAchievementEvidence() {
+            return {
+                ratingsCount: 0,
+                genreList: [],
+                decadeList: [],
+                directorCounts: [],
+                topDirector: null,
+                rewatchMax: 0,
+                topRewatchTitle: null,
+                topRewatchTitles: [],
+                maxDayCount: 0,
+                maxDayDate: null,
+                bestDayMovies: [],
+                rollingWeekMax: 0,
+                rollingWeekEnd: null,
+                rollingWeekMovies: [],
+                rollingWeekCurrent: 0,
+                rollingWeekCurrentEnd: null,
+                dailyStreakMax: 0,
+                bestDailyStreakStart: null,
+                bestDailyStreakEnd: null,
+                bestDailyStreakMovies: [],
+                currentDailyStreak: 0,
+                currentDailyStreakStart: null,
+                currentDailyStreakEnd: null,
+                weeklyStreakMax: 0,
+                bestWeeklyStreakStart: null,
+                bestWeeklyStreakEnd: null,
+                currentWeeklyStreak: 0,
+                currentWeeklyStreakStart: null,
+                currentWeeklyStreakEnd: null,
+                allGenres: [],
+                missingGenres: [],
+            };
+        }
+
+        function toDayNumber(dateInput) {
+            const dateStr = String(dateInput || '').trim();
+            if (!dateStr) return null;
+            const parts = dateStr.split('-');
+            if (parts.length < 3) return null;
+            const year = Number(parts[0]);
+            const month = Number(parts[1]);
+            const day = Number(parts[2]);
+            if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) return null;
+            return Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+        }
+
+        function dayNumberToDate(dayNum) {
+            const date = new Date(dayNum * 86400000);
+            const year = date.getUTCFullYear();
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const day = String(date.getUTCDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getWeekStart(dayNum) {
+            const date = new Date(dayNum * 86400000);
+            const dow = date.getUTCDay();
+            const offset = (dow + 6) % 7;
+            return dayNum - offset;
+        }
+
+        function formatNameList(items, limit) {
+            const list = Array.isArray(items) ? items.map((item) => String(item || '').trim()).filter(Boolean) : [];
+            if (!list.length) return 'None yet';
+            if (!limit || list.length <= limit) return list.join(', ');
+            return `${list.slice(0, limit).join(', ')} (+${list.length - limit} more)`;
+        }
+
+        function buildAchievementEvidenceHtml(achievement, data, earned) {
+            const name = String(achievement?.name || '').trim();
+            const desc = String(achievement?.description || '').trim();
+
+            const rules = {
+                'First Screening': { type: 'ratings', threshold: 10 },
+                'Film Buff': { type: 'ratings', threshold: 50 },
+                'Dedicated Critic': { type: 'ratings', threshold: 250 },
+                'Cinema Archivist': { type: 'ratings', threshold: 750 },
+                'Screen Authority': { type: 'ratings', threshold: 1000 },
+                'Screen Legend': { type: 'ratings', threshold: 1250 },
+                'Master of Cinema': { type: 'ratings', threshold: 1500 },
+
+                'Encore': { type: 'rewatch', threshold: 2 },
+                'Comfort Classic': { type: 'rewatch', threshold: 3 },
+                'Repeat Viewer': { type: 'rewatch', threshold: 5 },
+                'Cult Favorite': { type: 'rewatch', threshold: 7 },
+                'Devoted Fan': { type: 'rewatch', threshold: 10 },
+                'Legendary Obsession': { type: 'rewatch', threshold: 15 },
+                'Timeless Classic': { type: 'rewatch', threshold: 25 },
+
+                'Director Devotee': { type: 'director', threshold: 4 },
+                'Director Loyalist': { type: 'director', threshold: 6 },
+                'Director Disciple': { type: 'director', threshold: 8 },
+                'Director Specialist': { type: 'director', threshold: 10 },
+                'Director Scholar': { type: 'director', threshold: 12 },
+                'Director Archivist': { type: 'director', threshold: 15 },
+                'Director Master': { type: 'director', threshold: 20 },
+
+                'Genre Explorer': { type: 'genre', threshold: 4 },
+                'Genre Hopper': { type: 'genre', threshold: 6 },
+                'Genre Connoisseur': { type: 'genre', threshold: 8 },
+                'Genre Specialist': { type: 'genre', threshold: 10 },
+                'Genre Authority': { type: 'genre', threshold: 12 },
+                'Genre Virtuoso': { type: 'genre', threshold: 14 },
+                'Genre Completionist': { type: 'genre', threshold: 16 },
+
+                'Time Traveler': { type: 'decade', threshold: 3 },
+                'Decade Explorer': { type: 'decade', threshold: 5 },
+                'Era Enthusiast': { type: 'decade', threshold: 7 },
+                'Decade Specialist': { type: 'decade', threshold: 9 },
+                'Century Wanderer': { type: 'decade', threshold: 11 },
+                'Historical Archivist': { type: 'decade', threshold: 13 },
+                'Timeline Master': { type: 'decade', threshold: 14 },
+
+                'Double Feature': { type: 'day', threshold: 2 },
+                'Opening Weekend': { type: 'day', threshold: 5 },
+                'Marathon Critic': { type: 'week', threshold: 10 },
+                'Festival Run': { type: 'day_streak', threshold: 7 },
+                'Premiere Season': { type: 'day_streak', threshold: 30 },
+                'Endurance Champion': { type: 'day_streak', threshold: 365 },
+                'Year-Long Viewer': { type: 'week_streak', threshold: 52 },
+            };
+
+            const rule = rules[name] || null;
+            const detailItems = [];
+            let progressValue = null;
+
+            if (rule?.type === 'ratings') {
+                progressValue = data.ratingsCount;
+                detailItems.push({ label: 'Total rated', value: `${data.ratingsCount} movies` });
+            } else if (rule?.type === 'rewatch') {
+                progressValue = data.rewatchMax;
+                detailItems.push({ label: 'Most rewatches', value: `${data.rewatchMax} times` });
+                detailItems.push({ label: 'Top rewatched', value: formatNameList(data.topRewatchTitles, 5) });
+            } else if (rule?.type === 'director') {
+                progressValue = data.topDirector ? data.topDirector.count : 0;
+                detailItems.push({
+                    label: 'Top director',
+                    value: data.topDirector ? `${data.topDirector.name} (${data.topDirector.count})` : 'None yet',
+                });
+                const topDirectors = data.directorCounts.slice(0, 3).map((row) => `${row.name} (${row.count})`);
+                detailItems.push({ label: 'Top 3 directors', value: formatNameList(topDirectors, 3) });
+            } else if (rule?.type === 'genre') {
+                progressValue = data.genreList.length;
+                detailItems.push({ label: 'Genres seen', value: formatNameList(data.genreList, 10) });
+                detailItems.push({ label: 'Genres missing', value: formatNameList(data.missingGenres, 10) });
+                detailItems.push({ label: 'Totals', value: `${data.genreList.length} seen / ${data.allGenres.length} total` });
+            } else if (rule?.type === 'decade') {
+                progressValue = data.decadeList.length;
+                const decades = data.decadeList.map((d) => `${d}s`);
+                detailItems.push({ label: 'Decades seen', value: formatNameList(decades, 10) });
+                detailItems.push({ label: 'Total decades', value: `${data.decadeList.length}` });
+            } else if (rule?.type === 'day') {
+                progressValue = data.maxDayCount;
+                detailItems.push({
+                    label: 'Best day',
+                    value: data.maxDayDate ? `${data.maxDayDate} (${data.maxDayCount} movies)` : 'None yet',
+                });
+                detailItems.push({ label: 'Movies that day', value: formatNameList(data.bestDayMovies, 6) });
+            } else if (rule?.type === 'week') {
+                progressValue = data.rollingWeekMax;
+                detailItems.push({
+                    label: 'Best 7-day stretch',
+                    value: data.rollingWeekEnd ? `${data.rollingWeekMax} movies (ending ${data.rollingWeekEnd})` : 'None yet',
+                });
+                detailItems.push({
+                    label: 'Current 7-day stretch',
+                    value: data.rollingWeekCurrentEnd ? `${data.rollingWeekCurrent} movies (ending ${data.rollingWeekCurrentEnd})` : 'None yet',
+                });
+                detailItems.push({ label: 'Movies in best stretch', value: formatNameList(data.rollingWeekMovies, 6) });
+            } else if (rule?.type === 'day_streak') {
+                progressValue = data.dailyStreakMax;
+                detailItems.push({
+                    label: 'Best streak',
+                    value: data.bestDailyStreakStart && data.bestDailyStreakEnd
+                        ? `${data.dailyStreakMax} days (${data.bestDailyStreakStart} to ${data.bestDailyStreakEnd})`
+                        : 'None yet',
+                });
+                detailItems.push({
+                    label: 'Current streak',
+                    value: data.currentDailyStreakEnd
+                        ? `${data.currentDailyStreak} days (ending ${data.currentDailyStreakEnd})`
+                        : 'None yet',
+                });
+                detailItems.push({ label: 'Movies in best streak', value: formatNameList(data.bestDailyStreakMovies, 8) });
+            } else if (rule?.type === 'week_streak') {
+                progressValue = data.weeklyStreakMax;
+                detailItems.push({
+                    label: 'Best weekly streak',
+                    value: data.bestWeeklyStreakStart && data.bestWeeklyStreakEnd
+                        ? `${data.weeklyStreakMax} weeks (${data.bestWeeklyStreakStart} to ${data.bestWeeklyStreakEnd})`
+                        : 'None yet',
+                });
+                detailItems.push({
+                    label: 'Current weekly streak',
+                    value: data.currentWeeklyStreakEnd
+                        ? `${data.currentWeeklyStreak} weeks (ending ${data.currentWeeklyStreakEnd})`
+                        : 'None yet',
+                });
+            } else {
+                detailItems.push({ label: 'Details', value: 'This achievement needs a custom rule.' });
+            }
+
+            const statusText = earned ? 'Earned' : 'Locked';
+            const progressText = rule && progressValue !== null
+                ? `${Math.min(rule.threshold, progressValue)}/${rule.threshold}`
+                : '';
+
+            const detailHtml = detailItems.map((item) => `
+                <div class="achievement-detail-item">
+                    <div class="achievement-detail-label">${escapeHtml(item.label)}</div>
+                    <div class="achievement-detail-value">${escapeHtml(item.value)}</div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="text-xs" style="text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; color: rgba(255,255,255,0.65);">${escapeHtml(statusText)}</div>
+                ${desc ? `<div style="margin-top: 0.35rem;">${escapeHtml(desc)}</div>` : ''}
+                <div class="achievement-detail-list">
+                    ${rule ? `
+                        <div class="achievement-detail-item">
+                            <div class="achievement-detail-label">Progress</div>
+                            <div class="achievement-detail-value">${escapeHtml(String(progressValue ?? 0))} (${escapeHtml(progressText)})</div>
+                        </div>
+                    ` : ''}
+                    ${detailHtml}
+                </div>
+            `;
         }
 
         async function refreshAchievementsUI() {
@@ -16195,6 +16983,28 @@
                 }
             });
 
+            document.addEventListener('click', (e) => {
+                const filterBtn = e?.target?.closest ? e.target.closest('#account-achievement-filters-btn') : null;
+                const pop = document.getElementById('account-achievement-filters-pop');
+                if (filterBtn) {
+                    e.preventDefault();
+                    toggleAchievementFiltersOpen();
+                    return;
+                }
+                if (pop && achievementFiltersOpen) {
+                    const insidePop = e?.target?.closest ? e.target.closest('#account-achievement-filters-pop') : null;
+                    if (!insidePop) setAchievementFiltersOpen(false);
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const card = e?.target?.closest ? e.target.closest('.achievement-card[data-achievement-id]') : null;
+                if (!card) return;
+                const achievementId = String(card.dataset.achievementId || '').trim();
+                if (!achievementId) return;
+                openAchievementDetail(achievementId).catch(() => null);
+            });
+
             document.addEventListener('submit', async (e) => {
                 const form = e?.target;
                 if (!form || !(form instanceof HTMLFormElement)) return;
@@ -16229,6 +17039,16 @@
             document.addEventListener('change', (e) => {
                 const el = e?.target;
                 if (!el || !(el instanceof HTMLElement)) return;
+                if (el.id === 'account-achievement-sort' && el instanceof HTMLSelectElement) {
+                    achievementSortMode = String(el.value || 'points_desc').trim();
+                    renderAccountAchievements();
+                    return;
+                }
+                if (el.id === 'account-achievement-filter' && el instanceof HTMLSelectElement) {
+                    achievementTypeFilter = String(el.value || 'all').trim();
+                    renderAccountAchievements();
+                    return;
+                }
                 if (el.id === 'account-theme-select' && el instanceof HTMLSelectElement) {
                     const value = String(el.value || '').trim();
                     applyTheme(value);
