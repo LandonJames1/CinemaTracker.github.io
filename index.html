@@ -42,6 +42,9 @@
             --tier-d-rgb: 96, 165, 250;  /* Blue (#60a5fa) */
             --tier-f-rgb: 161, 55, 198;  /* Purple (#a137c6) */
 
+            --heatmap-h: 156;
+            --heatmap-s: 55%;
+
             --font-family: 'Outfit', sans-serif;
             --container-width: 1280px;
             --header-height: 80px;
@@ -506,8 +509,8 @@
         .dash-chart-fill {
             height: 100%;
             width: 0;
-            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
-            box-shadow: 0 0 18px rgba(94,234,212,0.35);
+            background: linear-gradient(90deg, var(--accent-1, #5eead4), var(--accent-3, var(--accent-2, #2dd4bf)));
+            box-shadow: 0 0 18px color-mix(in srgb, var(--accent-1, #5eead4) 65%, transparent);
             transition: width 0.9s ease;
         }
         .dash-chart-fill.is-on {
@@ -664,16 +667,16 @@
             background: transparent;
             border-color: transparent;
         }
-        .dash-heatmap-l1 { background: #ecfdf3; border-color: rgba(236,253,243,0.8); }
-        .dash-heatmap-l2 { background: #d1fae5; border-color: rgba(209,250,229,0.8); }
-        .dash-heatmap-l3 { background: #a7f3d0; border-color: rgba(167,243,208,0.8); }
-        .dash-heatmap-l4 { background: #6ee7b7; border-color: rgba(110,231,183,0.8); }
-        .dash-heatmap-l5 { background: #34d399; border-color: rgba(52,211,153,0.8); }
-        .dash-heatmap-l6 { background: #10b981; border-color: rgba(16,185,129,0.85); }
-        .dash-heatmap-l7 { background: #059669; border-color: rgba(5,150,105,0.85); }
-        .dash-heatmap-l8 { background: #047857; border-color: rgba(4,120,87,0.85); }
-        .dash-heatmap-l9 { background: #065f46; border-color: rgba(6,95,70,0.85); }
-        .dash-heatmap-l10 { background: #064e3b; border-color: rgba(6,78,59,0.85); }
+        .dash-heatmap-l1 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 92%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 86%, 0.9); }
+        .dash-heatmap-l2 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 88%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%, 0.9); }
+        .dash-heatmap-l3 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 76%, 0.9); }
+        .dash-heatmap-l4 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 72%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 66%, 0.9); }
+        .dash-heatmap-l5 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 62%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 56%, 0.9); }
+        .dash-heatmap-l6 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 52%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 46%, 0.9); }
+        .dash-heatmap-l7 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 44%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 38%, 0.9); }
+        .dash-heatmap-l8 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 36%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%, 0.9); }
+        .dash-heatmap-l9 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%, 0.9); }
+        .dash-heatmap-l10 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 18%, 0.9); }
         .dash-heatmap-legend {
             display: flex;
             align-items: center;
@@ -707,9 +710,56 @@
             background: rgba(255,255,255,0.06);
             border-color: rgba(255,255,255,0.08);
         }
+        .dash-genre-heatmap-wrap {
+            overflow-x: auto;
+        }
+        .dash-genre-heatmap {
+            display: grid;
+            gap: 8px;
+            min-width: 560px;
+        }
+        .dash-genre-heatmap-header,
+        .dash-genre-heatmap-row {
+            display: grid;
+            gap: 8px;
+            align-items: center;
+        }
+        .dash-genre-heatmap-header {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .dash-genre-heatmap-label {
+            font-weight: 800;
+            color: #fff;
+            text-align: left;
+            padding-left: 2px;
+        }
+        .dash-genre-heatmap-cell {
+            min-height: 42px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 4px;
+            line-height: 1.1;
+        }
+        .dash-genre-heatmap-cell.is-empty {
+            background: transparent;
+            border-color: rgba(255,255,255,0.06);
+            color: var(--text-muted);
+        }
+        .dash-genre-heatmap-value {
+            font-variant-numeric: tabular-nums;
+        }
         @media (max-width: 640px) {
             .dash-heatmap { --heatmap-cell: 12px; }
             .dash-heatmap-row { grid-template-columns: 44px 1fr; }
+            .dash-genre-heatmap { min-width: 480px; }
         }
         @keyframes dashSparkDraw {
             to { stroke-dashoffset: 0; }
@@ -4427,6 +4477,8 @@
                                     <div id="dash-chart-tab-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
                                         <button type="button" class="btn dash-pill-btn btn-glass" data-chart="genre" id="dash-chart-tab-genre" style="padding: 0.55rem 0.85rem;">Genre</button>
                                         <button type="button" class="btn dash-pill-btn btn-outline" data-chart="decade" id="dash-chart-tab-decade" style="padding: 0.55rem 0.85rem;">Decade</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="mpa" id="dash-chart-tab-mpa" style="padding: 0.55rem 0.85rem;">MPA</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="heatmap" id="dash-chart-tab-heatmap" style="padding: 0.55rem 0.85rem;">Genre Heatmap</button>
                                         <button type="button" class="btn dash-pill-btn btn-outline" data-chart="activity" id="dash-chart-tab-activity" style="padding: 0.55rem 0.85rem;">Activity</button>
                                     </div>
                                 </div>
@@ -9954,7 +10006,7 @@
 
         function syncDashboardChartsTabUI() {
             const t = String(dashboardChartsTab || '').trim().toLowerCase();
-            const allowed = new Set(['genre', 'decade', 'activity']);
+            const allowed = new Set(['genre', 'decade', 'mpa', 'heatmap', 'activity']);
             dashboardChartsTab = allowed.has(t) ? t : 'genre';
 
             const wrap = document.getElementById('dash-chart-tab-wrap');
@@ -10003,7 +10055,7 @@
 
         function setDashboardChartsTab(chart) {
             const t = String(chart || '').trim().toLowerCase();
-            const allowed = new Set(['genre', 'decade', 'activity']);
+            const allowed = new Set(['genre', 'decade', 'mpa', 'heatmap', 'activity']);
             dashboardChartsTab = allowed.has(t) ? t : 'genre';
             syncDashboardChartsTabUI();
 
@@ -10540,6 +10592,126 @@
             `;
         }
 
+        function dashGetHeatmapHslVars() {
+            const style = getComputedStyle(document.documentElement);
+            const hRaw = String(style.getPropertyValue('--heatmap-h') || '').trim();
+            const sRaw = String(style.getPropertyValue('--heatmap-s') || '').trim();
+            const h = Number(hRaw);
+            const s = Number(sRaw.replace('%', ''));
+            return {
+                h: Number.isFinite(h) ? h : 156,
+                s: Number.isFinite(s) ? s : 55,
+            };
+        }
+
+        function dashGenreHeatmapCellStyle(avg, minAvg, maxAvg) {
+            const val = Number(avg);
+            if (!Number.isFinite(val)) return '';
+            let min = Number.isFinite(minAvg) ? minAvg : 0;
+            let max = Number.isFinite(maxAvg) ? maxAvg : 100;
+            if (max <= min) {
+                min = 0;
+                max = 100;
+            }
+            const norm = Math.max(0, Math.min(1, (val - min) / (max - min)));
+            const lightness = 88 - (norm * 48);
+            const borderLight = Math.max(22, lightness - 10);
+            const theme = dashGetHeatmapHslVars();
+            const h = Number.isFinite(theme.h) ? theme.h : 156;
+            const s = Number.isFinite(theme.s) ? theme.s : 55;
+            const bg = `hsl(${h}, ${s}%, ${lightness}%)`;
+            const border = `hsla(${h}, ${s}%, ${borderLight}%, 0.9)`;
+            const color = lightness < 55 ? '#fff' : '#0b1f17';
+            return `background:${bg}; border-color:${border}; color:${color};`;
+        }
+
+        function dashRenderGenreHeatmap(items) {
+            const rows = Array.isArray(items) ? items : [];
+            if (!rows.length) return `<div class="text-gray">No data yet.</div>`;
+
+            const decadeSet = new Set();
+            const genreStats = new Map();
+            const cellMap = new Map();
+            let minAvg = null;
+            let maxAvg = null;
+
+            rows.forEach((r) => {
+                const genre = String(r?.genre ?? '').trim();
+                const decade = Number(r?.decade);
+                const avg = Number(r?.avg);
+                const n = Number(r?.n ?? 0);
+                if (!genre || !Number.isFinite(decade) || !Number.isFinite(avg)) return;
+
+                decadeSet.add(decade);
+                cellMap.set(`${genre}||${decade}`, { avg, n });
+
+                if (minAvg === null || avg < minAvg) minAvg = avg;
+                if (maxAvg === null || avg > maxAvg) maxAvg = avg;
+
+                const weight = Number.isFinite(n) && n > 0 ? n : 1;
+                const stat = genreStats.get(genre) || { sum: 0, count: 0 };
+                stat.sum += avg * weight;
+                stat.count += weight;
+                genreStats.set(genre, stat);
+            });
+
+            const decades = Array.from(decadeSet).sort((a, b) => a - b);
+            const genres = Array.from(genreStats.entries())
+                .map(([genre, stat]) => ({
+                    genre,
+                    avg: stat.count ? (stat.sum / stat.count) : 0,
+                }))
+                .sort((a, b) => {
+                    if (b.avg !== a.avg) return b.avg - a.avg;
+                    return a.genre.localeCompare(b.genre);
+                })
+                .map((r) => r.genre);
+
+            if (!decades.length || !genres.length) return `<div class="text-gray">No data yet.</div>`;
+
+            const gridTemplate = `minmax(150px, 1.2fr) repeat(${decades.length}, minmax(64px, 1fr))`;
+            const header = `
+                <div class="dash-genre-heatmap-header" style="grid-template-columns: ${gridTemplate};">
+                    <div class="dash-genre-heatmap-label">Genre</div>
+                    ${decades.map((d) => `<div class="dash-genre-heatmap-cell is-empty">${escapeHtml(String(d))}s</div>`).join('')}
+                </div>
+            `;
+
+            const body = genres.map((genre) => {
+                const cells = decades.map((decade) => {
+                    const cell = cellMap.get(`${genre}||${decade}`);
+                    if (!cell) {
+                        return `<div class="dash-genre-heatmap-cell is-empty">—</div>`;
+                    }
+                    const avg = Number(cell.avg);
+                    const n = Number(cell.n ?? 0);
+                    const style = dashGenreHeatmapCellStyle(avg, minAvg, maxAvg);
+                    const title = `${genre} • ${decade}s • ${dashChartFormatPct(avg)} • ${dashChartFormatCount(n)}`;
+                    return `
+                        <div class="dash-genre-heatmap-cell" style="${style}" title="${escapeHtml(title)}">
+                            <span class="dash-genre-heatmap-value">${escapeHtml(dashChartFormatPct(avg))}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="dash-genre-heatmap-row" style="grid-template-columns: ${gridTemplate};">
+                        <div class="dash-genre-heatmap-label">${escapeHtml(genre)}</div>
+                        ${cells}
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="dash-genre-heatmap-wrap">
+                    <div class="dash-genre-heatmap">
+                        ${header}
+                        ${body}
+                    </div>
+                </div>
+            `;
+        }
+
 
         function dashAnimateChartBars(container) {
             if (!container) return;
@@ -10553,7 +10725,9 @@
         function dashChartTitleForTab(tab) {
             const t = String(tab || '').trim().toLowerCase();
             if (t === 'decade') return 'Average Rating by Decade';
-            if (t === 'activity') return 'Watch Activity';
+            if (t === 'mpa') return 'Average Rating by MPA';
+            if (t === 'heatmap') return 'Genre Heatmap';
+            if (t === 'activity') return 'Watch Activity Calendar';
             return 'Average Rating by Genre';
         }
 
@@ -10565,6 +10739,8 @@
             const payload = data || {};
             const genres = Array.isArray(payload?.genres) ? payload.genres : [];
             const decades = Array.isArray(payload?.decades) ? payload.decades : [];
+            const mpa = Array.isArray(payload?.mpa) ? payload.mpa : [];
+            const genreHeatmap = Array.isArray(payload?.genre_heatmap) ? payload.genre_heatmap : [];
             const activity = Array.isArray(payload?.activity) ? payload.activity : [];
             const activityGrain = String(payload?.activity_grain ?? '').trim();
 
@@ -10589,6 +10765,26 @@
             if (tab === 'activity') {
                 elTitle.textContent = 'Watch Activity Calendar';
                 elBody.innerHTML = dashRenderActivityHeatmap(activity, dashboardTimeframe, dashboardChartsActivityMax);
+                return;
+            }
+
+            if (tab === 'mpa') {
+                elTitle.textContent = 'Average Rating by MPA';
+                elBody.innerHTML = `<div class="dash-chart-scroll">${dashRenderChartBars(mpa, {
+                    labelKey: 'mpa',
+                    valueKey: 'avg',
+                    valueFormatter: (val, r) => ({
+                        primary: dashChartFormatPct(val),
+                        secondary: dashChartFormatCount(r?.n),
+                    }),
+                })}</div>`;
+                dashAnimateChartBars(elBody);
+                return;
+            }
+
+            if (tab === 'heatmap') {
+                elTitle.textContent = 'Genre Heatmap';
+                elBody.innerHTML = dashRenderGenreHeatmap(genreHeatmap);
                 return;
             }
 
@@ -15797,6 +15993,58 @@
             return String(first?.value || first?.id || '').trim();
         }
 
+        function parseColorToRgb(input) {
+            const raw = String(input || '').trim();
+            if (!raw) return null;
+            if (raw.startsWith('#')) {
+                let hex = raw.slice(1);
+                if (hex.length === 3) hex = hex.split('').map((c) => c + c).join('');
+                if (hex.length === 6) {
+                    const num = parseInt(hex, 16);
+                    if (!Number.isFinite(num)) return null;
+                    return {
+                        r: (num >> 16) & 255,
+                        g: (num >> 8) & 255,
+                        b: num & 255,
+                    };
+                }
+                return null;
+            }
+            const rgbMatch = raw.match(/rgba?\s*\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)/i);
+            if (rgbMatch) {
+                return {
+                    r: Number(rgbMatch[1]),
+                    g: Number(rgbMatch[2]),
+                    b: Number(rgbMatch[3]),
+                };
+            }
+            return null;
+        }
+
+        function rgbToHsl(rgb) {
+            const r = Math.max(0, Math.min(255, Number(rgb?.r))) / 255;
+            const g = Math.max(0, Math.min(255, Number(rgb?.g))) / 255;
+            const b = Math.max(0, Math.min(255, Number(rgb?.b))) / 255;
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const delta = max - min;
+
+            let h = 0;
+            if (delta > 0) {
+                if (max === r) h = ((g - b) / delta) % 6;
+                else if (max === g) h = (b - r) / delta + 2;
+                else h = (r - g) / delta + 4;
+                h = Math.round(h * 60);
+                if (h < 0) h += 360;
+            }
+            const l = (max + min) / 2;
+            const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+            return {
+                h,
+                s: Math.round(s * 100),
+            };
+        }
+
         function applyThemeColors(colors) {
             const c = colors && typeof colors === 'object' ? colors : null;
             if (!c) {
@@ -15858,6 +16106,14 @@
             if (derived.btn_outline_bg) root.style.setProperty('--btn-outline-bg', derived.btn_outline_bg);
             if (derived.focus_ring) root.style.setProperty('--focus-ring', derived.focus_ring);
             if (derived.bg_overlay) root.style.setProperty('--bg-overlay', derived.bg_overlay);
+
+            const heatmapSeed = base.accent_1 || base.accent_2 || base.brand || '';
+            const rgb = parseColorToRgb(heatmapSeed);
+            if (rgb) {
+                const hsl = rgbToHsl(rgb);
+                if (Number.isFinite(hsl?.h)) root.style.setProperty('--heatmap-h', String(hsl.h));
+                if (Number.isFinite(hsl?.s)) root.style.setProperty('--heatmap-s', `${hsl.s}%`);
+            }
         }
 
         function applyTheme(theme) {
