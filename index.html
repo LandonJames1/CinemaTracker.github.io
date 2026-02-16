@@ -10,11 +10,11 @@
             To change it later: replace the embedded SVG inside the href="data:image/svg+xml,..." below.
             Tip: If you prefer a file instead of inline, swap these for: <link rel="icon" href="/favicon.ico">.
         ========================== FAVICON (BOOKMARK/TAB ICON) START ========================== -->
-        <link rel="icon" type="image/png" sizes="32x32" href="/FaviconBlack.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/FaviconBlack.png">
-        <link rel="icon" type="image/png" href="FaviconBlack.png">
-        <link rel="shortcut icon" href="/FaviconBlack.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/FaviconBlack.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/Black%20Back.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/Black%20Back.png">
+        <link rel="icon" type="image/png" href="Black%20Back.png">
+        <link rel="shortcut icon" href="/Black%20Back.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/Black%20Back.png">
         <!-- ========================== FAVICON (BOOKMARK/TAB ICON) END ========================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -26,21 +26,6 @@
             --border: #27272a;       /* Zinc 800 */
             --text-main: #e4e4e7;    /* Zinc 200 */
             --text-muted: #a1a1aa;   /* Zinc 400 */
-
-            --brand: #14b8a6;        /* Teal 500 */
-            --brand-hover: #0d9488;  /* Teal 600 */
-            --brand-light: rgba(20, 184, 166, 0.1);
-            --brand-shadow: rgba(20, 184, 166, 0.3);
-            --brand-2: rgba(168, 85, 247, 0.35);
-            --brand-3: rgba(59, 130, 246, 0.35);
-            --accent-1: #5eead4;
-            --accent-2: #a78bfa;
-            --accent-3: #60a5fa;
-            --nav-accent: #74c6cd;
-            --nav-title: #fdfbf8;
-            --nav-active-a: rgba(20,184,166,0.28);
-            --nav-active-b: rgba(168,85,247,0.22);
-            --glass-bg: rgba(24, 24, 27, 0.6);
             --glass-border: rgba(255, 255, 255, 0.05);
             --glass-shadow: rgba(0, 0, 0, 0.35);
             --btn-outline-bg: rgba(24, 24, 27, 0.65);
@@ -404,6 +389,333 @@
             background-color: rgba(255,255,255,0.02);
             color: white;
             cursor: not-allowed;
+        }
+
+        /* Favorites grid: keep poster sizes consistent as the list grows */
+        .dash-fav-grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(2, minmax(140px, 1fr));
+        }
+        @media (min-width: 640px) {
+            .dash-fav-grid { grid-template-columns: repeat(3, minmax(140px, 1fr)); }
+        }
+        @media (min-width: 900px) {
+            .dash-fav-grid { grid-template-columns: repeat(4, minmax(140px, 1fr)); }
+        }
+        @media (min-width: 1200px) {
+            .dash-fav-grid { grid-template-columns: repeat(5, minmax(140px, 1fr)); }
+        }
+
+        /* Dashboard charts */
+        .dash-chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .dash-chart-card {
+            padding: 1.25rem;
+            border-radius: 0.95rem;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+        .dash-chart-stage {
+            min-height: 360px;
+        }
+        .dash-chart-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .dash-chart-body {
+            display: grid;
+            gap: 10px;
+        }
+        .dash-chart-scroll {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .dash-chart-row {
+            display: grid;
+            grid-template-columns: minmax(110px, 170px) 1fr 130px;
+            align-items: center;
+            gap: 10px;
+        }
+        .dash-chart-row.has-rank {
+            grid-template-columns: 34px minmax(110px, 170px) 1fr 130px;
+        }
+        .dash-chart-rank {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fff;
+            text-align: right;
+        }
+        .dash-chart-label {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+        .dash-chart-value {
+            font-size: 1.35rem;
+            color: #fff;
+            font-weight: 700;
+        }
+        .dash-chart-value-count {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.72);
+            font-weight: 600;
+        }
+        .dash-chart-bar {
+            height: 22px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            overflow: hidden;
+        }
+        .dash-chart-row.is-clickable {
+            cursor: pointer;
+        }
+        .dash-chart-row.is-clickable:hover {
+            background: rgba(255,255,255,0.04);
+            border-radius: 0.75rem;
+        }
+        .dash-activity-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .dash-activity-metric {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.75rem;
+            padding: 0.75rem 0.9rem;
+        }
+        .dash-activity-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .dash-activity-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 0.25rem;
+        }
+        .dash-chart-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            box-shadow: 0 0 18px rgba(94,234,212,0.35);
+            transition: width 0.9s ease;
+        }
+        .dash-chart-fill.is-on {
+            width: var(--bar-width, 0%);
+        }
+        .dash-chart-sparkline {
+            width: 100%;
+            height: 90px;
+        }
+        .dash-chart-sparkline polyline {
+            stroke-dasharray: 400;
+            stroke-dashoffset: 400;
+            animation: dashSparkDraw 1.1s ease forwards;
+        }
+        .dash-chart-legend {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .dash-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .dash-heatmap {
+            --heatmap-cell: 16px;
+            display: grid;
+            gap: 18px;
+        }
+        .dash-heatmap-row {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+        .dash-heatmap-year {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fff;
+            text-align: right;
+            padding-top: 8px;
+        }
+        .dash-heatmap-year-grid {
+            display: grid;
+            gap: 6px;
+        }
+        .dash-heatmap-months {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: var(--heatmap-cell);
+            gap: 2px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.01em;
+        }
+        .dash-heatmap-month-label {
+            grid-column: var(--month-col);
+            white-space: nowrap;
+        }
+        .dash-heatmap-weeks {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: var(--heatmap-cell);
+            grid-template-rows: repeat(7, var(--heatmap-cell));
+            gap: 2px;
+        }
+        .dash-heatmap-cell {
+            width: var(--heatmap-cell);
+            height: var(--heatmap-cell);
+            border-radius: 2px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: grid;
+            place-items: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.85);
+        }
+        .dash-heatmap-cell.is-month {
+            width: auto;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            min-height: 48px;
+            font-size: 0.85rem;
+        }
+        .dash-heatmap-day {
+            line-height: 1;
+        }
+        .dash-heatmap.is-month-view {
+            --heatmap-month-cell: 80px;
+            --heatmap-month-gap: 2px;
+        }
+        .dash-heatmap-month {
+            display: grid;
+            gap: 12px;
+        }
+        .dash-heatmap-month-title {
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #fff;
+        }
+        .dash-heatmap-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: var(--heatmap-month-gap, 6px);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+        }
+        .dash-heatmap-month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: var(--heatmap-month-gap, 6px);
+            width: 100%;
+        }
+        .dash-heatmap-day-wrap {
+            display: grid;
+            grid-template-rows: 14px auto;
+            gap: 3px;
+            width: 100%;
+        }
+        .dash-heatmap-day-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: left;
+            padding-left: 4px;
+        }
+        .dash-heatmap-month-grid .dash-heatmap-cell {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            min-height: var(--heatmap-month-cell);
+            height: auto;
+            font-size: 0.9rem;
+            font-weight: 800;
+            padding: 0;
+        }
+        .dash-heatmap-month-grid .dash-heatmap-cell.is-empty {
+            background: transparent;
+            border-color: rgba(255,255,255,0.06);
+        }
+        @media (max-width: 900px) {
+            .dash-heatmap.is-month-view { --heatmap-month-cell: 70px; }
+        }
+        @media (max-width: 640px) {
+            .dash-heatmap.is-month-view { --heatmap-month-cell: 60px; }
+        }
+        .dash-heatmap-cell.is-empty {
+            background: transparent;
+            border-color: transparent;
+        }
+        .dash-heatmap-l1 { background: #ecfdf3; border-color: rgba(236,253,243,0.8); }
+        .dash-heatmap-l2 { background: #d1fae5; border-color: rgba(209,250,229,0.8); }
+        .dash-heatmap-l3 { background: #a7f3d0; border-color: rgba(167,243,208,0.8); }
+        .dash-heatmap-l4 { background: #6ee7b7; border-color: rgba(110,231,183,0.8); }
+        .dash-heatmap-l5 { background: #34d399; border-color: rgba(52,211,153,0.8); }
+        .dash-heatmap-l6 { background: #10b981; border-color: rgba(16,185,129,0.85); }
+        .dash-heatmap-l7 { background: #059669; border-color: rgba(5,150,105,0.85); }
+        .dash-heatmap-l8 { background: #047857; border-color: rgba(4,120,87,0.85); }
+        .dash-heatmap-l9 { background: #065f46; border-color: rgba(6,95,70,0.85); }
+        .dash-heatmap-l10 { background: #064e3b; border-color: rgba(6,78,59,0.85); }
+        .dash-heatmap-legend {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .dash-heatmap-legend.top-right {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .dash-heatmap-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dash-heatmap-legend-label {
+            font-variant-numeric: tabular-nums;
+            color: rgba(255,255,255,0.85);
+        }
+        .dash-heatmap-legend-swatch {
+            width: var(--heatmap-cell);
+            height: var(--heatmap-cell);
+            border-radius: 2px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .dash-heatmap-legend-swatch.is-empty {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.08);
+        }
+        @media (max-width: 640px) {
+            .dash-heatmap { --heatmap-cell: 12px; }
+            .dash-heatmap-row { grid-template-columns: 44px 1fr; }
+        }
+        @keyframes dashSparkDraw {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes dashDotPop {
+            to { opacity: 1; transform: scale(1); }
         }
 
         /* Cards */
@@ -1937,8 +2249,11 @@
             gap: 0.85rem;
         }
         .ai-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.10);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 18px 32px var(--glass-shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 0.95rem;
             padding: 1rem;
         }
@@ -2580,6 +2895,12 @@
 
                 <div class="text-white font-bold" style="margin-bottom: 0.55rem;">Filters</div>
                 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+                    <select id="library-modal-filter-timeframe" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="all_time">Watch Date (All Time)</option>
+                        <option value="this_year">Watch Date (This Year)</option>
+                        <option value="this_month">Watch Date (This Month)</option>
+                    </select>
+
                     <select id="library-modal-filter-tier" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
                         <option value="">Tier (All)</option>
                         <option value="S-Tier">S-Tier</option>
@@ -2878,10 +3199,33 @@
             formMode: 'new',
             
             init() {
-                this.navigate('home');
+                window.addEventListener('popstate', (e) => {
+                    const state = e?.state || {};
+                    const page = String(state.page || 'home').trim() || 'home';
+                    const mode = String(state.mode || 'new').trim() || 'new';
+                    this.navigate(page, mode, 'pop');
+                });
+
+                const state = history.state || {};
+                if (state.page) {
+                    this.navigate(String(state.page), String(state.mode || 'new'), 'pop');
+                } else {
+                    history.replaceState({ page: 'home', mode: 'new' }, '', location.pathname);
+                    this.navigate('home', 'new', 'pop');
+                }
             },
 
-            navigate(page, mode = 'new') {
+            goBack() {
+                try {
+                    if (history.length > 1) {
+                        history.back();
+                        return;
+                    }
+                } catch (_) {}
+                this.navigate('home', 'new', 'replace');
+            },
+
+            navigate(page, mode = 'new', navMode = 'push') {
                 // If the user is not logged in, block the Data Dash and prompt them to log in.
                 if ((page === 'dashboard' || page === 'dashboard_kpi') && !cachedIsAuthed) {
                     openDashboardAuthWarning();
@@ -2931,6 +3275,11 @@
 
                 this.currentPage = page;
                 this.formMode = mode;
+                if (navMode !== 'pop') {
+                    const state = { page, mode };
+                    if (navMode === 'replace') history.replaceState(state, '', location.pathname);
+                    else history.pushState(state, '', location.pathname);
+                }
                 document.body.dataset.page = page;
                 const root = document.getElementById('app-root');
                 
@@ -2999,10 +3348,16 @@
                     initDashboardTabs();
                     initDashboardTimeframe();
                     initDashboardFavoritesMetric();
+                    initDashboardFavoritesLimitToggle();
+                    initDashboardChartsTabControls();
+                    initDashboardChartsRowClicks();
                     initDashboardGeneralKpiClicks();
+                    initDashboardRatingsKpiClicks();
                     initDashboardPosterUpdateRatingsClicks();
                     setDashboardTimeframe(dashboardTimeframe || 'all_time');
                     syncDashboardFavoritesMetricUI();
+                    syncDashboardFavoritesLimitUI();
+                    syncDashboardChartsTabUI();
                 } else if (page === 'dashboard_kpi') {
                     root.innerHTML = this.renderDashboardKpiDetail();
                     refreshAuthStateAndUI();
@@ -3762,7 +4117,7 @@
                     <div class="fade-in">
                         <div class="container" style="padding-top: 2rem; padding-bottom: 3rem; position: relative;">
                         <div class="flex items-center gap-4 mb-8">
-                            <button onclick="router.navigate('home')" style="color: var(--text-muted); padding: 0.5rem; border-radius: 50%;">
+                            <button onclick="router.goBack()" style="color: var(--text-muted); padding: 0.5rem; border-radius: 50%;">
                                 ${icons.arrowLeft}
                             </button>
                             <div>
@@ -4048,33 +4403,54 @@
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-ratings" data-tab="ratings" style="padding: 0.6rem 0.9rem;">Ratings</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-tiers" data-tab="tiers" style="padding: 0.6rem 0.9rem;">Tiers</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-favorites" data-tab="favorites" style="padding: 0.6rem 0.9rem;">Favorites</button>
+                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-charts" data-tab="charts" style="padding: 0.6rem 0.9rem;">Charts</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-quotes" data-tab="quotes" style="padding: 0.6rem 0.9rem;">Quote Wall</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Timeframe (shown for all tabs) -->
-                        <div style="display:flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 1.25rem;">
-                            <div class="glass-panel" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem;">
-                                <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Timeframe</div>
-                                <div class="flex" style="gap: 10px; flex-wrap: wrap;">
-                                    <button type="button" class="btn dash-pill-btn btn-glass" id="dash-range-all-time" data-range="all_time" style="padding: 0.55rem 0.85rem;">All Time</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-range-this-year" data-range="this_year" style="padding: 0.55rem 0.85rem;">This Year</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-range-this-month" data-range="this_month" style="padding: 0.55rem 0.85rem;">This Month</button>
+                        <div style="display:flex; gap: 16px; align-items: flex-start; justify-content: space-between; flex-wrap: nowrap; margin-bottom: 1.25rem;">
+                            <div style="display:flex; gap: 12px; align-items: flex-start; flex-wrap: nowrap;">
+                                <div class="glass-panel" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Timeframe</div>
+                                    <div class="flex" style="gap: 10px; flex-wrap: wrap;">
+                                        <button type="button" class="btn dash-pill-btn btn-glass" id="dash-range-all-time" data-range="all_time" style="padding: 0.55rem 0.85rem;">All Time</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" id="dash-range-this-year" data-range="this_year" style="padding: 0.55rem 0.85rem;">This Year</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" id="dash-range-this-month" data-range="this_month" style="padding: 0.55rem 0.85rem;">This Month</button>
+                                    </div>
+                                </div>
+
+                                <!-- Charts-only: Chart selector (shown only when Charts tab active) -->
+                                <div id="dash-chart-tab-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Charts</div>
+                                    <div id="dash-chart-tab-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="genre" id="dash-chart-tab-genre" style="padding: 0.55rem 0.85rem;">Genre</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="decade" id="dash-chart-tab-decade" style="padding: 0.55rem 0.85rem;">Decade</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="activity" id="dash-chart-tab-activity" style="padding: 0.55rem 0.85rem;">Activity</button>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Favorites-only: Rank By controls (shown only when Favorites tab active) -->
-                            <div id="dash-fav-metric-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem;">
-                                <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Rank by</div>
-                                <div id="dash-fav-metric-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
-                                    <button type="button" class="btn dash-pill-btn btn-glass" data-metric="overall" id="dash-fav-metric-overall" style="padding: 0.55rem 0.85rem;">Overall</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" data-metric="sound" id="dash-fav-metric-sound" style="padding: 0.55rem 0.85rem;">Sound</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" data-metric="plot" id="dash-fav-metric-plot" style="padding: 0.55rem 0.85rem;">Plot</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" data-metric="pace" id="dash-fav-metric-pace" style="padding: 0.55rem 0.85rem;">Pace</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" data-metric="acting" id="dash-fav-metric-acting" style="padding: 0.55rem 0.85rem;">Acting</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" data-metric="imagery" id="dash-fav-metric-imagery" style="padding: 0.55rem 0.85rem;">Imagery</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" data-metric="dialogue" id="dash-fav-metric-dialogue" style="padding: 0.55rem 0.85rem;">Dialogue</button>
+                            <div style="display:flex; gap: 12px; align-items: flex-start; flex-wrap: nowrap;">
+                                <!-- Favorites-only: Rank By controls (shown only when Favorites tab active) -->
+                                <div id="dash-fav-metric-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Rank by</div>
+                                    <div id="dash-fav-metric-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-metric="overall" id="dash-fav-metric-overall" style="padding: 0.55rem 0.85rem;">Overall</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-metric="sound" id="dash-fav-metric-sound" style="padding: 0.55rem 0.85rem;">Sound</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-metric="plot" id="dash-fav-metric-plot" style="padding: 0.55rem 0.85rem;">Plot</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-metric="pace" id="dash-fav-metric-pace" style="padding: 0.55rem 0.85rem;">Pace</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-metric="acting" id="dash-fav-metric-acting" style="padding: 0.55rem 0.85rem;">Acting</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-metric="imagery" id="dash-fav-metric-imagery" style="padding: 0.55rem 0.85rem;">Imagery</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-metric="dialogue" id="dash-fav-metric-dialogue" style="padding: 0.55rem 0.85rem;">Dialogue</button>
+                                    </div>
+                                </div>
+
+                                <!-- Favorites-only: List size toggle -->
+                                <div id="dash-fav-limit-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto; min-width: 160px;">
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">List size</div>
+                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-fav-limit-toggle" style="padding: 0.55rem 0.85rem;">Show 10</button>
                                 </div>
                             </div>
                         </div>
@@ -4233,7 +4609,7 @@
                             </div>
 
                             <div class="grid grid-2 gap-6 mb-8">
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
+                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_highest_genre" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4">
                                         <span class="text-gray text-sm">Highest Rated Genre</span>
                                         <span class="text-brand">${icons.trendingUp}</span>
@@ -4242,7 +4618,7 @@
                                     <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-top-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-genre-n">—</span> rated movies</div>
                                     <div class="mt-2 text-xs text-gray">Only includes genres with at least 2 rated movies.</div>
                                 </div>
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
+                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_lowest_genre" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4">
                                         <span class="text-gray text-sm">Lowest Rated Genre</span>
                                         <span class="text-brand">${icons.trendingDown}</span>
@@ -4254,7 +4630,7 @@
                             </div>
 
                             <div class="grid grid-2 gap-6 mb-8">
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
+                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_highest_director" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4">
                                         <span class="text-gray text-sm">Highest Rated Director</span>
                                         <span class="text-brand">${icons.user}</span>
@@ -4264,7 +4640,7 @@
                                     <div class="mt-2 text-xs text-gray">Only includes directors with at least 2 rated movies.</div>
                                 </div>
 
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
+                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_lowest_director" style="padding:1.5rem; border-radius:0.75rem;">
                                     <div class="flex justify-between mb-4">
                                         <span class="text-gray text-sm">Lowest Rated Director</span>
                                         <span class="text-brand">${icons.user}</span>
@@ -4299,7 +4675,7 @@
                         <div id="dash-pane-favorites" class="hidden">
                             <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem; margin-bottom: 1.25rem;">
                                 <div class="flex justify-between mb-4">
-                                    <span style="font-size: 1.05rem; font-weight: 700; color: #34d399;">Top picks</span>
+                                    <span id="dash-fav-top-label" style="font-size: 1.05rem; font-weight: 700; color: #34d399;">Top 5</span>
                                     <span style="color: #34d399;">${icons.trendingUp}</span>
                                 </div>
                                 <div id="dash-fav-top"></div>
@@ -4307,10 +4683,18 @@
 
                             <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                 <div class="flex justify-between mb-4">
-                                    <span style="font-size: 1.05rem; font-weight: 700; color: #fb7185;">Bottom 5</span>
+                                    <span id="dash-fav-bottom-label" style="font-size: 1.05rem; font-weight: 700; color: #fb7185;">Bottom 5</span>
                                     <span style="color: #fb7185;">${icons.trendingDown}</span>
                                 </div>
                                 <div id="dash-fav-bottom"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tab: Charts -->
+                        <div id="dash-pane-charts" class="hidden">
+                            <div class="glass-panel dash-chart-card dash-chart-stage">
+                                <div id="dash-chart-title" class="dash-chart-title">Average Rating by Genre</div>
+                                <div id="dash-chart-body" class="dash-chart-body text-gray">Loading…</div>
                             </div>
                         </div>
 
@@ -4960,7 +5344,7 @@
                         <div class="container" style="padding-top: 2rem; position: relative;">
                             <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
                                 <div class="flex" style="gap: 12px; align-items: center;">
-                                    <button type="button" class="btn btn-outline" id="dash-kpi-back" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem; display:flex; align-items:center; gap: 8px;" onclick="dashboardActiveTab='general'; router.navigate('dashboard');">
+                                    <button type="button" class="btn btn-outline" id="dash-kpi-back" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem; display:flex; align-items:center; gap: 8px;" onclick="dashReturnFromKpi();">
                                         <span style="display:inline-flex; width: 18px; height: 18px;">${icons.arrowLeft}</span>
                                         Back
                                     </button>
@@ -5318,8 +5702,13 @@
         let dashboardActiveTab = 'general';
         let dashboardAuthWarned = false;
         let dashboardFavoritesMetric = 'overall';
+        let dashboardFavoritesLimit = 5;
+        let dashboardChartsTab = 'genre';
+        let dashboardChartsLastData = null;
+        let dashboardChartsActivityMax = null;
 
         let dashboardGeneralLastData = null;
+        let dashboardRatingsLastData = null;
         let dashboardKpiDetailState = null;
 
         const dashPosterCacheByTmdbId = new Map();
@@ -5827,6 +6216,7 @@
                 if (p.k === 'directorContains') return `${p.label} contains “${p.v}”`;
                 if (p.k === 'platform' && p.v === '__NONE__') return `${p.label}: None`;
                 if (p.k === 'tier' && p.v === 'UNRANKED') return `${p.label}: Unranked`;
+                if (p.k === 'timeframe') return `${p.label}: ${p.v}`;
                 return `${p.label}: ${p.v}`;
             };
 
@@ -5879,6 +6269,9 @@
 
             const genre = String(st.genre || '').trim();
             if (genre) addFilterChip('genre', `Genre: ${genre}`);
+
+            const timeframe = String(st.timeframe || '').trim();
+            if (timeframe && timeframe !== 'all_time') addFilterChip('timeframe', `Timeframe: ${timeframe}`);
 
             const platform = String(st.platform || '').trim();
             if (platform) addFilterChip('platform', `Platform: ${platform === '__NONE__' ? 'None' : platform}`);
@@ -7671,20 +8064,8 @@
                 }
 
                 if (action === 'clear_sort_filter_part') {
-                    ensureLibrarySortFilterStateInitialized();
                     const part = String(btn.dataset.part || '').trim();
-                    const def = getDefaultLibrarySortFilterState();
-                    const next = { ...librarySortFilterState };
-
-                    if (part === 'sort') {
-                        next.sortKey = def.sortKey;
-                        next.sortDir = def.sortDir;
-                    } else if (Object.prototype.hasOwnProperty.call(next, part)) {
-                        next[part] = '';
-                    }
-
-                    librarySortFilterState = next;
-                    librarySortFilterDraft = null;
+                    if (!clearLibrarySortFilterPart(part)) return;
                     await loadLibraryPage({ reset: true });
                     return;
                 }
@@ -7723,6 +8104,7 @@
                 directorContains: '',
                 mpa: '',
                 genre: '',
+                timeframe: 'all_time',
             };
         }
 
@@ -7730,6 +8112,29 @@
             if (!librarySortFilterState) {
                 librarySortFilterState = getDefaultLibrarySortFilterState();
             }
+        }
+
+        function clearLibrarySortFilterPart(part) {
+            const key = String(part || '').trim();
+            if (!key) return false;
+            ensureLibrarySortFilterStateInitialized();
+            const def = getDefaultLibrarySortFilterState();
+            const next = { ...librarySortFilterState };
+
+            if (key === 'sort') {
+                next.sortKey = def.sortKey;
+                next.sortDir = def.sortDir;
+            } else if (key === 'timeframe') {
+                next.timeframe = def.timeframe;
+            } else if (Object.prototype.hasOwnProperty.call(next, key)) {
+                next[key] = '';
+            } else {
+                return false;
+            }
+
+            librarySortFilterState = next;
+            librarySortFilterDraft = null;
+            return true;
         }
 
         function getLibrarySortFilterModalEls() {
@@ -7742,6 +8147,7 @@
                 director: document.getElementById('library-modal-filter-director'),
                 mpa: document.getElementById('library-modal-filter-mpa'),
                 genre: document.getElementById('library-modal-filter-genre'),
+                timeframe: document.getElementById('library-modal-filter-timeframe'),
             };
         }
 
@@ -7755,6 +8161,7 @@
             if (els.director) els.director.value = String(state?.directorContains || '');
             if (els.mpa) els.mpa.value = String(state?.mpa || '');
             if (els.genre) els.genre.value = String(state?.genre || '');
+            if (els.timeframe) els.timeframe.value = String(state?.timeframe || 'all_time');
         }
 
         function readLibrarySortFilterModalState() {
@@ -7768,6 +8175,7 @@
                 directorContains: getVal(els.director),
                 mpa: getVal(els.mpa),
                 genre: getVal(els.genre),
+                timeframe: getVal(els.timeframe) || 'all_time',
             };
         }
 
@@ -8046,6 +8454,7 @@
             const decadeEl = document.getElementById('library-modal-filter-decade');
             const mpaEl = document.getElementById('library-modal-filter-mpa');
             const genreEl = document.getElementById('library-modal-filter-genre');
+            const timeframeEl = document.getElementById('library-modal-filter-timeframe');
             if (!decadeEl || !mpaEl || !genreEl) return;
 
             let authedUser = null;
@@ -8060,7 +8469,7 @@
                 // Grab a capped sample to populate dropdowns without loading the full dataset.
                 const { data, error } = await supabaseClient
                     .from(LIBRARY_ITEMS_VIEW)
-                    .select('release_year, mpa_rating, genres, genre, user_id')
+                    .select('release_year, mpa_rating, genres, genre, latest_watch_date, user_id')
                     .eq('user_id', authedUser.id)
                     .range(0, 999);
                 if (error) throw error;
@@ -8069,6 +8478,7 @@
                 const decades = new Set();
                 const mpas = new Set();
                 const genres = new Set();
+                const months = new Set();
                 for (const r of rows) {
                     const y = Number(r?.release_year);
                     if (Number.isFinite(y) && y > 0) decades.add(Math.floor(y / 10) * 10);
@@ -8083,16 +8493,28 @@
                     if (rawGenre) {
                         rawGenre.split(/[,|;]/g).map(s => String(s).trim()).filter(Boolean).forEach(g => genres.add(g));
                     }
+
+                    const watchRaw = String(r?.latest_watch_date || '').trim();
+                    if (watchRaw) {
+                        const d = new Date(watchRaw.includes('T') ? watchRaw : `${watchRaw}T00:00:00`);
+                        if (!Number.isNaN(d.getTime())) {
+                            const month = String(d.getMonth() + 1).padStart(2, '0');
+                            const key = `${d.getFullYear()}-${month}`;
+                            months.add(key);
+                        }
+                    }
                 }
 
                 const sortedDecades = Array.from(decades).filter(Number.isFinite).sort((a, b) => b - a);
                 const sortedMpas = Array.from(mpas).sort((a, b) => a.localeCompare(b));
                 const sortedGenres = Array.from(genres).sort((a, b) => a.localeCompare(b));
+                const sortedMonths = Array.from(months).sort((a, b) => b.localeCompare(a));
 
                 const keep = {
                     decade: String(decadeEl.value || ''),
                     mpa: String(mpaEl.value || ''),
                     genre: String(genreEl.value || ''),
+                    timeframe: String(timeframeEl?.value || ''),
                 };
 
                 decadeEl.innerHTML = `<option value="">Release Decade (All)</option>` +
@@ -8102,9 +8524,32 @@
                 genreEl.innerHTML = `<option value="">Genre (All)</option>` +
                     sortedGenres.map(v => `<option value="${escapeHtml(String(v))}">${escapeHtml(String(v))}</option>`).join('');
 
+                if (timeframeEl) {
+                    const monthOptions = sortedMonths.map((m) => {
+                        const parts = m.split('-');
+                        const year = Number(parts[0]);
+                        const month = Number(parts[1]);
+                        const labelDate = Number.isFinite(year) && Number.isFinite(month)
+                            ? new Date(year, month - 1, 1)
+                            : null;
+                        const label = labelDate
+                            ? labelDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long' })
+                            : m;
+                        return `<option value="${escapeHtml(m)}">${escapeHtml(label)}</option>`;
+                    }).join('');
+
+                    timeframeEl.innerHTML = `
+                        <option value="all_time">Watch Date (All Time)</option>
+                        <option value="this_year">Watch Date (This Year)</option>
+                        <option value="this_month">Watch Date (This Month)</option>
+                        ${monthOptions}
+                    `;
+                }
+
                 decadeEl.value = keep.decade;
                 mpaEl.value = keep.mpa;
                 genreEl.value = keep.genre;
+                if (timeframeEl) timeframeEl.value = keep.timeframe || 'all_time';
                 libraryFacetsLoaded = true;
             } catch (_) {
                 // Keep defaults; do not block modal.
@@ -8425,6 +8870,11 @@
                 .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
                 .eq('user_id', userId);
 
+            const range = libraryComputeTimeframeRange(state?.timeframe);
+            if (range?.start_date && range?.end_date) {
+                q = q.gte('latest_watch_date', range.start_date).lt('latest_watch_date', range.end_date);
+            }
+
             // Filters
             const tierWanted = String(state?.tier || '').trim();
             if (tierWanted) {
@@ -8482,6 +8932,46 @@
             return q;
         }
 
+        function libraryComputeTimeframeRange(timeframe) {
+            const tf = String(timeframe || 'all_time').trim().toLowerCase();
+            if (tf === 'all_time') return null;
+
+            const now = new Date();
+            if (tf === 'this_year') {
+                const start = new Date(now.getFullYear(), 0, 1);
+                const end = new Date(now.getFullYear() + 1, 0, 1);
+                return { start_date: getLocalISODate(start), end_date: getLocalISODate(end) };
+            }
+            if (tf === 'this_month') {
+                const start = new Date(now.getFullYear(), now.getMonth(), 1);
+                const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                return { start_date: getLocalISODate(start), end_date: getLocalISODate(end) };
+            }
+
+            const m = tf.match(/^(\d{4})-(\d{2})$/);
+            if (m) {
+                const year = Number(m[1]);
+                const month = Number(m[2]) - 1;
+                if (Number.isFinite(year) && Number.isFinite(month) && month >= 0 && month <= 11) {
+                    const start = new Date(year, month, 1);
+                    const end = new Date(year, month + 1, 1);
+                    return { start_date: getLocalISODate(start), end_date: getLocalISODate(end) };
+                }
+            }
+            return null;
+        }
+
+        function mapDashboardTimeframeToLibrary(tf) {
+            const t = String(tf || '').trim().toLowerCase();
+            if (t === 'this_year') return 'this_year';
+            if (t === 'this_month') {
+                const now = new Date();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                return `${now.getFullYear()}-${month}`;
+            }
+            return 'all_time';
+        }
+
         async function loadLibraryMore({ replace = false } = {}) {
             const elList = document.getElementById('library-list');
             const wrap = document.getElementById('library-load-more-wrap');
@@ -8522,6 +9012,11 @@
                             .from(LIBRARY_ITEMS_VIEW)
                             .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
                             .eq('user_id', authedUser.id);
+
+                        const range = libraryComputeTimeframeRange(librarySortFilterState?.timeframe);
+                        if (range?.start_date && range?.end_date) {
+                            q = q.gte('latest_watch_date', range.start_date).lt('latest_watch_date', range.end_date);
+                        }
 
                         const state = librarySortFilterState;
                         const tierWanted = String(state?.tier || '').trim();
@@ -9076,6 +9571,17 @@
                 return [rating || '—', suffix].join(' • ');
             }
             if (k === 'most_watched_movie') {
+                const movies = Array.isArray(data?.most_watched_movies) ? data.most_watched_movies : [];
+                if (movies.length) {
+                    const labels = movies.map((m) => {
+                        const title = String(m?.title ?? '').trim();
+                        const year = m?.release_year;
+                        return title
+                            ? `${title}${(year === null || year === undefined || String(year).trim() === '') ? '' : ` (${String(year)})`}`
+                            : '';
+                    }).filter(Boolean);
+                    return labels.join(' • ');
+                }
                 const title = String(data?.most_watched_movie?.title ?? '').trim();
                 const year = data?.most_watched_movie?.release_year;
                 const label = title
@@ -9104,9 +9610,60 @@
                     kpi: key,
                     title: dashTitleForGeneralKpiKey(key),
                     subtitle: dashSubtitleForGeneralKpiKey(key),
+                    sourceTab: 'general',
                 };
                 router.navigate('dashboard_kpi');
             });
+        }
+
+        function dashTitleForRatingsKpiKey(kpiKey) {
+            const k = String(kpiKey || '').trim().toLowerCase();
+            if (k === 'ratings_avg_overall') return 'Average Overall Rating';
+            if (k === 'ratings_avg_imdb_diff') return 'Average Abs Diff Rating';
+            if (k === 'ratings_highest_genre') return 'Highest Rated Genre';
+            if (k === 'ratings_lowest_genre') return 'Lowest Rated Genre';
+            if (k === 'ratings_highest_director') return 'Highest Rated Director';
+            if (k === 'ratings_lowest_director') return 'Lowest Rated Director';
+            return 'Ratings KPI Details';
+        }
+
+        function dashSubtitleForRatingsKpiKey(kpiKey) {
+            const k = String(kpiKey || '').trim().toLowerCase();
+            const data = dashboardRatingsLastData || {};
+            if (k === 'ratings_highest_genre') return String(data?.highest_rated_genre?.name ?? '').trim();
+            if (k === 'ratings_lowest_genre') return String(data?.lowest_rated_genre?.name ?? '').trim();
+            if (k === 'ratings_highest_director') return String(data?.highest_rated_director?.name ?? '').trim();
+            if (k === 'ratings_lowest_director') return String(data?.lowest_rated_director?.name ?? '').trim();
+            if (k === 'ratings_avg_imdb_diff') return 'Rated movies with IMDb scores';
+            if (k === 'ratings_avg_overall') return 'All rated movies';
+            return '';
+        }
+
+        function initDashboardRatingsKpiClicks() {
+            const pane = document.getElementById('dash-pane-ratings');
+            if (!pane) return;
+            if (pane.dataset.boundKpiClicks) return;
+            pane.dataset.boundKpiClicks = 'true';
+
+            pane.addEventListener('click', (e) => {
+                const el = e?.target?.closest ? e.target.closest('[data-ratings-kpi]') : null;
+                const key = String(el?.dataset?.ratingsKpi ?? '').trim();
+                if (!key) return;
+
+                dashboardKpiDetailState = {
+                    kpi: key,
+                    title: dashTitleForRatingsKpiKey(key),
+                    subtitle: dashSubtitleForRatingsKpiKey(key),
+                    sourceTab: 'ratings',
+                };
+                router.navigate('dashboard_kpi');
+            });
+        }
+
+        function dashReturnFromKpi() {
+            const next = String(dashboardKpiDetailState?.sourceTab || 'general').trim().toLowerCase();
+            dashboardActiveTab = next || 'general';
+            router.navigate('dashboard');
         }
 
         function initDashboardPosterUpdateRatingsClicks() {
@@ -9197,15 +9754,18 @@
             elGrid.innerHTML = `<div class="text-gray">Loading…</div>`;
 
             try {
-                let res = await supabaseClient.rpc('get_dashboard_general_kpi_movies', {
+                const isRatingsKpi = String(kpi || '').trim().toLowerCase().startsWith('ratings_');
+                const rpcName = isRatingsKpi ? 'get_dashboard_ratings_kpi_movies' : 'get_dashboard_general_kpi_movies';
+                let res = await supabaseClient.rpc(rpcName, {
                     p_timeframe: dashboardTimeframe,
                     p_kpi: kpi,
                 });
                 if (res?.error) {
                     const msg = String(res.error?.message || res.error);
-                    const missingRpc = /get_dashboard_general_kpi_movies/i.test(msg) && /(does not exist|not found|no function matches|function .* does not exist)/i.test(msg);
+                    const missingRpc = new RegExp(rpcName, 'i').test(msg)
+                        && /(does not exist|not found|no function matches|function .* does not exist)/i.test(msg);
                     if (missingRpc) {
-                        elGrid.innerHTML = `<div class="text-gray">KPI detail RPC missing. Run dashboard_rpc.sql to add get_dashboard_general_kpi_movies.</div>`;
+                        elGrid.innerHTML = `<div class="text-gray">KPI detail RPC missing. Run dashboard_rpc.sql to add ${escapeHtml(rpcName)}.</div>`;
                         return;
                     }
                 }
@@ -9225,6 +9785,8 @@
                         } else if (key === 'most_watched_movie') {
                             elSubtitle.textContent = leader;
                         } else if (key.startsWith('watch_method_')) {
+                            elSubtitle.textContent = leader;
+                        } else if (key.startsWith('ratings_')) {
                             elSubtitle.textContent = leader;
                         }
                     }
@@ -9308,6 +9870,56 @@
             });
         }
 
+        function initDashboardFavoritesLimitToggle() {
+            const btn = document.getElementById('dash-fav-limit-toggle');
+            if (!btn) return;
+            if (btn.dataset.boundClicks) return;
+            btn.dataset.boundClicks = 'true';
+
+            btn.addEventListener('click', () => {
+                const next = Number(dashboardFavoritesLimit) === 10 ? 5 : 10;
+                setDashboardFavoritesLimit(next);
+            });
+        }
+
+        function initDashboardChartsTabControls() {
+            const wrap = document.getElementById('dash-chart-tab-wrap');
+            if (!wrap) return;
+            if (wrap.dataset.boundClicks) return;
+            wrap.dataset.boundClicks = 'true';
+
+            wrap.addEventListener('click', (e) => {
+                const btn = e?.target?.closest ? e.target.closest('button[data-chart]') : null;
+                const chart = btn?.dataset?.chart;
+                if (!chart) return;
+                setDashboardChartsTab(chart);
+            });
+        }
+
+        function initDashboardChartsRowClicks() {
+            if (document.documentElement.dataset.boundChartRowClicks === 'true') return;
+            document.documentElement.dataset.boundChartRowClicks = 'true';
+
+            document.addEventListener('click', (e) => {
+                if (String(dashboardActiveTab || '').trim().toLowerCase() !== 'charts') return;
+                const row = e?.target?.closest ? e.target.closest('[data-chart-filter-type]') : null;
+                if (!row) return;
+
+                const type = String(row.dataset.chartFilterType || '').trim().toLowerCase();
+                const value = String(row.dataset.chartFilterValue || '').trim();
+                if (!type || !value) return;
+
+                const next = { ...getDefaultLibrarySortFilterState() };
+                if (type === 'genre') next.genre = value;
+                if (type === 'decade') next.decade = value;
+
+                next.timeframe = mapDashboardTimeframeToLibrary(dashboardTimeframe);
+                librarySortFilterState = next;
+                librarySortFilterDraft = null;
+                router.navigate('library');
+            });
+        }
+
         function syncDashboardFavoritesMetricUI() {
             const m = String(dashboardFavoritesMetric || '').trim().toLowerCase();
             const allowed = new Set(['overall', 'sound', 'plot', 'pace', 'acting', 'imagery', 'dialogue']);
@@ -9317,6 +9929,38 @@
             if (!wrap) return;
             wrap.querySelectorAll('button[data-metric]').forEach((btn) => {
                 const isOn = String(btn.dataset.metric || '').trim().toLowerCase() === dashboardFavoritesMetric;
+                btn.classList.remove('btn-glass', 'btn-outline');
+                btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
+            });
+        }
+
+        function syncDashboardFavoritesLimitUI() {
+            const limit = Number(dashboardFavoritesLimit) === 10 ? 10 : 5;
+            dashboardFavoritesLimit = limit;
+
+            const btn = document.getElementById('dash-fav-limit-toggle');
+            if (btn) {
+                btn.textContent = limit === 10 ? 'Show 5' : 'Show 10';
+                btn.classList.remove('btn-glass', 'btn-outline');
+                btn.classList.add(limit === 10 ? 'btn-glass' : 'btn-outline');
+                btn.setAttribute('aria-pressed', limit === 10 ? 'true' : 'false');
+            }
+
+            const topLabel = document.getElementById('dash-fav-top-label');
+            if (topLabel) topLabel.textContent = `Top ${limit}`;
+            const bottomLabel = document.getElementById('dash-fav-bottom-label');
+            if (bottomLabel) bottomLabel.textContent = `Bottom ${limit}`;
+        }
+
+        function syncDashboardChartsTabUI() {
+            const t = String(dashboardChartsTab || '').trim().toLowerCase();
+            const allowed = new Set(['genre', 'decade', 'activity']);
+            dashboardChartsTab = allowed.has(t) ? t : 'genre';
+
+            const wrap = document.getElementById('dash-chart-tab-wrap');
+            if (!wrap) return;
+            wrap.querySelectorAll('button[data-chart]').forEach((btn) => {
+                const isOn = String(btn.dataset.chart || '').trim().toLowerCase() === dashboardChartsTab;
                 btn.classList.remove('btn-glass', 'btn-outline');
                 btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
             });
@@ -9344,6 +9988,31 @@
 
             if (dashboardActiveTab === 'favorites') {
                 setDashboardTab('favorites');
+            }
+        }
+
+        function setDashboardFavoritesLimit(limit) {
+            const n = Number(limit);
+            dashboardFavoritesLimit = n === 10 ? 10 : 5;
+            syncDashboardFavoritesLimitUI();
+
+            if (dashboardActiveTab === 'favorites') {
+                setDashboardTab('favorites');
+            }
+        }
+
+        function setDashboardChartsTab(chart) {
+            const t = String(chart || '').trim().toLowerCase();
+            const allowed = new Set(['genre', 'decade', 'activity']);
+            dashboardChartsTab = allowed.has(t) ? t : 'genre';
+            syncDashboardChartsTabUI();
+
+            if (dashboardActiveTab === 'charts') {
+                if (dashboardChartsLastData) {
+                    renderDashboardChartsFromData(dashboardChartsLastData);
+                } else {
+                    loadDashboardCharts();
+                }
             }
         }
 
@@ -9393,14 +10062,18 @@
             const tabRatings = document.getElementById('dash-tab-ratings');
             const tabTiers = document.getElementById('dash-tab-tiers');
             const tabFavorites = document.getElementById('dash-tab-favorites');
+            const tabCharts = document.getElementById('dash-tab-charts');
             const tabQuotes = document.getElementById('dash-tab-quotes');
             const paneGeneral = document.getElementById('dash-pane-general');
             const paneRatings = document.getElementById('dash-pane-ratings');
             const paneTiers = document.getElementById('dash-pane-tiers');
             const paneFavorites = document.getElementById('dash-pane-favorites');
+            const paneCharts = document.getElementById('dash-pane-charts');
             const paneQuotes = document.getElementById('dash-pane-quotes');
             const favMetricPanel = document.getElementById('dash-fav-metric-panel');
-            if (!tabGeneral || !tabRatings || !tabTiers || !tabFavorites || !tabQuotes || !paneGeneral || !paneRatings || !paneTiers || !paneFavorites || !paneQuotes) return;
+            const favLimitPanel = document.getElementById('dash-fav-limit-panel');
+            const chartTabPanel = document.getElementById('dash-chart-tab-panel');
+            if (!tabGeneral || !tabRatings || !tabTiers || !tabFavorites || !tabCharts || !tabQuotes || !paneGeneral || !paneRatings || !paneTiers || !paneFavorites || !paneCharts || !paneQuotes) return;
 
             const activate = (btn, on) => {
                 if (!btn) return;
@@ -9418,18 +10091,32 @@
             activate(tabRatings, t === 'ratings');
             activate(tabTiers, t === 'tiers');
             activate(tabFavorites, t === 'favorites');
+            activate(tabCharts, t === 'charts');
             activate(tabQuotes, t === 'quotes');
 
             show(paneGeneral, t === 'general');
             show(paneRatings, t === 'ratings');
             show(paneTiers, t === 'tiers');
             show(paneFavorites, t === 'favorites');
+            show(paneCharts, t === 'charts');
             show(paneQuotes, t === 'quotes');
 
             // Favorites-only header controls
             if (favMetricPanel) {
                 if (t === 'favorites') favMetricPanel.classList.remove('hidden');
                 else favMetricPanel.classList.add('hidden');
+            }
+            if (favLimitPanel) {
+                if (t === 'favorites') favLimitPanel.classList.remove('hidden');
+                else favLimitPanel.classList.add('hidden');
+            }
+            if (chartTabPanel) {
+                if (t === 'charts') chartTabPanel.classList.remove('hidden');
+                else chartTabPanel.classList.add('hidden');
+            }
+
+            if (t === 'charts') {
+                syncDashboardChartsTabUI();
             }
 
             if (t === 'general') {
@@ -9440,6 +10127,8 @@
                 await loadDashboardTiers();
             } else if (t === 'favorites') {
                 await loadDashboardFavorites();
+            } else if (t === 'charts') {
+                await loadDashboardCharts();
             } else if (t === 'quotes') {
                 await loadDashboardQuoteWall();
             }
@@ -9508,7 +10197,8 @@
             };
 
             const renderRow = async (items) => {
-                const safe = Array.isArray(items) ? items.slice(0, 5) : [];
+                const limit = Number(dashboardFavoritesLimit) === 10 ? 10 : 5;
+                const safe = Array.isArray(items) ? items.slice(0, limit) : [];
                 if (safe.length === 0) {
                     return `<div class="text-gray">No rated movies found for this timeframe.</div>`;
                 }
@@ -9566,7 +10256,7 @@
                 }).join('');
 
                 return `
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px;">
+                    <div class="dash-fav-grid">
                         ${cards}
                     </div>
                 `;
@@ -9576,6 +10266,7 @@
                 let res = await supabaseClient.rpc('get_dashboard_favorites', {
                     p_timeframe: dashboardTimeframe,
                     p_metric: dashboardFavoritesMetric,
+                    p_limit: dashboardFavoritesLimit,
                 });
                 if (res?.error) {
                     const msg = String(res.error?.message || res.error);
@@ -9584,6 +10275,13 @@
                         elTop.innerHTML = `<div class="text-gray">Favorites RPC missing. Run dashboard_rpc.sql to add get_dashboard_favorites.</div>`;
                         elBottom.innerHTML = `<div class="text-gray">Favorites RPC missing. Run dashboard_rpc.sql to add get_dashboard_favorites.</div>`;
                         return;
+                    }
+                    const looksLikeOldSignature = /get_dashboard_favorites/i.test(msg) && /no function matches|function .* does not exist/i.test(msg);
+                    if (looksLikeOldSignature) {
+                        res = await supabaseClient.rpc('get_dashboard_favorites', {
+                            p_timeframe: dashboardTimeframe,
+                            p_metric: dashboardFavoritesMetric,
+                        });
                     }
                 }
                 if (res?.error) throw res.error;
@@ -9599,6 +10297,374 @@
                 emitLog('error', 'Dashboard favorites load failed', err);
                 elTop.innerHTML = `<div class="text-gray">Unable to load favorites right now.</div>`;
                 elBottom.innerHTML = `<div class="text-gray">Unable to load favorites right now.</div>`;
+            }
+        }
+
+        function dashChartFormatPct(n) {
+            const num = Number(n);
+            if (!Number.isFinite(num)) return '—';
+            return `${Math.round(num)}%`;
+        }
+
+        function dashChartFormatCount(n) {
+            const num = Number(n);
+            if (!Number.isFinite(num)) return '0 movies';
+            return `${num} movie${num === 1 ? '' : 's'}`;
+        }
+
+        function dashComputeActivityMax(items) {
+            const rows = Array.isArray(items) ? items : [];
+            let maxCount = 0;
+            rows.forEach((r) => {
+                const count = Number(r?.count ?? 0);
+                if (Number.isFinite(count) && count > maxCount) maxCount = count;
+            });
+            return maxCount;
+        }
+
+        function dashRenderChartBars(items, { labelKey, valueKey, labelTransform, showRank = false, valueFormatter, clickType = '' }) {
+            const rows = Array.isArray(items) ? items : [];
+            if (!rows.length) return `<div class="text-gray">No data yet.</div>`;
+            return rows.map((r, idx) => {
+                const rawLabel = String(r?.[labelKey] ?? '').trim();
+                const label = labelTransform ? labelTransform(rawLabel, r) : rawLabel;
+                const val = Number(r?.[valueKey]);
+                const pct = Number.isFinite(val) ? Math.max(0, Math.min(100, val)) : 0;
+                const valueOut = valueFormatter ? valueFormatter(val, r) : dashChartFormatPct(val);
+                const valueText = (valueOut && typeof valueOut === 'object')
+                    ? {
+                        primary: String(valueOut.primary ?? '').trim(),
+                        secondary: String(valueOut.secondary ?? '').trim(),
+                    }
+                    : String(valueOut ?? '').trim();
+                const rowClass = showRank ? 'dash-chart-row has-rank' : 'dash-chart-row';
+                const clickEnabled = clickType ? 'is-clickable' : '';
+                const clickVal = clickType === 'decade'
+                    ? String(r?.decade ?? '')
+                    : String(label || '').trim();
+                return `
+                    <div class="${rowClass} ${clickEnabled}" data-chart-filter-type="${escapeHtml(clickType)}" data-chart-filter-value="${escapeHtml(clickVal)}">
+                        ${showRank ? `<div class=\"dash-chart-rank\">${idx + 1}</div>` : ''}
+                        <div class="dash-chart-label">${escapeHtml(label || '—')}</div>
+                        <div class="dash-chart-bar"><div class="dash-chart-fill" style="--bar-width:${pct}%;"></div></div>
+                        <div class="dash-chart-value">
+                            ${typeof valueText === 'string'
+                                ? escapeHtml(valueText)
+                                : `${escapeHtml(valueText.primary)} <span class=\"dash-chart-value-count\">${escapeHtml(valueText.secondary)}</span>`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function dashRenderActivityHeatmap(items, timeframe, maxCountOverride) {
+            const rows = Array.isArray(items) ? items : [];
+            if (!rows.length) return `<div class="text-gray">No activity yet.</div>`;
+
+            const countsByDate = new Map();
+            let minDate = null;
+            let maxDate = null;
+            let maxCount = 0;
+
+            rows.forEach((r) => {
+                const raw = String(r?.bucket ?? r?.date ?? '').slice(0, 10);
+                if (!raw) return;
+                const parsed = new Date(`${raw}T00:00:00`);
+                if (Number.isNaN(parsed.getTime())) return;
+                const count = Number(r?.count ?? 0);
+                const safeCount = Number.isFinite(count) ? count : 0;
+                countsByDate.set(raw, safeCount);
+                if (!minDate || parsed < minDate) minDate = parsed;
+                if (!maxDate || parsed > maxDate) maxDate = parsed;
+                if (safeCount > maxCount) maxCount = safeCount;
+            });
+
+            if (!minDate || !maxDate) return `<div class="text-gray">No activity yet.</div>`;
+
+            const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+            const startYear = minDate.getFullYear();
+            const endYear = maxDate.getFullYear();
+            const weekMs = 7 * 24 * 60 * 60 * 1000;
+            const tf = String(timeframe || '').trim().toLowerCase();
+            const effectiveMax = Number.isFinite(maxCountOverride) && maxCountOverride > 0 ? maxCountOverride : maxCount;
+            const maxLevels = 10;
+            const dynamicLevels = Math.max(1, Math.min(maxLevels, Math.floor(effectiveMax)));
+            const mapLevel = (step) => {
+                if (dynamicLevels <= 1) return maxLevels;
+                const spread = 1 + Math.round(((step - 1) * (maxLevels - 1)) / (dynamicLevels - 1));
+                return Math.min(maxLevels, Math.max(1, spread));
+            };
+            const getLevel = (count) => {
+                if (!Number.isFinite(count) || count <= 0 || effectiveMax <= 0) return 0;
+                if (effectiveMax <= maxLevels) {
+                    const step = Math.min(dynamicLevels, count);
+                    return mapLevel(step);
+                }
+                return Math.min(maxLevels, Math.ceil((count / effectiveMax) * maxLevels));
+            };
+            const buildLegendRanges = () => {
+                if (!Number.isFinite(effectiveMax) || effectiveMax <= 0) {
+                    return [];
+                }
+                if (effectiveMax <= maxLevels) {
+                    return Array.from({ length: dynamicLevels }, (_, i) => ({ min: i + 1, max: i + 1 }));
+                }
+                const ranges = [];
+                let prev = 1;
+                for (let i = 1; i <= maxLevels; i += 1) {
+                    const upper = Math.max(prev, Math.ceil((effectiveMax * i) / maxLevels));
+                    ranges.push({ min: prev, max: upper });
+                    prev = upper + 1;
+                }
+                return ranges;
+            };
+            const legendRanges = buildLegendRanges();
+            const yearRows = [];
+
+            if (tf === 'this_month') {
+                const now = new Date();
+                const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                const monthLabel = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+                const weekdayLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+                const cells = [];
+                const leadingBlanks = monthStart.getDay();
+                for (let i = 0; i < leadingBlanks; i += 1) {
+                    cells.push(
+                        `<div class="dash-heatmap-day-wrap">
+                            <div class="dash-heatmap-day-label"></div>
+                            <div class="dash-heatmap-cell is-month is-empty"></div>
+                        </div>`
+                    );
+                }
+                const cursor = new Date(monthStart);
+                while (cursor < monthEnd) {
+                    const dateKey = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}-${String(cursor.getDate()).padStart(2, '0')}`;
+                    const count = countsByDate.get(dateKey) || 0;
+                    const level = getLevel(count);
+                    const levelClass = level > 0 ? `dash-heatmap-l${level}` : '';
+                    const dayNum = cursor.getDate();
+                    const title = `${dateKey} • ${count} movie${count === 1 ? '' : 's'}`;
+                    cells.push(
+                        `<div class="dash-heatmap-day-wrap">
+                            <div class="dash-heatmap-day-label">${dayNum}</div>
+                            <div class="dash-heatmap-cell is-month ${levelClass}" title="${escapeHtml(title)}"></div>
+                        </div>`
+                    );
+                    cursor.setDate(cursor.getDate() + 1);
+                }
+
+                yearRows.push(`
+                    <div class="dash-heatmap-month">
+                        <div class="dash-heatmap-month-title">${escapeHtml(monthLabel)}</div>
+                        <div class="dash-heatmap-weekdays">
+                            ${weekdayLabels.map((d) => `<div>${escapeHtml(d)}</div>`).join('')}
+                        </div>
+                        <div class="dash-heatmap-month-grid">
+                            ${cells.join('')}
+                        </div>
+                    </div>
+                `);
+            } else {
+                const years = [];
+                for (let year = startYear; year <= endYear; year += 1) years.push(year);
+                if (tf === 'all_time') years.reverse();
+
+                years.forEach((year) => {
+                    const yearStart = new Date(year, 0, 1);
+                    const yearEnd = new Date(year + 1, 0, 1);
+
+                    const gridStart = new Date(yearStart);
+                    gridStart.setDate(gridStart.getDate() - gridStart.getDay());
+                    const gridEnd = new Date(yearEnd);
+                    gridEnd.setDate(gridEnd.getDate() + (6 - gridEnd.getDay()));
+
+                    const monthLabels = [];
+                    for (let m = 0; m < 12; m += 1) {
+                        const monthStart = new Date(year, m, 1);
+                        if (monthStart < yearStart || monthStart >= yearEnd) continue;
+                        const weekIndex = Math.floor((monthStart - gridStart) / weekMs) + 1;
+                        monthLabels.push(
+                            `<div class="dash-heatmap-month-label" style="--month-col:${weekIndex};">${monthNames[m]}</div>`
+                        );
+                    }
+
+                    const cells = [];
+                    const cursor = new Date(gridStart);
+                    while (cursor <= gridEnd) {
+                        const inYear = cursor >= yearStart && cursor < yearEnd;
+                        const dateKey = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}-${String(cursor.getDate()).padStart(2, '0')}`;
+                        const count = inYear ? (countsByDate.get(dateKey) || 0) : 0;
+                        const level = getLevel(count);
+                        const levelClass = level > 0 ? `dash-heatmap-l${level}` : '';
+                        const emptyClass = inYear ? '' : 'is-empty';
+                        const title = inYear ? `${dateKey} • ${count} movie${count === 1 ? '' : 's'}` : '';
+                        cells.push(
+                            `<div class="dash-heatmap-cell ${levelClass} ${emptyClass}" title="${escapeHtml(title)}"></div>`
+                        );
+                        cursor.setDate(cursor.getDate() + 1);
+                    }
+
+                    yearRows.push(`
+                        <div class="dash-heatmap-row">
+                            <div class="dash-heatmap-year">${escapeHtml(String(year))}</div>
+                            <div class="dash-heatmap-year-grid">
+                                <div class="dash-heatmap-months">${monthLabels.join('')}</div>
+                                <div class="dash-heatmap-weeks">${cells.join('')}</div>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
+            const legendItems = legendRanges.map((range, idx) => {
+                const label = range.min === range.max ? `${range.min}` : `${range.min}-${range.max}`;
+                const level = effectiveMax <= maxLevels ? mapLevel(idx + 1) : Math.min(idx + 1, maxLevels);
+                return `<span class="dash-heatmap-legend-item"><span class="dash-heatmap-legend-swatch dash-heatmap-l${level}"></span><span class="dash-heatmap-legend-label">${label}</span></span>`;
+            }).join('');
+
+            const legend = `
+                <div class="dash-heatmap-legend top-right">
+                    <span>Less</span>
+                    <span class="dash-heatmap-legend-item"><span class="dash-heatmap-legend-swatch is-empty"></span><span class="dash-heatmap-legend-label">0</span></span>
+                    ${legendItems}
+                    <span>More</span>
+                </div>
+            `;
+
+            return `
+                <div class="dash-heatmap ${tf === 'this_month' ? 'is-month-view' : ''}">
+                    ${legend}
+                    ${yearRows.join('')}
+                </div>
+            `;
+        }
+
+
+        function dashAnimateChartBars(container) {
+            if (!container) return;
+            requestAnimationFrame(() => {
+                container.querySelectorAll('.dash-chart-fill').forEach((el) => {
+                    el.classList.add('is-on');
+                });
+            });
+        }
+
+        function dashChartTitleForTab(tab) {
+            const t = String(tab || '').trim().toLowerCase();
+            if (t === 'decade') return 'Average Rating by Decade';
+            if (t === 'activity') return 'Watch Activity';
+            return 'Average Rating by Genre';
+        }
+
+        function renderDashboardChartsFromData(data) {
+            const elTitle = document.getElementById('dash-chart-title');
+            const elBody = document.getElementById('dash-chart-body');
+            if (!elTitle || !elBody) return;
+
+            const payload = data || {};
+            const genres = Array.isArray(payload?.genres) ? payload.genres : [];
+            const decades = Array.isArray(payload?.decades) ? payload.decades : [];
+            const activity = Array.isArray(payload?.activity) ? payload.activity : [];
+            const activityGrain = String(payload?.activity_grain ?? '').trim();
+
+            const tab = String(dashboardChartsTab || '').trim().toLowerCase();
+
+            if (tab === 'decade') {
+                elTitle.textContent = 'Average Rating by Decade';
+                elBody.innerHTML = `<div class="dash-chart-scroll">${dashRenderChartBars(decades, {
+                    labelKey: 'decade',
+                    valueKey: 'avg',
+                    labelTransform: (label) => label ? `${label}s` : '—',
+                    valueFormatter: (val, r) => ({
+                        primary: dashChartFormatPct(val),
+                        secondary: dashChartFormatCount(r?.n),
+                    }),
+                    clickType: 'decade',
+                })}</div>`;
+                dashAnimateChartBars(elBody);
+                return;
+            }
+
+            if (tab === 'activity') {
+                elTitle.textContent = 'Watch Activity Calendar';
+                elBody.innerHTML = dashRenderActivityHeatmap(activity, dashboardTimeframe, dashboardChartsActivityMax);
+                return;
+            }
+
+            elTitle.textContent = 'Average Rating by Genre';
+            elBody.innerHTML = `<div class="dash-chart-scroll">${dashRenderChartBars(genres, {
+                labelKey: 'genre',
+                valueKey: 'avg',
+                showRank: true,
+                valueFormatter: (val, r) => ({
+                    primary: dashChartFormatPct(val),
+                    secondary: dashChartFormatCount(r?.n),
+                }),
+                clickType: 'genre',
+            })}</div>`;
+            dashAnimateChartBars(elBody);
+        }
+
+        async function loadDashboardCharts() {
+            const elTitle = document.getElementById('dash-chart-title');
+            const elBody = document.getElementById('dash-chart-body');
+            if (!elTitle || !elBody) return;
+
+            elTitle.textContent = dashChartTitleForTab(dashboardChartsTab);
+
+            let authedUser = null;
+            try {
+                const { data } = await supabaseClient?.auth?.getUser?.();
+                authedUser = data?.user || null;
+            } catch (_) {
+                authedUser = null;
+            }
+
+            if (!supabaseClient || !authedUser?.id) {
+                if (!dashboardAuthWarned) {
+                    dashboardAuthWarned = true;
+                    showToast('Log in to view your dashboard stats.', { level: 'warn' });
+                }
+                elBody.innerHTML = `<div class="text-gray">Log in to view charts.</div>`;
+                return;
+            }
+
+            elBody.innerHTML = `<div class="text-gray">Loading…</div>`;
+
+            try {
+                let res = await supabaseClient.rpc('get_dashboard_charts', {
+                    p_timeframe: dashboardTimeframe,
+                });
+                if (res?.error) {
+                    const msg = String(res.error?.message || res.error);
+                    const missingRpc = /get_dashboard_charts/i.test(msg) && /(does not exist|not found|no function matches|function .* does not exist)/i.test(msg);
+                    if (missingRpc) {
+                        const text = 'Charts RPC missing. Run dashboard_rpc.sql to add get_dashboard_charts.';
+                        elBody.innerHTML = `<div class="text-gray">${text}</div>`;
+                        return;
+                    }
+                }
+                if (res?.error) throw res.error;
+
+                const data = res?.data || {};
+                dashboardChartsLastData = data;
+                if (dashboardTimeframe === 'all_time') {
+                    dashboardChartsActivityMax = dashComputeActivityMax(data?.activity);
+                }
+                if (!Number.isFinite(dashboardChartsActivityMax) || dashboardChartsActivityMax <= 0) {
+                    try {
+                        const allRes = await supabaseClient.rpc('get_dashboard_charts', { p_timeframe: 'all_time' });
+                        if (!allRes?.error) {
+                            dashboardChartsActivityMax = dashComputeActivityMax(allRes?.data?.activity);
+                        }
+                    } catch (_) {}
+                }
+                renderDashboardChartsFromData(data);
+            } catch (err) {
+                showToast(`Dashboard (Charts) failed: ${String(err?.message || err)}`, { level: 'warn' });
+                emitLog('error', 'Dashboard charts load failed', err);
+                elBody.innerHTML = `<div class="text-gray">Unable to load charts right now.</div>`;
             }
         }
 
@@ -9814,6 +10880,15 @@
                 const ratedTotal = Number(data?.rated_total ?? 0);
                 const tierDist = Array.isArray(data?.tier_distribution) ? data.tier_distribution : [];
                 const tierMovies = Array.isArray(data?.tier_movies) ? data.tier_movies : [];
+                const ensuredTierPosters = await Promise.all(tierMovies.map((r) => dashEnsurePosterPath(r)));
+                const tierPosterById = new Map();
+                tierMovies.forEach((r, idx) => {
+                    const id = String(r?.movie_id ?? '').trim();
+                    if (!id) return;
+                    const fromEnsure = ensuredTierPosters[idx] || '';
+                    const fromRow = String(r?.poster_path ?? '').trim();
+                    tierPosterById.set(id, fromEnsure || fromRow || '');
+                });
 
                 const tierOrder = ['S', 'A', 'B', 'C', 'D', 'F'];
                 // Tier colors (requested palette)
@@ -9925,18 +11000,42 @@
                     byTier.get(tier).push(row);
                 }
 
-                const formatMovieRow = (r) => {
-                    const title = String(r?.title ?? '').trim();
+                const renderTierPosterCard = (r) => {
+                    const title = String(r?.title ?? '').trim() || 'Untitled';
                     const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
-                    const rating = (r?.overall_rating === null || r?.overall_rating === undefined) ? '' : String(r.overall_rating);
-                    const metaParts = [year, rating ? `Overall ${rating}` : ''].filter(Boolean);
+                    const overall = dashFormatScore(r?.overall_rating);
+
+                    const dashMovieId = String(r?.movie_id ?? '').trim();
+                    const dashTmdbId = (r?.tmdb_id === null || r?.tmdb_id === undefined) ? '' : String(r.tmdb_id);
+
+                    const ensured = tierPosterById.get(dashMovieId) || '';
+                    const poster_path = dashNormalizePosterPath(ensured || String(r?.poster_path ?? '').trim());
+                    const posterUrl = dashBuildPosterUrl(poster_path, 'w342');
+
+                    const metaParts = [
+                        year ? escapeHtml(year) : '',
+                        overall ? `${dashRenderHelpScore(overall)} Overall` : '',
+                    ].filter(Boolean);
 
                     return `
-                        <div class="flex justify-between dash-movie-row">
-                            <div>
-                                <div class="text-white" style="font-weight: 600;">${escapeHtml(title || 'Untitled')}</div>
-                                <div class="text-xs text-gray tabular-nums">${escapeHtml(metaParts.join(' • ') || '')}</div>
+                        <div style="display:flex; flex-direction: column; gap: 8px;">
+                            <div
+                                data-dash-movie-id="${escapeHtml(dashMovieId)}"
+                                data-dash-tmdb-id="${escapeHtml(dashTmdbId)}"
+                                data-dash-movie-title="${escapeHtml(title)}"
+                                data-dash-poster-path="${escapeHtml(poster_path)}"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Update Ratings for ${escapeHtml(title)}"
+                                style="width: 100%; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06); cursor: pointer;"
+                            >
+                                ${posterUrl
+                                    ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
+                                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`
+                                }
                             </div>
+                            <div class="text-sm text-white" style="font-weight: 700; line-height: 1.2;">${escapeHtml(title)}</div>
+                            <div class="text-xs text-gray tabular-nums">${metaParts.join(' • ')}</div>
                         </div>
                     `;
                 };
@@ -9969,8 +11068,10 @@
                                         <span class="text-xs text-gray" style="white-space: nowrap;">Average Overall Rating: ${escapeHtml(avgOverallText)}</span>
                                     </div>
                                 </summary>
-                                <div style="padding: 0.85rem 0.5rem 0.25rem 0.5rem; display: grid; gap: 8px;">
-                                    ${items.map(formatMovieRow).join('')}
+                                <div style="padding: 0.85rem 0.5rem 0.25rem 0.5rem;">
+                                    <div class="dash-fav-grid">
+                                        ${items.map(renderTierPosterCard).join('')}
+                                    </div>
                                 </div>
                             </details>
                         `;
@@ -10307,13 +11408,27 @@
                 elTopDecadeUniqueCount.textContent = pluralize(topDecadeUnique?.movies, 'unique movie', 'unique movies');
 
                 const topMovie = data?.most_watched_movie || {};
-                const topMovieTitle = String(topMovie?.title ?? '').trim();
-                const topMovieYear = topMovie?.release_year;
-                const topMovieLabel = topMovieTitle
-                    ? `${topMovieTitle}${(topMovieYear === null || topMovieYear === undefined || String(topMovieYear).trim() === '') ? '' : ` (${String(topMovieYear)})`}`
-                    : '';
-                elTopMovie.textContent = topMovieLabel || '—';
-                elTopMovieCount.textContent = pluralize(topMovie?.watches, 'watch event', 'watch events');
+                const topMovies = Array.isArray(data?.most_watched_movies) ? data.most_watched_movies : [];
+                if (topMovies.length) {
+                    const labels = topMovies.map((m) => {
+                        const title = String(m?.title ?? '').trim();
+                        const year = m?.release_year;
+                        return title
+                            ? `${title}${(year === null || year === undefined || String(year).trim() === '') ? '' : ` (${String(year)})`}`
+                            : '';
+                    }).filter(Boolean);
+                    elTopMovie.textContent = labels.join(' • ') || '—';
+                    const watchCount = Number(topMovies[0]?.watches ?? topMovie?.watches ?? 0);
+                    elTopMovieCount.textContent = pluralize(watchCount, 'watch event', 'watch events');
+                } else {
+                    const topMovieTitle = String(topMovie?.title ?? '').trim();
+                    const topMovieYear = topMovie?.release_year;
+                    const topMovieLabel = topMovieTitle
+                        ? `${topMovieTitle}${(topMovieYear === null || topMovieYear === undefined || String(topMovieYear).trim() === '') ? '' : ` (${String(topMovieYear)})`}`
+                        : '';
+                    elTopMovie.textContent = topMovieLabel || '—';
+                    elTopMovieCount.textContent = pluralize(topMovie?.watches, 'watch event', 'watch events');
+                }
 
                 const topMpa = data?.most_watched_mpa || {};
                 const topMpaUnique = data?.most_watched_mpa_unique || {};
