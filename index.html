@@ -441,157 +441,49 @@
             overflow-y: auto;
             padding-right: 6px;
         }
-        .dash-chart-row {
-            display: grid;
-            grid-template-columns: minmax(110px, 170px) 1fr 130px;
-            align-items: center;
-            gap: 10px;
-        }
-        .dash-chart-row.has-rank {
-            grid-template-columns: 34px minmax(110px, 170px) 1fr 130px;
-        }
-        .dash-chart-rank {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #fff;
-            text-align: right;
-        }
-        .dash-chart-label {
-            font-size: 1.05rem;
-            color: var(--text-muted);
-        }
-        .dash-chart-value {
-            font-size: 1.35rem;
-            color: #fff;
-            font-weight: 700;
-        }
-        .dash-chart-value-count {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.72);
-            font-weight: 600;
-        }
-        .dash-chart-bar {
-            height: 22px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            overflow: hidden;
-        }
-        .dash-chart-row.is-clickable {
-            cursor: pointer;
-        }
-        .dash-chart-row.is-clickable:hover {
-            background: rgba(255,255,255,0.04);
-            border-radius: 0.75rem;
-        }
-        .dash-activity-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-        .dash-activity-metric {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 0.75rem;
-            padding: 0.75rem 0.9rem;
-        }
-        .dash-activity-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-        .dash-activity-value {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #fff;
-            margin-top: 0.25rem;
-        }
-        .dash-chart-fill {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, var(--accent-1, #5eead4), var(--accent-3, var(--accent-2, #2dd4bf)));
-            box-shadow: 0 0 18px color-mix(in srgb, var(--accent-1, #5eead4) 65%, transparent);
-            transition: width 0.9s ease;
-        }
-        .dash-chart-fill.is-on {
-            width: var(--bar-width, 0%);
-        }
-        .dash-chart-sparkline {
-            width: 100%;
-            height: 90px;
-        }
-        .dash-chart-sparkline polyline {
-            stroke-dasharray: 400;
-            stroke-dashoffset: 400;
-            animation: dashSparkDraw 1.1s ease forwards;
-        }
-        .dash-chart-legend {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-        .dash-legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 999px;
-            display: inline-block;
-            margin-right: 6px;
-        }
         .dash-heatmap {
-            --heatmap-cell: 16px;
+            --heatmap-cell: 14px;
             display: grid;
-            gap: 18px;
+            gap: 12px;
         }
         .dash-heatmap-row {
             display: grid;
-            grid-template-columns: 56px 1fr;
-            gap: 14px;
+            grid-template-columns: 60px 1fr;
+            gap: 12px;
             align-items: start;
         }
         .dash-heatmap-year {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #fff;
+            font-size: 0.8rem;
+            color: var(--text-muted);
             text-align: right;
-            padding-top: 8px;
+            padding-top: 2px;
         }
         .dash-heatmap-year-grid {
             display: grid;
-            gap: 6px;
+            gap: 8px;
         }
         .dash-heatmap-months {
             display: grid;
-            grid-auto-flow: column;
-            grid-auto-columns: var(--heatmap-cell);
-            gap: 2px;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 0.01em;
+            grid-template-columns: repeat(53, var(--heatmap-cell));
+            gap: 3px;
         }
         .dash-heatmap-month-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
             grid-column: var(--month-col);
-            white-space: nowrap;
         }
         .dash-heatmap-weeks {
             display: grid;
-            grid-auto-flow: column;
-            grid-auto-columns: var(--heatmap-cell);
             grid-template-rows: repeat(7, var(--heatmap-cell));
-            gap: 2px;
+            grid-auto-flow: column;
+            gap: 3px;
         }
         .dash-heatmap-cell {
             width: var(--heatmap-cell);
             height: var(--heatmap-cell);
-            border-radius: 2px;
-            background: rgba(255,255,255,0.06);
+            border-radius: 3px;
             border: 1px solid rgba(255,255,255,0.08);
-            display: grid;
-            place-items: center;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.06);
         }
         .dash-heatmap-cell.is-month {
             width: auto;
@@ -715,51 +607,71 @@
         }
         .dash-genre-heatmap {
             display: grid;
-            gap: 8px;
-            min-width: 560px;
+            gap: 6px;
+            min-width: 420px;
         }
         .dash-genre-heatmap-header,
         .dash-genre-heatmap-row {
             display: grid;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
         .dash-genre-heatmap-header {
-            font-size: 0.78rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
         }
         .dash-genre-heatmap-label {
-            font-weight: 800;
-            color: #fff;
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
             text-align: left;
             padding-left: 2px;
         }
+        .dash-genre-heatmap-decade {
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+        }
         .dash-genre-heatmap-cell {
-            min-height: 42px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.06);
+            min-height: 30px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.78rem;
+            font-size: 0.68rem;
             font-weight: 800;
             text-align: center;
             padding: 4px;
             line-height: 1.1;
+            color: #111;
         }
         .dash-genre-heatmap-cell.is-empty {
             background: transparent;
             border-color: rgba(255,255,255,0.06);
-            color: var(--text-muted);
         }
+        .dash-genre-heatmap-cell.dash-heatmap-l1 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 92%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 86%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l2 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 88%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l3 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 76%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l4 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 72%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 66%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l5 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 62%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 56%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l6 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 52%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 46%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l7 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 44%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 38%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l8 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 36%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l9 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%, 0.9); }
+        .dash-genre-heatmap-cell.dash-heatmap-l10 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 18%, 0.9); }
         .dash-genre-heatmap-value {
             font-variant-numeric: tabular-nums;
+            color: #111;
+            background: rgba(255,255,255,0.78);
+            padding: 2px 4px;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
         }
         @media (max-width: 640px) {
             .dash-heatmap { --heatmap-cell: 12px; }
             .dash-heatmap-row { grid-template-columns: 44px 1fr; }
-            .dash-genre-heatmap { min-width: 480px; }
+            .dash-genre-heatmap { min-width: 360px; }
         }
         @keyframes dashSparkDraw {
             to { stroke-dashoffset: 0; }
@@ -1924,8 +1836,1024 @@
         .dash-mini-kpi {
             padding: 0.9rem 0.95rem;
             border-radius: 0.75rem;
+            background: var(--glass-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .dash-kpi-strip-large {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+        .dash-kpi-tile {
+            padding: 1rem 1.1rem;
+            border-radius: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: var(--glass-bg);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .dash-kpi-tile .dash-kpi-title {
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .dash-kpi-sub {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.68);
+        }
+        .dash-kpi-grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .dash-kpi-grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        .dash-kpi-span-2 {
+            grid-column: span 2;
+        }
+        .dash-kpi-chart {
+            padding: 1.25rem;
+            border-radius: 0.95rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: var(--glass-bg);
+            display: grid;
+            gap: 12px;
+        }
+        .dash-gen-top {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 210px;
+            gap: 16px;
+            margin: 0 auto 16px;
+            max-width: 1120px;
+            width: 100%;
+            align-items: stretch;
+        }
+        .dash-gen-bottom {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 16px;
+            margin: 0 auto 16px;
+            max-width: 1120px;
+            width: 100%;
+        }
+        @media (max-width: 1160px) {
+            .dash-gen-bottom {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+        }
+        .dash-dashboard-row {
+            max-width: 1120px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        .dash-pane-wrap {
+            max-width: 1120px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        .dash-pie-row {
+            display: grid;
+            grid-template-columns: 240px minmax(0, 1fr);
+            gap: 14px;
+            align-items: center;
+        }
+        .dash-kpi-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .dash-general-pie-toggle {
+            display: inline-flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .dash-genre-summary {
+            display: flex;
+            gap: 18px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .dash-genre-stat {
+            display: grid;
+            gap: 2px;
+        }
+        .dash-genre-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+            gap: 12px;
+            align-items: end;
+            height: 220px;
+            padding: 6px 2px 0;
+        }
+        .dash-genre-full {
+            width: 100%;
+        }
+        .dash-genre-full .dash-chart-scroll {
+            max-height: none;
+        }
+        .dash-genre-full .dash-genre-bars {
+            height: 220px;
+        }
+        .dash-genre-bar {
+            display: grid;
+            gap: 6px;
+            align-items: end;
+            justify-items: center;
+        }
+        .dash-genre-bar-track {
+            width: 100%;
+            height: 160px;
+            border-radius: 0.8rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+        .dash-genre-bar-fill {
+            width: 100%;
+            height: 0%;
+            min-height: 4px;
+            transition: height 0.7s ease;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 6px;
+            position: relative;
+            text-align: center;
+            color: rgba(255,255,255,0.92);
+        }
+        .dash-genre-bar-metrics {
+            font-size: 0.7rem;
+            line-height: 1.15;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.35);
+            color: #111;
+            display: grid;
+            gap: 2px;
+        }
+        .dash-genre-bar-count {
+            font-size: 0.65rem;
+            opacity: 0.85;
+        }
+        .dash-genre-bar-label {
+            font-size: 0.7rem;
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .dash-genre-bar-value {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.85);
+        }
+        .dash-genre-bars-toggle {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+        .dash-pie {
+            width: 240px;
+            height: 240px;
+            border-radius: 999px;
+            position: relative;
+            background: conic-gradient(rgba(255,255,255,0.08) 0deg 360deg);
+            display: grid;
+            place-items: center;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        }
+        .dash-pie::after {
+            content: '';
+            width: 62%;
+            height: 62%;
+            border-radius: 999px;
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: inset 0 0 24px rgba(0,0,0,0.35);
+        }
+        .dash-pie-center {
+            position: absolute;
+            z-index: 1;
+            display: grid;
+            gap: 4px;
+            text-align: center;
+        }
+        .dash-pie-value {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .dash-pie-value-sm {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .dash-pie-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .dash-pie-legend {
+            display: grid;
+            grid-template-columns: repeat(var(--legend-cols, 1), minmax(0, 1fr));
+            gap: 8px;
+            justify-items: start;
+        }
+        .dash-pie-legend.compact {
+            gap: 6px;
+        }
+        .dash-pie-legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 0.45rem 0.6rem;
+            border-radius: 0.65rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.85);
+            width: 100%;
+        }
+        .dash-pie-legend.compact .dash-pie-legend-item {
+            padding: 0.4rem 0.55rem;
+            font-size: 0.85rem;
+        }
+        .dash-pie-legend-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+        .dash-pie-legend.compact .dash-pie-legend-label {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .dash-pie-footer {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .dash-pie-stat {
+            padding: 0.6rem 0.75rem;
+            border-radius: 0.65rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .dash-pie-stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+        .dash-pie-stat-value {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 0.35rem;
+        }
+        .dash-vertical-bars {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            align-items: end;
+            height: 180px;
+            padding: 0 6px;
+        }
+        .dash-vertical-bars > div {
+            height: 100%;
+        }
+        .dash-vertical-bar {
+            position: relative;
+            height: 100%;
+            border-radius: 0.8rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+        .dash-vertical-bar-fill {
+            width: 100%;
+            height: 0%;
+            min-height: 6px;
+            display: block;
+            background: linear-gradient(180deg, var(--brand), var(--accent-2, var(--brand)));
+            transition: height 0.7s ease;
+        }
+        .dash-stack-bar {
+            width: 72px;
+            height: 190px;
+            margin: 0 auto;
+            border-radius: 0.9rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .dash-stack-fill {
+            width: 100%;
+            height: 0%;
+            transition: height 0.7s ease;
+        }
+        .dash-stack-fill.is-home {
+            background: linear-gradient(180deg, var(--brand), color-mix(in srgb, var(--brand) 70%, #000));
+        }
+        .dash-stack-fill.is-theater {
+            background: linear-gradient(180deg, var(--accent-2, var(--brand)), color-mix(in srgb, var(--accent-2, var(--brand)) 70%, #000));
+        }
+        .dash-watch-method-card {
+            width: 100%;
+            max-width: 210px;
+            justify-self: start;
+            padding: 0.9rem;
+        }
+        @media (max-width: 1100px) {
+            .dash-gen-top {
+                grid-template-columns: 1fr;
+            }
+        }
+        .dash-watch-label.dash-watch-home {
+            color: var(--brand) !important;
+        }
+        .dash-watch-label.dash-watch-theater {
+            color: var(--accent-2, var(--brand)) !important;
+        }
+        .dash-pie-duo {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            grid-column: 1 / -1;
+        }
+        @media (max-width: 980px) {
+            .dash-pie-duo { grid-template-columns: 1fr; }
+        }
+        .dash-vertical-labels {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+        .dash-watch-method-card .dash-vertical-labels {
+            grid-template-columns: 1fr;
+            gap: 12px;
+            text-align: center;
+        }
+        .dash-watch-value {
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        .dash-watch-count {
+            font-size: 0.7rem;
+        }
+        .dash-vertical-labels .dash-highlight-count {
+            color: #fff;
+        }
+        .dash-highlight-list {
+            display: grid;
+            gap: 12px;
+            height: 100%;
+            grid-auto-rows: 1fr;
+        }
+        .dash-highlights-card {
+            min-height: 220px;
+        }
+        .dash-most-watched-card {
+            min-height: 220px;
+        }
+        .dash-highlight-combined {
+            display: grid;
+            gap: 14px;
+            --mw-poster-size: 160px;
+        }
+        .dash-highlight-combined-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            align-items: stretch;
+        }
+        @media (max-width: 900px) {
+            .dash-highlight-combined-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .dash-highlight-card {
+            display: grid;
+            gap: 12px;
+            padding: 0.9rem;
+            border-radius: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            height: 100%;
+        }
+        .dash-highlight-card-title {
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .dash-person-card {
+            display: grid;
+            gap: 10px;
+            justify-items: center;
+            text-align: center;
+        }
+        .dash-person-poster {
+            width: min(100%, var(--mw-poster-size));
+            aspect-ratio: 2 / 3;
+            border-radius: 0.8rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.08);
+            display: grid;
+            place-items: center;
+        }
+        .dash-person-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .dash-person-poster.is-empty {
+            background: rgba(255,255,255,0.05);
+        }
+        .dash-person-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .dash-person-count {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .dash-highlight-row {
+            display: grid;
+            grid-template-columns: 88px minmax(0, 1fr);
+            gap: 10px;
+            align-items: center;
+            padding: 0.7rem 0.75rem;
+            border-radius: 0.65rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+        }
+        .dash-highlight-row.has-avatar {
+            grid-template-columns: 104px 88px minmax(0, 1fr);
+            min-height: 96px;
+        }
+        .dash-highlight-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.08);
+            display: grid;
+            place-items: center;
+        }
+        .dash-highlight-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .dash-highlight-avatar.is-empty {
+            background: rgba(255,255,255,0.05);
+        }
+        .dash-most-movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(var(--mw-poster-min, 140px), 1fr));
+            gap: 14px;
+            align-items: start;
+            justify-items: center;
+        }
+        .dash-most-movie-card {
+            max-width: 180px;
+            display: grid;
+            gap: 8px;
+        }
+        .dash-most-movie-poster {
+            width: min(100%, var(--mw-poster-size));
+            aspect-ratio: 2 / 3;
+            border-radius: 0.8rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.06);
+        }
+        .dash-most-movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .dash-most-movie-placeholder {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .dash-most-movie-title {
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+        .dash-most-movie-meta {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .dash-most-movie-more {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dash-most-movie-more span {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .dash-most-movie-rating {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .dash-tier-pill {
+            --tier-rgb: 255, 255, 255;
+            padding: 0.2rem 0.45rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 1px solid rgba(var(--tier-rgb), 0.55);
+            background: rgba(var(--tier-rgb), 0.2);
+            color: #fff;
+        }
+        .dash-tier-pill[data-tier="S-Tier"] { --tier-rgb: var(--tier-s-rgb); }
+        .dash-tier-pill[data-tier="A-Tier"] { --tier-rgb: var(--tier-a-rgb); }
+        .dash-tier-pill[data-tier="B-Tier"] { --tier-rgb: var(--tier-b-rgb); }
+        .dash-tier-pill[data-tier="C-Tier"] { --tier-rgb: var(--tier-c-rgb); }
+        .dash-tier-pill[data-tier="D-Tier"] { --tier-rgb: var(--tier-d-rgb); }
+        .dash-tier-pill[data-tier="F-Tier"] { --tier-rgb: var(--tier-f-rgb); }
+        .dash-ratings-avg-grid {
+            display: grid;
+            gap: 12px;
+        }
+        .dash-ratings-avg-layout {
+            display: grid;
+            grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2fr);
+            grid-template-rows: 70px 70px;
+            gap: 12px;
+            align-items: stretch;
+        }
+        .dash-ratings-avg-main {
+            display: grid;
+            align-content: start;
+            gap: 8px;
+            grid-row: 1 / span 2;
+        }
+        .dash-ratings-avg-subgrid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            grid-row: 1 / span 2;
+            grid-auto-rows: 70px;
+        }
+        .dash-ratings-avg-main .dash-ratings-avg-tile {
+            height: calc(70px * 2 + 12px);
+        }
+        .dash-ratings-avg-main .dash-ratings-avg-value {
+            font-size: 3rem;
+            line-height: 1;
+        }
+        .dash-ratings-avg-main .dash-ratings-avg-sub {
+            font-size: 0.85rem;
+        }
+        .dash-ratings-avg-subgrid .dash-ratings-avg-tile {
+            height: 70px;
+        }
+        @media (max-width: 900px) {
+            .dash-ratings-avg-layout {
+                grid-template-columns: 1fr;
+            }
+            .dash-ratings-avg-subgrid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        .dash-ratings-avg-tile {
+            padding: 0.8rem 0.9rem;
+            border-radius: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            display: grid;
+            gap: 4px;
+        }
+        .dash-ratings-avg-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .dash-ratings-avg-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .dash-ratings-avg-row {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .dash-ratings-avg-sub {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .dash-ratings-directors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .dash-kpi-movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+        }
+        .dash-kpi-movie-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+        .dash-kpi-movie-poster {
+            width: 100%;
+            max-width: 140px;
+            aspect-ratio: 2 / 3;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.06);
+            cursor: pointer;
+        }
+        .dash-kpi-compact-posters .dash-kpi-movie-grid {
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            gap: 8px;
+            justify-items: center;
+        }
+        .dash-kpi-compact-posters [data-dash-movie-id] {
+            width: 70px !important;
+            max-width: 70px !important;
+            border-radius: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .dash-kpi-compact-posters .dash-kpi-movie-poster {
+            width: 70px;
+            max-width: 70px;
+            border-radius: 10px;
+        }
+        #dash-pane-general.dash-mode-total [data-kpi-mode="unique"],
+        #dash-pane-general.dash-mode-unique [data-kpi-mode="total"] {
+            display: none !important;
+        }
+        .dash-highlight-label {
+            font-size: 0.9rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .dash-highlight-main {
+            display: grid;
+            gap: 2px;
+        }
+        .dash-highlight-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.25rem;
+        }
+        .dash-highlight-count {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+        @media (max-width: 1000px) {
+            .dash-gen-top { grid-template-columns: 1fr; }
+            .dash-pie-row { grid-template-columns: 1fr; justify-items: center; }
+            .dash-pie-legend { width: 100%; }
+        }
+        .dash-kpi-chart-title {
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .dash-donut-row {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 16px;
+            align-items: center;
+        }
+        .dash-donut {
+            width: 180px;
+            height: 180px;
+            border-radius: 999px;
+            background: conic-gradient(var(--brand) 0deg 180deg, var(--accent-2, var(--brand)) 180deg 300deg, rgba(255,255,255,0.08) 300deg 360deg);
+            position: relative;
+            display: grid;
+            place-items: center;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        }
+        .dash-donut::after {
+            content: '';
+            width: 62%;
+            height: 62%;
+            border-radius: 999px;
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: inset 0 0 24px rgba(0,0,0,0.35);
+        }
+        .dash-donut-center {
+            position: absolute;
+            text-align: center;
+            z-index: 1;
+            display: grid;
+            gap: 2px;
+        }
+        .dash-donut-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .dash-donut-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .dash-donut-legend {
+            display: grid;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.85);
+        }
+        .dash-donut-legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0.5rem 0.65rem;
+            border-radius: 0.7rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .dash-donut-legend-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+        .dash-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+        }
+        .dash-rank-list {
+            display: grid;
+            gap: 10px;
+        }
+        .dash-rank-row {
+            display: grid;
+            grid-template-columns: 86px minmax(0, 1fr);
+            gap: 8px;
+            align-items: center;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.7rem;
+            padding: 0.55rem 0.7rem;
+        }
+        .dash-rank-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+        .dash-rank-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.98rem;
+        }
+        .dash-rank-count {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 0.15rem;
+        }
+        .dash-rank-bar {
+            margin-top: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            overflow: hidden;
+        }
+        .dash-rank-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--brand), var(--accent-2, var(--brand)));
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+        .dash-ratings-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .dash-ratings-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--brand), var(--accent-2, var(--brand)));
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+        @media (max-width: 900px) {
+            .dash-donut-row { grid-template-columns: 1fr; justify-items: center; }
+            .dash-donut-legend { width: 100%; }
+            .dash-kpi-span-2 { grid-column: span 1; }
+        }
+
+        .dash-kpi-board {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .dash-kpi-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .dash-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .dash-kpi-card {
+            position: relative;
+            padding: 1.25rem;
+            border-radius: 0.95rem;
+            overflow: hidden;
+        }
+        .dash-kpi-card::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--brand), var(--accent-2, var(--brand)));
+            opacity: 0.75;
+        }
+        .dash-people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+        .dash-people-card {
+            display: grid;
+            gap: 8px;
+        }
+        .dash-people-poster {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            border-radius: 0.8rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.06);
+            display: grid;
+            place-items: center;
+        }
+        .dash-people-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .dash-people-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .dash-people-meta {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .dash-kpi-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 0.85rem;
+        }
+        .dash-kpi-title {
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .dash-kpi-value-lg {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+        .dash-kpi-value-md {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.1;
+        }
+        .dash-kpi-value-sm {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .dash-kpi-label {
+            margin-top: 0.35rem;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .dash-kpi-meta {
+            margin-top: 0.35rem;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.75);
+        }
+        .dash-kpi-note {
+            margin-top: 0.55rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .dash-kpi-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+            margin: 0.9rem 0;
+        }
+        .dash-kpi-metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .dash-kpi-metric-grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .dash-kpi-hero {
+            grid-column: span 2;
+        }
+        .dash-kpi-hero-main {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .dash-kpi-hero-sub {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .dash-kpi-metric {
+            padding: 0.75rem 0.85rem;
+            border-radius: 0.75rem;
             background: rgba(0,0,0,0.22);
             border: 1px solid rgba(255,255,255,0.08);
+        }
+        @media (max-width: 1100px) {
+            .dash-kpi-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .dash-kpi-hero { grid-column: span 2; }
+        }
+        @media (max-width: 720px) {
+            .dash-kpi-board { grid-template-columns: 1fr; }
+            .dash-kpi-hero { grid-column: span 1; }
+            .dash-kpi-hero-main,
+            .dash-kpi-hero-sub {
+                grid-template-columns: 1fr;
+            }
+            .dash-kpi-metric-grid-3 {
+                grid-template-columns: 1fr;
+            }
         }
 
         .dash-kpi-clickable {
@@ -3399,15 +4327,20 @@
                     initDashboardTimeframe();
                     initDashboardFavoritesMetric();
                     initDashboardFavoritesLimitToggle();
+                    initDashboardGeneralModeControls();
+                    initDashboardGeneralPieControls();
                     initDashboardChartsTabControls();
-                    initDashboardChartsRowClicks();
                     initDashboardGeneralKpiClicks();
                     initDashboardRatingsKpiClicks();
+                    initDashboardRatingsChartControls();
                     initDashboardPosterUpdateRatingsClicks();
                     setDashboardTimeframe(dashboardTimeframe || 'all_time');
                     syncDashboardFavoritesMetricUI();
                     syncDashboardFavoritesLimitUI();
+                    syncDashboardGeneralModeUI();
+                    syncDashboardGeneralPieUI();
                     syncDashboardChartsTabUI();
+                    syncDashboardRatingsChartUI();
                 } else if (page === 'dashboard_kpi') {
                     root.innerHTML = this.renderDashboardKpiDetail();
                     refreshAuthStateAndUI();
@@ -4453,14 +5386,14 @@
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-ratings" data-tab="ratings" style="padding: 0.6rem 0.9rem;">Ratings</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-tiers" data-tab="tiers" style="padding: 0.6rem 0.9rem;">Tiers</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-favorites" data-tab="favorites" style="padding: 0.6rem 0.9rem;">Favorites</button>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-charts" data-tab="charts" style="padding: 0.6rem 0.9rem;">Charts</button>
+                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-charts" data-tab="charts" style="padding: 0.6rem 0.9rem;">Heatmaps</button>
                                     <button type="button" class="btn dash-pill-btn btn-outline" id="dash-tab-quotes" data-tab="quotes" style="padding: 0.6rem 0.9rem;">Quote Wall</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Timeframe (shown for all tabs) -->
-                        <div style="display:flex; gap: 16px; align-items: flex-start; justify-content: space-between; flex-wrap: nowrap; margin-bottom: 1.25rem;">
+                        <div class="dash-dashboard-row" style="display:flex; gap: 16px; align-items: flex-start; justify-content: space-between; flex-wrap: nowrap; margin-bottom: 1.25rem;">
                             <div style="display:flex; gap: 12px; align-items: flex-start; flex-wrap: nowrap;">
                                 <div class="glass-panel" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
                                     <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Timeframe</div>
@@ -4471,14 +5404,19 @@
                                     </div>
                                 </div>
 
+                                <div id="dash-general-mode-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Counts</div>
+                                    <div id="dash-general-mode-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-mode="total" id="dash-general-mode-total" style="padding: 0.55rem 0.85rem;">Total Watches</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-mode="unique" id="dash-general-mode-unique" style="padding: 0.55rem 0.85rem;">Unique Movies</button>
+                                    </div>
+                                </div>
+
                                 <!-- Charts-only: Chart selector (shown only when Charts tab active) -->
                                 <div id="dash-chart-tab-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
-                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Charts</div>
+                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Heatmaps</div>
                                     <div id="dash-chart-tab-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
-                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="genre" id="dash-chart-tab-genre" style="padding: 0.55rem 0.85rem;">Genre</button>
-                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="decade" id="dash-chart-tab-decade" style="padding: 0.55rem 0.85rem;">Decade</button>
-                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="mpa" id="dash-chart-tab-mpa" style="padding: 0.55rem 0.85rem;">MPA</button>
-                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="heatmap" id="dash-chart-tab-heatmap" style="padding: 0.55rem 0.85rem;">Genre Heatmap</button>
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="heatmap" id="dash-chart-tab-heatmap" style="padding: 0.55rem 0.85rem;">Genre/Decade Heatmap</button>
                                         <button type="button" class="btn dash-pill-btn btn-outline" data-chart="activity" id="dash-chart-tab-activity" style="padding: 0.55rem 0.85rem;">Activity</button>
                                     </div>
                                 </div>
@@ -4499,213 +5437,143 @@
                                     </div>
                                 </div>
 
-                                <!-- Favorites-only: List size toggle -->
-                                <div id="dash-fav-limit-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto; min-width: 160px;">
-                                    <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">List size</div>
-                                    <button type="button" class="btn dash-pill-btn btn-outline" id="dash-fav-limit-toggle" style="padding: 0.55rem 0.85rem;">Show 10</button>
-                                </div>
                             </div>
                         </div>
 
                         <!-- Tab: General -->
-                        <div id="dash-pane-general">
-                            <div class="grid grid-3 gap-6 mb-8">
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Watch Events</span><span class="text-brand">${icons.video}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-watch-events-total">—</div>
-                                            <div class="dash-mini-kpi-label">Total watches</div>
-                                        </div>
-                                        <div class="dash-mini-kpi">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-watch-events-unique">—</div>
-                                            <div class="dash-mini-kpi-label">Unique movies</div>
+                        <div id="dash-pane-general" class="dash-pane-wrap">
+                            <div class="dash-gen-top">
+                                <div class="glass-panel dash-kpi-chart dash-general-pie-card">
+                                    <div class="dash-kpi-header-row">
+                                        <div class="dash-kpi-chart-title" id="dash-general-pie-title">MPA Share</div>
+                                        <div class="dash-general-pie-toggle" id="dash-general-pie-toggle">
+                                            <button type="button" class="btn dash-pill-btn btn-glass" data-pie="mpa" style="padding: 0.45rem 0.7rem;">MPA</button>
+                                            <button type="button" class="btn dash-pill-btn btn-outline" data-pie="decade" style="padding: 0.45rem 0.7rem;">Decade</button>
+                                            <button type="button" class="btn dash-pill-btn btn-outline" data-pie="genre" style="padding: 0.45rem 0.7rem;">Genre</button>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Hours Watched</span><span class="text-brand">${icons.clock}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-hours-watched">—</div>
-                                            <div class="dash-mini-kpi-label">Total hours</div>
+                                    <div class="dash-pie-row">
+                                        <div class="dash-pie" id="dash-general-share-pie">
+                                            <div class="dash-pie-center">
+                                                <div class="dash-pie-value tabular-nums" id="dash-general-watch-events-total">—</div>
+                                                <div class="dash-pie-label" id="dash-general-watch-label">Watches</div>
+                                                <div class="dash-pie-value-sm tabular-nums" id="dash-general-hours-watched">—</div>
+                                                <div class="dash-pie-label" id="dash-general-hours-label">Hours</div>
+                                            </div>
                                         </div>
-                                        <div class="dash-mini-kpi">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-hours-watched-unique">—</div>
-                                            <div class="dash-mini-kpi-label">Unique hours</div>
-                                        </div>
+                                        <div class="dash-pie-legend" id="dash-general-share-legend"></div>
                                     </div>
                                 </div>
-
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Watch Method</span><span class="text-brand">${icons.tv}</span></div>
-                                    <div class="grid grid-3" style="gap: 12px;">
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="watch_method_at_home_events">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-at-home-watches">—</div>
-                                            <div class="dash-mini-kpi-label">At home (watch events)</div>
+                                <div class="glass-panel dash-kpi-chart dash-watch-method-card">
+                                    <div class="dash-kpi-chart-title">Watch Method</div>
+                                    <div class="dash-stack-bar" aria-hidden="true">
+                                        <div class="dash-stack-fill is-home" id="dash-general-stack-home"></div>
+                                        <div class="dash-stack-fill is-theater" id="dash-general-stack-theater"></div>
+                                    </div>
+                                    <div class="dash-vertical-labels">
+                                        <div>
+                                            <div class="dash-highlight-label dash-watch-label dash-watch-home">At home</div>
+                                            <div class="dash-highlight-name tabular-nums dash-watch-value" id="dash-general-at-home-watches">—</div>
+                                            <div class="dash-highlight-count dash-watch-count" id="dash-general-at-home-label">Watch events</div>
                                         </div>
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="watch_method_at_home_unique">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-at-home-movies">—</div>
-                                            <div class="dash-mini-kpi-label">At home (unique movies)</div>
-                                        </div>
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="watch_method_in_theater">
-                                            <div class="text-5xl font-bold text-white tabular-nums dash-mini-kpi-value" id="dash-general-in-theater-watches">—</div>
-                                            <div class="dash-mini-kpi-label">In theater</div>
+                                        <div>
+                                            <div class="dash-highlight-label dash-watch-label dash-watch-theater">In theater</div>
+                                            <div class="dash-highlight-name tabular-nums dash-watch-value" id="dash-general-in-theater-watches">—</div>
+                                            <div class="dash-highlight-count dash-watch-count" id="dash-general-in-theater-label">Watch events</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="grid grid-3 gap-6 mb-8">
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Genre</span><span class="text-brand">${icons.pieChart}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_genre">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-genre-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">All watch events</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-genre-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                            <div class="dash-gen-bottom">
+                                <div class="glass-panel dash-kpi-chart dash-highlight-combined">
+                                    <div class="dash-kpi-chart-title">Most Watched</div>
+                                    <div class="dash-highlight-combined-grid">
+                                        <div class="dash-highlight-card dash-kpi-clickable" data-general-kpi="most_watched_director">
+                                            <div class="dash-highlight-card-title">Director(s)</div>
+                                            <div class="dash-person-card">
+                                                <div class="dash-person-poster is-empty">
+                                                    <img id="dash-general-top-director-avatar" alt="Top director" loading="lazy" onerror="this.removeAttribute('src'); this.closest('.dash-person-poster')?.classList.add('is-empty');">
+                                                </div>
+                                                <div class="dash-person-name" id="dash-general-top-director-events">—</div>
+                                                <div class="dash-person-count tabular-nums" id="dash-general-top-director-events-count">&nbsp;</div>
+                                            </div>
                                         </div>
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_genre_unique">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-genre-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">Unique movies only</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-genre-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        <div class="dash-highlight-card dash-kpi-clickable" data-general-kpi="most_watched_movie">
+                                            <div class="dash-highlight-card-title">Movie(s)</div>
+                                            <div class="dash-most-movie-grid" id="dash-general-top-movie-grid">
+                                                <div class="text-gray">Loading…</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Decade</span><span class="text-brand">${icons.calendar}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_decade">
-                                            <div class="text-white font-bold tabular-nums dash-mini-kpi-value" id="dash-general-top-decade-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">All watch events</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-decade-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
-                                        </div>
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_decade_unique">
-                                            <div class="text-white font-bold tabular-nums dash-mini-kpi-value" id="dash-general-top-decade-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">Unique movies only</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-decade-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Director</span><span class="text-brand">${icons.user}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_director">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-director-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">All watch events</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-director-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
-                                        </div>
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_director_unique">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-director-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">Unique movies only</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-director-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
+                                        <div class="dash-highlight-card dash-kpi-clickable" data-general-kpi="most_watched_actor">
+                                            <div class="dash-highlight-card-title">Actor(s)</div>
+                                            <div class="dash-person-card">
+                                                <div class="dash-person-poster is-empty">
+                                                    <img id="dash-general-top-actor-avatar" alt="Top actor" loading="lazy" onerror="this.removeAttribute('src'); this.closest('.dash-person-poster')?.classList.add('is-empty');">
+                                                </div>
+                                                <div class="dash-person-name" id="dash-general-top-actor-events">—</div>
+                                                <div class="dash-person-count tabular-nums" id="dash-general-top-actor-events-count">&nbsp;</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="grid grid-3 gap-6 mb-8">
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Actor</span><span class="text-brand">${icons.user}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_actor">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-actor-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">All watch events</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-actor-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
-                                        </div>
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_actor_unique">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-actor-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">Unique movies only</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-actor-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="glass-panel dash-kpi-clickable" data-general-kpi="most_watched_movie" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched Movie</span><span class="text-brand">${icons.film}</span></div>
-                                    <div class="text-xl font-bold text-white" id="dash-general-top-movie">—</div>
-                                    <div class="mt-2 text-sm text-gray tabular-nums" id="dash-general-top-movie-count">&nbsp;</div>
-                                </div>
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Most Watched MPA Rating</span><span class="text-brand">${icons.star}</span></div>
-                                    <div class="grid grid-2" style="gap: 12px;">
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_mpa">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-mpa-events" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">All watch events</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-mpa-events-count" style="margin-top: 0.35rem;">&nbsp;</div>
-                                        </div>
-                                        <div class="dash-mini-kpi dash-kpi-clickable" data-general-kpi="most_watched_mpa_unique">
-                                            <div class="text-white font-bold dash-mini-kpi-value" id="dash-general-top-mpa-unique" style="font-size: 1.35rem; line-height: 1.15;">—</div>
-                                            <div class="dash-mini-kpi-label">Unique movies only</div>
-                                            <div class="text-xs text-gray tabular-nums" id="dash-general-top-mpa-unique-count" style="margin-top: 0.35rem;">&nbsp;</div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
-                        <!-- Tab: Ratings (placeholder for now) -->
-                        <div id="dash-pane-ratings" class="hidden">
-                            <div class="grid grid-2 gap-6 mb-8">
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4"><span class="text-gray text-sm">Avg Overall</span><span class="text-brand">${icons.percent}</span></div>
-                                    <div class="text-5xl font-bold text-white tabular-nums" id="dash-ratings-avg-overall">—</div>
-                                </div>
-                                <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4">
-                                        <span class="text-gray text-sm">Average Abs Diff Rating: You vs IMDb</span>
-                                        <span class="text-brand">${icons.activity}</span>
+                        <!-- Tab: Ratings -->
+                        <div id="dash-pane-ratings" class="dash-pane-wrap hidden">
+                            <div class="glass-panel dash-kpi-chart dash-genre-full" style="margin-bottom: 1rem;">
+                                <div class="dash-kpi-header-row" style="align-items: flex-start;">
+                                    <div>
+                                        <div class="dash-kpi-chart-title" id="dash-ratings-chart-title">Average Rating by Genre</div>
+                                        <div class="text-xs text-gray" id="dash-ratings-genre-meta"></div>
                                     </div>
-                                    <div class="text-5xl font-bold text-white tabular-nums" id="dash-ratings-avg-imdb-diff">—</div>
+                                    <div id="dash-ratings-chart-tab-wrap" class="flex" style="gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="genre" id="dash-ratings-tab-genre" style="padding: 0.45rem 0.7rem;">Genre</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="decade" id="dash-ratings-tab-decade" style="padding: 0.45rem 0.7rem;">Decade</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-chart="mpa" id="dash-ratings-tab-mpa" style="padding: 0.45rem 0.7rem;">MPA</button>
+                                    </div>
+                                </div>
+                                <div id="dash-ratings-genre-bars" class="dash-chart-scroll text-gray">Loading…</div>
+                            </div>
+
+                            <div class="glass-panel dash-kpi-chart" style="margin-bottom: 1rem;">
+                                <div class="dash-kpi-chart-title">Average Ratings</div>
+                                <div class="dash-ratings-avg-grid" id="dash-ratings-avg-grid">
+                                    <div class="text-gray">Loading…</div>
                                 </div>
                             </div>
 
-                            <div class="grid grid-2 gap-6 mb-8">
-                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_highest_genre" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4">
-                                        <span class="text-gray text-sm">Highest Rated Genre</span>
-                                        <span class="text-brand">${icons.trendingUp}</span>
+                            <div class="glass-panel dash-kpi-chart">
+                                <div class="dash-kpi-chart-title">Director Ratings</div>
+                                <div class="dash-ratings-directors-grid">
+                                    <div class="dash-highlight-card dash-kpi-clickable" data-ratings-kpi="ratings_highest_director">
+                                        <div class="dash-highlight-card-title">Highest Rated</div>
+                                        <div class="dash-person-card">
+                                            <div class="dash-person-poster is-empty">
+                                                <img id="dash-ratings-top-director-avatar" alt="Highest rated director" loading="lazy" onerror="this.removeAttribute('src'); this.closest('.dash-person-poster')?.classList.add('is-empty');">
+                                            </div>
+                                            <div class="dash-person-name" id="dash-ratings-top-director">—</div>
+                                            <div class="dash-person-count tabular-nums" id="dash-ratings-top-director-meta">&nbsp;</div>
+                                        </div>
                                     </div>
-                                    <div class="text-2xl font-bold text-white" id="dash-ratings-top-genre">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-top-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-genre-n">—</span> rated movies</div>
-                                    <div class="mt-2 text-xs text-gray">Only includes genres with at least 2 rated movies.</div>
-                                </div>
-                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_lowest_genre" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4">
-                                        <span class="text-gray text-sm">Lowest Rated Genre</span>
-                                        <span class="text-brand">${icons.trendingDown}</span>
+                                    <div class="dash-highlight-card dash-kpi-clickable" data-ratings-kpi="ratings_lowest_director">
+                                        <div class="dash-highlight-card-title">Lowest Rated</div>
+                                        <div class="dash-person-card">
+                                            <div class="dash-person-poster is-empty">
+                                                <img id="dash-ratings-bottom-director-avatar" alt="Lowest rated director" loading="lazy" onerror="this.removeAttribute('src'); this.closest('.dash-person-poster')?.classList.add('is-empty');">
+                                            </div>
+                                            <div class="dash-person-name" id="dash-ratings-bottom-director">—</div>
+                                            <div class="dash-person-count tabular-nums" id="dash-ratings-bottom-director-meta">&nbsp;</div>
+                                        </div>
                                     </div>
-                                    <div class="text-2xl font-bold text-white" id="dash-ratings-bottom-genre">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-bottom-genre-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-genre-n">—</span> rated movies</div>
-                                    <div class="mt-2 text-xs text-gray">Only includes genres with at least 2 rated movies.</div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-2 gap-6 mb-8">
-                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_highest_director" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4">
-                                        <span class="text-gray text-sm">Highest Rated Director</span>
-                                        <span class="text-brand">${icons.user}</span>
-                                    </div>
-                                    <div class="text-2xl font-bold text-white" id="dash-ratings-top-director">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-top-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-top-director-n">—</span> rated movies</div>
-                                    <div class="mt-2 text-xs text-gray">Only includes directors with at least 2 rated movies.</div>
-                                </div>
-
-                                <div class="glass-panel dash-kpi-clickable" data-ratings-kpi="ratings_lowest_director" style="padding:1.5rem; border-radius:0.75rem;">
-                                    <div class="flex justify-between mb-4">
-                                        <span class="text-gray text-sm">Lowest Rated Director</span>
-                                        <span class="text-brand">${icons.user}</span>
-                                    </div>
-                                    <div class="text-2xl font-bold text-white" id="dash-ratings-bottom-director">—</div>
-                                    <div class="mt-2 text-sm text-gray">Avg <span class="dash-help-score tabular-nums" id="dash-ratings-bottom-director-avg">—</span> • <span class="tabular-nums" id="dash-ratings-bottom-director-n">—</span> rated movies</div>
-                                    <div class="mt-2 text-xs text-gray">Only includes directors with at least 2 rated movies.</div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Tab: Tiers (placeholder for now) -->
-                        <div id="dash-pane-tiers" class="hidden">
+                        <div id="dash-pane-tiers" class="dash-pane-wrap hidden">
                             <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem; margin-bottom: 1.25rem;">
                                 <div class="flex justify-between mb-4">
                                     <span class="text-gray text-sm">Tier Distribution</span>
@@ -4724,11 +5592,14 @@
                         </div>
 
                         <!-- Tab: Favorites -->
-                        <div id="dash-pane-favorites" class="hidden">
+                        <div id="dash-pane-favorites" class="dash-pane-wrap hidden">
                             <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem; margin-bottom: 1.25rem;">
                                 <div class="flex justify-between mb-4">
                                     <span id="dash-fav-top-label" style="font-size: 1.05rem; font-weight: 700; color: #34d399;">Top 5</span>
-                                    <span style="color: #34d399;">${icons.trendingUp}</span>
+                                    <div style="display:flex; align-items:center; gap: 8px;">
+                                        <button type="button" class="btn btn-outline" id="dash-fav-limit-toggle-top" style="padding: 0.35rem 0.6rem; border-radius: 0.75rem;">Show 10</button>
+                                        <span style="color: #34d399;">${icons.trendingUp}</span>
+                                    </div>
                                 </div>
                                 <div id="dash-fav-top"></div>
                             </div>
@@ -4736,22 +5607,25 @@
                             <div class="glass-panel" style="padding:1.5rem; border-radius:0.75rem;">
                                 <div class="flex justify-between mb-4">
                                     <span id="dash-fav-bottom-label" style="font-size: 1.05rem; font-weight: 700; color: #fb7185;">Bottom 5</span>
-                                    <span style="color: #fb7185;">${icons.trendingDown}</span>
+                                    <div style="display:flex; align-items:center; gap: 8px;">
+                                        <button type="button" class="btn btn-outline" id="dash-fav-limit-toggle-bottom" style="padding: 0.35rem 0.6rem; border-radius: 0.75rem;">Show 10</button>
+                                        <span style="color: #fb7185;">${icons.trendingDown}</span>
+                                    </div>
                                 </div>
                                 <div id="dash-fav-bottom"></div>
                             </div>
                         </div>
 
                         <!-- Tab: Charts -->
-                        <div id="dash-pane-charts" class="hidden">
+                        <div id="dash-pane-charts" class="dash-pane-wrap hidden">
                             <div class="glass-panel dash-chart-card dash-chart-stage">
-                                <div id="dash-chart-title" class="dash-chart-title">Average Rating by Genre</div>
+                                <div id="dash-chart-title" class="dash-chart-title">Genre/Decade Heatmap</div>
                                 <div id="dash-chart-body" class="dash-chart-body text-gray">Loading…</div>
                             </div>
                         </div>
 
                         <!-- Tab: Quote Wall -->
-                        <div id="dash-pane-quotes" class="hidden">
+                        <div id="dash-pane-quotes" class="dash-pane-wrap hidden">
                             <div class="glass-panel" style="padding:1.5rem; border-radius:0.95rem;">
                                 <div class="flex justify-between mb-4" style="gap: 14px; align-items: flex-start; flex-wrap: wrap;">
                                     <div>
@@ -5755,9 +6629,15 @@
         let dashboardAuthWarned = false;
         let dashboardFavoritesMetric = 'overall';
         let dashboardFavoritesLimit = 5;
-        let dashboardChartsTab = 'genre';
+        let dashboardChartsTab = 'heatmap';
         let dashboardChartsLastData = null;
         let dashboardChartsActivityMax = null;
+        let dashboardRatingsChartTab = 'genre';
+        let dashboardRatingsChartsLastData = null;
+        let dashboardRatingsShowAllGenres = false;
+        let dashboardGeneralPieMode = 'mpa';
+        let dashboardGeneralPieData = null;
+        let dashboardGeneralMode = 'total';
 
         let dashboardGeneralLastData = null;
         let dashboardRatingsLastData = null;
@@ -5765,6 +6645,7 @@
 
         const dashPosterCacheByTmdbId = new Map();
         const dashRatingCacheByMovieId = new Map();
+        const dashPersonAvatarCache = new Map();
 
         function dashNormalizePosterPath(p) {
             const raw = String(p ?? '').trim();
@@ -5780,6 +6661,33 @@
             if (!normalized) return '';
             if (normalized.startsWith('http://') || normalized.startsWith('https://')) return normalized;
             return `https://image.tmdb.org/t/p/${String(size || 'w342')}${normalized}`;
+        }
+
+        function dashBuildPersonUrl(profilePath, size = 'w185') {
+            const raw = String(profilePath ?? '').trim();
+            if (!raw) return '';
+            if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+            const normalized = raw.startsWith('/') ? raw : `/${raw}`;
+            return `https://image.tmdb.org/t/p/${String(size || 'w185')}${normalized}`;
+        }
+
+        async function dashFetchPersonProfile({ name, department }) {
+            const key = `${String(name || '').trim().toLowerCase()}|${String(department || '').trim().toLowerCase()}`;
+            if (!key || key === '|') return null;
+            if (dashPersonAvatarCache.has(key)) return dashPersonAvatarCache.get(key);
+
+            let profilePath = null;
+            try {
+                const data = await callSwiftApiPublic({ action: 'person', query: name, department });
+                const results = Array.isArray(data?.results) ? data.results : [];
+                const pick = results.find((r) => String(r?.profile_path || '').trim()) || results[0] || null;
+                profilePath = pick?.profile_path ? String(pick.profile_path).trim() : null;
+            } catch (_) {
+                profilePath = null;
+            }
+
+            dashPersonAvatarCache.set(key, profilePath);
+            return profilePath;
         }
 
         async function dashEnsurePosterPath(item) {
@@ -5845,8 +6753,13 @@
             const num = Number(n);
             if (!Number.isFinite(num)) return '';
             const rounded = Math.round(num * 10) / 10;
-            if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return `${Math.round(rounded)}%`;
             return `${rounded.toFixed(1)}%`;
+        }
+
+        function dashFormatScoreWhole(n) {
+            const num = Number(n);
+            if (!Number.isFinite(num)) return '';
+            return `${Math.round(num)}%`;
         }
 
         function dashNormalizeTierLabel(tierRaw) {
@@ -8291,7 +9204,7 @@
                 const poster_path = String(it?.poster_path || '').trim();
                 const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path.startsWith('/') ? poster_path : `/${poster_path}`}` : '';
 
-                const overall = dashFormatScore(it?.overall_rating);
+                const overall = dashFormatScoreWhole(it?.overall_rating);
                 const tierLabel = dashNormalizeTierLabel(it?.tier);
                 const quote = String(it?.fav_quote ?? '').trim();
                 const notes = String(it?.notes ?? '').trim();
@@ -8322,12 +9235,12 @@
                 ].join('');
 
                 const subRatingRows = [
-                    { k: 'Sound', v: dashFormatScore(it?.sound_rating) },
-                    { k: 'Pace', v: dashFormatScore(it?.pacing_rating) },
-                    { k: 'Imagery', v: dashFormatScore(it?.imagery_rating) },
-                    { k: 'Acting', v: dashFormatScore(it?.acting_rating) },
-                    { k: 'Plot', v: dashFormatScore(it?.plot_rating) },
-                    { k: 'Dialogue', v: dashFormatScore(it?.dialogue_rating) },
+                    { k: 'Sound', v: dashFormatScoreWhole(it?.sound_rating) },
+                    { k: 'Pace', v: dashFormatScoreWhole(it?.pacing_rating) },
+                    { k: 'Imagery', v: dashFormatScoreWhole(it?.imagery_rating) },
+                    { k: 'Acting', v: dashFormatScoreWhole(it?.acting_rating) },
+                    { k: 'Plot', v: dashFormatScoreWhole(it?.plot_rating) },
+                    { k: 'Dialogue', v: dashFormatScoreWhole(it?.dialogue_rating) },
                 ].filter(x => String(x.v || '').trim());
 
                 const extraMovieChips = renderLibraryInfoChips(it || {}, {
@@ -9504,7 +10417,7 @@
                 const title = String(movie?.title || '').trim() || 'Untitled';
                 const year = (movie?.release_year === null || movie?.release_year === undefined) ? '' : String(movie.release_year);
 
-                const overall = dashFormatScore(r?.overall_rating);
+                const overall = dashFormatScoreWhole(r?.overall_rating);
                 const tierLabel = dashNormalizeTierLabel(r?.tier);
 
                 const tmdb_id = Number(movie?.tmdb_id);
@@ -9517,12 +10430,12 @@
                 const watched = String(r?.watch_date ?? '').trim();
 
                 const subRatingRows = [
-                    { k: 'Sound', v: dashFormatScore(r?.sound_rating) },
-                    { k: 'Pace', v: dashFormatScore(r?.pacing_rating) },
-                    { k: 'Imagery', v: dashFormatScore(r?.imagery_rating) },
-                    { k: 'Acting', v: dashFormatScore(r?.acting_rating) },
-                    { k: 'Plot', v: dashFormatScore(r?.plot_rating) },
-                    { k: 'Dialogue', v: dashFormatScore(r?.dialogue_rating) },
+                    { k: 'Sound', v: dashFormatScoreWhole(r?.sound_rating) },
+                    { k: 'Pace', v: dashFormatScoreWhole(r?.pacing_rating) },
+                    { k: 'Imagery', v: dashFormatScoreWhole(r?.imagery_rating) },
+                    { k: 'Acting', v: dashFormatScoreWhole(r?.acting_rating) },
+                    { k: 'Plot', v: dashFormatScoreWhole(r?.plot_rating) },
+                    { k: 'Dialogue', v: dashFormatScoreWhole(r?.dialogue_rating) },
                 ].filter(x => String(x.v || '').trim());
 
                 return `
@@ -9655,7 +10568,16 @@
 
             pane.addEventListener('click', (e) => {
                 const el = e?.target?.closest ? e.target.closest('[data-general-kpi]') : null;
-                const key = String(el?.dataset?.generalKpi ?? '').trim();
+                const rawKey = String(el?.dataset?.generalKpi ?? '').trim();
+                const useUnique = String(dashboardGeneralMode || '').trim().toLowerCase() === 'unique';
+                const uniqueEligible = new Set([
+                    'most_watched_genre',
+                    'most_watched_decade',
+                    'most_watched_director',
+                    'most_watched_actor',
+                    'most_watched_mpa',
+                ]);
+                const key = (useUnique && uniqueEligible.has(rawKey)) ? `${rawKey}_unique` : rawKey;
                 if (!key) return;
 
                 dashboardKpiDetailState = {
@@ -9785,10 +10707,8 @@
             elTitle.textContent = String(state?.title ?? 'KPI Details');
             elSubtitle.textContent = String(state?.subtitle ?? '');
 
-            if (!kpi) {
-                elGrid.innerHTML = `<div class="text-gray">No KPI selected.</div>`;
-                return;
-            }
+            const compactPosterKpi = new Set(['ratings_highest_director', 'ratings_lowest_director']);
+            elGrid.classList.toggle('dash-kpi-compact-posters', compactPosterKpi.has(kpi));
 
             let authedUser = null;
             try {
@@ -9799,6 +10719,10 @@
             }
 
             if (!supabaseClient || !authedUser?.id) {
+                if (!dashboardAuthWarned) {
+                    dashboardAuthWarned = true;
+                    showToast('Log in to view KPI details.', { level: 'warn' });
+                }
                 elGrid.innerHTML = `<div class="text-gray">Log in to view KPI details.</div>`;
                 return;
             }
@@ -9824,6 +10748,7 @@
                 if (res?.error) throw res.error;
                 const data = res?.data;
                 const items = Array.isArray(data?.movies) ? data.movies : [];
+                const people = Array.isArray(data?.people) ? data.people : [];
 
                 // Prefer the server-computed leader for the subtitle so it always matches the timeframe.
                 try {
@@ -9843,6 +10768,37 @@
                         }
                     }
                 } catch (_) {}
+
+                if (people.length > 1) {
+                    const key = String(kpi || '').trim().toLowerCase();
+                    const isUnique = key.endsWith('_unique');
+                    const cards = await Promise.all(people.map(async (p) => {
+                        const name = String(p?.name ?? '').trim() || '—';
+                        const movies = Number(p?.movies ?? 0) || 0;
+                        const watches = Number(p?.watches ?? 0) || 0;
+                        const profile = await dashFetchPersonProfile({
+                            name,
+                            department: key.includes('director') ? 'directing' : 'acting',
+                        });
+                        const posterUrl = dashBuildPersonUrl(profile, 'w342');
+                        const meta = isUnique
+                            ? `${movies} movie${movies === 1 ? '' : 's'}`
+                            : `${movies} movie${movies === 1 ? '' : 's'} • ${watches} watch event${watches === 1 ? '' : 's'}`;
+                        return `
+                            <div class="dash-people-card">
+                                <div class="dash-people-poster">
+                                    ${posterUrl
+                                        ? `<img src="${escapeHtml(posterUrl)}" alt="${escapeHtml(name)}" loading="lazy">`
+                                        : `<div class="dash-most-movie-placeholder text-gray">No photo</div>`}
+                                </div>
+                                <div class="dash-people-name">${escapeHtml(name)}</div>
+                                <div class="dash-people-meta">${escapeHtml(meta)}</div>
+                            </div>
+                        `;
+                    }));
+                    elGrid.innerHTML = `<div class="dash-people-grid">${cards.join('')}</div>`;
+                    return;
+                }
 
                 if (items.length === 0) {
                     elGrid.innerHTML = `<div class="text-gray">No movies found for this KPI in the selected timeframe.</div>`;
@@ -9874,8 +10830,9 @@
                     ]);
 
                     return `
-                        <div style="display:flex; flex-direction: column; gap: 8px;">
+                        <div class="dash-kpi-movie-card">
                             <div
+                                class="dash-kpi-movie-poster"
                                 data-dash-movie-id="${escapeHtml(dashMovieId)}"
                                 data-dash-tmdb-id="${escapeHtml(dashTmdbId)}"
                                 data-dash-movie-title="${escapeHtml(title)}"
@@ -9883,7 +10840,6 @@
                                 role="button"
                                 tabindex="0"
                                 aria-label="Update Ratings for ${escapeHtml(title)}"
-                                style="width: 100%; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06); cursor: pointer;"
                             >
                                 ${posterUrl
                                     ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
@@ -9897,7 +10853,7 @@
                 }).join('');
 
                 elGrid.innerHTML = `
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px;">
+                    <div class="dash-kpi-movie-grid">
                         ${cards}
                     </div>
                 `;
@@ -9923,14 +10879,46 @@
         }
 
         function initDashboardFavoritesLimitToggle() {
-            const btn = document.getElementById('dash-fav-limit-toggle');
-            if (!btn) return;
-            if (btn.dataset.boundClicks) return;
-            btn.dataset.boundClicks = 'true';
+            const btnTop = document.getElementById('dash-fav-limit-toggle-top');
+            const btnBottom = document.getElementById('dash-fav-limit-toggle-bottom');
+            const bind = (btn) => {
+                if (!btn) return;
+                if (btn.dataset.boundClicks) return;
+                btn.dataset.boundClicks = 'true';
+                btn.addEventListener('click', () => {
+                    const next = Number(dashboardFavoritesLimit) === 10 ? 5 : 10;
+                    setDashboardFavoritesLimit(next);
+                });
+            };
+            bind(btnTop);
+            bind(btnBottom);
+        }
 
-            btn.addEventListener('click', () => {
-                const next = Number(dashboardFavoritesLimit) === 10 ? 5 : 10;
-                setDashboardFavoritesLimit(next);
+        function initDashboardGeneralModeControls() {
+            const wrap = document.getElementById('dash-general-mode-wrap');
+            if (!wrap) return;
+            if (wrap.dataset.boundClicks) return;
+            wrap.dataset.boundClicks = 'true';
+
+            wrap.addEventListener('click', (e) => {
+                const btn = e?.target?.closest ? e.target.closest('button[data-mode]') : null;
+                const mode = btn?.dataset?.mode;
+                if (!mode) return;
+                setDashboardGeneralMode(mode);
+            });
+        }
+
+        function initDashboardGeneralPieControls() {
+            const wrap = document.getElementById('dash-general-pie-toggle');
+            if (!wrap) return;
+            if (wrap.dataset.boundClicks) return;
+            wrap.dataset.boundClicks = 'true';
+
+            wrap.addEventListener('click', (e) => {
+                const btn = e?.target?.closest ? e.target.closest('button[data-pie]') : null;
+                const pie = btn?.dataset?.pie;
+                if (!pie) return;
+                setDashboardGeneralPieMode(pie);
             });
         }
 
@@ -9948,27 +10936,17 @@
             });
         }
 
-        function initDashboardChartsRowClicks() {
-            if (document.documentElement.dataset.boundChartRowClicks === 'true') return;
-            document.documentElement.dataset.boundChartRowClicks = 'true';
+        function initDashboardRatingsChartControls() {
+            const wrap = document.getElementById('dash-ratings-chart-tab-wrap');
+            if (!wrap) return;
+            if (wrap.dataset.boundClicks) return;
+            wrap.dataset.boundClicks = 'true';
 
-            document.addEventListener('click', (e) => {
-                if (String(dashboardActiveTab || '').trim().toLowerCase() !== 'charts') return;
-                const row = e?.target?.closest ? e.target.closest('[data-chart-filter-type]') : null;
-                if (!row) return;
-
-                const type = String(row.dataset.chartFilterType || '').trim().toLowerCase();
-                const value = String(row.dataset.chartFilterValue || '').trim();
-                if (!type || !value) return;
-
-                const next = { ...getDefaultLibrarySortFilterState() };
-                if (type === 'genre') next.genre = value;
-                if (type === 'decade') next.decade = value;
-
-                next.timeframe = mapDashboardTimeframeToLibrary(dashboardTimeframe);
-                librarySortFilterState = next;
-                librarySortFilterDraft = null;
-                router.navigate('library');
+            wrap.addEventListener('click', (e) => {
+                const btn = e?.target?.closest ? e.target.closest('button[data-chart]') : null;
+                const chart = btn?.dataset?.chart;
+                if (!chart) return;
+                setDashboardRatingsChartTab(chart);
             });
         }
 
@@ -9990,13 +10968,17 @@
             const limit = Number(dashboardFavoritesLimit) === 10 ? 10 : 5;
             dashboardFavoritesLimit = limit;
 
-            const btn = document.getElementById('dash-fav-limit-toggle');
-            if (btn) {
+            const btnTop = document.getElementById('dash-fav-limit-toggle-top');
+            const btnBottom = document.getElementById('dash-fav-limit-toggle-bottom');
+            const update = (btn) => {
+                if (!btn) return;
                 btn.textContent = limit === 10 ? 'Show 5' : 'Show 10';
                 btn.classList.remove('btn-glass', 'btn-outline');
                 btn.classList.add(limit === 10 ? 'btn-glass' : 'btn-outline');
                 btn.setAttribute('aria-pressed', limit === 10 ? 'true' : 'false');
-            }
+            };
+            update(btnTop);
+            update(btnBottom);
 
             const topLabel = document.getElementById('dash-fav-top-label');
             if (topLabel) topLabel.textContent = `Top ${limit}`;
@@ -10004,10 +10986,64 @@
             if (bottomLabel) bottomLabel.textContent = `Bottom ${limit}`;
         }
 
+        function syncDashboardGeneralModeUI() {
+            const m = String(dashboardGeneralMode || '').trim().toLowerCase();
+            const allowed = new Set(['total', 'unique']);
+            dashboardGeneralMode = allowed.has(m) ? m : 'total';
+
+            const wrap = document.getElementById('dash-general-mode-wrap');
+            if (wrap) {
+                wrap.querySelectorAll('button[data-mode]').forEach((btn) => {
+                    const isOn = String(btn.dataset.mode || '').trim().toLowerCase() === dashboardGeneralMode;
+                    btn.classList.remove('btn-glass', 'btn-outline');
+                    btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
+                });
+            }
+
+            const pane = document.getElementById('dash-pane-general');
+            if (pane) {
+                pane.classList.remove('dash-mode-total', 'dash-mode-unique');
+                pane.classList.add(dashboardGeneralMode === 'unique' ? 'dash-mode-unique' : 'dash-mode-total');
+            }
+
+            const watchLabel = document.getElementById('dash-general-watch-label');
+            const hoursLabel = document.getElementById('dash-general-hours-label');
+            if (watchLabel) watchLabel.textContent = dashboardGeneralMode === 'unique' ? 'Unique Movies' : 'Watches';
+            if (hoursLabel) hoursLabel.textContent = dashboardGeneralMode === 'unique' ? 'Unique Hours' : 'Hours';
+
+            const atHomeLabel = document.getElementById('dash-general-at-home-label');
+            if (atHomeLabel) atHomeLabel.textContent = dashboardGeneralMode === 'unique' ? 'Unique movies' : 'Watch events';
+            const inTheaterLabel = document.getElementById('dash-general-in-theater-label');
+            if (inTheaterLabel) inTheaterLabel.textContent = dashboardGeneralMode === 'unique' ? 'Unique movies' : 'Watch events';
+        }
+
+        function syncDashboardGeneralPieUI() {
+            const mode = String(dashboardGeneralPieMode || '').trim().toLowerCase();
+            dashboardGeneralPieMode = (mode === 'decade' || mode === 'genre') ? mode : 'mpa';
+
+            const wrap = document.getElementById('dash-general-pie-toggle');
+            if (wrap) {
+                wrap.querySelectorAll('button[data-pie]').forEach((btn) => {
+                    const isOn = String(btn.dataset.pie || '').trim().toLowerCase() === dashboardGeneralPieMode;
+                    btn.classList.remove('btn-glass', 'btn-outline');
+                    btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
+                });
+            }
+
+            const title = document.getElementById('dash-general-pie-title');
+            if (title) {
+                title.textContent = dashboardGeneralPieMode === 'decade'
+                    ? 'Decade Share'
+                    : (dashboardGeneralPieMode === 'genre' ? 'Genre Share' : 'MPA Share');
+            }
+
+            renderDashboardGeneralSharePie();
+        }
+
         function syncDashboardChartsTabUI() {
             const t = String(dashboardChartsTab || '').trim().toLowerCase();
-            const allowed = new Set(['genre', 'decade', 'mpa', 'heatmap', 'activity']);
-            dashboardChartsTab = allowed.has(t) ? t : 'genre';
+            const allowed = new Set(['heatmap', 'activity']);
+            dashboardChartsTab = allowed.has(t) ? t : 'heatmap';
 
             const wrap = document.getElementById('dash-chart-tab-wrap');
             if (!wrap) return;
@@ -10016,6 +11052,24 @@
                 btn.classList.remove('btn-glass', 'btn-outline');
                 btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
             });
+        }
+
+        function syncDashboardRatingsChartUI() {
+            const t = String(dashboardRatingsChartTab || '').trim().toLowerCase();
+            const allowed = new Set(['genre', 'decade', 'mpa']);
+            dashboardRatingsChartTab = allowed.has(t) ? t : 'genre';
+
+            const wrap = document.getElementById('dash-ratings-chart-tab-wrap');
+            if (wrap) {
+                wrap.querySelectorAll('button[data-chart]').forEach((btn) => {
+                    const isOn = String(btn.dataset.chart || '').trim().toLowerCase() === dashboardRatingsChartTab;
+                    btn.classList.remove('btn-glass', 'btn-outline');
+                    btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
+                });
+            }
+
+            const title = document.getElementById('dash-ratings-chart-title');
+            if (title) title.textContent = dashRatingsChartTitleForTab(dashboardRatingsChartTab);
         }
 
         function setDashboardFavoritesMetric(metric) {
@@ -10049,14 +11103,31 @@
             syncDashboardFavoritesLimitUI();
 
             if (dashboardActiveTab === 'favorites') {
-                setDashboardTab('favorites');
+                loadDashboardFavorites();
             }
+        }
+
+        function setDashboardGeneralMode(mode) {
+            const m = String(mode || '').trim().toLowerCase();
+            const allowed = new Set(['total', 'unique']);
+            dashboardGeneralMode = allowed.has(m) ? m : 'total';
+            syncDashboardGeneralModeUI();
+
+            if (dashboardActiveTab === 'general') {
+                loadDashboardGeneral();
+            }
+        }
+
+        function setDashboardGeneralPieMode(mode) {
+            const m = String(mode || '').trim().toLowerCase();
+            dashboardGeneralPieMode = (m === 'decade' || m === 'genre') ? m : 'mpa';
+            syncDashboardGeneralPieUI();
         }
 
         function setDashboardChartsTab(chart) {
             const t = String(chart || '').trim().toLowerCase();
-            const allowed = new Set(['genre', 'decade', 'mpa', 'heatmap', 'activity']);
-            dashboardChartsTab = allowed.has(t) ? t : 'genre';
+            const allowed = new Set(['heatmap', 'activity']);
+            dashboardChartsTab = allowed.has(t) ? t : 'heatmap';
             syncDashboardChartsTabUI();
 
             if (dashboardActiveTab === 'charts') {
@@ -10064,6 +11135,21 @@
                     renderDashboardChartsFromData(dashboardChartsLastData);
                 } else {
                     loadDashboardCharts();
+                }
+            }
+        }
+
+        function setDashboardRatingsChartTab(chart) {
+            const t = String(chart || '').trim().toLowerCase();
+            const allowed = new Set(['genre', 'decade', 'mpa']);
+            dashboardRatingsChartTab = allowed.has(t) ? t : 'genre';
+            syncDashboardRatingsChartUI();
+
+            if (dashboardActiveTab === 'ratings') {
+                if (dashboardRatingsChartsLastData) {
+                    renderDashboardRatingsChartsFromData(dashboardRatingsChartsLastData);
+                } else {
+                    loadDashboardRatings();
                 }
             }
         }
@@ -10123,8 +11209,8 @@
             const paneCharts = document.getElementById('dash-pane-charts');
             const paneQuotes = document.getElementById('dash-pane-quotes');
             const favMetricPanel = document.getElementById('dash-fav-metric-panel');
-            const favLimitPanel = document.getElementById('dash-fav-limit-panel');
             const chartTabPanel = document.getElementById('dash-chart-tab-panel');
+            const generalModePanel = document.getElementById('dash-general-mode-panel');
             if (!tabGeneral || !tabRatings || !tabTiers || !tabFavorites || !tabCharts || !tabQuotes || !paneGeneral || !paneRatings || !paneTiers || !paneFavorites || !paneCharts || !paneQuotes) return;
 
             const activate = (btn, on) => {
@@ -10158,17 +11244,21 @@
                 if (t === 'favorites') favMetricPanel.classList.remove('hidden');
                 else favMetricPanel.classList.add('hidden');
             }
-            if (favLimitPanel) {
-                if (t === 'favorites') favLimitPanel.classList.remove('hidden');
-                else favLimitPanel.classList.add('hidden');
-            }
             if (chartTabPanel) {
                 if (t === 'charts') chartTabPanel.classList.remove('hidden');
                 else chartTabPanel.classList.add('hidden');
             }
+            if (generalModePanel) {
+                if (t === 'general') generalModePanel.classList.remove('hidden');
+                else generalModePanel.classList.add('hidden');
+            }
 
             if (t === 'charts') {
                 syncDashboardChartsTabUI();
+            }
+            if (t === 'general') {
+                syncDashboardGeneralModeUI();
+                syncDashboardGeneralPieUI();
             }
 
             if (t === 'general') {
@@ -10355,7 +11445,7 @@
         function dashChartFormatPct(n) {
             const num = Number(n);
             if (!Number.isFinite(num)) return '—';
-            return `${Math.round(num)}%`;
+            return `${(Math.round(num * 10) / 10).toFixed(1)}%`;
         }
 
         function dashChartFormatCount(n) {
@@ -10372,41 +11462,6 @@
                 if (Number.isFinite(count) && count > maxCount) maxCount = count;
             });
             return maxCount;
-        }
-
-        function dashRenderChartBars(items, { labelKey, valueKey, labelTransform, showRank = false, valueFormatter, clickType = '' }) {
-            const rows = Array.isArray(items) ? items : [];
-            if (!rows.length) return `<div class="text-gray">No data yet.</div>`;
-            return rows.map((r, idx) => {
-                const rawLabel = String(r?.[labelKey] ?? '').trim();
-                const label = labelTransform ? labelTransform(rawLabel, r) : rawLabel;
-                const val = Number(r?.[valueKey]);
-                const pct = Number.isFinite(val) ? Math.max(0, Math.min(100, val)) : 0;
-                const valueOut = valueFormatter ? valueFormatter(val, r) : dashChartFormatPct(val);
-                const valueText = (valueOut && typeof valueOut === 'object')
-                    ? {
-                        primary: String(valueOut.primary ?? '').trim(),
-                        secondary: String(valueOut.secondary ?? '').trim(),
-                    }
-                    : String(valueOut ?? '').trim();
-                const rowClass = showRank ? 'dash-chart-row has-rank' : 'dash-chart-row';
-                const clickEnabled = clickType ? 'is-clickable' : '';
-                const clickVal = clickType === 'decade'
-                    ? String(r?.decade ?? '')
-                    : String(label || '').trim();
-                return `
-                    <div class="${rowClass} ${clickEnabled}" data-chart-filter-type="${escapeHtml(clickType)}" data-chart-filter-value="${escapeHtml(clickVal)}">
-                        ${showRank ? `<div class=\"dash-chart-rank\">${idx + 1}</div>` : ''}
-                        <div class="dash-chart-label">${escapeHtml(label || '—')}</div>
-                        <div class="dash-chart-bar"><div class="dash-chart-fill" style="--bar-width:${pct}%;"></div></div>
-                        <div class="dash-chart-value">
-                            ${typeof valueText === 'string'
-                                ? escapeHtml(valueText)
-                                : `${escapeHtml(valueText.primary)} <span class=\"dash-chart-value-count\">${escapeHtml(valueText.secondary)}</span>`}
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
         function dashRenderActivityHeatmap(items, timeframe, maxCountOverride) {
@@ -10604,7 +11659,7 @@
             };
         }
 
-        function dashGenreHeatmapCellStyle(avg, minAvg, maxAvg) {
+        function dashGenreHeatmapCellClass(avg, minAvg, maxAvg) {
             const val = Number(avg);
             if (!Number.isFinite(val)) return '';
             let min = Number.isFinite(minAvg) ? minAvg : 0;
@@ -10614,15 +11669,8 @@
                 max = 100;
             }
             const norm = Math.max(0, Math.min(1, (val - min) / (max - min)));
-            const lightness = 88 - (norm * 48);
-            const borderLight = Math.max(22, lightness - 10);
-            const theme = dashGetHeatmapHslVars();
-            const h = Number.isFinite(theme.h) ? theme.h : 156;
-            const s = Number.isFinite(theme.s) ? theme.s : 55;
-            const bg = `hsl(${h}, ${s}%, ${lightness}%)`;
-            const border = `hsla(${h}, ${s}%, ${borderLight}%, 0.9)`;
-            const color = lightness < 55 ? '#fff' : '#0b1f17';
-            return `background:${bg}; border-color:${border}; color:${color};`;
+            const level = Math.min(10, Math.max(1, Math.ceil(norm * 10)));
+            return `dash-heatmap-l${level}`;
         }
 
         function dashRenderGenreHeatmap(items) {
@@ -10669,11 +11717,11 @@
 
             if (!decades.length || !genres.length) return `<div class="text-gray">No data yet.</div>`;
 
-            const gridTemplate = `minmax(150px, 1.2fr) repeat(${decades.length}, minmax(64px, 1fr))`;
+            const gridTemplate = `minmax(120px, 1fr) repeat(${decades.length}, minmax(52px, 1fr))`;
             const header = `
                 <div class="dash-genre-heatmap-header" style="grid-template-columns: ${gridTemplate};">
-                    <div class="dash-genre-heatmap-label">Genre</div>
-                    ${decades.map((d) => `<div class="dash-genre-heatmap-cell is-empty">${escapeHtml(String(d))}s</div>`).join('')}
+                    <div></div>
+                    ${decades.map((d) => `<div class="dash-genre-heatmap-decade">${escapeHtml(String(d))}s</div>`).join('')}
                 </div>
             `;
 
@@ -10685,10 +11733,10 @@
                     }
                     const avg = Number(cell.avg);
                     const n = Number(cell.n ?? 0);
-                    const style = dashGenreHeatmapCellStyle(avg, minAvg, maxAvg);
+                    const levelClass = dashGenreHeatmapCellClass(avg, minAvg, maxAvg);
                     const title = `${genre} • ${decade}s • ${dashChartFormatPct(avg)} • ${dashChartFormatCount(n)}`;
                     return `
-                        <div class="dash-genre-heatmap-cell" style="${style}" title="${escapeHtml(title)}">
+                        <div class="dash-genre-heatmap-cell ${escapeHtml(levelClass)}" title="${escapeHtml(title)}">
                             <span class="dash-genre-heatmap-value">${escapeHtml(dashChartFormatPct(avg))}</span>
                         </div>
                     `;
@@ -10713,21 +11761,17 @@
         }
 
 
-        function dashAnimateChartBars(container) {
-            if (!container) return;
-            requestAnimationFrame(() => {
-                container.querySelectorAll('.dash-chart-fill').forEach((el) => {
-                    el.classList.add('is-on');
-                });
-            });
+        function dashChartTitleForTab(tab) {
+            const t = String(tab || '').trim().toLowerCase();
+            if (t === 'heatmap') return 'Genre/Decade Heatmap';
+            if (t === 'activity') return 'Watch Activity Calendar';
+            return 'Genre/Decade Heatmap';
         }
 
-        function dashChartTitleForTab(tab) {
+        function dashRatingsChartTitleForTab(tab) {
             const t = String(tab || '').trim().toLowerCase();
             if (t === 'decade') return 'Average Rating by Decade';
             if (t === 'mpa') return 'Average Rating by MPA';
-            if (t === 'heatmap') return 'Genre Heatmap';
-            if (t === 'activity') return 'Watch Activity Calendar';
             return 'Average Rating by Genre';
         }
 
@@ -10737,69 +11781,99 @@
             if (!elTitle || !elBody) return;
 
             const payload = data || {};
-            const genres = Array.isArray(payload?.genres) ? payload.genres : [];
-            const decades = Array.isArray(payload?.decades) ? payload.decades : [];
-            const mpa = Array.isArray(payload?.mpa) ? payload.mpa : [];
             const genreHeatmap = Array.isArray(payload?.genre_heatmap) ? payload.genre_heatmap : [];
             const activity = Array.isArray(payload?.activity) ? payload.activity : [];
-            const activityGrain = String(payload?.activity_grain ?? '').trim();
 
             const tab = String(dashboardChartsTab || '').trim().toLowerCase();
-
-            if (tab === 'decade') {
-                elTitle.textContent = 'Average Rating by Decade';
-                elBody.innerHTML = `<div class="dash-chart-scroll">${dashRenderChartBars(decades, {
-                    labelKey: 'decade',
-                    valueKey: 'avg',
-                    labelTransform: (label) => label ? `${label}s` : '—',
-                    valueFormatter: (val, r) => ({
-                        primary: dashChartFormatPct(val),
-                        secondary: dashChartFormatCount(r?.n),
-                    }),
-                    clickType: 'decade',
-                })}</div>`;
-                dashAnimateChartBars(elBody);
-                return;
-            }
 
             if (tab === 'activity') {
                 elTitle.textContent = 'Watch Activity Calendar';
                 elBody.innerHTML = dashRenderActivityHeatmap(activity, dashboardTimeframe, dashboardChartsActivityMax);
                 return;
             }
+            elTitle.textContent = 'Genre/Decade Heatmap';
+            elBody.innerHTML = dashRenderGenreHeatmap(genreHeatmap);
+        }
+
+        function renderDashboardRatingsChartsFromData(data) {
+            const elTitle = document.getElementById('dash-ratings-chart-title');
+            const elBody = document.getElementById('dash-ratings-genre-bars');
+            if (!elTitle || !elBody) return;
+
+            const payload = data || {};
+            const genres = Array.isArray(payload?.genres) ? payload.genres : [];
+            const decades = Array.isArray(payload?.decades) ? payload.decades : [];
+            const mpa = Array.isArray(payload?.mpa) ? payload.mpa : [];
+
+            const tab = String(dashboardRatingsChartTab || '').trim().toLowerCase();
+            elTitle.textContent = dashRatingsChartTitleForTab(tab);
+
+            if (tab === 'decade') {
+                const items = decades.map((r) => ({
+                    label: r?.decade !== null && r?.decade !== undefined ? `${String(r.decade)}s` : '—',
+                    avg: Number(r?.avg ?? 0),
+                    n: Number(r?.n ?? 0),
+                }));
+                elBody.innerHTML = dashRenderVerticalBars({
+                    items,
+                    labelKey: 'label',
+                    valueKey: 'avg',
+                    countKey: 'n',
+                });
+                return;
+            }
 
             if (tab === 'mpa') {
-                elTitle.textContent = 'Average Rating by MPA';
-                elBody.innerHTML = `<div class="dash-chart-scroll">${dashRenderChartBars(mpa, {
-                    labelKey: 'mpa',
+                const items = mpa.map((r) => ({
+                    label: r?.mpa ?? '—',
+                    avg: Number(r?.avg ?? 0),
+                    n: Number(r?.n ?? 0),
+                }));
+                elBody.innerHTML = dashRenderVerticalBars({
+                    items,
+                    labelKey: 'label',
                     valueKey: 'avg',
-                    valueFormatter: (val, r) => ({
-                        primary: dashChartFormatPct(val),
-                        secondary: dashChartFormatCount(r?.n),
-                    }),
-                })}</div>`;
-                dashAnimateChartBars(elBody);
+                    countKey: 'n',
+                });
                 return;
             }
 
-            if (tab === 'heatmap') {
-                elTitle.textContent = 'Genre Heatmap';
-                elBody.innerHTML = dashRenderGenreHeatmap(genreHeatmap);
-                return;
-            }
-
-            elTitle.textContent = 'Average Rating by Genre';
-            elBody.innerHTML = `<div class="dash-chart-scroll">${dashRenderChartBars(genres, {
-                labelKey: 'genre',
+            const allItems = genres.map((r) => ({
+                label: r?.genre ?? '—',
+                avg: Number(r?.avg ?? 0),
+                n: Number(r?.n ?? 0),
+            }));
+            const limit = 10;
+            const showAll = Boolean(dashboardRatingsShowAllGenres);
+            const items = showAll ? allItems : allItems.slice(0, limit);
+            const showToggle = allItems.length > limit;
+            const toggleLabel = showAll ? 'Show Top 10' : 'Show All';
+            const barsHtml = dashRenderVerticalBars({
+                items,
+                labelKey: 'label',
                 valueKey: 'avg',
-                showRank: true,
-                valueFormatter: (val, r) => ({
-                    primary: dashChartFormatPct(val),
-                    secondary: dashChartFormatCount(r?.n),
-                }),
-                clickType: 'genre',
-            })}</div>`;
-            dashAnimateChartBars(elBody);
+                countKey: 'n',
+            });
+            elBody.innerHTML = `
+                <div>
+                    ${showToggle ? `
+                        <div class="dash-genre-bars-toggle">
+                            <button type="button" class="btn btn-outline" id="dash-ratings-genre-toggle" style="padding: 0.35rem 0.65rem; border-radius: 0.7rem;">${toggleLabel}</button>
+                        </div>
+                    ` : ''}
+                    ${barsHtml}
+                </div>
+            `;
+            if (showToggle) {
+                const btn = elBody.querySelector('#dash-ratings-genre-toggle');
+                if (btn && !btn.dataset.bound) {
+                    btn.dataset.bound = 'true';
+                    btn.addEventListener('click', () => {
+                        dashboardRatingsShowAllGenres = !dashboardRatingsShowAllGenres;
+                        renderDashboardRatingsChartsFromData(dashboardRatingsChartsLastData || data);
+                    });
+                }
+            }
         }
 
         async function loadDashboardCharts() {
@@ -11168,7 +12242,7 @@
                             const bg = tierColorBg[t] || 'rgba(255,255,255,0.10)';
                             return `
                                 <div style="width: 100%; min-width: 120px; display:flex; flex-direction: column; gap: 10px; align-items: center;">
-                                    <div class="text-xs text-gray tabular-nums" style="height: 16px;">${pct.toFixed(1)}%</div>
+                                    <div class="text-sm text-gray tabular-nums" style="height: 18px;">${pct.toFixed(1)}%</div>
                                     <div style="height: 320px; width: 100%; background: rgba(255,255,255,0.06); border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; display:flex; align-items: flex-end;">
                                         <div style="height: ${h}%; width: 100%; background: ${bg}; display:flex; align-items: flex-end;">
                                             <div style="height: 100%; width: 100%; background: ${fill}; opacity: 0.92;"></div>
@@ -11289,31 +12363,28 @@
         }
 
         async function loadDashboardRatings() {
-            const elAvgOverall = document.getElementById('dash-ratings-avg-overall');
-            const elAvgImdbDiff = document.getElementById('dash-ratings-avg-imdb-diff');
-
-            const elTopGenre = document.getElementById('dash-ratings-top-genre');
-            const elTopGenreAvg = document.getElementById('dash-ratings-top-genre-avg');
-            const elTopGenreN = document.getElementById('dash-ratings-top-genre-n');
-            const elBottomGenre = document.getElementById('dash-ratings-bottom-genre');
-            const elBottomGenreAvg = document.getElementById('dash-ratings-bottom-genre-avg');
-            const elBottomGenreN = document.getElementById('dash-ratings-bottom-genre-n');
+            const elGenreBars = document.getElementById('dash-ratings-genre-bars');
+            const elGenreMeta = document.getElementById('dash-ratings-genre-meta');
+            const elAvgGrid = document.getElementById('dash-ratings-avg-grid');
 
             const elTopDirector = document.getElementById('dash-ratings-top-director');
-            const elTopDirectorAvg = document.getElementById('dash-ratings-top-director-avg');
-            const elTopDirectorN = document.getElementById('dash-ratings-top-director-n');
+            const elTopDirectorMeta = document.getElementById('dash-ratings-top-director-meta');
+            const elTopDirectorAvatar = document.getElementById('dash-ratings-top-director-avatar');
 
             const elBottomDirector = document.getElementById('dash-ratings-bottom-director');
-            const elBottomDirectorAvg = document.getElementById('dash-ratings-bottom-director-avg');
-            const elBottomDirectorN = document.getElementById('dash-ratings-bottom-director-n');
+            const elBottomDirectorMeta = document.getElementById('dash-ratings-bottom-director-meta');
+            const elBottomDirectorAvatar = document.getElementById('dash-ratings-bottom-director-avatar');
 
             const required = [
-                elAvgOverall,
-                elAvgImdbDiff,
-                elTopGenre, elTopGenreAvg, elTopGenreN,
-                elBottomGenre, elBottomGenreAvg, elBottomGenreN,
-                elTopDirector, elTopDirectorAvg, elTopDirectorN,
-                elBottomDirector, elBottomDirectorAvg, elBottomDirectorN,
+                elGenreBars,
+                elGenreMeta,
+                elAvgGrid,
+                elTopDirector,
+                elTopDirectorMeta,
+                elTopDirectorAvatar,
+                elBottomDirector,
+                elBottomDirectorMeta,
+                elBottomDirectorAvatar,
             ];
             if (required.some(x => !x)) return;
 
@@ -11325,21 +12396,62 @@
                 authedUser = null;
             }
 
-            const setAll = (v) => {
-                elAvgOverall.textContent = v;
-                elAvgImdbDiff.textContent = v;
-                elTopGenre.textContent = v;
-                elTopGenreAvg.textContent = v;
-                elTopGenreN.textContent = v;
-                elBottomGenre.textContent = v;
-                elBottomGenreAvg.textContent = v;
-                elBottomGenreN.textContent = v;
-                elTopDirector.textContent = v;
-                elTopDirectorAvg.textContent = v;
-                elTopDirectorN.textContent = v;
-                elBottomDirector.textContent = v;
-                elBottomDirectorAvg.textContent = v;
-                elBottomDirectorN.textContent = v;
+            const setAvatar = (imgEl, url) => {
+                if (!imgEl) return;
+                const wrap = imgEl.closest('.dash-person-poster');
+                if (!url) {
+                    imgEl.removeAttribute('src');
+                    if (wrap) wrap.classList.add('is-empty');
+                    return;
+                }
+                imgEl.src = url;
+                if (wrap) wrap.classList.remove('is-empty');
+            };
+
+            const formatPct = (value) => {
+                const raw = Number(value);
+                if (!Number.isFinite(raw)) return '—';
+                const fixed = raw.toFixed(1);
+                const trimmed = fixed.endsWith('.0') ? fixed.slice(0, -2) : fixed;
+                return `${trimmed}%`;
+            };
+            const formatPctFixed = (value, decimals = 1) => {
+                const raw = Number(value);
+                if (!Number.isFinite(raw)) return '—';
+                return `${raw.toFixed(decimals)}%`;
+            };
+
+            const renderAvgGrid = (items) => {
+                const rows = Array.isArray(items) ? items : [];
+                if (!rows.length) {
+                    elAvgGrid.innerHTML = `<div class="text-gray">No ratings yet.</div>`;
+                    return;
+                }
+                const [overall, ...rest] = rows;
+                const renderTile = (r) => `
+                    <div class="dash-ratings-avg-tile">
+                        <div class="dash-ratings-avg-label">${escapeHtml(String(r.label || ''))}</div>
+                        <div class="dash-ratings-avg-row">
+                            <div class="dash-ratings-avg-value tabular-nums">${escapeHtml(r.value || '—')}</div>
+                            <div class="dash-ratings-avg-sub">${escapeHtml(String(r.sub || ''))}</div>
+                        </div>
+                        ${r.note ? `<div class="dash-ratings-avg-sub">${escapeHtml(String(r.note || ''))}</div>` : ''}
+                    </div>
+                `;
+
+                const mainTile = overall ? renderTile(overall) : '';
+                const subTiles = rest.map(renderTile).join('');
+
+                elAvgGrid.innerHTML = `
+                    <div class="dash-ratings-avg-layout">
+                        <div class="dash-ratings-avg-main">
+                            ${mainTile}
+                        </div>
+                        <div class="dash-ratings-avg-subgrid">
+                            ${subTiles}
+                        </div>
+                    </div>
+                `;
             };
 
             if (!supabaseClient || !authedUser?.id) {
@@ -11347,11 +12459,27 @@
                     dashboardAuthWarned = true;
                     showToast('Log in to view your dashboard stats.', { level: 'warn' });
                 }
-                setAll('—');
+                elGenreBars.innerHTML = `<div class="text-gray">Log in to view ratings.</div>`;
+                elAvgGrid.innerHTML = `<div class="text-gray">Log in to view ratings.</div>`;
+                elTopDirector.textContent = '—';
+                elTopDirectorMeta.innerHTML = '&nbsp;';
+                elBottomDirector.textContent = '—';
+                elBottomDirectorMeta.innerHTML = '&nbsp;';
+                setAvatar(elTopDirectorAvatar, null);
+                setAvatar(elBottomDirectorAvatar, null);
                 return;
             }
 
-            setAll('…');
+            syncDashboardRatingsChartUI();
+
+            elGenreBars.innerHTML = `<div class="text-gray">Loading…</div>`;
+            elAvgGrid.innerHTML = `<div class="text-gray">Loading…</div>`;
+            elTopDirector.textContent = '…';
+            elTopDirectorMeta.textContent = '…';
+            elBottomDirector.textContent = '…';
+            elBottomDirectorMeta.textContent = '…';
+            setAvatar(elTopDirectorAvatar, null);
+            setAvatar(elBottomDirectorAvatar, null);
 
             try {
                 let res = await supabaseClient.rpc('get_dashboard_ratings', { p_timeframe: dashboardTimeframe });
@@ -11361,114 +12489,332 @@
                     if (looksLikeOldSignature) res = await supabaseClient.rpc('get_dashboard_ratings');
                 }
                 if (res?.error) throw res.error;
-                const data = res?.data;
-
-                const formatScore = (n) => {
-                    if (!Number.isFinite(n)) return '0';
-                    const rounded = Math.round(n * 10) / 10;
-                    if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return String(Math.round(rounded));
-                    return rounded.toFixed(1);
-                };
+                const data = res?.data || {};
+                dashboardRatingsLastData = data;
 
                 const ratedCount = Number(data?.rated_movies_count ?? 0);
-                const avgOverall = Number(data?.avg_overall_rating ?? 0);
-                const avgImdbDiff = Number(data?.avg_abs_imdb_diff ?? 0);
+                const avgOverall = formatPct(data?.avg_overall_rating);
+                const avgSound = formatPct(data?.avg_sound_rating);
+                const avgPlot = formatPct(data?.avg_plot_rating);
+                const avgPace = formatPct(data?.avg_pacing_rating);
+                const avgActing = formatPct(data?.avg_acting_rating);
+                const avgImagery = formatPct(data?.avg_imagery_rating);
+                const avgDialogue = formatPct(data?.avg_dialogue_rating);
+                const avgImdbDiff = formatPctFixed(data?.avg_imdb_diff ?? data?.avg_imdb_diff_rating ?? data?.avg_abs_imdb_diff, 1);
 
-                const topGenre = data?.highest_rated_genre || {};
-                const topGenreName = String(topGenre?.name ?? '').trim();
-                const topGenreAvg = Number(topGenre?.avg_overall ?? 0);
-                const topGenreN = Number(topGenre?.n ?? 0);
+                const avgItems = [
+                    { label: 'Overall', value: avgOverall, sub: 'Avg', note: avgImdbDiff !== '—' ? `${avgImdbDiff} Avg ABS Diff to IMDb` : '' },
+                    { label: 'Sound', value: avgSound, sub: 'Avg' },
+                    { label: 'Plot', value: avgPlot, sub: 'Avg' },
+                    { label: 'Pace', value: avgPace, sub: 'Avg' },
+                    { label: 'Acting', value: avgActing, sub: 'Avg' },
+                    { label: 'Imagery', value: avgImagery, sub: 'Avg' },
+                    { label: 'Dialogue', value: avgDialogue, sub: 'Avg' },
+                ];
+                renderAvgGrid(avgItems);
 
-                const bottomGenre = data?.lowest_rated_genre || {};
-                const bottomGenreName = String(bottomGenre?.name ?? '').trim();
-                const bottomGenreAvg = Number(bottomGenre?.avg_overall ?? 0);
-                const bottomGenreN = Number(bottomGenre?.n ?? 0);
+                let chartsData = null;
+                if (dashboardRatingsChartsLastData && String(dashboardRatingsChartsLastData?.timeframe || '') === String(dashboardTimeframe || '')) {
+                    chartsData = dashboardRatingsChartsLastData;
+                } else if (dashboardChartsLastData && String(dashboardChartsLastData?.timeframe || '') === String(dashboardTimeframe || '')) {
+                    chartsData = dashboardChartsLastData;
+                } else {
+                    const chartsRes = await supabaseClient.rpc('get_dashboard_charts', { p_timeframe: dashboardTimeframe });
+                    if (!chartsRes?.error) {
+                        chartsData = chartsRes?.data || null;
+                        dashboardChartsLastData = chartsData;
+                        dashboardRatingsChartsLastData = chartsData;
+                    }
+                }
+
+                if (chartsData) {
+                    dashboardRatingsChartsLastData = chartsData;
+                    renderDashboardRatingsChartsFromData(chartsData);
+                } else {
+                    elGenreBars.innerHTML = `<div class="text-gray">No rated genres yet.</div>`;
+                }
+                const tfLabel = (() => {
+                    const tf = String(dashboardTimeframe || '').trim().toLowerCase();
+                    if (tf === 'this_year') return 'This Year';
+                    if (tf === 'this_month') return 'This Month';
+                    return 'All Time';
+                })();
+                elGenreMeta.textContent = `${ratedCount} rated movie${ratedCount === 1 ? '' : 's'} • ${tfLabel}`;
 
                 const topDirector = data?.highest_rated_director || {};
-                const topDirectorName = String(topDirector?.name ?? '').trim();
-                const topDirectorAvg = Number(topDirector?.avg_overall ?? 0);
-                const topDirectorN = Number(topDirector?.n ?? 0);
-
                 const bottomDirector = data?.lowest_rated_director || {};
-                const bottomDirectorName = String(bottomDirector?.name ?? '').trim();
-                const bottomDirectorAvg = Number(bottomDirector?.avg_overall ?? 0);
-                const bottomDirectorN = Number(bottomDirector?.n ?? 0);
 
-                // Any KPI that represents a rating shows as a percentage.
-                elAvgOverall.textContent = `${formatScore(avgOverall)}%`;
-                elAvgImdbDiff.textContent = `${formatScore(avgImdbDiff)}% points`;
-
-                elTopGenre.textContent = topGenreName || '—';
-                elTopGenreAvg.textContent = `${formatScore(topGenreAvg)}%`;
-                elTopGenreN.textContent = Number.isFinite(topGenreN) ? String(topGenreN) : '0';
-
-                elBottomGenre.textContent = bottomGenreName || '—';
-                elBottomGenreAvg.textContent = `${formatScore(bottomGenreAvg)}%`;
-                elBottomGenreN.textContent = Number.isFinite(bottomGenreN) ? String(bottomGenreN) : '0';
-
+                const topDirectorName = String(topDirector?.name ?? '').trim();
+                const topDirectorAvg = formatPct(topDirector?.avg_overall);
+                const topDirectorN = Number(topDirector?.n ?? 0);
                 elTopDirector.textContent = topDirectorName || '—';
-                elTopDirectorAvg.textContent = `${formatScore(topDirectorAvg)}%`;
-                elTopDirectorN.textContent = Number.isFinite(topDirectorN) ? String(topDirectorN) : '0';
+                elTopDirectorMeta.textContent = topDirectorName
+                    ? `${topDirectorAvg} Overall • ${topDirectorN} movie${topDirectorN === 1 ? '' : 's'}`
+                    : '—';
 
+                const bottomDirectorName = String(bottomDirector?.name ?? '').trim();
+                const bottomDirectorAvg = formatPct(bottomDirector?.avg_overall);
+                const bottomDirectorN = Number(bottomDirector?.n ?? 0);
                 elBottomDirector.textContent = bottomDirectorName || '—';
-                elBottomDirectorAvg.textContent = `${formatScore(bottomDirectorAvg)}%`;
-                elBottomDirectorN.textContent = Number.isFinite(bottomDirectorN) ? String(bottomDirectorN) : '0';
+                elBottomDirectorMeta.textContent = bottomDirectorName
+                    ? `${bottomDirectorAvg} Overall • ${bottomDirectorN} movie${bottomDirectorN === 1 ? '' : 's'}`
+                    : '—';
+
+                try {
+                    if (topDirectorName) {
+                        const profile = await dashFetchPersonProfile({
+                            name: topDirectorName,
+                            department: 'directing',
+                        });
+                        setAvatar(elTopDirectorAvatar, dashBuildPersonUrl(profile));
+                    }
+                    if (bottomDirectorName) {
+                        const profile = await dashFetchPersonProfile({
+                            name: bottomDirectorName,
+                            department: 'directing',
+                        });
+                        setAvatar(elBottomDirectorAvatar, dashBuildPersonUrl(profile));
+                    }
+                } catch (_) {
+                    setAvatar(elTopDirectorAvatar, null);
+                    setAvatar(elBottomDirectorAvatar, null);
+                }
             } catch (err) {
                 showToast(`Dashboard (Ratings) failed: ${String(err?.message || err)}`, { level: 'warn' });
                 emitLog('error', 'Dashboard ratings load failed', err);
-                setAll('—');
+                elGenreBars.innerHTML = `<div class="text-gray">Unable to load ratings right now.</div>`;
+                elAvgGrid.innerHTML = `<div class="text-gray">Unable to load ratings right now.</div>`;
+                elTopDirector.textContent = '—';
+                elTopDirectorMeta.innerHTML = '&nbsp;';
+                elBottomDirector.textContent = '—';
+                elBottomDirectorMeta.innerHTML = '&nbsp;';
+                setAvatar(elTopDirectorAvatar, null);
+                setAvatar(elBottomDirectorAvatar, null);
             }
+        }
+
+        function dashSetInlineBar(el, value, maxValue) {
+            if (!el) return;
+            const val = Number(value);
+            const max = Number(maxValue);
+            if (!Number.isFinite(val) || !Number.isFinite(max) || max <= 0 || val <= 0) {
+                el.style.width = '0%';
+                return;
+            }
+            const pct = Math.max(0, Math.min(100, (val / max) * 100));
+            el.style.width = `${pct}%`;
+        }
+
+        function dashSetVerticalBar(el, value, maxValue) {
+            if (!el) return;
+            const val = Number(value);
+            const max = Number(maxValue);
+            if (!Number.isFinite(val) || !Number.isFinite(max) || max <= 0 || val <= 0) {
+                el.style.height = '0%';
+                return;
+            }
+            const pct = Math.max(0, Math.min(100, (val / max) * 100));
+            const minPct = 6;
+            el.style.height = `${Math.max(minPct, pct)}%`;
+        }
+
+        function dashSetStackBar(elA, elB, aValue, bValue) {
+            if (!elA || !elB) return;
+            const a = Number(aValue);
+            const b = Number(bValue);
+            const total = (Number.isFinite(a) ? a : 0) + (Number.isFinite(b) ? b : 0);
+            if (!Number.isFinite(total) || total <= 0) {
+                elA.style.height = '0%';
+                elB.style.height = '0%';
+                return;
+            }
+            const aPct = Math.max(0, Math.min(100, (a / total) * 100));
+            const bPct = Math.max(0, Math.min(100, (b / total) * 100));
+            const minPct = 4;
+            elA.style.height = `${Math.max(aPct > 0 ? minPct : 0, aPct)}%`;
+            elB.style.height = `${Math.max(bPct > 0 ? minPct : 0, bPct)}%`;
+        }
+
+        function dashBuildPalette(count) {
+            const total = Math.max(1, Number(count) || 1);
+            const style = getComputedStyle(document.documentElement);
+            const baseColors = [
+                String(style.getPropertyValue('--brand') || '').trim() || '#4e79a7',
+                String(style.getPropertyValue('--accent-2') || '').trim() || '#f28e2b',
+                String(style.getPropertyValue('--brand-2') || '').trim() || '#76b7b2',
+            ];
+            const shadeSteps = [85, 70, 55, 40];
+            return Array.from({ length: total }, (_, i) => {
+                const base = baseColors[i % baseColors.length];
+                const shade = shadeSteps[Math.floor(i / baseColors.length) % shadeSteps.length];
+                return `color-mix(in srgb, ${base} ${shade}%, white)`;
+            });
+        }
+
+        function dashRenderPieChart({ el, legendEl, items, labelKey, valueKey, maxSlices = 999 }) {
+            if (!el || !legendEl) return;
+            if (legendEl.classList) {
+                const wantsCompact = legendEl.id === 'dash-general-genre-legend' || legendEl.dataset.compact === 'true';
+                legendEl.classList.toggle('compact', wantsCompact);
+            }
+            const rows = Array.isArray(items) ? items : [];
+            const clean = rows
+                .map((r) => ({
+                    label: String(r?.[labelKey] ?? '').trim(),
+                    value: Number(r?.[valueKey] ?? 0),
+                }))
+                .filter((r) => r.label && Number.isFinite(r.value) && r.value > 0)
+                .sort((a, b) => b.value - a.value);
+
+            if (!clean.length) {
+                el.style.background = 'conic-gradient(rgba(255,255,255,0.08) 0deg 360deg)';
+                legendEl.innerHTML = `<div class="text-gray">No data yet.</div>`;
+                return;
+            }
+
+            const sliceCount = Math.max(1, Math.min(maxSlices, clean.length));
+            const top = clean.slice(0, sliceCount);
+            const legendCols = top.length <= 6 ? 1 : Math.ceil(top.length / 6);
+            legendEl.style.setProperty('--legend-cols', String(legendCols));
+
+            const total = top.reduce((sum, r) => sum + r.value, 0);
+            const colors = dashBuildPalette(top.length);
+            let current = 0;
+            const stops = top.map((r, idx) => {
+                const portion = total > 0 ? (r.value / total) : 0;
+                const start = current;
+                const end = current + (portion * 360);
+                current = end;
+                return { start, end, color: colors[idx] };
+            });
+
+            const gradient = stops.map((s) => `${s.color} ${s.start.toFixed(1)}deg ${s.end.toFixed(1)}deg`).join(', ');
+            el.style.background = `conic-gradient(${gradient})`;
+
+            legendEl.innerHTML = top.map((r, idx) => {
+                const pct = total > 0 ? ((r.value / total) * 100) : 0;
+                const pctText = pct.toFixed(1);
+                return `
+                    <div class="dash-pie-legend-item">
+                        <span class="dash-pie-legend-label" title="${escapeHtml(r.label)}"><span class="dash-legend-dot" style="background:${colors[idx]}"></span>${escapeHtml(r.label)}</span>
+                        <span class="tabular-nums">${escapeHtml(pctText)}% (${escapeHtml(String(r.value))})</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderDashboardGeneralSharePie() {
+            const elPie = document.getElementById('dash-general-share-pie');
+            const elLegend = document.getElementById('dash-general-share-legend');
+            if (!elPie || !elLegend) return;
+
+            const rawMode = String(dashboardGeneralPieMode || '').trim().toLowerCase();
+            const mode = rawMode === 'decade' ? 'decade' : (rawMode === 'genre' ? 'genre' : 'mpa');
+            const data = dashboardGeneralPieData || {};
+            const items = mode === 'decade'
+                ? (data.decadeItems || [])
+                : (mode === 'genre' ? (data.genreItems || []) : (data.mpaItems || []));
+            elLegend.dataset.compact = mode === 'genre' ? 'true' : 'false';
+            dashRenderPieChart({
+                el: elPie,
+                legendEl: elLegend,
+                items,
+                labelKey: 'label',
+                valueKey: 'value',
+            });
+        }
+
+        function dashRenderVerticalBars({ items, labelKey, valueKey, countKey }) {
+            const rows = Array.isArray(items) ? items : [];
+            if (!rows.length) return `<div class="text-gray">No data yet.</div>`;
+            const max = rows.reduce((m, r) => Math.max(m, Number(r?.[valueKey]) || 0), 0) || 0;
+            const colors = dashBuildPalette(rows.length);
+            const scale = 0.8;
+            return `
+                <div class="dash-genre-bars">
+                    ${rows.map((r, idx) => {
+                        const label = String(r?.[labelKey] ?? '').trim();
+                        const val = Number(r?.[valueKey]) || 0;
+                        const pct = max > 0 ? ((val / max) * 100 * scale) : 0;
+                        const count = (countKey && r?.[countKey] !== undefined) ? Number(r[countKey]) : null;
+                        const valueText = `${Number(val).toFixed(1)}%`;
+                        const countText = Number.isFinite(count)
+                            ? `${count} movie${count === 1 ? '' : 's'}`
+                            : '';
+                        return `
+                            <div class="dash-genre-bar" title="${escapeHtml(label)}">
+                                <div class="dash-genre-bar-track">
+                                    <div class="dash-genre-bar-fill" style="height:${pct.toFixed(2)}%; background:${colors[idx]};">
+                                        <div class="dash-genre-bar-metrics tabular-nums">
+                                            <div>${escapeHtml(valueText)}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-genre-bar-label">${escapeHtml(label || '—')}</div>
+                                ${countText ? `<div class="dash-genre-bar-value tabular-nums">${escapeHtml(countText)}</div>` : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function dashSetDonut(el, aValue, bValue) {
+            if (!el) return;
+            const a = Number(aValue);
+            const b = Number(bValue);
+            const total = (Number.isFinite(a) ? a : 0) + (Number.isFinite(b) ? b : 0);
+            if (total <= 0) {
+                el.style.background = 'conic-gradient(rgba(255,255,255,0.08) 0deg 360deg)';
+                return;
+            }
+            const aDeg = Math.round((a / total) * 360);
+            const bDeg = Math.round((b / total) * 360);
+            const split = Math.min(360, Math.max(0, aDeg));
+            const end = Math.min(360, split + bDeg);
+            el.style.background = `conic-gradient(var(--brand) 0deg ${split}deg, var(--accent-2, var(--brand)) ${split}deg ${end}deg, rgba(255,255,255,0.08) ${end}deg 360deg)`;
         }
 
         async function loadDashboardGeneral() {
             const elEventsTotal = document.getElementById('dash-general-watch-events-total');
-            const elEventsUnique = document.getElementById('dash-general-watch-events-unique');
             const elHours = document.getElementById('dash-general-hours-watched');
-            const elHoursUnique = document.getElementById('dash-general-hours-watched-unique');
             const elAtHomeWatches = document.getElementById('dash-general-at-home-watches');
-            const elAtHomeMovies = document.getElementById('dash-general-at-home-movies');
             const elInTheaterWatches = document.getElementById('dash-general-in-theater-watches');
 
+            const elStackHome = document.getElementById('dash-general-stack-home');
+            const elStackTheater = document.getElementById('dash-general-stack-theater');
+
             const elTopGenreEvents = document.getElementById('dash-general-top-genre-events');
-            const elTopGenreUnique = document.getElementById('dash-general-top-genre-unique');
             const elTopGenreEventsCount = document.getElementById('dash-general-top-genre-events-count');
-            const elTopGenreUniqueCount = document.getElementById('dash-general-top-genre-unique-count');
 
             const elTopDirectorEvents = document.getElementById('dash-general-top-director-events');
-            const elTopDirectorUnique = document.getElementById('dash-general-top-director-unique');
             const elTopDirectorEventsCount = document.getElementById('dash-general-top-director-events-count');
-            const elTopDirectorUniqueCount = document.getElementById('dash-general-top-director-unique-count');
+            const elTopDirectorAvatar = document.getElementById('dash-general-top-director-avatar');
 
             const elTopActorEvents = document.getElementById('dash-general-top-actor-events');
-            const elTopActorUnique = document.getElementById('dash-general-top-actor-unique');
             const elTopActorEventsCount = document.getElementById('dash-general-top-actor-events-count');
-            const elTopActorUniqueCount = document.getElementById('dash-general-top-actor-unique-count');
+            const elTopActorAvatar = document.getElementById('dash-general-top-actor-avatar');
 
             const elTopDecadeEvents = document.getElementById('dash-general-top-decade-events');
-            const elTopDecadeUnique = document.getElementById('dash-general-top-decade-unique');
             const elTopDecadeEventsCount = document.getElementById('dash-general-top-decade-events-count');
-            const elTopDecadeUniqueCount = document.getElementById('dash-general-top-decade-unique-count');
-
-            const elTopMovie = document.getElementById('dash-general-top-movie');
-            const elTopMovieCount = document.getElementById('dash-general-top-movie-count');
+            const elTopMovieGrid = document.getElementById('dash-general-top-movie-grid');
 
             const elTopMpaEvents = document.getElementById('dash-general-top-mpa-events');
-            const elTopMpaUnique = document.getElementById('dash-general-top-mpa-unique');
             const elTopMpaEventsCount = document.getElementById('dash-general-top-mpa-events-count');
-            const elTopMpaUniqueCount = document.getElementById('dash-general-top-mpa-unique-count');
 
-            const required = [
-                elEventsTotal, elEventsUnique,
-                elHours, elHoursUnique,
-                elAtHomeWatches, elAtHomeMovies, elInTheaterWatches,
-                elTopGenreEvents, elTopGenreUnique, elTopGenreEventsCount, elTopGenreUniqueCount,
-                elTopDirectorEvents, elTopDirectorUnique, elTopDirectorEventsCount, elTopDirectorUniqueCount,
-                elTopActorEvents, elTopActorUnique, elTopActorEventsCount, elTopActorUniqueCount,
-                elTopDecadeEvents, elTopDecadeUnique, elTopDecadeEventsCount, elTopDecadeUniqueCount,
-                elTopMovie, elTopMovieCount,
-                elTopMpaEvents, elTopMpaUnique, elTopMpaEventsCount, elTopMpaUniqueCount,
-            ];
-            if (required.some(x => !x)) return;
+            const safeText = (el, v) => { if (el) el.textContent = v; };
+            const safeHtml = (el, v) => { if (el) el.innerHTML = v; };
+            const setAvatar = (imgEl, url) => {
+                if (!imgEl) return;
+                const wrap = imgEl.closest('.dash-person-poster');
+                if (!url) {
+                    imgEl.removeAttribute('src');
+                    if (wrap) wrap.classList.add('is-empty');
+                    return;
+                }
+                imgEl.src = url;
+                if (wrap) wrap.classList.remove('is-empty');
+            };
 
             // Require auth for dashboard.
             let authedUser = null;
@@ -11480,41 +12826,106 @@
             }
 
             const setAll = (v) => {
-                elEventsTotal.textContent = v;
-                elEventsUnique.textContent = v;
-                elHours.textContent = v;
-                elHoursUnique.textContent = v;
-                elAtHomeWatches.textContent = v;
-                elAtHomeMovies.textContent = v;
-                elInTheaterWatches.textContent = v;
-                elTopGenreEvents.textContent = v;
-                elTopGenreUnique.textContent = v;
-                elTopGenreEventsCount.innerHTML = '&nbsp;';
-                elTopGenreUniqueCount.innerHTML = '&nbsp;';
-                elTopDirectorEvents.textContent = v;
-                elTopDirectorUnique.textContent = v;
-                elTopDirectorEventsCount.innerHTML = '&nbsp;';
-                elTopDirectorUniqueCount.innerHTML = '&nbsp;';
-                elTopActorEvents.textContent = v;
-                elTopActorUnique.textContent = v;
-                elTopActorEventsCount.innerHTML = '&nbsp;';
-                elTopActorUniqueCount.innerHTML = '&nbsp;';
-                elTopDecadeEvents.textContent = v;
-                elTopDecadeUnique.textContent = v;
-                elTopDecadeEventsCount.innerHTML = '&nbsp;';
-                elTopDecadeUniqueCount.innerHTML = '&nbsp;';
-                elTopMovie.textContent = v;
-                elTopMovieCount.innerHTML = '&nbsp;';
-                elTopMpaEvents.textContent = v;
-                elTopMpaUnique.textContent = v;
-                elTopMpaEventsCount.innerHTML = '&nbsp;';
-                elTopMpaUniqueCount.innerHTML = '&nbsp;';
+                safeText(elEventsTotal, v);
+                safeText(elHours, v);
+                safeText(elAtHomeWatches, v);
+                safeText(elInTheaterWatches, v);
+                safeText(elTopGenreEvents, v);
+                safeHtml(elTopGenreEventsCount, '&nbsp;');
+                safeText(elTopDirectorEvents, v);
+                safeHtml(elTopDirectorEventsCount, '&nbsp;');
+                safeText(elTopActorEvents, v);
+                safeHtml(elTopActorEventsCount, '&nbsp;');
+                setAvatar(elTopDirectorAvatar, null);
+                setAvatar(elTopActorAvatar, null);
+                safeText(elTopDecadeEvents, v);
+                safeHtml(elTopDecadeEventsCount, '&nbsp;');
+                safeHtml(elTopMovieGrid, '<div class="text-gray">—</div>');
+                safeText(elTopMpaEvents, v);
+                safeHtml(elTopMpaEventsCount, '&nbsp;');
+                dashSetStackBar(elStackHome, elStackTheater, 0, 0);
+                dashboardGeneralPieData = { mpaItems: [], decadeItems: [], genreItems: [] };
+                renderDashboardGeneralSharePie();
             };
 
             const pluralize = (n, one, many) => {
                 const x = Number(n);
                 const v = Number.isFinite(x) ? x : 0;
                 return `${v} ${v === 1 ? one : many}`;
+            };
+            const formatHoursClock = (value) => {
+                const raw = Number(value);
+                if (!Number.isFinite(raw) || raw <= 0) return '0:00';
+                const totalMinutes = Math.round(raw * 60);
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                return `${hours}:${String(minutes).padStart(2, '0')}`;
+            };
+            const formatPct = (value) => {
+                const raw = Number(value);
+                if (!Number.isFinite(raw)) return '—';
+                const fixed = raw.toFixed(1);
+                const trimmed = fixed.endsWith('.0') ? fixed.slice(0, -2) : fixed;
+                return `${trimmed}%`;
+            };
+            const renderMostWatchedMovies = async (movies, fallbackMovie) => {
+                if (!elTopMovieGrid) return;
+                const list = Array.isArray(movies) ? movies : [];
+                const items = list.length ? list : (fallbackMovie?.title ? [fallbackMovie] : []);
+                if (!items.length) {
+                    safeHtml(elTopMovieGrid, '<div class="text-gray">No data yet.</div>');
+                    return;
+                }
+
+                const first = items[0];
+                const extra = Math.max(0, items.length - 1);
+                elTopMovieGrid.style.setProperty('--mw-poster-min', '160px');
+
+                const title = String(first?.title ?? '').trim();
+                const year = first?.release_year;
+                const label = title
+                    ? `${title}${(year === null || year === undefined || String(year).trim() === '') ? '' : ` (${String(year)})`}`
+                    : '—';
+
+                let posterPath = String(first?.poster_path ?? '').trim();
+                if (!posterPath) {
+                    const resolved = await dashEnsurePosterPath({
+                        movie_id: first?.movie_id ?? first?.movieId ?? first?.id ?? null,
+                        tmdb_id: first?.tmdb_id ?? null,
+                        poster_path: posterPath || null,
+                    });
+                    if (resolved) posterPath = String(resolved).trim();
+                }
+                const posterUrl = posterPath ? dashBuildPosterUrl(posterPath, 'w342') : '';
+
+                const ratingRaw = Number(first?.overall_rating ?? NaN);
+                const ratingText = formatPct(ratingRaw);
+                const ratingLabel = ratingText === '—' ? '— Overall' : `${ratingText} Overall`;
+                const tierRaw = String(first?.tier ?? '').trim();
+                const tierLabel = tierRaw || '—';
+                const tierHtml = tierRaw
+                    ? `<span class="dash-tier-pill" data-tier="${escapeHtml(tierRaw)}">${escapeHtml(tierLabel)}</span>`
+                    : `<span class="text-gray">Tier —</span>`;
+
+                const moreHtml = extra > 0
+                    ? `<div class="dash-most-movie-more">+ ${extra} more <span>view all</span></div>`
+                    : '';
+
+                safeHtml(elTopMovieGrid, `
+                    <div class="dash-most-movie-card">
+                        <div class="dash-most-movie-poster">
+                            ${posterUrl
+                                ? `<img src="${escapeHtml(posterUrl)}" alt="${escapeHtml(title)}" loading="lazy">`
+                                : `<div class="dash-most-movie-placeholder text-gray">No poster</div>`}
+                        </div>
+                        <div class="dash-most-movie-title">${escapeHtml(label)}</div>
+                        <div class="dash-most-movie-meta">
+                            <span class="dash-most-movie-rating">${escapeHtml(ratingLabel)}</span>
+                            ${tierHtml}
+                        </div>
+                        ${moreHtml}
+                    </div>
+                `);
             };
 
             if (!supabaseClient || !authedUser?.id) {
@@ -11553,87 +12964,168 @@
                 const atHome = Number(atHomeObj?.watches ?? 0);
                 const atHomeUnique = Number(atHomeObj?.movies ?? 0);
                 const inTheater = Number(inTheaterObj?.watches ?? 0);
+                const inTheaterUnique = Number(inTheaterObj?.movies ?? 0);
+
+                const useUnique = String(dashboardGeneralMode || '').trim().toLowerCase() === 'unique';
+                const displayWatches = useUnique ? uniqueMovies : totalWatches;
+                const displayHours = useUnique ? uniqueHours : totalHours;
+                const displayAtHome = useUnique ? atHomeUnique : atHome;
+                const displayTheater = useUnique ? (Number.isFinite(inTheaterUnique) && inTheaterUnique > 0 ? inTheaterUnique : inTheater) : inTheater;
 
                 const topGenre = data?.most_watched_genre || {};
                 const topGenreUnique = data?.most_watched_genre_unique || {};
                 const topDirector = data?.most_watched_director || {};
                 const topDirectorUnique = data?.most_watched_director_unique || {};
+                const topDirectors = Array.isArray(useUnique ? data?.most_watched_directors_unique : data?.most_watched_directors)
+                    ? (useUnique ? data.most_watched_directors_unique : data.most_watched_directors)
+                    : [];
                 const topActor = data?.most_watched_actor || {};
                 const topActorUnique = data?.most_watched_actor_unique || {};
+                const topActors = Array.isArray(useUnique ? data?.most_watched_actors_unique : data?.most_watched_actors)
+                    ? (useUnique ? data.most_watched_actors_unique : data.most_watched_actors)
+                    : [];
                 const topDecade = data?.most_watched_decade || {};
                 const topDecadeUnique = data?.most_watched_decade_unique || {};
 
-                elEventsTotal.textContent = Number.isFinite(totalWatches) ? String(totalWatches) : '0';
-                elEventsUnique.textContent = Number.isFinite(uniqueMovies) ? String(uniqueMovies) : '0';
+                safeText(elEventsTotal, Number.isFinite(displayWatches) ? String(displayWatches) : '0');
+                safeText(elHours, formatHoursClock(displayHours));
 
-                elHours.textContent = Number.isFinite(totalHours) ? String(totalHours) : '0';
-                elHoursUnique.textContent = Number.isFinite(uniqueHours) ? String(uniqueHours) : '0';
+                const methodTotal = (Number.isFinite(displayAtHome) ? displayAtHome : 0) + (Number.isFinite(displayTheater) ? displayTheater : 0);
+                const atHomePct = methodTotal > 0 ? ((displayAtHome / methodTotal) * 100) : 0;
+                const theaterPct = methodTotal > 0 ? ((displayTheater / methodTotal) * 100) : 0;
+                safeText(elAtHomeWatches, `${atHomePct.toFixed(1)}% (${Number.isFinite(displayAtHome) ? displayAtHome : 0})`);
+                safeText(elInTheaterWatches, `${theaterPct.toFixed(1)}% (${Number.isFinite(displayTheater) ? displayTheater : 0})`);
 
-                elAtHomeWatches.textContent = Number.isFinite(atHome) ? String(atHome) : '0';
-                elAtHomeMovies.textContent = Number.isFinite(atHomeUnique) ? String(atHomeUnique) : '0';
-                elInTheaterWatches.textContent = Number.isFinite(inTheater) ? String(inTheater) : '0';
+                dashSetStackBar(elStackHome, elStackTheater, displayAtHome, displayTheater);
 
                 const genreEventsName = String(topGenre?.name ?? '').trim();
                 const genreUniqueName = String(topGenreUnique?.name ?? '').trim();
-                elTopGenreEvents.textContent = genreEventsName || '—';
-                elTopGenreUnique.textContent = genreUniqueName || '—';
-                elTopGenreEventsCount.textContent = pluralize(topGenre?.watches, 'watch event', 'watch events');
-                elTopGenreUniqueCount.textContent = pluralize(topGenreUnique?.movies, 'unique movie', 'unique movies');
+                safeText(elTopGenreEvents, (useUnique ? genreUniqueName : genreEventsName) || '—');
+                safeText(elTopGenreEventsCount, useUnique
+                    ? pluralize(topGenreUnique?.movies, 'unique movie', 'unique movies')
+                    : pluralize(topGenre?.watches, 'watch event', 'watch events'));
 
                 const directorEventsName = String(topDirector?.name ?? '').trim();
                 const directorUniqueName = String(topDirectorUnique?.name ?? '').trim();
-                elTopDirectorEvents.textContent = directorEventsName || '—';
-                elTopDirectorUnique.textContent = directorUniqueName || '—';
-                elTopDirectorEventsCount.textContent = pluralize(topDirector?.watches, 'watch event', 'watch events');
-                elTopDirectorUniqueCount.textContent = pluralize(topDirectorUnique?.movies, 'unique movie', 'unique movies');
+                const directorDisplayName = (useUnique ? directorUniqueName : directorEventsName) || '';
+                safeText(elTopDirectorEvents, directorDisplayName || '—');
+                const directorMovies = useUnique ? topDirectorUnique?.movies : topDirector?.movies;
+                const directorAvg = useUnique ? topDirectorUnique?.avg_overall : topDirector?.avg_overall;
+                const directorExtra = Math.max(0, topDirectors.length - 1);
+                const directorAvgText = formatPct(directorAvg);
+                const directorCountText = pluralize(directorMovies, 'movie', 'movies');
+                const directorMetaParts = [];
+                if (directorAvgText !== '—') directorMetaParts.push(`${directorAvgText} Overall`);
+                if (directorMovies !== undefined && directorMovies !== null) directorMetaParts.push(directorCountText);
+                const directorMetaBase = directorMetaParts.length ? directorMetaParts.join(' • ') : '—';
+                safeText(elTopDirectorEventsCount, directorExtra > 0
+                    ? `${directorMetaBase} • +${directorExtra} more`
+                    : directorMetaBase);
 
                 const actorEventsName = String(topActor?.name ?? '').trim();
                 const actorUniqueName = String(topActorUnique?.name ?? '').trim();
-                elTopActorEvents.textContent = actorEventsName || '—';
-                elTopActorUnique.textContent = actorUniqueName || '—';
-                elTopActorEventsCount.textContent = pluralize(topActor?.watches, 'watch event', 'watch events');
-                elTopActorUniqueCount.textContent = pluralize(topActorUnique?.movies, 'unique movie', 'unique movies');
+                const actorDisplayName = (useUnique ? actorUniqueName : actorEventsName) || '';
+                safeText(elTopActorEvents, actorDisplayName || '—');
+                const actorMovies = useUnique ? topActorUnique?.movies : topActor?.movies;
+                const actorAvg = useUnique ? topActorUnique?.avg_acting : topActor?.avg_acting;
+                const actorExtra = Math.max(0, topActors.length - 1);
+                const actorAvgText = formatPct(actorAvg);
+                const actorCountText = pluralize(actorMovies, 'movie', 'movies');
+                const actorMetaParts = [];
+                if (actorAvgText !== '—') actorMetaParts.push(`${actorAvgText} Acting`);
+                if (actorMovies !== undefined && actorMovies !== null) actorMetaParts.push(actorCountText);
+                const actorMetaBase = actorMetaParts.length ? actorMetaParts.join(' • ') : '—';
+                safeText(elTopActorEventsCount, actorExtra > 0
+                    ? `${actorMetaBase} • +${actorExtra} more`
+                    : actorMetaBase);
+
+                try {
+                    if (directorDisplayName) {
+                        const directorProfile = await dashFetchPersonProfile({
+                            name: directorDisplayName,
+                            department: 'directing',
+                        });
+                        setAvatar(elTopDirectorAvatar, dashBuildPersonUrl(directorProfile));
+                    } else {
+                        setAvatar(elTopDirectorAvatar, null);
+                    }
+
+                    if (actorDisplayName) {
+                        const actorProfile = await dashFetchPersonProfile({
+                            name: actorDisplayName,
+                            department: 'acting',
+                        });
+                        setAvatar(elTopActorAvatar, dashBuildPersonUrl(actorProfile));
+                    } else {
+                        setAvatar(elTopActorAvatar, null);
+                    }
+                } catch (_) {
+                    setAvatar(elTopDirectorAvatar, null);
+                    setAvatar(elTopActorAvatar, null);
+                }
 
                 const decadeEvents = topDecade?.decade;
                 const decadeEventsLabel = (decadeEvents === null || decadeEvents === undefined) ? '' : `${String(decadeEvents)}s`;
                 const decadeUnique = topDecadeUnique?.decade;
                 const decadeUniqueLabel = (decadeUnique === null || decadeUnique === undefined) ? '' : `${String(decadeUnique)}s`;
-                elTopDecadeEvents.textContent = decadeEventsLabel || '—';
-                elTopDecadeUnique.textContent = decadeUniqueLabel || '—';
-                elTopDecadeEventsCount.textContent = pluralize(topDecade?.watches, 'watch event', 'watch events');
-                elTopDecadeUniqueCount.textContent = pluralize(topDecadeUnique?.movies, 'unique movie', 'unique movies');
+                safeText(elTopDecadeEvents, (useUnique ? decadeUniqueLabel : decadeEventsLabel) || '—');
+                safeText(elTopDecadeEventsCount, useUnique
+                    ? pluralize(topDecadeUnique?.movies, 'unique movie', 'unique movies')
+                    : pluralize(topDecade?.watches, 'watch event', 'watch events'));
 
                 const topMovie = data?.most_watched_movie || {};
                 const topMovies = Array.isArray(data?.most_watched_movies) ? data.most_watched_movies : [];
-                if (topMovies.length) {
-                    const labels = topMovies.map((m) => {
-                        const title = String(m?.title ?? '').trim();
-                        const year = m?.release_year;
-                        return title
-                            ? `${title}${(year === null || year === undefined || String(year).trim() === '') ? '' : ` (${String(year)})`}`
-                            : '';
-                    }).filter(Boolean);
-                    elTopMovie.textContent = labels.join(' • ') || '—';
-                    const watchCount = Number(topMovies[0]?.watches ?? topMovie?.watches ?? 0);
-                    elTopMovieCount.textContent = pluralize(watchCount, 'watch event', 'watch events');
-                } else {
-                    const topMovieTitle = String(topMovie?.title ?? '').trim();
-                    const topMovieYear = topMovie?.release_year;
-                    const topMovieLabel = topMovieTitle
-                        ? `${topMovieTitle}${(topMovieYear === null || topMovieYear === undefined || String(topMovieYear).trim() === '') ? '' : ` (${String(topMovieYear)})`}`
-                        : '';
-                    elTopMovie.textContent = topMovieLabel || '—';
-                    elTopMovieCount.textContent = pluralize(topMovie?.watches, 'watch event', 'watch events');
-                }
+                await renderMostWatchedMovies(topMovies, topMovie);
 
                 const topMpa = data?.most_watched_mpa || {};
                 const topMpaUnique = data?.most_watched_mpa_unique || {};
                 const topMpaRating = String(topMpa?.rating ?? '').trim();
                 const topMpaRatingUnique = String(topMpaUnique?.rating ?? '').trim();
-                elTopMpaEvents.textContent = topMpaRating || '—';
-                elTopMpaUnique.textContent = topMpaRatingUnique || '—';
-                elTopMpaEventsCount.textContent = pluralize(topMpa?.watches, 'watch event', 'watch events');
-                elTopMpaUniqueCount.textContent = pluralize(topMpaUnique?.movies, 'unique movie', 'unique movies');
+                safeText(elTopMpaEvents, (useUnique ? topMpaRatingUnique : topMpaRating) || '—');
+                safeText(elTopMpaEventsCount, useUnique
+                    ? pluralize(topMpaUnique?.movies, 'unique movie', 'unique movies')
+                    : pluralize(topMpa?.watches, 'watch event', 'watch events'));
+
+                try {
+                    let chartsData = null;
+                    if (dashboardChartsLastData && String(dashboardChartsLastData?.timeframe || '') === String(dashboardTimeframe || '')) {
+                        chartsData = dashboardChartsLastData;
+                    } else {
+                        const chartsRes = await supabaseClient.rpc('get_dashboard_charts', { p_timeframe: dashboardTimeframe });
+                        if (!chartsRes?.error) chartsData = chartsRes?.data || null;
+                    }
+
+                    const genreSource = useUnique ? chartsData?.genre_counts_unique : chartsData?.genre_counts_total;
+                    const pickCount = (row, unique) => {
+                        const direct = Number(row?.count ?? NaN);
+                        if (Number.isFinite(direct)) return direct;
+                        const fallback = Number(unique ? row?.movies : row?.watches);
+                        return Number.isFinite(fallback) ? fallback : 0;
+                    };
+                    const genreItems = Array.isArray(genreSource)
+                        ? genreSource.map((r) => ({ label: r?.genre, value: pickCount(r, useUnique) }))
+                        : (Array.isArray(chartsData?.genres)
+                            ? chartsData.genres.map((r) => ({ label: r?.genre, value: Number(r?.n ?? 0) }))
+                            : []);
+                    const mpaSource = useUnique ? chartsData?.mpa_counts_unique : chartsData?.mpa_counts_total;
+                    const mpaItems = Array.isArray(mpaSource)
+                        ? mpaSource.map((r) => ({ label: r?.mpa, value: pickCount(r, useUnique) }))
+                        : (Array.isArray(chartsData?.mpa)
+                            ? chartsData.mpa.map((r) => ({ label: r?.mpa, value: Number(r?.n ?? 0) }))
+                            : []);
+
+                    const decadeSource = useUnique ? chartsData?.decade_counts_unique : chartsData?.decade_counts_total;
+                    const decadeItems = Array.isArray(decadeSource)
+                        ? decadeSource.map((r) => ({ label: r?.decade !== null && r?.decade !== undefined ? `${String(r.decade)}s` : '', value: pickCount(r, useUnique) }))
+                        : (Array.isArray(chartsData?.decades)
+                            ? chartsData.decades.map((r) => ({ label: r?.decade !== null && r?.decade !== undefined ? `${String(r.decade)}s` : '', value: Number(r?.n ?? 0) }))
+                            : []);
+                    dashboardGeneralPieData = { mpaItems, decadeItems, genreItems };
+                    renderDashboardGeneralSharePie();
+                } catch (_) {
+                    dashboardGeneralPieData = { mpaItems: [], decadeItems: [], genreItems: [] };
+                    renderDashboardGeneralSharePie();
+                }
             } catch (err) {
                 showToast(`Dashboard (General) failed: ${String(err?.message || err)}`, { level: 'warn' });
                 emitLog('error', 'Dashboard general load failed', err);
