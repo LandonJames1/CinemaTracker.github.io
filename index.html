@@ -10,11 +10,11 @@
             To change it later: replace the embedded SVG inside the href="data:image/svg+xml,..." below.
             Tip: If you prefer a file instead of inline, swap these for: <link rel="icon" href="/favicon.ico">.
         ========================== FAVICON (BOOKMARK/TAB ICON) START ========================== -->
-        <link rel="icon" type="image/png" sizes="32x32" href="/Black%20Back.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/Black%20Back.png">
-        <link rel="icon" type="image/png" href="Black%20Back.png">
-        <link rel="shortcut icon" href="/Black%20Back.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/Black%20Back.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/FaviconBlack.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/FaviconBlack.png">
+        <link rel="icon" type="image/png" href="FaviconBlack.png">
+        <link rel="shortcut icon" href="/FaviconBlack.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/FaviconBlack.png">
         <!-- ========================== FAVICON (BOOKMARK/TAB ICON) END ========================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -259,6 +259,7 @@
             border-radius: 0.5rem;
             padding: 0.75rem 1rem;
             color: white;
+            font-family: var(--font-family);
             outline: none;
             transition: border-color 0.2s;
             color-scheme: dark; /* For calendar picker */
@@ -346,144 +347,59 @@
             min-height: 44px;
             background: rgba(var(--tier-rgb), 0.22);
         }
-        .tier-btn[data-tier="S-Tier"] { --tier-rgb: var(--tier-s-rgb); }
-        .tier-btn[data-tier="A-Tier"] { --tier-rgb: var(--tier-a-rgb); }
-        .tier-btn[data-tier="B-Tier"] { --tier-rgb: var(--tier-b-rgb); }
-        .tier-btn[data-tier="C-Tier"] { --tier-rgb: var(--tier-c-rgb); }
-        .tier-btn[data-tier="D-Tier"] { --tier-rgb: var(--tier-d-rgb); }
-        .tier-btn[data-tier="F-Tier"] { --tier-rgb: var(--tier-f-rgb); }
-
-        .tier-btn:active { transform: scale(0.98); }
-        .tier-btn-group[data-has-selection="true"] .tier-btn {
-            opacity: 0.16;
-            filter: grayscale(0.75) brightness(0.95);
-            box-shadow: none;
-        }
-        .tier-btn-group[data-has-selection="true"] .tier-btn.selected {
-            opacity: 1;
-            filter: none;
-            transform: translateY(-1px);
-            background: rgba(var(--tier-rgb), 0.32);
-            border-color: rgba(var(--tier-rgb), 0.75);
-            box-shadow:
-                0 0 0 2px rgba(var(--tier-rgb), 0.55),
-                0 10px 28px rgba(0,0,0,0.45),
-                0 0 28px rgba(var(--tier-rgb), 0.22);
-        }
-
-        /* Watch-method modal selection highlight */
-        .watch-method-option.selected {
-            box-shadow: 0 0 0 2px rgba(255,255,255,0.35);
-            border-color: rgba(255,255,255,0.45) !important;
-        }
-        #watch-method-overlay[data-has-selection="true"] .watch-method-option {
-            opacity: 0.22;
-            filter: grayscale(0.9) brightness(0.9);
-            box-shadow: none;
-        }
-        #watch-method-overlay[data-has-selection="true"] .watch-method-option.selected {
-            opacity: 1;
-            filter: none;
-            box-shadow:
-                0 0 0 2px rgba(255,255,255,0.28),
-                0 16px 40px rgba(0,0,0,0.45);
-        }
-        .input-readonly {
-            background-color: rgba(255,255,255,0.02);
-            color: white;
-            cursor: not-allowed;
-        }
-
-        /* Favorites grid: keep poster sizes consistent as the list grows */
-        .dash-fav-grid {
-            display: grid;
-            gap: 14px;
-            grid-template-columns: repeat(2, minmax(140px, 1fr));
-        }
-        @media (min-width: 640px) {
-            .dash-fav-grid { grid-template-columns: repeat(3, minmax(140px, 1fr)); }
-        }
-        @media (min-width: 900px) {
-            .dash-fav-grid { grid-template-columns: repeat(4, minmax(140px, 1fr)); }
-        }
-        @media (min-width: 1200px) {
-            .dash-fav-grid { grid-template-columns: repeat(5, minmax(140px, 1fr)); }
-        }
-
-        /* Dashboard charts */
-        .dash-chart-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .dash-chart-card {
-            padding: 1.25rem;
-            border-radius: 0.95rem;
-            min-height: 220px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-        }
-        .dash-chart-stage {
-            min-height: 360px;
-        }
-        .dash-chart-title {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: #fff;
-        }
-        .dash-chart-body {
-            display: grid;
-            gap: 10px;
-        }
-        .dash-chart-scroll {
-            max-height: 420px;
-            overflow-y: auto;
-            padding-right: 6px;
-        }
         .dash-heatmap {
-            --heatmap-cell: 14px;
+            --heatmap-cell: 16px;
             display: grid;
-            gap: 12px;
+            gap: 18px;
         }
         .dash-heatmap-row {
             display: grid;
-            grid-template-columns: 60px 1fr;
-            gap: 12px;
+            grid-template-columns: 56px 1fr;
+            gap: 14px;
             align-items: start;
         }
         .dash-heatmap-year {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fff;
             text-align: right;
-            padding-top: 2px;
+            padding-top: 8px;
         }
         .dash-heatmap-year-grid {
             display: grid;
-            gap: 8px;
+            gap: 6px;
         }
         .dash-heatmap-months {
             display: grid;
-            grid-template-columns: repeat(53, var(--heatmap-cell));
-            gap: 3px;
-        }
-        .dash-heatmap-month-label {
+            grid-auto-flow: column;
+            grid-auto-columns: var(--heatmap-cell);
+            gap: 2px;
             font-size: 0.7rem;
             color: var(--text-muted);
+            letter-spacing: 0.01em;
+        }
+        .dash-heatmap-month-label {
             grid-column: var(--month-col);
+            white-space: nowrap;
         }
         .dash-heatmap-weeks {
             display: grid;
-            grid-template-rows: repeat(7, var(--heatmap-cell));
             grid-auto-flow: column;
-            gap: 3px;
+            grid-auto-columns: var(--heatmap-cell);
+            grid-template-rows: repeat(7, var(--heatmap-cell));
+            gap: 2px;
         }
         .dash-heatmap-cell {
             width: var(--heatmap-cell);
             height: var(--heatmap-cell);
-            border-radius: 3px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 2px;
             background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: grid;
+            place-items: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.85);
         }
         .dash-heatmap-cell.is-month {
             width: auto;
@@ -549,12 +465,6 @@
             background: transparent;
             border-color: rgba(255,255,255,0.06);
         }
-        @media (max-width: 900px) {
-            .dash-heatmap.is-month-view { --heatmap-month-cell: 70px; }
-        }
-        @media (max-width: 640px) {
-            .dash-heatmap.is-month-view { --heatmap-month-cell: 60px; }
-        }
         .dash-heatmap-cell.is-empty {
             background: transparent;
             border-color: transparent;
@@ -604,73 +514,113 @@
         }
         .dash-genre-heatmap-wrap {
             overflow-x: auto;
+            padding: 4px 10px;
         }
         .dash-genre-heatmap {
             display: grid;
-            gap: 6px;
-            min-width: 420px;
+            gap: 8px;
+            min-width: 560px;
         }
         .dash-genre-heatmap-header,
         .dash-genre-heatmap-row {
             display: grid;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
         }
         .dash-genre-heatmap-header {
-            font-size: 0.7rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
         }
         .dash-genre-heatmap-label {
-            font-weight: 700;
-            color: rgba(255,255,255,0.9);
+            font-weight: 800;
+            color: #fff;
             text-align: left;
-            padding-left: 2px;
+            padding-left: 6px;
         }
-        .dash-genre-heatmap-decade {
-            font-weight: 700;
-            color: rgba(255,255,255,0.9);
+        .dash-genre-heatmap-decade,
+        .dash-heatmap-col-label {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #fff;
             text-align: center;
         }
+        .dash-chart-card {
+            padding: 1.25rem;
+            border-radius: 0.95rem;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+        .dash-chart-stage {
+            min-height: 360px;
+        }
+        .dash-chart-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .dash-chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        #dash-heatmap-select-wrap {
+            margin-left: auto;
+        }
+        #dash-heatmap-pair {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: #fff;
+        }
+        #dash-heatmap-pair option {
+            color: #0b0b0f;
+        }
+        .dash-chart-body {
+            display: grid;
+            gap: 10px;
+        }
         .dash-genre-heatmap-cell {
-            min-height: 30px;
-            border-radius: 8px;
-            border: 1px solid transparent;
-            background: transparent;
+            min-height: 42px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.06);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.68rem;
+            font-size: 0.78rem;
             font-weight: 800;
             text-align: center;
             padding: 4px;
             line-height: 1.1;
-            color: #111;
         }
         .dash-genre-heatmap-cell.is-empty {
             background: transparent;
             border-color: rgba(255,255,255,0.06);
+            color: var(--text-muted);
         }
-        .dash-genre-heatmap-cell.dash-heatmap-l1 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 92%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 86%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l2 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 88%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l3 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 76%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l4 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 72%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 66%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l5 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 62%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 56%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l6 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 52%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 46%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l7 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 44%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 38%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l8 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 36%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l9 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%, 0.9); }
-        .dash-genre-heatmap-cell.dash-heatmap-l10 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 18%, 0.9); }
         .dash-genre-heatmap-value {
             font-variant-numeric: tabular-nums;
-            color: #111;
-            background: rgba(255,255,255,0.78);
-            padding: 2px 4px;
-            border-radius: 4px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+        .dash-genre-heatmap-cell.dash-heatmap-l1 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 92%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 86%, 0.9); color: #0b1f17; }
+        .dash-genre-heatmap-cell.dash-heatmap-l2 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 88%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%, 0.9); color: #0b1f17; }
+        .dash-genre-heatmap-cell.dash-heatmap-l3 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 76%, 0.9); color: #0b1f17; }
+        .dash-genre-heatmap-cell.dash-heatmap-l4 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 72%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 66%, 0.9); color: #0b1f17; }
+        .dash-genre-heatmap-cell.dash-heatmap-l5 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 62%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 56%, 0.9); color: #0b1f17; }
+        .dash-genre-heatmap-cell.dash-heatmap-l6 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 52%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 46%, 0.9); color: #0b1f17; }
+        .dash-genre-heatmap-cell.dash-heatmap-l7 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 44%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 38%, 0.9); color: #fff; }
+        .dash-genre-heatmap-cell.dash-heatmap-l8 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 36%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%, 0.9); color: #fff; }
+        .dash-genre-heatmap-cell.dash-heatmap-l9 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 30%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%, 0.9); color: #fff; }
+        .dash-genre-heatmap-cell.dash-heatmap-l10 { background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 24%); border-color: hsla(var(--heatmap-h, 156), var(--heatmap-s, 55%), 18%, 0.9); color: #fff; }
+        @media (max-width: 900px) {
+            .dash-heatmap.is-month-view { --heatmap-month-cell: 70px; }
         }
         @media (max-width: 640px) {
             .dash-heatmap { --heatmap-cell: 12px; }
             .dash-heatmap-row { grid-template-columns: 44px 1fr; }
+            .dash-heatmap.is-month-view { --heatmap-month-cell: 60px; }
             .dash-genre-heatmap { min-width: 360px; }
         }
         @keyframes dashSparkDraw {
@@ -1672,7 +1622,7 @@
         .log-body {
             overflow: auto;
             padding: 0.75rem 0.9rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-family: var(--font-family);
             font-size: 0.85rem;
             line-height: 1.35;
             white-space: pre-wrap;
@@ -1708,7 +1658,7 @@
         .text-5xl { font-size: 3rem; }
         .font-bold { font-weight: 700; }
         .font-semibold { font-weight: 600; }
-        .font-mono { font-family: monospace; }
+        .font-mono { font-family: var(--font-family); }
         .tabular-nums { font-variant-numeric: tabular-nums; }
         .text-brand { color: var(--brand); }
         .text-white { color: white; }
@@ -2021,7 +1971,6 @@
             height: 240px;
             border-radius: 999px;
             position: relative;
-            background: conic-gradient(rgba(255,255,255,0.08) 0deg 360deg);
             display: grid;
             place-items: center;
             box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
@@ -2038,144 +1987,25 @@
         .dash-pie-center {
             position: absolute;
             z-index: 1;
-            display: grid;
-            gap: 4px;
             text-align: center;
+            display: grid;
+            gap: 2px;
         }
         .dash-pie-value {
-            font-size: 2.1rem;
+            font-size: 1.45rem;
             font-weight: 800;
             color: #fff;
         }
         .dash-pie-value-sm {
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-size: 1rem;
+            font-weight: 700;
             color: #fff;
         }
         .dash-pie-label {
-            font-size: 0.6rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-        .dash-pie-legend {
-            display: grid;
-            grid-template-columns: repeat(var(--legend-cols, 1), minmax(0, 1fr));
-            gap: 8px;
-            justify-items: start;
-        }
-        .dash-pie-legend.compact {
-            gap: 6px;
-        }
-        .dash-pie-legend-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            padding: 0.45rem 0.6rem;
-            border-radius: 0.65rem;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.85);
-            width: 100%;
-        }
-        .dash-pie-legend.compact .dash-pie-legend-item {
-            padding: 0.4rem 0.55rem;
-            font-size: 0.85rem;
-        }
-        .dash-pie-legend-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-muted);
-        }
-        .dash-pie-legend.compact .dash-pie-legend-label {
-            max-width: 150px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .dash-pie-footer {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-        }
-        .dash-pie-stat {
-            padding: 0.6rem 0.75rem;
-            border-radius: 0.65rem;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .dash-pie-stat-label {
             font-size: 0.7rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
             color: var(--text-muted);
-        }
-        .dash-pie-stat-value {
-            font-size: 1rem;
-            font-weight: 800;
-            color: #fff;
-            margin-top: 0.35rem;
-        }
-        .dash-vertical-bars {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
-            align-items: end;
-            height: 180px;
-            padding: 0 6px;
-        }
-        .dash-vertical-bars > div {
-            height: 100%;
-        }
-        .dash-vertical-bar {
-            position: relative;
-            height: 100%;
-            border-radius: 0.8rem;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-        }
-        .dash-vertical-bar-fill {
-            width: 100%;
-            height: 0%;
-            min-height: 6px;
-            display: block;
-            background: linear-gradient(180deg, var(--brand), var(--accent-2, var(--brand)));
-            transition: height 0.7s ease;
-        }
-        .dash-stack-bar {
-            width: 72px;
-            height: 190px;
-            margin: 0 auto;
-            border-radius: 0.9rem;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-        .dash-stack-fill {
-            width: 100%;
-            height: 0%;
-            transition: height 0.7s ease;
-        }
-        .dash-stack-fill.is-home {
-            background: linear-gradient(180deg, var(--brand), color-mix(in srgb, var(--brand) 70%, #000));
-        }
-        .dash-stack-fill.is-theater {
-            background: linear-gradient(180deg, var(--accent-2, var(--brand)), color-mix(in srgb, var(--accent-2, var(--brand)) 70%, #000));
-        }
-        .dash-watch-method-card {
-            width: 100%;
-            max-width: 210px;
-            justify-self: start;
-            padding: 0.9rem;
         }
         @media (max-width: 1100px) {
             .dash-gen-top {
@@ -2495,6 +2325,31 @@
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 14px;
         }
+        .library-movie-grid {
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            justify-content: start;
+            justify-items: start;
+        }
+        .library-movie-grid .dash-kpi-movie-card {
+            align-items: flex-start;
+            width: 100%;
+        }
+        .library-movie-grid .dash-kpi-movie-poster {
+            width: 100%;
+            max-width: none;
+        }
+        .library-grid-title {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .library-grid-year {
+            color: rgba(255,255,255,0.65);
+            font-weight: 700;
+        }
+        .library-grid-meta {
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
         .dash-kpi-movie-card {
             display: flex;
             flex-direction: column;
@@ -2610,6 +2465,74 @@
             font-size: 0.85rem;
             color: rgba(255,255,255,0.85);
         }
+        .dash-pie-legend {
+            display: grid;
+            grid-template-columns: repeat(var(--legend-cols, 2), minmax(0, 1fr));
+            gap: 10px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.85);
+        }
+        .dash-pie-legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0.5rem 0.65rem;
+            border-radius: 0.7rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+        }
+        .dash-pie-legend-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            min-width: 0;
+        }
+        .dash-pie-legend-label span:last-child,
+        .dash-pie-legend-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .dash-stack-bar {
+            width: 30px;
+            height: 150px;
+            margin: 10px auto 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            border-radius: 999px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-sizing: border-box;
+        }
+        .dash-stack-fill {
+            width: 100%;
+            height: 0%;
+            border-radius: 0;
+            transition: height 0.6s ease;
+        }
+        .dash-stack-fill:first-child {
+            border-top-left-radius: 999px;
+            border-top-right-radius: 999px;
+        }
+        .dash-stack-fill:last-child {
+            border-bottom-left-radius: 999px;
+            border-bottom-right-radius: 999px;
+        }
+        .dash-stack-fill.is-home {
+            background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%);
+        }
+        .dash-stack-fill.is-theater {
+            background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 82%);
+        }
+        .dash-stack-fill.is-strong {
+            background: hsl(var(--heatmap-h, 156), var(--heatmap-s, 55%), 44%);
+        }
         .dash-donut-legend-item {
             display: flex;
             align-items: center;
@@ -2626,6 +2549,26 @@
             gap: 8px;
             font-size: 0.82rem;
             color: var(--text-muted);
+        }
+        .dash-fav-grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        @media (min-width: 640px) {
+            .dash-fav-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (min-width: 900px) {
+            .dash-fav-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1200px) {
+            .dash-fav-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+        }
+        .dash-tier-grid {
+            gap: 8px;
+        }
+        @media (min-width: 1200px) {
+            .dash-tier-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
         }
         .dash-legend-dot {
             width: 10px;
@@ -3154,6 +3097,60 @@
             flex-wrap: wrap;
             gap: 8px;
             font-size: 0.72rem;
+        }
+        .library-watch-range {
+            display: grid;
+            gap: 0.45rem;
+        }
+        .library-watch-rail {
+            position: relative;
+            height: 36px;
+            display: flex;
+            align-items: center;
+        }
+        .library-watch-rail-track {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .library-watch-rail-fill {
+            position: absolute;
+            height: 6px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(20,184,166,0.4), rgba(20,184,166,0.9));
+            left: 0;
+            right: 100%;
+        }
+        .library-watch-handle {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            background: #0f172a;
+            border: 2px solid rgba(255,255,255,0.75);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.45);
+            transform: translate(-50%, 0);
+            cursor: grab;
+        }
+        .library-watch-handle:active {
+            cursor: grabbing;
+        }
+        .library-watch-rail.is-disabled .library-watch-handle {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .library-watch-rail.is-disabled .library-watch-rail-fill {
+            opacity: 0.3;
+        }
+        .library-watch-range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
         }
         @media (max-width: 520px) {
             .library-card-row { flex-wrap: wrap; }
@@ -3853,6 +3850,7 @@
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <select id="library-modal-sort-key" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
                         <option value="watch_date">Watch Date</option>
+                        <option value="watch_count">Watch Count</option>
                         <option value="overall">Overall %</option>
                         <option value="sound">Sound %</option>
                         <option value="pace">Pace %</option>
@@ -3879,6 +3877,12 @@
                         <option value="this_month">Watch Date (This Month)</option>
                     </select>
 
+                    <select id="library-modal-filter-watchmethod" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
+                        <option value="">Watch Method (All)</option>
+                        <option value="At Home">At Home</option>
+                        <option value="In Theater">In Theater</option>
+                    </select>
+
                     <select id="library-modal-filter-tier" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
                         <option value="">Tier (All)</option>
                         <option value="S-Tier">S-Tier</option>
@@ -3896,6 +3900,8 @@
 
                     <input id="library-modal-filter-director" class="input-field" placeholder="Director (contains…)" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;" />
 
+                    <input id="library-modal-filter-actor" class="input-field" placeholder="Actor (contains…)" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;" />
+
                     <select id="library-modal-filter-mpa" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
                         <option value="">MPA (All)</option>
                     </select>
@@ -3903,6 +3909,20 @@
                     <select id="library-modal-filter-genre" class="input-field" style="padding: 0.55rem 0.75rem; border-radius: 0.85rem;">
                         <option value="">Genre (All)</option>
                     </select>
+
+                    <div class="library-watch-range">
+                        <div class="text-xs text-gray" style="margin-bottom: 0.35rem;">Watch Count Range</div>
+                        <div id="library-watch-count-rail" class="library-watch-rail" data-min-val="1" data-max-val="1" data-max-avail="0" aria-label="Watch count range">
+                            <div class="library-watch-rail-track"></div>
+                            <div class="library-watch-rail-fill"></div>
+                            <button type="button" class="library-watch-handle" data-handle="min" aria-label="Minimum watch count"></button>
+                            <button type="button" class="library-watch-handle" data-handle="max" aria-label="Maximum watch count"></button>
+                        </div>
+                        <div class="library-watch-range-labels">
+                            <span id="library-watch-count-min">—</span>
+                            <span id="library-watch-count-max">—</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -4082,7 +4102,7 @@
     <footer>
         <div class="container flex flex-col md-row justify-between items-center">
             <div class="mb-4">
-                <span class="text-gray text-sm">© 2024 CinemaTracker. Designed for film lovers.</span>
+                <span class="text-gray text-sm">© 2026 CinemaTracker. Designed for film lovers.</span>
             </div>
             <div class="flex gap-4" id="footer-icons">
             </div>
@@ -4205,7 +4225,7 @@
 
             navigate(page, mode = 'new', navMode = 'push') {
                 // If the user is not logged in, block the Data Dash and prompt them to log in.
-                if ((page === 'dashboard' || page === 'dashboard_kpi') && !cachedIsAuthed) {
+                if ((page === 'dashboard' || page === 'dashboard_kpi' || page === 'dashboard_pie_filter') && !cachedIsAuthed) {
                     openDashboardAuthWarning();
                     return;
                 }
@@ -4251,6 +4271,10 @@
                     }
                 }
 
+                if (page === 'dashboard_kpi' || page === 'dashboard_pie_filter') {
+                    page = 'library';
+                }
+
                 this.currentPage = page;
                 this.formMode = mode;
                 if (navMode !== 'pop') {
@@ -4271,7 +4295,7 @@
                     else if (page === 'feed') label = 'feed';
                     else if (page === 'account') label = 'account';
                     else if (page === 'ai_picks') label = 'ai picks';
-                    else if (page === 'dashboard' || page === 'dashboard_kpi') label = 'data';
+                    else if (page === 'dashboard' || page === 'dashboard_kpi' || page === 'dashboard_pie_filter') label = 'data';
                     if (label && el.innerText.toLowerCase().includes(label)) {
                         el.classList.add('active');
                     } else {
@@ -4329,7 +4353,9 @@
                     initDashboardFavoritesLimitToggle();
                     initDashboardGeneralModeControls();
                     initDashboardGeneralPieControls();
+                    initDashboardGeneralPieLegendClicks();
                     initDashboardChartsTabControls();
+                    initDashboardHeatmapSelect();
                     initDashboardGeneralKpiClicks();
                     initDashboardRatingsKpiClicks();
                     initDashboardRatingsChartControls();
@@ -4340,12 +4366,8 @@
                     syncDashboardGeneralModeUI();
                     syncDashboardGeneralPieUI();
                     syncDashboardChartsTabUI();
+                    syncDashboardHeatmapSelectUI();
                     syncDashboardRatingsChartUI();
-                } else if (page === 'dashboard_kpi') {
-                    root.innerHTML = this.renderDashboardKpiDetail();
-                    refreshAuthStateAndUI();
-                    initDashboardPosterUpdateRatingsClicks();
-                    loadDashboardKpiDetail();
                 }
                 
                 window.scrollTo(0, 0);
@@ -5416,7 +5438,7 @@
                                 <div id="dash-chart-tab-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
                                     <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Heatmaps</div>
                                     <div id="dash-chart-tab-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
-                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="heatmap" id="dash-chart-tab-heatmap" style="padding: 0.55rem 0.85rem;">Genre/Decade Heatmap</button>
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="heatmap" id="dash-chart-tab-heatmap" style="padding: 0.55rem 0.85rem;">Heatmap</button>
                                         <button type="button" class="btn dash-pill-btn btn-outline" data-chart="activity" id="dash-chart-tab-activity" style="padding: 0.55rem 0.85rem;">Activity</button>
                                     </div>
                                 </div>
@@ -5471,12 +5493,12 @@
                                         <div class="dash-stack-fill is-theater" id="dash-general-stack-theater"></div>
                                     </div>
                                     <div class="dash-vertical-labels">
-                                        <div>
+                                        <div class="dash-kpi-clickable" data-watch-method="At Home" role="button" tabindex="0">
                                             <div class="dash-highlight-label dash-watch-label dash-watch-home">At home</div>
                                             <div class="dash-highlight-name tabular-nums dash-watch-value" id="dash-general-at-home-watches">—</div>
                                             <div class="dash-highlight-count dash-watch-count" id="dash-general-at-home-label">Watch events</div>
                                         </div>
-                                        <div>
+                                        <div class="dash-kpi-clickable" data-watch-method="In Theater" role="button" tabindex="0">
                                             <div class="dash-highlight-label dash-watch-label dash-watch-theater">In theater</div>
                                             <div class="dash-highlight-name tabular-nums dash-watch-value" id="dash-general-in-theater-watches">—</div>
                                             <div class="dash-highlight-count dash-watch-count" id="dash-general-in-theater-label">Watch events</div>
@@ -5619,7 +5641,16 @@
                         <!-- Tab: Charts -->
                         <div id="dash-pane-charts" class="dash-pane-wrap hidden">
                             <div class="glass-panel dash-chart-card dash-chart-stage">
-                                <div id="dash-chart-title" class="dash-chart-title">Genre/Decade Heatmap</div>
+                                <div class="dash-chart-header">
+                                    <div id="dash-chart-title" class="dash-chart-title">Genre/Decade Heatmap</div>
+                                    <div id="dash-heatmap-select-wrap" style="display:none;">
+                                        <select id="dash-heatmap-pair" class="input-field" style="min-width: 220px; padding: 0.5rem 0.75rem; border-radius: 0.75rem; font-weight: 700;">
+                                            <option value="genre_decade">Genre v Decade</option>
+                                            <option value="genre_mpa">Genre v MPA</option>
+                                            <option value="decade_mpa">MPA v Decade</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div id="dash-chart-body" class="dash-chart-body text-gray">Loading…</div>
                             </div>
                         </div>
@@ -5901,6 +5932,10 @@
                                     <p class="text-gray mt-2">Your most recent watches, with all stored details and ratings.</p>
                                 </div>
                                 <div style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
+                                    <div id="library-view-toggle" class="flex" style="gap: 8px; flex-wrap: wrap;">
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-library-action="set_view" data-library-view="list" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">List View</button>
+                                        <button type="button" class="btn dash-pill-btn btn-outline" data-library-action="set_view" data-library-view="grid" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Grid View</button>
+                                    </div>
                                     <button id="library-open-sortfilter" type="button" class="btn btn-outline" data-library-action="open_sort_filter" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Filters/Sort</button>
                                     <button id="library-refresh" type="button" class="btn btn-outline" data-library-action="refresh" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem;">Refresh</button>
                                 </div>
@@ -6264,30 +6299,6 @@
                 `;
             },
 
-            renderDashboardKpiDetail() {
-                return `
-                    <div class="fade-in">
-                        <div class="container" style="padding-top: 2rem; position: relative;">
-                            <div class="flex justify-between items-center mb-6" style="gap: 14px; flex-wrap: wrap;">
-                                <div class="flex" style="gap: 12px; align-items: center;">
-                                    <button type="button" class="btn btn-outline" id="dash-kpi-back" style="padding: 0.55rem 0.8rem; border-radius: 0.85rem; display:flex; align-items:center; gap: 8px;" onclick="dashReturnFromKpi();">
-                                        <span style="display:inline-flex; width: 18px; height: 18px;">${icons.arrowLeft}</span>
-                                        Back
-                                    </button>
-                                    <div>
-                                        <h1 class="text-2xl font-bold text-white" id="dash-kpi-title">KPI</h1>
-                                        <p class="text-gray mt-2" id="dash-kpi-subtitle"></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="glass-panel" style="padding:1.25rem; border-radius:0.95rem;">
-                                <div id="dash-kpi-grid" class="text-gray">Loading…</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
         };
 
         let homeSearchDebounceTimer = null;
@@ -6632,6 +6643,7 @@
         let dashboardChartsTab = 'heatmap';
         let dashboardChartsLastData = null;
         let dashboardChartsActivityMax = null;
+        let dashboardHeatmapPair = 'genre_decade';
         let dashboardRatingsChartTab = 'genre';
         let dashboardRatingsChartsLastData = null;
         let dashboardRatingsShowAllGenres = false;
@@ -6641,7 +6653,6 @@
 
         let dashboardGeneralLastData = null;
         let dashboardRatingsLastData = null;
-        let dashboardKpiDetailState = null;
 
         const dashPosterCacheByTmdbId = new Map();
         const dashRatingCacheByMovieId = new Map();
@@ -7115,6 +7126,7 @@
                 const labels = {
                     sortKey: {
                         watch_date: 'Watch Date',
+                        watch_count: 'Watch Count',
                         overall: 'Overall %',
                         sound: 'Sound %',
                         pace: 'Pace %',
@@ -7167,9 +7179,17 @@
             pushFilter('tier', st.tier, { label: 'Tier' });
             pushFilter('decade', st.decade, { label: 'Decade' });
             pushFilter('directorContains', st.directorContains, { label: 'Director' });
+            pushFilter('actorContains', st.actorContains, { label: 'Actor' });
             pushFilter('mpa', st.mpa, { label: 'MPA' });
             pushFilter('genre', st.genre, { label: 'Genre' });
+            pushFilter('watchMethod', st.watchMethod, { label: 'Watch Method' });
             pushFilter('platform', st.platform, { label: 'Platform' });
+            if (st.watchCountMin || st.watchCountMax) {
+                const minVal = String(st.watchCountMin || '').trim();
+                const maxVal = String(st.watchCountMax || '').trim();
+                const label = minVal && maxVal ? `${minVal}-${maxVal}` : (minVal ? `${minVal}+` : `≤ ${maxVal}`);
+                pushFilter('watchCount', label, { label: 'Watch Count' });
+            }
 
             const hasAnyFilters = filterPairs.length > 0;
 
@@ -7179,6 +7199,9 @@
 
             const formatFilter = (p) => {
                 if (p.k === 'directorContains') return `${p.label} contains “${p.v}”`;
+                if (p.k === 'actorContains') return `${p.label} contains “${p.v}”`;
+                if (p.k === 'watchCount') return `${p.label}: ${p.v}`;
+                if (p.k === 'watchMethod') return `${p.label}: ${p.v}`;
                 if (p.k === 'platform' && p.v === '__NONE__') return `${p.label}: None`;
                 if (p.k === 'tier' && p.v === 'UNRANKED') return `${p.label}: Unranked`;
                 if (p.k === 'timeframe') return `${p.label}: ${p.v}`;
@@ -7229,11 +7252,24 @@
             const director = String(st.directorContains || '').trim();
             if (director) addFilterChip('directorContains', `Director contains “${director}”`);
 
+            const actor = String(st.actorContains || '').trim();
+            if (actor) addFilterChip('actorContains', `Actor contains “${actor}”`);
+
             const mpa = String(st.mpa || '').trim();
             if (mpa) addFilterChip('mpa', `MPA: ${mpa}`);
 
             const genre = String(st.genre || '').trim();
             if (genre) addFilterChip('genre', `Genre: ${genre}`);
+
+            const watchMethod = String(st.watchMethod || '').trim();
+            if (watchMethod) addFilterChip('watchMethod', `Watch Method: ${watchMethod}`);
+
+            const watchMin = String(st.watchCountMin || '').trim();
+            const watchMax = String(st.watchCountMax || '').trim();
+            if (watchMin || watchMax) {
+                const label = watchMin && watchMax ? `${watchMin}-${watchMax}` : (watchMin ? `${watchMin}+` : `≤ ${watchMax}`);
+                addFilterChip('watchCount', `Watch Count: ${label}`);
+            }
 
             const timeframe = String(st.timeframe || '').trim();
             if (timeframe && timeframe !== 'all_time') addFilterChip('timeframe', `Timeframe: ${timeframe}`);
@@ -8877,6 +8913,9 @@
         const libraryLimit = 25;
         let libraryHasMore = true;
         let libraryLoading = false;
+        let libraryViewMode = 'list';
+        let libraryWatchCountMax = 0;
+        let libraryPendingWatchCountMaxOnly = false;
 
         const LIBRARY_LATEST_WATCH_VIEW = 'user_movie_latest_watch';
         const LIBRARY_ITEMS_VIEW = 'user_library_items_v2';
@@ -9002,6 +9041,11 @@
                     await loadLibraryPage({ reset: true });
                     return;
                 }
+                if (action === 'set_view') {
+                    const view = String(btn.dataset.libraryView || '').trim().toLowerCase();
+                    setLibraryViewMode(view);
+                    return;
+                }
                 if (action === 'load_more') {
                     await loadLibraryMore({ replace: false });
                     return;
@@ -9055,6 +9099,150 @@
                     return;
                 }
             }, { capture: true });
+
+            syncLibraryViewUI();
+        }
+
+        function setLibraryViewMode(view) {
+            const next = String(view || '').trim().toLowerCase() === 'grid' ? 'grid' : 'list';
+            libraryViewMode = next;
+            syncLibraryViewUI();
+            renderLibraryList();
+        }
+
+        function syncLibraryViewUI() {
+            const wrap = document.getElementById('library-view-toggle');
+            if (!wrap) return;
+            wrap.querySelectorAll('[data-library-view]').forEach((btn) => {
+                const isOn = String(btn.dataset.libraryView || '').trim().toLowerCase() === libraryViewMode;
+                btn.classList.remove('btn-glass', 'btn-outline');
+                btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
+                btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+            });
+        }
+
+        function getLibraryWatchCountRangeEls() {
+            return {
+                rail: document.getElementById('library-watch-count-rail'),
+                minLabel: document.getElementById('library-watch-count-min'),
+                maxLabel: document.getElementById('library-watch-count-max'),
+            };
+        }
+
+        function setLibraryWatchCountRangeUI({ minVal, maxVal, maxAvail }) {
+            const els = getLibraryWatchCountRangeEls();
+            if (!els.rail) return;
+
+            const maxAvailable = Math.max(0, Number(maxAvail) || 0);
+            const minV = Number.isFinite(Number(minVal)) ? Number(minVal) : 1;
+            const maxV = Number.isFinite(Number(maxVal)) ? Number(maxVal) : maxAvailable || 1;
+
+            els.rail.dataset.minVal = String(minV);
+            els.rail.dataset.maxVal = String(maxV);
+            els.rail.dataset.maxAvail = String(maxAvailable);
+
+            const disabled = maxAvailable <= 0;
+            els.rail.classList.toggle('is-disabled', disabled);
+            if (els.minLabel) els.minLabel.textContent = disabled ? '—' : String(minV);
+            if (els.maxLabel) els.maxLabel.textContent = disabled ? '—' : String(maxV);
+
+            const fill = els.rail.querySelector('.library-watch-rail-fill');
+            const minHandle = els.rail.querySelector('[data-handle="min"]');
+            const maxHandle = els.rail.querySelector('[data-handle="max"]');
+            if (!fill || !minHandle || !maxHandle || disabled) {
+                if (fill) {
+                    fill.style.left = '0%';
+                    fill.style.right = '100%';
+                }
+                if (minHandle) minHandle.style.left = '0%';
+                if (maxHandle) maxHandle.style.left = '100%';
+                return;
+            }
+
+            const denom = Math.max(1, maxAvailable - 1);
+            const minPct = ((minV - 1) / denom) * 100;
+            const maxPct = ((maxV - 1) / denom) * 100;
+            const left = Math.max(0, Math.min(100, minPct));
+            const right = Math.max(0, Math.min(100, 100 - maxPct));
+            fill.style.left = `${left}%`;
+            fill.style.right = `${right}%`;
+            minHandle.style.left = `${left}%`;
+            maxHandle.style.left = `${maxPct}%`;
+        }
+
+        function setLibraryWatchCountRangeFromState(state) {
+            const maxAvailable = Math.max(0, Number(libraryWatchCountMax) || 0);
+            const minState = Number(state?.watchCountMin);
+            const maxState = Number(state?.watchCountMax);
+            let minVal = Number.isFinite(minState) && minState > 0 ? minState : 1;
+            let maxVal = Number.isFinite(maxState) && maxState > 0 ? maxState : (maxAvailable || 1);
+            if (maxAvailable > 0) {
+                minVal = Math.max(1, Math.min(minVal, maxAvailable));
+                maxVal = Math.max(minVal, Math.min(maxVal, maxAvailable));
+            }
+            setLibraryWatchCountRangeUI({ minVal, maxVal, maxAvail: maxAvailable });
+        }
+
+        function initLibraryWatchCountRange() {
+            const els = getLibraryWatchCountRangeEls();
+            if (!els.rail) return;
+            if (els.rail.dataset.boundRange) return;
+            els.rail.dataset.boundRange = 'true';
+
+            let activeHandle = null;
+
+            const valueFromClientX = (clientX) => {
+                const maxAvailable = Math.max(0, Number(els.rail.dataset.maxAvail) || 0);
+                if (maxAvailable <= 0) return 1;
+                const rect = els.rail.getBoundingClientRect();
+                const raw = (clientX - rect.left) / Math.max(1, rect.width);
+                const pct = Math.max(0, Math.min(1, raw));
+                const val = Math.round(1 + pct * Math.max(1, maxAvailable - 1));
+                return Math.max(1, Math.min(maxAvailable, val));
+            };
+
+            const updateValues = (nextMin, nextMax) => {
+                const maxAvailable = Math.max(0, Number(els.rail.dataset.maxAvail) || 0);
+                if (maxAvailable <= 0) return;
+                let minVal = Math.max(1, Math.min(nextMin, maxAvailable));
+                let maxVal = Math.max(1, Math.min(nextMax, maxAvailable));
+                if (minVal > maxVal) {
+                    if (activeHandle === 'min') minVal = maxVal;
+                    else maxVal = minVal;
+                }
+                setLibraryWatchCountRangeUI({ minVal, maxVal, maxAvail: maxAvailable });
+            };
+
+            const pickNearestHandle = (clientX) => {
+                const minVal = Number(els.rail.dataset.minVal) || 1;
+                const maxVal = Number(els.rail.dataset.maxVal) || 1;
+                const targetVal = valueFromClientX(clientX);
+                return Math.abs(targetVal - minVal) <= Math.abs(targetVal - maxVal) ? 'min' : 'max';
+            };
+
+            const onPointerMove = (e) => {
+                if (!activeHandle) return;
+                const minVal = Number(els.rail.dataset.minVal) || 1;
+                const maxVal = Number(els.rail.dataset.maxVal) || 1;
+                const nextVal = valueFromClientX(e.clientX);
+                if (activeHandle === 'min') updateValues(nextVal, maxVal);
+                else updateValues(minVal, nextVal);
+            };
+
+            const onPointerUp = () => {
+                activeHandle = null;
+                document.removeEventListener('pointermove', onPointerMove);
+                document.removeEventListener('pointerup', onPointerUp);
+            };
+
+            els.rail.addEventListener('pointerdown', (e) => {
+                if (els.rail.classList.contains('is-disabled')) return;
+                const handle = e?.target?.closest ? e.target.closest('[data-handle]') : null;
+                activeHandle = handle ? String(handle.dataset.handle || '').trim() : pickNearestHandle(e.clientX);
+                onPointerMove(e);
+                document.addEventListener('pointermove', onPointerMove);
+                document.addEventListener('pointerup', onPointerUp);
+            });
         }
 
         let librarySortFilterState = null;
@@ -9067,8 +9255,12 @@
                 tier: '',
                 decade: '',
                 directorContains: '',
+                actorContains: '',
                 mpa: '',
                 genre: '',
+                watchMethod: '',
+                watchCountMin: '',
+                watchCountMax: '',
                 timeframe: 'all_time',
             };
         }
@@ -9091,6 +9283,9 @@
                 next.sortDir = def.sortDir;
             } else if (key === 'timeframe') {
                 next.timeframe = def.timeframe;
+            } else if (key === 'watchCount') {
+                next.watchCountMin = '';
+                next.watchCountMax = '';
             } else if (Object.prototype.hasOwnProperty.call(next, key)) {
                 next[key] = '';
             } else {
@@ -9110,8 +9305,10 @@
                 tier: document.getElementById('library-modal-filter-tier'),
                 decade: document.getElementById('library-modal-filter-decade'),
                 director: document.getElementById('library-modal-filter-director'),
+                actor: document.getElementById('library-modal-filter-actor'),
                 mpa: document.getElementById('library-modal-filter-mpa'),
                 genre: document.getElementById('library-modal-filter-genre'),
+                watchMethod: document.getElementById('library-modal-filter-watchmethod'),
                 timeframe: document.getElementById('library-modal-filter-timeframe'),
             };
         }
@@ -9124,22 +9321,37 @@
             if (els.tier) els.tier.value = String(state?.tier || '');
             if (els.decade) els.decade.value = String(state?.decade || '');
             if (els.director) els.director.value = String(state?.directorContains || '');
+            if (els.actor) els.actor.value = String(state?.actorContains || '');
             if (els.mpa) els.mpa.value = String(state?.mpa || '');
             if (els.genre) els.genre.value = String(state?.genre || '');
+            if (els.watchMethod) els.watchMethod.value = String(state?.watchMethod || '');
             if (els.timeframe) els.timeframe.value = String(state?.timeframe || 'all_time');
+            setLibraryWatchCountRangeFromState(state || {});
         }
 
         function readLibrarySortFilterModalState() {
             const els = getLibrarySortFilterModalEls();
             const getVal = (el) => String(el?.value || '').trim();
+            const rangeEls = getLibraryWatchCountRangeEls();
+            const maxAvail = Number(rangeEls.rail?.dataset?.maxAvail ?? 0);
+            const rawMin = Number(rangeEls.rail?.dataset?.minVal ?? NaN);
+            const rawMax = Number(rangeEls.rail?.dataset?.maxVal ?? NaN);
+            const minVal = Number.isFinite(rawMin) ? rawMin : '';
+            const maxVal = Number.isFinite(rawMax) ? rawMax : '';
+            const useMin = (Number.isFinite(minVal) && maxAvail > 0 && minVal > 1) ? minVal : '';
+            const useMax = (Number.isFinite(maxVal) && maxAvail > 0 && maxVal < maxAvail) ? maxVal : '';
             return {
                 sortKey: getVal(els.sortKey) || 'watch_date',
                 sortDir: (getVal(els.sortDir) === 'asc') ? 'asc' : 'desc',
                 tier: getVal(els.tier),
                 decade: getVal(els.decade),
                 directorContains: getVal(els.director),
+                actorContains: getVal(els.actor),
                 mpa: getVal(els.mpa),
                 genre: getVal(els.genre),
+                watchMethod: getVal(els.watchMethod),
+                watchCountMin: useMin,
+                watchCountMax: useMax,
                 timeframe: getVal(els.timeframe) || 'all_time',
             };
         }
@@ -9152,6 +9364,8 @@
             librarySortFilterDraft = { ...librarySortFilterState };
             loadLibraryFacets().catch(() => null);
             setLibrarySortFilterModalFromState(librarySortFilterState);
+            initLibraryWatchCountRange();
+            setLibraryWatchCountRangeFromState(librarySortFilterState);
             els.overlay.style.display = 'flex';
             setTimeout(() => {
                 try { els.sortKey?.focus?.(); } catch (_) {}
@@ -9182,6 +9396,10 @@
             const wrap = document.getElementById('library-load-more-wrap');
             if (!elList) return;
 
+            const isGrid = String(libraryViewMode || '').trim().toLowerCase() === 'grid';
+            elList.style.display = isGrid ? 'block' : 'grid';
+            elList.style.gap = '12px';
+
             const shown = Array.isArray(libraryItems) ? libraryItems.length : 0;
             const slice = Array.isArray(libraryItems) ? libraryItems : [];
 
@@ -9204,8 +9422,31 @@
                 const poster_path = String(it?.poster_path || '').trim();
                 const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path.startsWith('/') ? poster_path : `/${poster_path}`}` : '';
 
-                const overall = dashFormatScoreWhole(it?.overall_rating);
                 const tierLabel = dashNormalizeTierLabel(it?.tier);
+
+                if (isGrid) {
+                    const overallGrid = dashFormatScore(it?.overall_rating);
+                    const watchCountRaw = Number(it?.watch_count ?? 0);
+                    const watchCount = Number.isFinite(watchCountRaw) ? watchCountRaw : 0;
+                    const metaParts = [];
+                    if (overallGrid) metaParts.push(dashRenderHelpScore(overallGrid));
+                    if (tierLabel) metaParts.push(dashRenderHelpTier(tierLabel));
+                    if (watchCount > 0) metaParts.push(`<span class="text-gray">${watchCount} Times</span>`);
+                    return `
+                        <div class="dash-kpi-movie-card">
+                            <div class="dash-kpi-movie-poster">
+                                ${posterUrl
+                                    ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
+                                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`
+                                }
+                            </div>
+                            <div class="library-grid-title text-sm text-white">${escapeHtml(title)}${year ? ` <span class="library-grid-year">(${escapeHtml(year)})</span>` : ''}</div>
+                            <div class="library-grid-meta tabular-nums">${metaParts.join(' - ')}</div>
+                        </div>
+                    `;
+                }
+
+                const overall = dashFormatScoreWhole(it?.overall_rating);
                 const quote = String(it?.fav_quote ?? '').trim();
                 const notes = String(it?.notes ?? '').trim();
 
@@ -9367,7 +9608,15 @@
                 `;
             }).join('');
 
-            elList.innerHTML = html || `<div class="text-gray">No watched movies found yet.</div>`;
+            if (isGrid) {
+                elList.innerHTML = html
+                    ? `<div class="dash-kpi-movie-grid library-movie-grid">${html}</div>`
+                    : `<div class="text-gray">No watched movies found yet.</div>`;
+            } else {
+                elList.innerHTML = html || `<div class="text-gray">No watched movies found yet.</div>`;
+            }
+
+            syncLibraryViewUI();
 
             if (elMeta) {
                 ensureLibrarySortFilterStateInitialized();
@@ -9475,6 +9724,23 @@
                 const sortedGenres = Array.from(genres).sort((a, b) => a.localeCompare(b));
                 const sortedMonths = Array.from(months).sort((a, b) => b.localeCompare(a));
 
+                let maxWatchCount = 0;
+                try {
+                    const { data: wcRows, error: wcError } = await supabaseClient
+                        .from(LIBRARY_ITEMS_VIEW)
+                        .select('watch_count')
+                        .eq('user_id', authedUser.id)
+                        .order('watch_count', { ascending: false, nullsFirst: false })
+                        .range(0, 0);
+                    if (!wcError) {
+                        const raw = Number(wcRows?.[0]?.watch_count ?? 0);
+                        maxWatchCount = Number.isFinite(raw) ? raw : 0;
+                    }
+                } catch (_) {
+                    maxWatchCount = 0;
+                }
+                libraryWatchCountMax = Math.max(0, maxWatchCount);
+
                 const keep = {
                     decade: String(decadeEl.value || ''),
                     mpa: String(mpaEl.value || ''),
@@ -9515,9 +9781,27 @@
                 mpaEl.value = keep.mpa;
                 genreEl.value = keep.genre;
                 if (timeframeEl) timeframeEl.value = keep.timeframe || 'all_time';
+                setLibraryWatchCountRangeFromState(librarySortFilterState || {});
                 libraryFacetsLoaded = true;
             } catch (_) {
                 // Keep defaults; do not block modal.
+            }
+        }
+
+        async function loadLibraryWatchCountMaxForUser(userId) {
+            if (!supabaseClient || !userId) return 0;
+            try {
+                const { data, error } = await supabaseClient
+                    .from(LIBRARY_ITEMS_VIEW)
+                    .select('watch_count')
+                    .eq('user_id', userId)
+                    .order('watch_count', { ascending: false, nullsFirst: false })
+                    .range(0, 0);
+                if (error) return 0;
+                const raw = Number(data?.[0]?.watch_count ?? 0);
+                return Number.isFinite(raw) ? raw : 0;
+            } catch (_) {
+                return 0;
             }
         }
 
@@ -9832,7 +10116,7 @@
 
             let q = supabaseClient
                 .from(LIBRARY_ITEMS_VIEW)
-                .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
+                .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, actors, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating, watch_count, watch_method')
                 .eq('user_id', userId);
 
             const range = libraryComputeTimeframeRange(state?.timeframe);
@@ -9864,6 +10148,28 @@
                 q = q.ilike('director', `%${directorNeedle}%`);
             }
 
+            const actorNeedle = String(state?.actorContains || '').trim();
+            if (actorNeedle) {
+                q = q.ilike('actors', `%${actorNeedle}%`);
+            }
+
+            const watchMethod = String(state?.watchMethod || '').trim();
+            if (watchMethod) {
+                const needle = watchMethod.toLowerCase().includes('theater')
+                    ? '%theater%'
+                    : (watchMethod.toLowerCase().includes('home') ? '%home%' : watchMethod);
+                q = q.ilike('watch_method', needle);
+            }
+
+            const watchMinStr = String(state?.watchCountMin || '').trim();
+            const watchMaxStr = String(state?.watchCountMax || '').trim();
+            const watchMinVal = watchMinStr ? Number(watchMinStr) : null;
+            const watchMaxVal = watchMaxStr ? Number(watchMaxStr) : null;
+            const watchMin = Number.isFinite(watchMinVal) && watchMinVal > 0 ? watchMinVal : null;
+            const watchMax = Number.isFinite(watchMaxVal) && watchMaxVal > 0 ? watchMaxVal : null;
+            if (watchMin !== null) q = q.gte('watch_count', watchMin);
+            if (watchMax !== null) q = q.lte('watch_count', watchMax);
+
             const mpaWanted = String(state?.mpa || '').trim();
             if (mpaWanted) {
                 // stored as raw label (e.g. PG-13)
@@ -9884,6 +10190,7 @@
             else if (sortKey === 'release_year') addOrder('release_year');
             else if (sortKey === 'imdb') addOrder('imdb_rating_pct');
             else if (sortKey === 'overall') addOrder('overall_rating');
+            else if (sortKey === 'watch_count') addOrder('watch_count');
             else if (sortKey === 'sound') addOrder('sound_rating');
             else if (sortKey === 'pace') addOrder('pacing_rating');
             else if (sortKey === 'imagery') addOrder('imagery_rating');
@@ -9960,6 +10267,17 @@
                 return;
             }
 
+            if (libraryPendingWatchCountMaxOnly) {
+                const maxVal = await loadLibraryWatchCountMaxForUser(authedUser?.id);
+                libraryWatchCountMax = Math.max(0, Number(maxVal) || 0);
+                ensureLibrarySortFilterStateInitialized();
+                if (libraryWatchCountMax > 0) {
+                    librarySortFilterState.watchCountMin = libraryWatchCountMax;
+                    librarySortFilterState.watchCountMax = libraryWatchCountMax;
+                }
+                libraryPendingWatchCountMaxOnly = false;
+            }
+
             const start = replace ? 0 : libraryOffset;
             const limitPlusOne = libraryLimit; // we pass extra via range end
 
@@ -9975,7 +10293,7 @@
                     if (genreWanted) {
                         q = supabaseClient
                             .from(LIBRARY_ITEMS_VIEW)
-                            .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating')
+                            .select('user_id, movie_id, latest_watch_date, title, release_year, tmdb_id, poster_path, mpa_rating, runtime_minutes, director, actors, genres, genre, imdb_rating_pct, imdb_pct, imdb_rating, overall_rating, tier, fav_quote, notes, sound_rating, pacing_rating, imagery_rating, acting_rating, plot_rating, dialogue_rating, watch_count, watch_method')
                             .eq('user_id', authedUser.id);
 
                         const range = libraryComputeTimeframeRange(librarySortFilterState?.timeframe);
@@ -9996,6 +10314,25 @@
                         }
                         const directorNeedle = String(state?.directorContains || '').trim();
                         if (directorNeedle) q = q.ilike('director', `%${directorNeedle}%`);
+                        const actorNeedle = String(state?.actorContains || '').trim();
+                        if (actorNeedle) q = q.ilike('actors', `%${actorNeedle}%`);
+
+                        const watchMethod = String(state?.watchMethod || '').trim();
+                        if (watchMethod) {
+                            const needle = watchMethod.toLowerCase().includes('theater')
+                                ? '%theater%'
+                                : (watchMethod.toLowerCase().includes('home') ? '%home%' : watchMethod);
+                            q = q.ilike('watch_method', needle);
+                        }
+
+                        const watchMinStr = String(state?.watchCountMin || '').trim();
+                        const watchMaxStr = String(state?.watchCountMax || '').trim();
+                        const watchMinVal = watchMinStr ? Number(watchMinStr) : null;
+                        const watchMaxVal = watchMaxStr ? Number(watchMaxStr) : null;
+                        const watchMin = Number.isFinite(watchMinVal) && watchMinVal > 0 ? watchMinVal : null;
+                        const watchMax = Number.isFinite(watchMaxVal) && watchMaxVal > 0 ? watchMaxVal : null;
+                        if (watchMin !== null) q = q.gte('watch_count', watchMin);
+                        if (watchMax !== null) q = q.lte('watch_count', watchMax);
                         const mpaWanted = String(state?.mpa || '').trim();
                         if (mpaWanted) q = q.ilike('mpa_rating', mpaWanted);
 
@@ -10009,6 +10346,7 @@
                         else if (sortKey === 'release_year') addOrder('release_year');
                         else if (sortKey === 'imdb') addOrder('imdb_rating_pct');
                         else if (sortKey === 'overall') addOrder('overall_rating');
+                        else if (sortKey === 'watch_count') addOrder('watch_count');
                         else if (sortKey === 'sound') addOrder('sound_rating');
                         else if (sortKey === 'pace') addOrder('pacing_rating');
                         else if (sortKey === 'imagery') addOrder('imagery_rating');
@@ -10493,72 +10831,6 @@
             }).join('');
         }
 
-        function dashTitleForGeneralKpiKey(kpiKey) {
-            const k = String(kpiKey || '').trim().toLowerCase();
-            if (k === 'most_watched_genre' || k === 'most_watched_genre_unique') return 'Most Watched Genre';
-            if (k === 'most_watched_decade' || k === 'most_watched_decade_unique') return 'Most Watched Decade';
-            if (k === 'most_watched_director' || k === 'most_watched_director_unique') return 'Most Watched Director';
-            if (k === 'most_watched_actor' || k === 'most_watched_actor_unique') return 'Most Watched Actor';
-            if (k === 'most_watched_movie') return 'Most Watched Movie';
-            if (k === 'most_watched_mpa' || k === 'most_watched_mpa_unique') return 'Most Watched MPA Rating';
-            if (k === 'watch_method_at_home_events' || k === 'watch_method_at_home_unique' || k === 'watch_method_in_theater') return 'Watch Method';
-            return 'KPI Details';
-        }
-
-        function dashSubtitleForGeneralKpiKey(kpiKey) {
-            const k = String(kpiKey || '').trim().toLowerCase();
-            const data = dashboardGeneralLastData || {};
-
-            const suffix = k.endsWith('_unique') ? 'Unique movies only' : 'All watch events';
-            if (k === 'most_watched_genre' || k === 'most_watched_genre_unique') {
-                const v = k.endsWith('_unique') ? data?.most_watched_genre_unique?.name : data?.most_watched_genre?.name;
-                const name = String(v ?? '').trim();
-                return [name || '—', suffix].join(' • ');
-            }
-            if (k === 'most_watched_decade' || k === 'most_watched_decade_unique') {
-                const raw = k.endsWith('_unique') ? data?.most_watched_decade_unique?.decade : data?.most_watched_decade?.decade;
-                const decade = (raw === null || raw === undefined) ? '' : `${String(raw)}s`;
-                return [decade || '—', suffix].join(' • ');
-            }
-            if (k === 'most_watched_director' || k === 'most_watched_director_unique') {
-                const v = k.endsWith('_unique') ? data?.most_watched_director_unique?.name : data?.most_watched_director?.name;
-                const name = String(v ?? '').trim();
-                return [name || '—', suffix].join(' • ');
-            }
-            if (k === 'most_watched_actor' || k === 'most_watched_actor_unique') {
-                const v = k.endsWith('_unique') ? data?.most_watched_actor_unique?.name : data?.most_watched_actor?.name;
-                const name = String(v ?? '').trim();
-                return [name || '—', suffix].join(' • ');
-            }
-            if (k === 'most_watched_mpa' || k === 'most_watched_mpa_unique') {
-                const v = k.endsWith('_unique') ? data?.most_watched_mpa_unique?.rating : data?.most_watched_mpa?.rating;
-                const rating = String(v ?? '').trim();
-                return [rating || '—', suffix].join(' • ');
-            }
-            if (k === 'most_watched_movie') {
-                const movies = Array.isArray(data?.most_watched_movies) ? data.most_watched_movies : [];
-                if (movies.length) {
-                    const labels = movies.map((m) => {
-                        const title = String(m?.title ?? '').trim();
-                        const year = m?.release_year;
-                        return title
-                            ? `${title}${(year === null || year === undefined || String(year).trim() === '') ? '' : ` (${String(year)})`}`
-                            : '';
-                    }).filter(Boolean);
-                    return labels.join(' • ');
-                }
-                const title = String(data?.most_watched_movie?.title ?? '').trim();
-                const year = data?.most_watched_movie?.release_year;
-                const label = title
-                    ? `${title}${(year === null || year === undefined || String(year).trim() === '') ? '' : ` (${String(year)})`}`
-                    : '';
-                return label || '';
-            }
-            if (k === 'watch_method_at_home_events') return 'At home (watch events)';
-            if (k === 'watch_method_at_home_unique') return 'At home (unique movies)';
-            if (k === 'watch_method_in_theater') return 'In theater';
-            return '';
-        }
 
         function initDashboardGeneralKpiClicks() {
             const pane = document.getElementById('dash-pane-general');
@@ -10567,51 +10839,46 @@
             pane.dataset.boundKpiClicks = 'true';
 
             pane.addEventListener('click', (e) => {
+                const watchEl = e?.target?.closest ? e.target.closest('[data-watch-method]') : null;
+                const watchMethod = String(watchEl?.dataset?.watchMethod || '').trim();
+                if (watchMethod) {
+                    applyLibraryFiltersFromDashboard({ watchMethod });
+                    return;
+                }
+
                 const el = e?.target?.closest ? e.target.closest('[data-general-kpi]') : null;
                 const rawKey = String(el?.dataset?.generalKpi ?? '').trim();
-                const useUnique = String(dashboardGeneralMode || '').trim().toLowerCase() === 'unique';
-                const uniqueEligible = new Set([
-                    'most_watched_genre',
-                    'most_watched_decade',
-                    'most_watched_director',
-                    'most_watched_actor',
-                    'most_watched_mpa',
-                ]);
-                const key = (useUnique && uniqueEligible.has(rawKey)) ? `${rawKey}_unique` : rawKey;
-                if (!key) return;
+                if (!rawKey) return;
 
-                dashboardKpiDetailState = {
-                    kpi: key,
-                    title: dashTitleForGeneralKpiKey(key),
-                    subtitle: dashSubtitleForGeneralKpiKey(key),
-                    sourceTab: 'general',
-                };
-                router.navigate('dashboard_kpi');
+                const useUnique = String(dashboardGeneralMode || '').trim().toLowerCase() === 'unique';
+                const data = dashboardGeneralLastData || {};
+
+                if (rawKey === 'most_watched_director') {
+                    const name = String(useUnique ? data?.most_watched_director_unique?.name : data?.most_watched_director?.name || '').trim();
+                    if (!name) {
+                        showToast('No director data yet.', { level: 'warn' });
+                        return;
+                    }
+                    applyLibraryFiltersFromDashboard({ director: name });
+                    return;
+                }
+
+                if (rawKey === 'most_watched_actor') {
+                    const name = String(useUnique ? data?.most_watched_actor_unique?.name : data?.most_watched_actor?.name || '').trim();
+                    if (!name) {
+                        showToast('No actor data yet.', { level: 'warn' });
+                        return;
+                    }
+                    applyLibraryFiltersFromDashboard({ actor: name });
+                    return;
+                }
+
+                if (rawKey === 'most_watched_movie') {
+                    applyLibraryFiltersFromDashboard({ watchCountMaxOnly: true, sortKey: 'watch_count', sortDir: 'desc' });
+                }
             });
         }
 
-        function dashTitleForRatingsKpiKey(kpiKey) {
-            const k = String(kpiKey || '').trim().toLowerCase();
-            if (k === 'ratings_avg_overall') return 'Average Overall Rating';
-            if (k === 'ratings_avg_imdb_diff') return 'Average Abs Diff Rating';
-            if (k === 'ratings_highest_genre') return 'Highest Rated Genre';
-            if (k === 'ratings_lowest_genre') return 'Lowest Rated Genre';
-            if (k === 'ratings_highest_director') return 'Highest Rated Director';
-            if (k === 'ratings_lowest_director') return 'Lowest Rated Director';
-            return 'Ratings KPI Details';
-        }
-
-        function dashSubtitleForRatingsKpiKey(kpiKey) {
-            const k = String(kpiKey || '').trim().toLowerCase();
-            const data = dashboardRatingsLastData || {};
-            if (k === 'ratings_highest_genre') return String(data?.highest_rated_genre?.name ?? '').trim();
-            if (k === 'ratings_lowest_genre') return String(data?.lowest_rated_genre?.name ?? '').trim();
-            if (k === 'ratings_highest_director') return String(data?.highest_rated_director?.name ?? '').trim();
-            if (k === 'ratings_lowest_director') return String(data?.lowest_rated_director?.name ?? '').trim();
-            if (k === 'ratings_avg_imdb_diff') return 'Rated movies with IMDb scores';
-            if (k === 'ratings_avg_overall') return 'All rated movies';
-            return '';
-        }
 
         function initDashboardRatingsKpiClicks() {
             const pane = document.getElementById('dash-pane-ratings');
@@ -10620,24 +10887,49 @@
             pane.dataset.boundKpiClicks = 'true';
 
             pane.addEventListener('click', (e) => {
+                const barEl = e?.target?.closest ? e.target.closest('[data-rating-bar="true"]') : null;
+                if (barEl) {
+                    const rawType = String(barEl.dataset.barType || '').trim().toLowerCase();
+                    const rawLabel = String(barEl.dataset.barLabel || '').trim();
+                    if (!rawLabel) return;
+                    if (rawType === 'genre') {
+                        applyLibraryFiltersFromDashboard({ genre: rawLabel });
+                        return;
+                    }
+                    if (rawType === 'decade') {
+                        applyLibraryFiltersFromDashboard({ decade: normalizeLibraryDecadeLabel(rawLabel) });
+                        return;
+                    }
+                    if (rawType === 'mpa') {
+                        applyLibraryFiltersFromDashboard({ mpa: rawLabel });
+                        return;
+                    }
+                }
+
                 const el = e?.target?.closest ? e.target.closest('[data-ratings-kpi]') : null;
                 const key = String(el?.dataset?.ratingsKpi ?? '').trim();
                 if (!key) return;
 
-                dashboardKpiDetailState = {
-                    kpi: key,
-                    title: dashTitleForRatingsKpiKey(key),
-                    subtitle: dashSubtitleForRatingsKpiKey(key),
-                    sourceTab: 'ratings',
-                };
-                router.navigate('dashboard_kpi');
+                const data = dashboardRatingsLastData || {};
+                if (key === 'ratings_highest_director') {
+                    const name = String(data?.highest_rated_director?.name ?? '').trim();
+                    if (!name) {
+                        showToast('No director data yet.', { level: 'warn' });
+                        return;
+                    }
+                    applyLibraryFiltersFromDashboard({ director: name });
+                    return;
+                }
+                if (key === 'ratings_lowest_director') {
+                    const name = String(data?.lowest_rated_director?.name ?? '').trim();
+                    if (!name) {
+                        showToast('No director data yet.', { level: 'warn' });
+                        return;
+                    }
+                    applyLibraryFiltersFromDashboard({ director: name });
+                    return;
+                }
             });
-        }
-
-        function dashReturnFromKpi() {
-            const next = String(dashboardKpiDetailState?.sourceTab || 'general').trim().toLowerCase();
-            dashboardActiveTab = next || 'general';
-            router.navigate('dashboard');
         }
 
         function initDashboardPosterUpdateRatingsClicks() {
@@ -10648,7 +10940,7 @@
 
             const shouldHandleNow = () => {
                 const p = String(router?.currentPage || '').trim().toLowerCase();
-                return p === 'dashboard' || p === 'dashboard_kpi';
+                return p === 'dashboard' || p === 'dashboard_kpi' || p === 'dashboard_pie_filter';
             };
 
             document.addEventListener('click', async (e) => {
@@ -10694,174 +10986,6 @@
                 card.style.setProperty('--mx2', `${100 - x}%`);
                 card.style.setProperty('--my2', `${100 - y}%`);
             }, { passive: true });
-        }
-
-        async function loadDashboardKpiDetail() {
-            const elTitle = document.getElementById('dash-kpi-title');
-            const elSubtitle = document.getElementById('dash-kpi-subtitle');
-            const elGrid = document.getElementById('dash-kpi-grid');
-            if (!elTitle || !elSubtitle || !elGrid) return;
-
-            const state = dashboardKpiDetailState || null;
-            const kpi = String(state?.kpi ?? '').trim();
-            elTitle.textContent = String(state?.title ?? 'KPI Details');
-            elSubtitle.textContent = String(state?.subtitle ?? '');
-
-            const compactPosterKpi = new Set(['ratings_highest_director', 'ratings_lowest_director']);
-            elGrid.classList.toggle('dash-kpi-compact-posters', compactPosterKpi.has(kpi));
-
-            let authedUser = null;
-            try {
-                const { data } = await supabaseClient?.auth?.getUser?.();
-                authedUser = data?.user || null;
-            } catch (_) {
-                authedUser = null;
-            }
-
-            if (!supabaseClient || !authedUser?.id) {
-                if (!dashboardAuthWarned) {
-                    dashboardAuthWarned = true;
-                    showToast('Log in to view KPI details.', { level: 'warn' });
-                }
-                elGrid.innerHTML = `<div class="text-gray">Log in to view KPI details.</div>`;
-                return;
-            }
-
-            elGrid.innerHTML = `<div class="text-gray">Loading…</div>`;
-
-            try {
-                const isRatingsKpi = String(kpi || '').trim().toLowerCase().startsWith('ratings_');
-                const rpcName = isRatingsKpi ? 'get_dashboard_ratings_kpi_movies' : 'get_dashboard_general_kpi_movies';
-                let res = await supabaseClient.rpc(rpcName, {
-                    p_timeframe: dashboardTimeframe,
-                    p_kpi: kpi,
-                });
-                if (res?.error) {
-                    const msg = String(res.error?.message || res.error);
-                    const missingRpc = new RegExp(rpcName, 'i').test(msg)
-                        && /(does not exist|not found|no function matches|function .* does not exist)/i.test(msg);
-                    if (missingRpc) {
-                        elGrid.innerHTML = `<div class="text-gray">KPI detail RPC missing. Run dashboard_rpc.sql to add ${escapeHtml(rpcName)}.</div>`;
-                        return;
-                    }
-                }
-                if (res?.error) throw res.error;
-                const data = res?.data;
-                const items = Array.isArray(data?.movies) ? data.movies : [];
-                const people = Array.isArray(data?.people) ? data.people : [];
-
-                // Prefer the server-computed leader for the subtitle so it always matches the timeframe.
-                try {
-                    const leader = String(data?.leader ?? '').trim();
-                    if (leader) {
-                        const key = String(kpi || '').trim().toLowerCase();
-                        const isUnique = key.endsWith('_unique');
-                        const suffix = isUnique ? 'Unique movies only' : 'All watch events';
-                        if (key.startsWith('most_watched_') && key !== 'most_watched_movie') {
-                            elSubtitle.textContent = [leader, suffix].filter(Boolean).join(' • ');
-                        } else if (key === 'most_watched_movie') {
-                            elSubtitle.textContent = leader;
-                        } else if (key.startsWith('watch_method_')) {
-                            elSubtitle.textContent = leader;
-                        } else if (key.startsWith('ratings_')) {
-                            elSubtitle.textContent = leader;
-                        }
-                    }
-                } catch (_) {}
-
-                if (people.length > 1) {
-                    const key = String(kpi || '').trim().toLowerCase();
-                    const isUnique = key.endsWith('_unique');
-                    const cards = await Promise.all(people.map(async (p) => {
-                        const name = String(p?.name ?? '').trim() || '—';
-                        const movies = Number(p?.movies ?? 0) || 0;
-                        const watches = Number(p?.watches ?? 0) || 0;
-                        const profile = await dashFetchPersonProfile({
-                            name,
-                            department: key.includes('director') ? 'directing' : 'acting',
-                        });
-                        const posterUrl = dashBuildPersonUrl(profile, 'w342');
-                        const meta = isUnique
-                            ? `${movies} movie${movies === 1 ? '' : 's'}`
-                            : `${movies} movie${movies === 1 ? '' : 's'} • ${watches} watch event${watches === 1 ? '' : 's'}`;
-                        return `
-                            <div class="dash-people-card">
-                                <div class="dash-people-poster">
-                                    ${posterUrl
-                                        ? `<img src="${escapeHtml(posterUrl)}" alt="${escapeHtml(name)}" loading="lazy">`
-                                        : `<div class="dash-most-movie-placeholder text-gray">No photo</div>`}
-                                </div>
-                                <div class="dash-people-name">${escapeHtml(name)}</div>
-                                <div class="dash-people-meta">${escapeHtml(meta)}</div>
-                            </div>
-                        `;
-                    }));
-                    elGrid.innerHTML = `<div class="dash-people-grid">${cards.join('')}</div>`;
-                    return;
-                }
-
-                if (items.length === 0) {
-                    elGrid.innerHTML = `<div class="text-gray">No movies found for this KPI in the selected timeframe.</div>`;
-                    return;
-                }
-
-                // Posters are lazy-loaded from stored DB poster_path.
-
-                const ensuredPosterPaths = await Promise.all(items.map((r) => dashEnsurePosterPath(r)));
-
-                const cards = items.map((r, idx) => {
-                    const title = String(r?.title ?? '').trim() || 'Untitled';
-                    const year = (r?.release_year === null || r?.release_year === undefined) ? '' : String(r.release_year);
-                    const overall = dashFormatScore(r?.overall_rating);
-                    const tierLabel = dashNormalizeTierLabel(r?.tier);
-
-                    const dashMovieId = String(r?.movie_id ?? '').trim();
-                    const dashTmdbId = (r?.tmdb_id === null || r?.tmdb_id === undefined) ? '' : String(r.tmdb_id);
-
-                    const tmdb_id = Number(r?.tmdb_id);
-                    const ensured = ensuredPosterPaths[idx] || '';
-                    const poster_path = dashNormalizePosterPath(ensured || String(r?.poster_path ?? '').trim() || (Number.isFinite(tmdb_id) ? (dashPosterCacheByTmdbId.get(tmdb_id) || '') : ''));
-                    const posterUrl = dashBuildPosterUrl(poster_path, 'w342');
-
-                    const metaHtml = dashJoinHelpParts([
-                        year ? escapeHtml(year) : '',
-                        overall ? `${dashRenderHelpScore(overall)} Overall` : '',
-                        tierLabel ? dashRenderHelpTier(tierLabel) : '',
-                    ]);
-
-                    return `
-                        <div class="dash-kpi-movie-card">
-                            <div
-                                class="dash-kpi-movie-poster"
-                                data-dash-movie-id="${escapeHtml(dashMovieId)}"
-                                data-dash-tmdb-id="${escapeHtml(dashTmdbId)}"
-                                data-dash-movie-title="${escapeHtml(title)}"
-                                data-dash-poster-path="${escapeHtml(poster_path)}"
-                                role="button"
-                                tabindex="0"
-                                aria-label="Update Ratings for ${escapeHtml(title)}"
-                            >
-                                ${posterUrl
-                                    ? `<img src="${posterUrl}" loading="lazy" decoding="async" alt="${escapeHtml(title)}" style="width: 100%; height: 100%; object-fit: cover; display:block;" onerror="this.closest('div')?.remove?.()">`
-                                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color: var(--text-muted); font-size: 12px;">No poster</div>`
-                                }
-                            </div>
-                            <div class="text-sm text-white" style="font-weight: 700; line-height: 1.2;">${escapeHtml(title)}</div>
-                            <div class="text-xs text-gray tabular-nums">${metaHtml}</div>
-                        </div>
-                    `;
-                }).join('');
-
-                elGrid.innerHTML = `
-                    <div class="dash-kpi-movie-grid">
-                        ${cards}
-                    </div>
-                `;
-            } catch (err) {
-                showToast(`KPI details failed: ${String(err?.message || err)}`, { level: 'warn' });
-                emitLog('error', 'Dashboard KPI detail load failed', err);
-                elGrid.innerHTML = `<div class="text-gray">Unable to load KPI details right now.</div>`;
-            }
         }
 
         function initDashboardFavoritesMetric() {
@@ -10922,6 +11046,85 @@
             });
         }
 
+        function normalizeLibraryDecadeLabel(raw) {
+            const s = String(raw || '').trim();
+            if (!s) return '';
+            const m = s.match(/\d{4}/);
+            return m ? m[0] : '';
+        }
+
+        function applyLibraryFiltersFromDashboard({ genre, decade, mpa, director, actor, watchMethod, watchCountMaxOnly = false, sortKey, sortDir } = {}) {
+            const def = getDefaultLibrarySortFilterState();
+            const timeframe = mapDashboardTimeframeToLibrary(dashboardTimeframe || 'all_time');
+            librarySortFilterState = {
+                ...def,
+                sortKey: sortKey || (watchCountMaxOnly ? 'watch_count' : def.sortKey),
+                sortDir: sortDir || (watchCountMaxOnly ? 'desc' : def.sortDir),
+                timeframe,
+                genre: String(genre || '').trim(),
+                decade: String(decade || '').trim(),
+                mpa: String(mpa || '').trim(),
+                directorContains: String(director || '').trim(),
+                actorContains: String(actor || '').trim(),
+                watchMethod: String(watchMethod || '').trim(),
+                watchCountMin: '',
+                watchCountMax: '',
+            };
+            librarySortFilterDraft = null;
+            libraryPendingWatchCountMaxOnly = Boolean(watchCountMaxOnly);
+            router.navigate('library');
+        }
+
+        function initDashboardGeneralPieLegendClicks() {
+            const legend = document.getElementById('dash-general-share-legend');
+            if (!legend) return;
+            if (legend.dataset.boundLegendClicks) return;
+            legend.dataset.boundLegendClicks = 'true';
+
+            const activate = (item) => {
+                let label = '';
+                const encoded = String(item?.dataset?.dashPieValue || '').trim();
+                if (encoded) {
+                    try {
+                        label = decodeURIComponent(encoded);
+                    } catch (_) {
+                        label = encoded;
+                    }
+                }
+                if (!label) label = String(item?.dataset?.dashPieLabel || '').trim();
+                const type = String(legend.dataset.pieType || '').trim().toLowerCase();
+                if (!label || !type) return;
+
+                if (type === 'genre') {
+                    applyLibraryFiltersFromDashboard({ genre: label });
+                    return;
+                }
+                if (type === 'mpa') {
+                    applyLibraryFiltersFromDashboard({ mpa: label });
+                    return;
+                }
+                if (type === 'decade') {
+                    applyLibraryFiltersFromDashboard({ decade: normalizeLibraryDecadeLabel(label) });
+                    return;
+                }
+            };
+
+            legend.addEventListener('click', (e) => {
+                const item = e?.target?.closest ? e.target.closest('.dash-pie-legend-item') : null;
+                if (!item) return;
+                activate(item);
+            });
+
+            legend.addEventListener('keydown', (e) => {
+                const key = String(e?.key || '').toLowerCase();
+                if (key !== 'enter' && key !== ' ') return;
+                const item = e?.target?.closest ? e.target.closest('.dash-pie-legend-item') : null;
+                if (!item) return;
+                e.preventDefault?.();
+                activate(item);
+            });
+        }
+
         function initDashboardChartsTabControls() {
             const wrap = document.getElementById('dash-chart-tab-wrap');
             if (!wrap) return;
@@ -10933,6 +11136,34 @@
                 const chart = btn?.dataset?.chart;
                 if (!chart) return;
                 setDashboardChartsTab(chart);
+            });
+        }
+
+        function initDashboardHeatmapSelect() {
+            const select = document.getElementById('dash-heatmap-pair');
+            if (!select) return;
+            if (select.dataset.boundChange) return;
+            select.dataset.boundChange = 'true';
+
+            select.addEventListener('change', () => {
+                const value = String(select.value || '').trim().toLowerCase();
+                setDashboardHeatmapPair(value);
+            });
+        }
+
+        function initDashboardHeatmapAxisControls() {
+            const panel = document.getElementById('dash-heatmap-axis-panel');
+            if (!panel) return;
+            if (panel.dataset.boundClicks) return;
+            panel.dataset.boundClicks = 'true';
+
+            panel.addEventListener('click', (e) => {
+                const btn = e?.target?.closest ? e.target.closest('button[data-axis]') : null;
+                if (!btn) return;
+                const axis = btn.dataset.axis;
+                const value = btn.dataset.value;
+                if (!axis || !value) return;
+                setDashboardHeatmapAxis(axis, value);
             });
         }
 
@@ -11052,6 +11283,7 @@
                 btn.classList.remove('btn-glass', 'btn-outline');
                 btn.classList.add(isOn ? 'btn-glass' : 'btn-outline');
             });
+            syncDashboardHeatmapSelectUI();
         }
 
         function syncDashboardRatingsChartUI() {
@@ -11131,6 +11363,38 @@
             syncDashboardChartsTabUI();
 
             if (dashboardActiveTab === 'charts') {
+                if (dashboardChartsLastData) {
+                    renderDashboardChartsFromData(dashboardChartsLastData);
+                } else {
+                    loadDashboardCharts();
+                }
+            }
+        }
+
+        function syncDashboardHeatmapSelectUI() {
+            const allowed = new Set(['genre_decade', 'genre_mpa', 'decade_mpa']);
+            const value = allowed.has(String(dashboardHeatmapPair || '').trim().toLowerCase())
+                ? String(dashboardHeatmapPair || '').trim().toLowerCase()
+                : 'genre_decade';
+            dashboardHeatmapPair = value;
+
+            const select = document.getElementById('dash-heatmap-pair');
+            if (select && select.value !== value) select.value = value;
+
+            const wrap = document.getElementById('dash-heatmap-select-wrap');
+            if (wrap) {
+                wrap.style.display = dashboardChartsTab === 'heatmap' ? 'block' : 'none';
+            }
+        }
+
+        function setDashboardHeatmapPair(value) {
+            const allowed = new Set(['genre_decade', 'genre_mpa', 'decade_mpa']);
+            dashboardHeatmapPair = allowed.has(String(value || '').trim().toLowerCase())
+                ? String(value || '').trim().toLowerCase()
+                : 'genre_decade';
+            syncDashboardHeatmapSelectUI();
+
+            if (dashboardActiveTab === 'charts' && dashboardChartsTab === 'heatmap') {
                 if (dashboardChartsLastData) {
                     renderDashboardChartsFromData(dashboardChartsLastData);
                 } else {
@@ -11662,79 +11926,136 @@
         function dashGenreHeatmapCellClass(avg, minAvg, maxAvg) {
             const val = Number(avg);
             if (!Number.isFinite(val)) return '';
-            let min = Number.isFinite(minAvg) ? minAvg : 0;
-            let max = Number.isFinite(maxAvg) ? maxAvg : 100;
-            if (max <= min) {
-                min = 0;
-                max = 100;
-            }
-            const norm = Math.max(0, Math.min(1, (val - min) / (max - min)));
-            const level = Math.min(10, Math.max(1, Math.ceil(norm * 10)));
-            return `dash-heatmap-l${level}`;
+            if (val <= 0) return '';
+            const clamped = Math.max(0, Math.min(100, val));
+            const bucket = Math.min(10, Math.max(1, Math.ceil(clamped / 10)));
+            return `dash-heatmap-l${bucket}`;
         }
 
-        function dashRenderGenreHeatmap(items) {
+        function dashHeatmapAxisLabel(axis) {
+            const a = String(axis || '').trim().toLowerCase();
+            if (a === 'decade') return 'Decade';
+            if (a === 'mpa') return 'MPA';
+            return 'Genre';
+        }
+
+        function dashHeatmapPairTitle(pair) {
+            const p = String(pair || '').trim().toLowerCase();
+            if (p === 'genre_mpa') return 'Genre/MPA Heatmap';
+            if (p === 'decade_mpa') return 'MPA/Decade Heatmap';
+            return 'Genre/Decade Heatmap';
+        }
+
+        function dashHeatmapAxisValueLabel(axis, value) {
+            const a = String(axis || '').trim().toLowerCase();
+            if (a === 'decade') {
+                const num = Number(value);
+                return Number.isFinite(num) ? `${num}s` : '—';
+            }
+            return String(value ?? '').trim() || '—';
+        }
+
+        function dashHeatmapNormalizeAxisValue(axis, raw) {
+            const a = String(axis || '').trim().toLowerCase();
+            if (a === 'decade') {
+                const num = Number(raw);
+                return Number.isFinite(num) ? num : null;
+            }
+            const str = String(raw ?? '').trim();
+            return str ? str : null;
+        }
+
+        function dashHeatmapAxisSortValue(axis, value) {
+            const a = String(axis || '').trim().toLowerCase();
+            if (a === 'decade') {
+                const num = Number(value);
+                return Number.isFinite(num) ? num : 99999;
+            }
+            if (a === 'mpa') {
+                const order = ['G', 'PG', 'PG-13', 'PG13', 'R', 'NC-17', 'NC17', 'UNRATED', 'NR', 'NOTRATED'];
+                const normalized = String(value ?? '').trim().toUpperCase().replace(/\s+/g, '');
+                const idx = order.indexOf(normalized);
+                return idx === -1 ? 99999 : idx;
+            }
+            return String(value ?? '').trim().toLowerCase();
+        }
+
+        function dashHeatmapValueCompare(axis, a, b) {
+            const aKey = dashHeatmapAxisSortValue(axis, a);
+            const bKey = dashHeatmapAxisSortValue(axis, b);
+            if (typeof aKey === 'number' && typeof bKey === 'number' && aKey !== bKey) return aKey - bKey;
+            const aStr = String(a ?? '').trim().toLowerCase();
+            const bStr = String(b ?? '').trim().toLowerCase();
+            return aStr.localeCompare(bStr);
+        }
+
+        function dashRenderAxisHeatmap({ items, rowAxis, colAxis }) {
             const rows = Array.isArray(items) ? items : [];
             if (!rows.length) return `<div class="text-gray">No data yet.</div>`;
 
-            const decadeSet = new Set();
-            const genreStats = new Map();
+            const colSet = new Set();
+            const rowStats = new Map();
             const cellMap = new Map();
-            let minAvg = null;
-            let maxAvg = null;
 
             rows.forEach((r) => {
-                const genre = String(r?.genre ?? '').trim();
-                const decade = Number(r?.decade);
+                const rowVal = dashHeatmapNormalizeAxisValue(rowAxis, r?.[rowAxis]);
+                const colVal = dashHeatmapNormalizeAxisValue(colAxis, r?.[colAxis]);
                 const avg = Number(r?.avg);
                 const n = Number(r?.n ?? 0);
-                if (!genre || !Number.isFinite(decade) || !Number.isFinite(avg)) return;
+                if (rowVal === null || colVal === null || !Number.isFinite(avg)) return;
 
-                decadeSet.add(decade);
-                cellMap.set(`${genre}||${decade}`, { avg, n });
-
-                if (minAvg === null || avg < minAvg) minAvg = avg;
-                if (maxAvg === null || avg > maxAvg) maxAvg = avg;
+                colSet.add(colVal);
+                cellMap.set(`${String(rowVal)}||${String(colVal)}`, { avg, n });
 
                 const weight = Number.isFinite(n) && n > 0 ? n : 1;
-                const stat = genreStats.get(genre) || { sum: 0, count: 0 };
+                const stat = rowStats.get(rowVal) || { sum: 0, count: 0 };
                 stat.sum += avg * weight;
                 stat.count += weight;
-                genreStats.set(genre, stat);
+                rowStats.set(rowVal, stat);
             });
 
-            const decades = Array.from(decadeSet).sort((a, b) => a - b);
-            const genres = Array.from(genreStats.entries())
-                .map(([genre, stat]) => ({
-                    genre,
+            const cols = Array.from(colSet).sort((a, b) => dashHeatmapValueCompare(colAxis, a, b));
+            const rowsSorted = Array.from(rowStats.entries())
+                .map(([key, stat]) => ({
+                    key,
                     avg: stat.count ? (stat.sum / stat.count) : 0,
                 }))
                 .sort((a, b) => {
-                    if (b.avg !== a.avg) return b.avg - a.avg;
-                    return a.genre.localeCompare(b.genre);
+                    if (rowAxis === 'genre') {
+                        if (b.avg !== a.avg) return b.avg - a.avg;
+                    }
+                    if (rowAxis === 'decade') {
+                        return dashHeatmapValueCompare(rowAxis, a.key, b.key);
+                    }
+                    if (rowAxis === 'mpa') {
+                        return dashHeatmapValueCompare(rowAxis, a.key, b.key);
+                    }
+                    return dashHeatmapValueCompare(rowAxis, a.key, b.key);
                 })
-                .map((r) => r.genre);
+                .map((r) => r.key);
 
-            if (!decades.length || !genres.length) return `<div class="text-gray">No data yet.</div>`;
+            if (!cols.length || !rowsSorted.length) return `<div class="text-gray">No data yet.</div>`;
 
-            const gridTemplate = `minmax(120px, 1fr) repeat(${decades.length}, minmax(52px, 1fr))`;
+            const gridTemplate = `minmax(120px, 1fr) repeat(${cols.length}, minmax(52px, 1fr))`;
             const header = `
                 <div class="dash-genre-heatmap-header" style="grid-template-columns: ${gridTemplate};">
-                    <div></div>
-                    ${decades.map((d) => `<div class="dash-genre-heatmap-decade">${escapeHtml(String(d))}s</div>`).join('')}
+                    <div class="dash-genre-heatmap-label">${escapeHtml(dashHeatmapAxisLabel(rowAxis))}</div>
+                    ${cols.map((c) => `<div class="dash-heatmap-col-label">${escapeHtml(dashHeatmapAxisValueLabel(colAxis, c))}</div>`).join('')}
                 </div>
             `;
 
-            const body = genres.map((genre) => {
-                const cells = decades.map((decade) => {
-                    const cell = cellMap.get(`${genre}||${decade}`);
+            const body = rowsSorted.map((rowVal) => {
+                const rowLabel = dashHeatmapAxisValueLabel(rowAxis, rowVal);
+                const cells = cols.map((colVal) => {
+                    const cell = cellMap.get(`${String(rowVal)}||${String(colVal)}`);
                     if (!cell) {
                         return `<div class="dash-genre-heatmap-cell is-empty">—</div>`;
                     }
                     const avg = Number(cell.avg);
                     const n = Number(cell.n ?? 0);
-                    const levelClass = dashGenreHeatmapCellClass(avg, minAvg, maxAvg);
-                    const title = `${genre} • ${decade}s • ${dashChartFormatPct(avg)} • ${dashChartFormatCount(n)}`;
+                    const levelClass = dashGenreHeatmapCellClass(avg);
+                    const colLabel = dashHeatmapAxisValueLabel(colAxis, colVal);
+                    const title = `${rowLabel} • ${colLabel} • ${dashChartFormatPct(avg)} • ${dashChartFormatCount(n)}`;
                     return `
                         <div class="dash-genre-heatmap-cell ${escapeHtml(levelClass)}" title="${escapeHtml(title)}">
                             <span class="dash-genre-heatmap-value">${escapeHtml(dashChartFormatPct(avg))}</span>
@@ -11744,7 +12065,7 @@
 
                 return `
                     <div class="dash-genre-heatmap-row" style="grid-template-columns: ${gridTemplate};">
-                        <div class="dash-genre-heatmap-label">${escapeHtml(genre)}</div>
+                        <div class="dash-genre-heatmap-label">${escapeHtml(rowLabel)}</div>
                         ${cells}
                     </div>
                 `;
@@ -11763,7 +12084,9 @@
 
         function dashChartTitleForTab(tab) {
             const t = String(tab || '').trim().toLowerCase();
-            if (t === 'heatmap') return 'Genre/Decade Heatmap';
+            if (t === 'heatmap') {
+                return dashHeatmapPairTitle(dashboardHeatmapPair);
+            }
             if (t === 'activity') return 'Watch Activity Calendar';
             return 'Genre/Decade Heatmap';
         }
@@ -11782,6 +12105,8 @@
 
             const payload = data || {};
             const genreHeatmap = Array.isArray(payload?.genre_heatmap) ? payload.genre_heatmap : [];
+            const genreMpaHeatmap = Array.isArray(payload?.genre_mpa_heatmap) ? payload.genre_mpa_heatmap : [];
+            const decadeMpaHeatmap = Array.isArray(payload?.decade_mpa_heatmap) ? payload.decade_mpa_heatmap : [];
             const activity = Array.isArray(payload?.activity) ? payload.activity : [];
 
             const tab = String(dashboardChartsTab || '').trim().toLowerCase();
@@ -11791,8 +12116,37 @@
                 elBody.innerHTML = dashRenderActivityHeatmap(activity, dashboardTimeframe, dashboardChartsActivityMax);
                 return;
             }
-            elTitle.textContent = 'Genre/Decade Heatmap';
-            elBody.innerHTML = dashRenderGenreHeatmap(genreHeatmap);
+            const pair = String(dashboardHeatmapPair || '').trim().toLowerCase();
+            let heatmap = genreHeatmap;
+            let axisA = 'genre';
+            let axisB = 'decade';
+            if (pair === 'genre_mpa') {
+                heatmap = genreMpaHeatmap;
+                axisA = 'genre';
+                axisB = 'mpa';
+            } else if (pair === 'decade_mpa') {
+                heatmap = decadeMpaHeatmap;
+                axisA = 'mpa';
+                axisB = 'decade';
+            }
+
+            const chooseAxes = (items, a, b) => {
+                const aSet = new Set();
+                const bSet = new Set();
+                (Array.isArray(items) ? items : []).forEach((r) => {
+                    const aVal = dashHeatmapNormalizeAxisValue(a, r?.[a]);
+                    const bVal = dashHeatmapNormalizeAxisValue(b, r?.[b]);
+                    if (aVal !== null) aSet.add(aVal);
+                    if (bVal !== null) bSet.add(bVal);
+                });
+                if (bSet.size > aSet.size) return { row: b, col: a };
+                if (aSet.size > bSet.size) return { row: a, col: b };
+                return { row: a, col: b };
+            };
+
+            const axes = chooseAxes(heatmap, axisA, axisB);
+            elTitle.textContent = dashChartTitleForTab('heatmap');
+            elBody.innerHTML = dashRenderAxisHeatmap({ items: heatmap, rowAxis: axes.row, colAxis: axes.col });
         }
 
         function renderDashboardRatingsChartsFromData(data) {
@@ -11819,6 +12173,7 @@
                     labelKey: 'label',
                     valueKey: 'avg',
                     countKey: 'n',
+                    barType: 'decade',
                 });
                 return;
             }
@@ -11834,6 +12189,7 @@
                     labelKey: 'label',
                     valueKey: 'avg',
                     countKey: 'n',
+                    barType: 'mpa',
                 });
                 return;
             }
@@ -11853,6 +12209,7 @@
                 labelKey: 'label',
                 valueKey: 'avg',
                 countKey: 'n',
+                barType: 'genre',
             });
             elBody.innerHTML = `
                 <div>
@@ -12339,7 +12696,7 @@
                                     </div>
                                 </summary>
                                 <div style="padding: 0.85rem 0.5rem 0.25rem 0.5rem;">
-                                    <div class="dash-fav-grid">
+                                    <div class="dash-fav-grid dash-tier-grid">
                                         ${items.map(renderTierPosterCard).join('')}
                                     </div>
                                 </div>
@@ -12623,6 +12980,9 @@
             const a = Number(aValue);
             const b = Number(bValue);
             const total = (Number.isFinite(a) ? a : 0) + (Number.isFinite(b) ? b : 0);
+            const aStrong = (Number.isFinite(a) ? a : 0) >= (Number.isFinite(b) ? b : 0);
+            elA.classList.toggle('is-strong', aStrong && total > 0);
+            elB.classList.toggle('is-strong', !aStrong && total > 0);
             if (!Number.isFinite(total) || total <= 0) {
                 elA.style.height = '0%';
                 elB.style.height = '0%';
@@ -12695,7 +13055,7 @@
                 const pct = total > 0 ? ((r.value / total) * 100) : 0;
                 const pctText = pct.toFixed(1);
                 return `
-                    <div class="dash-pie-legend-item">
+                    <div class="dash-pie-legend-item" role="button" tabindex="0" data-dash-pie-value="${escapeHtml(encodeURIComponent(String(r.label)))}" data-dash-pie-label="${escapeHtml(r.label)}">
                         <span class="dash-pie-legend-label" title="${escapeHtml(r.label)}"><span class="dash-legend-dot" style="background:${colors[idx]}"></span>${escapeHtml(r.label)}</span>
                         <span class="tabular-nums">${escapeHtml(pctText)}% (${escapeHtml(String(r.value))})</span>
                     </div>
@@ -12715,6 +13075,7 @@
                 ? (data.decadeItems || [])
                 : (mode === 'genre' ? (data.genreItems || []) : (data.mpaItems || []));
             elLegend.dataset.compact = mode === 'genre' ? 'true' : 'false';
+            elLegend.dataset.pieType = mode;
             dashRenderPieChart({
                 el: elPie,
                 legendEl: elLegend,
@@ -12724,7 +13085,7 @@
             });
         }
 
-        function dashRenderVerticalBars({ items, labelKey, valueKey, countKey }) {
+        function dashRenderVerticalBars({ items, labelKey, valueKey, countKey, barType }) {
             const rows = Array.isArray(items) ? items : [];
             if (!rows.length) return `<div class="text-gray">No data yet.</div>`;
             const max = rows.reduce((m, r) => Math.max(m, Number(r?.[valueKey]) || 0), 0) || 0;
@@ -12742,7 +13103,7 @@
                             ? `${count} movie${count === 1 ? '' : 's'}`
                             : '';
                         return `
-                            <div class="dash-genre-bar" title="${escapeHtml(label)}">
+                            <div class="dash-genre-bar" title="${escapeHtml(label)}" role="button" tabindex="0" data-rating-bar="true" data-bar-type="${escapeHtml(String(barType || 'genre'))}" data-bar-label="${escapeHtml(label)}">
                                 <div class="dash-genre-bar-track">
                                     <div class="dash-genre-bar-fill" style="height:${pct.toFixed(2)}%; background:${colors[idx]};">
                                         <div class="dash-genre-bar-metrics tabular-nums">
@@ -17423,13 +17784,13 @@
                     if (s === 'lists') return 'lists';
                     if (s === 'feed') return 'feed';
                     if (s === 'mymovies') return 'library';
-                    if (s === 'dashboard' || s === 'dashboard_kpi' || s === 'data' || compact === 'datadash' || compact === 'dashboardkpi') return 'dashboard';
+                    if (s === 'dashboard' || s === 'dashboard_kpi' || s === 'dashboard_pie_filter' || s === 'data' || compact === 'datadash' || compact === 'dashboardkpi' || compact === 'dashboardpiefilter') return 'dashboard';
                     return '';
                 };
 
                 const buildPageSelectors = (pageKey) => {
                     if (!pageKey) return [];
-                    if (pageKey === 'dashboard') return ['dashboard', 'dashboard_kpi'];
+                    if (pageKey === 'dashboard') return ['dashboard', 'dashboard_kpi', 'dashboard_pie_filter'];
                     return [pageKey];
                 };
 
