@@ -12,7 +12,7 @@
         ========================== FAVICON (BOOKMARK/TAB ICON) START ========================== -->
         <link rel="icon" type="image/png" sizes="32x32" href="/FaviconBlack.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/FaviconBlack.png">
-        <link rel="icon" type="image/png" href="FaviconBlack.png">
+        <link rel="icon" type="image/png" href="/FaviconBlack.png">
         <link rel="shortcut icon" href="/FaviconBlack.png">
         <link rel="apple-touch-icon" sizes="180x180" href="/FaviconBlack.png">
         <!-- ========================== FAVICON (BOOKMARK/TAB ICON) END ========================== -->
@@ -2079,7 +2079,8 @@
             }
         }
         .dash-highlight-card {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
             padding: 0.9rem;
             border-radius: 0.85rem;
@@ -2128,6 +2129,11 @@
             font-size: 0.8rem;
             color: rgba(255,255,255,0.7);
         }
+        .dash-kpi-top-count {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+        }
         .dash-highlight-row {
             display: grid;
             grid-template-columns: 88px minmax(0, 1fr);
@@ -2170,8 +2176,10 @@
         }
         .dash-most-movie-card {
             max-width: 180px;
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 8px;
+            height: 100%;
         }
         .dash-most-movie-poster {
             width: min(100%, var(--mw-poster-size));
@@ -2208,17 +2216,67 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-        .dash-most-movie-more {
+        .dash-most-movie-more,
+        .dash-kpi-more {
             font-size: 0.85rem;
             font-weight: 700;
             color: #fff;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            margin-top: auto;
+            width: 100%;
+            justify-content: center;
+            text-align: center;
         }
-        .dash-most-movie-more span {
+        .dash-most-movie-more span,
+        .dash-kpi-more span {
             color: var(--text-muted);
             font-weight: 600;
+        }
+        .dash-kpi-tie-list {
+            display: grid;
+            gap: 10px;
+        }
+        .dash-kpi-tie-btn {
+            display: grid;
+            grid-template-columns: 46px minmax(0, 1fr);
+            gap: 10px;
+            align-items: center;
+            padding: 0.65rem 0.85rem;
+            border-radius: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            text-align: left;
+            cursor: pointer;
+        }
+        .dash-kpi-tie-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            display: grid;
+            place-items: center;
+        }
+        .dash-kpi-tie-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .dash-kpi-tie-btn:hover {
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.08);
+        }
+        .dash-kpi-tie-title {
+            font-weight: 700;
+        }
+        .dash-kpi-tie-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
         .dash-most-movie-rating {
             font-weight: 400;
@@ -3530,6 +3588,17 @@
         </div>
     </div>
 
+    <div id="dash-kpi-ties-overlay" class="auth-overlay" onclick="if(event.target === this) closeDashKpiTies();" style="display:none;">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="dash-kpi-ties-title" style="max-width: 640px;">
+            <div class="auth-modal-header">
+                <div class="auth-modal-title" id="dash-kpi-ties-title">Tied Leaders</div>
+                <button class="auth-modal-close" type="button" onclick="closeDashKpiTies()">Close</button>
+            </div>
+            <div id="dash-kpi-ties-sub" class="text-xs text-gray" style="margin-top: 0.25rem;"></div>
+            <div id="dash-kpi-ties-body" class="dash-kpi-tie-list" style="margin-top: 0.75rem;">Loading…</div>
+        </div>
+    </div>
+
     <div id="auth-overlay" class="auth-overlay" onclick="if(event.target === this) closeAuthModal();">
         <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
             <div class="auth-modal-header">
@@ -4195,6 +4264,7 @@
             selectedMovie: null,
             pendingTitle: '',
             formMode: 'new',
+            navStack: [],
             
             init() {
                 window.addEventListener('popstate', (e) => {
@@ -4214,6 +4284,22 @@
             },
 
             goBack() {
+                const prev = this.navStack.pop();
+                if (prev?.page) {
+                    if (prev.page === 'dashboard') {
+                        if (prev.dashboardActiveTab) dashboardActiveTab = prev.dashboardActiveTab;
+                        if (prev.dashboardTimeframe) dashboardTimeframe = prev.dashboardTimeframe;
+                        if (prev.dashboardChartsTab) dashboardChartsTab = prev.dashboardChartsTab;
+                        if (prev.dashboardHeatmapPair) dashboardHeatmapPair = prev.dashboardHeatmapPair;
+                        if (prev.dashboardRatingsChartTab) dashboardRatingsChartTab = prev.dashboardRatingsChartTab;
+                        if (prev.dashboardFavoritesMetric) dashboardFavoritesMetric = prev.dashboardFavoritesMetric;
+                        if (Number.isFinite(prev.dashboardFavoritesLimit)) dashboardFavoritesLimit = prev.dashboardFavoritesLimit;
+                        if (prev.dashboardGeneralMode) dashboardGeneralMode = prev.dashboardGeneralMode;
+                        if (prev.dashboardGeneralPieMode) dashboardGeneralPieMode = prev.dashboardGeneralPieMode;
+                    }
+                    this.navigate(prev.page, prev.mode || 'new', 'replace');
+                    return;
+                }
                 try {
                     if (history.length > 1) {
                         history.back();
@@ -4273,6 +4359,24 @@
 
                 if (page === 'dashboard_kpi' || page === 'dashboard_pie_filter') {
                     page = 'library';
+                }
+
+                const prevPage = this.currentPage;
+                const prevMode = this.formMode;
+                if (navMode === 'push' && page !== prevPage) {
+                    this.navStack.push({
+                        page: prevPage,
+                        mode: prevMode,
+                        dashboardActiveTab,
+                        dashboardTimeframe,
+                        dashboardChartsTab,
+                        dashboardHeatmapPair,
+                        dashboardRatingsChartTab,
+                        dashboardFavoritesMetric,
+                        dashboardFavoritesLimit,
+                        dashboardGeneralMode,
+                        dashboardGeneralPieMode,
+                    });
                 }
 
                 this.currentPage = page;
@@ -4357,6 +4461,7 @@
                     initDashboardChartsTabControls();
                     initDashboardHeatmapSelect();
                     initDashboardGeneralKpiClicks();
+                    initDashKpiTiesModal();
                     initDashboardRatingsKpiClicks();
                     initDashboardRatingsChartControls();
                     initDashboardPosterUpdateRatingsClicks();
@@ -5438,7 +5543,7 @@
                                 <div id="dash-chart-tab-panel" class="glass-panel hidden" style="padding: 0.55rem 0.75rem; border-radius: 0.9rem; flex: 0 0 auto;">
                                     <div class="text-xs text-gray" style="margin-bottom: 0.4rem;">Heatmaps</div>
                                     <div id="dash-chart-tab-wrap" class="flex" style="gap: 10px; flex-wrap: wrap;">
-                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="heatmap" id="dash-chart-tab-heatmap" style="padding: 0.55rem 0.85rem;">Heatmap</button>
+                                        <button type="button" class="btn dash-pill-btn btn-glass" data-chart="heatmap" id="dash-chart-tab-heatmap" style="padding: 0.55rem 0.85rem;">Ratings Compare</button>
                                         <button type="button" class="btn dash-pill-btn btn-outline" data-chart="activity" id="dash-chart-tab-activity" style="padding: 0.55rem 0.85rem;">Activity</button>
                                     </div>
                                 </div>
@@ -5514,12 +5619,14 @@
                                         <div class="dash-highlight-card dash-kpi-clickable" data-general-kpi="most_watched_director">
                                             <div class="dash-highlight-card-title">Director(s)</div>
                                             <div class="dash-person-card">
+                                                <div class="dash-kpi-top-count tabular-nums" id="dash-general-top-director-events-count">&nbsp;</div>
                                                 <div class="dash-person-poster is-empty">
                                                     <img id="dash-general-top-director-avatar" alt="Top director" loading="lazy" onerror="this.removeAttribute('src'); this.closest('.dash-person-poster')?.classList.add('is-empty');">
                                                 </div>
                                                 <div class="dash-person-name" id="dash-general-top-director-events">—</div>
-                                                <div class="dash-person-count tabular-nums" id="dash-general-top-director-events-count">&nbsp;</div>
+                                                <div class="dash-person-count tabular-nums" id="dash-general-top-director-avg">&nbsp;</div>
                                             </div>
+                                            <div class="dash-kpi-more" id="dash-general-top-director-more"></div>
                                         </div>
                                         <div class="dash-highlight-card dash-kpi-clickable" data-general-kpi="most_watched_movie">
                                             <div class="dash-highlight-card-title">Movie(s)</div>
@@ -5530,12 +5637,14 @@
                                         <div class="dash-highlight-card dash-kpi-clickable" data-general-kpi="most_watched_actor">
                                             <div class="dash-highlight-card-title">Actor(s)</div>
                                             <div class="dash-person-card">
+                                                <div class="dash-kpi-top-count tabular-nums" id="dash-general-top-actor-events-count">&nbsp;</div>
                                                 <div class="dash-person-poster is-empty">
                                                     <img id="dash-general-top-actor-avatar" alt="Top actor" loading="lazy" onerror="this.removeAttribute('src'); this.closest('.dash-person-poster')?.classList.add('is-empty');">
                                                 </div>
                                                 <div class="dash-person-name" id="dash-general-top-actor-events">—</div>
-                                                <div class="dash-person-count tabular-nums" id="dash-general-top-actor-events-count">&nbsp;</div>
+                                                <div class="dash-person-count tabular-nums" id="dash-general-top-actor-avg">&nbsp;</div>
                                             </div>
+                                            <div class="dash-kpi-more" id="dash-general-top-actor-more"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -7180,6 +7289,7 @@
             pushFilter('decade', st.decade, { label: 'Decade' });
             pushFilter('directorContains', st.directorContains, { label: 'Director' });
             pushFilter('actorContains', st.actorContains, { label: 'Actor' });
+            pushFilter('movieId', st.movieTitle || st.movieId, { label: 'Movie' });
             pushFilter('mpa', st.mpa, { label: 'MPA' });
             pushFilter('genre', st.genre, { label: 'Genre' });
             pushFilter('watchMethod', st.watchMethod, { label: 'Watch Method' });
@@ -7254,6 +7364,9 @@
 
             const actor = String(st.actorContains || '').trim();
             if (actor) addFilterChip('actorContains', `Actor contains “${actor}”`);
+
+            const movieLabel = String(st.movieTitle || st.movieId || '').trim();
+            if (movieLabel) addFilterChip('movieId', `Movie: ${movieLabel}`);
 
             const mpa = String(st.mpa || '').trim();
             if (mpa) addFilterChip('mpa', `MPA: ${mpa}`);
@@ -9256,6 +9369,8 @@
                 decade: '',
                 directorContains: '',
                 actorContains: '',
+                movieId: '',
+                movieTitle: '',
                 mpa: '',
                 genre: '',
                 watchMethod: '',
@@ -9286,6 +9401,9 @@
             } else if (key === 'watchCount') {
                 next.watchCountMin = '';
                 next.watchCountMax = '';
+            } else if (key === 'movieId') {
+                next.movieId = '';
+                next.movieTitle = '';
             } else if (Object.prototype.hasOwnProperty.call(next, key)) {
                 next[key] = '';
             } else {
@@ -9347,6 +9465,8 @@
                 decade: getVal(els.decade),
                 directorContains: getVal(els.director),
                 actorContains: getVal(els.actor),
+                movieId: '',
+                movieTitle: '',
                 mpa: getVal(els.mpa),
                 genre: getVal(els.genre),
                 watchMethod: getVal(els.watchMethod),
@@ -9384,6 +9504,8 @@
         function saveLibrarySortFilterModal() {
             ensureLibrarySortFilterStateInitialized();
             const next = readLibrarySortFilterModalState();
+            next.movieId = String(librarySortFilterState?.movieId || '').trim();
+            next.movieTitle = String(librarySortFilterState?.movieTitle || '').trim();
             librarySortFilterState = next;
             librarySortFilterDraft = null;
             closeLibrarySortFilterModal({ restoreDraft: false });
@@ -10153,6 +10275,11 @@
                 q = q.ilike('actors', `%${actorNeedle}%`);
             }
 
+            const movieId = String(state?.movieId || '').trim();
+            if (movieId) {
+                q = q.eq('movie_id', movieId);
+            }
+
             const watchMethod = String(state?.watchMethod || '').trim();
             if (watchMethod) {
                 const needle = watchMethod.toLowerCase().includes('theater')
@@ -10852,8 +10979,81 @@
 
                 const useUnique = String(dashboardGeneralMode || '').trim().toLowerCase() === 'unique';
                 const data = dashboardGeneralLastData || {};
+                const tieSubtitle = useUnique ? 'Tied by unique movies' : 'Tied by watch events';
+                const pluralizeLabel = (n, one, many) => {
+                    const num = Number(n);
+                    if (!Number.isFinite(num)) return '';
+                    return `${num} ${num === 1 ? one : many}`;
+                };
+
+                const openTiesModal = (title, items, type) => {
+                    const overlay = document.getElementById('dash-kpi-ties-overlay');
+                    const titleEl = document.getElementById('dash-kpi-ties-title');
+                    const subEl = document.getElementById('dash-kpi-ties-sub');
+                    const bodyEl = document.getElementById('dash-kpi-ties-body');
+                    if (!overlay || !titleEl || !bodyEl) return;
+
+                    titleEl.textContent = title;
+                    if (subEl) subEl.textContent = tieSubtitle;
+
+                    const rows = Array.isArray(items) ? items : [];
+                    if (!rows.length) {
+                        bodyEl.innerHTML = `<div class="text-gray">No tied leaders found.</div>`;
+                        overlay.style.display = 'flex';
+                        return;
+                    }
+
+                    bodyEl.innerHTML = rows.map((item) => {
+                        const label = String(item?.label || '').trim();
+                        const meta = String(item?.meta || '').trim();
+                        const value = String(item?.value || '').trim();
+                        if (!label) return '';
+                        return `
+                            <button type="button" class="dash-kpi-tie-btn" data-kpi-type="${escapeHtml(type)}" data-kpi-value="${escapeHtml(value)}" data-kpi-label="${escapeHtml(label)}">
+                                <div class="dash-kpi-tie-avatar" data-kpi-avatar="${escapeHtml(label)}">
+                                    <span class="text-xs text-gray">—</span>
+                                </div>
+                                <div>
+                                    <div class="dash-kpi-tie-title">${escapeHtml(label)}</div>
+                                    ${meta ? `<div class="dash-kpi-tie-meta">${escapeHtml(meta)}</div>` : ''}
+                                </div>
+                            </button>
+                        `;
+                    }).join('');
+
+                    overlay.style.display = 'flex';
+
+                    if (type === 'director' || type === 'actor') {
+                        const department = type === 'director' ? 'directing' : 'acting';
+                        rows.forEach(async (item) => {
+                            const name = String(item?.label || '').trim();
+                            if (!name) return;
+                            const avatarWrap = bodyEl.querySelector(`[data-kpi-avatar="${CSS.escape(name)}"]`);
+                            if (!avatarWrap) return;
+                            try {
+                                const profilePath = await dashFetchPersonProfile({ name, department });
+                                const url = dashBuildPersonUrl(profilePath);
+                                if (!url) return;
+                                avatarWrap.innerHTML = `<img src="${escapeHtml(url)}" alt="${escapeHtml(name)}" loading="lazy">`;
+                            } catch (_) {}
+                        });
+                    }
+                };
 
                 if (rawKey === 'most_watched_director') {
+                    const tieRows = Array.isArray(useUnique ? data?.most_watched_directors_unique : data?.most_watched_directors)
+                        ? (useUnique ? data.most_watched_directors_unique : data.most_watched_directors)
+                        : [];
+                    if (tieRows.length > 1) {
+                        openTiesModal('Most Watched Director(s)', tieRows.map((row) => {
+                            const name = String(row?.name || '').trim();
+                            const movies = pluralizeLabel(row?.movies, 'movie', 'movies');
+                            const watches = !useUnique ? pluralizeLabel(row?.watches, 'watch event', 'watch events') : '';
+                            const meta = [movies, watches].filter(Boolean).join(' • ');
+                            return { label: name, value: name, meta };
+                        }).filter(Boolean), 'director');
+                        return;
+                    }
                     const name = String(useUnique ? data?.most_watched_director_unique?.name : data?.most_watched_director?.name || '').trim();
                     if (!name) {
                         showToast('No director data yet.', { level: 'warn' });
@@ -10864,6 +11064,19 @@
                 }
 
                 if (rawKey === 'most_watched_actor') {
+                    const tieRows = Array.isArray(useUnique ? data?.most_watched_actors_unique : data?.most_watched_actors)
+                        ? (useUnique ? data.most_watched_actors_unique : data.most_watched_actors)
+                        : [];
+                    if (tieRows.length > 1) {
+                        openTiesModal('Most Watched Actor(s)', tieRows.map((row) => {
+                            const name = String(row?.name || '').trim();
+                            const movies = pluralizeLabel(row?.movies, 'movie', 'movies');
+                            const watches = !useUnique ? pluralizeLabel(row?.watches, 'watch event', 'watch events') : '';
+                            const meta = [movies, watches].filter(Boolean).join(' • ');
+                            return { label: name, value: name, meta };
+                        }).filter(Boolean), 'actor');
+                        return;
+                    }
                     const name = String(useUnique ? data?.most_watched_actor_unique?.name : data?.most_watched_actor?.name || '').trim();
                     if (!name) {
                         showToast('No actor data yet.', { level: 'warn' });
@@ -10875,6 +11088,41 @@
 
                 if (rawKey === 'most_watched_movie') {
                     applyLibraryFiltersFromDashboard({ watchCountMaxOnly: true, sortKey: 'watch_count', sortDir: 'desc' });
+                }
+            });
+        }
+
+        function closeDashKpiTies() {
+            const overlay = document.getElementById('dash-kpi-ties-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+            const bodyEl = document.getElementById('dash-kpi-ties-body');
+            if (bodyEl) bodyEl.innerHTML = 'Loading…';
+        }
+
+        function initDashKpiTiesModal() {
+            const overlay = document.getElementById('dash-kpi-ties-overlay');
+            if (!overlay) return;
+            if (overlay.dataset.boundClicks) return;
+            overlay.dataset.boundClicks = 'true';
+
+            overlay.addEventListener('click', (e) => {
+                const btn = e?.target?.closest ? e.target.closest('[data-kpi-type]') : null;
+                if (!btn) return;
+                const type = String(btn.dataset.kpiType || '').trim();
+                const value = String(btn.dataset.kpiValue || '').trim();
+                const label = String(btn.dataset.kpiLabel || '').trim();
+                if (!type || !value) return;
+
+                if (type === 'director') {
+                    closeDashKpiTies();
+                    applyLibraryFiltersFromDashboard({ director: label || value });
+                    return;
+                }
+                if (type === 'actor') {
+                    closeDashKpiTies();
+                    applyLibraryFiltersFromDashboard({ actor: label || value });
+                    return;
                 }
             });
         }
@@ -11053,7 +11301,7 @@
             return m ? m[0] : '';
         }
 
-        function applyLibraryFiltersFromDashboard({ genre, decade, mpa, director, actor, watchMethod, watchCountMaxOnly = false, sortKey, sortDir } = {}) {
+        function applyLibraryFiltersFromDashboard({ genre, decade, mpa, director, actor, movieId, movieTitle, watchMethod, watchCountMaxOnly = false, sortKey, sortDir } = {}) {
             const def = getDefaultLibrarySortFilterState();
             const timeframe = mapDashboardTimeframeToLibrary(dashboardTimeframe || 'all_time');
             librarySortFilterState = {
@@ -11066,6 +11314,8 @@
                 mpa: String(mpa || '').trim(),
                 directorContains: String(director || '').trim(),
                 actorContains: String(actor || '').trim(),
+                movieId: String(movieId || '').trim(),
+                movieTitle: String(movieTitle || '').trim(),
                 watchMethod: String(watchMethod || '').trim(),
                 watchCountMin: '',
                 watchCountMax: '',
@@ -13151,10 +13401,14 @@
             const elTopDirectorEvents = document.getElementById('dash-general-top-director-events');
             const elTopDirectorEventsCount = document.getElementById('dash-general-top-director-events-count');
             const elTopDirectorAvatar = document.getElementById('dash-general-top-director-avatar');
+            const elTopDirectorMore = document.getElementById('dash-general-top-director-more');
+            const elTopDirectorAvg = document.getElementById('dash-general-top-director-avg');
 
             const elTopActorEvents = document.getElementById('dash-general-top-actor-events');
             const elTopActorEventsCount = document.getElementById('dash-general-top-actor-events-count');
             const elTopActorAvatar = document.getElementById('dash-general-top-actor-avatar');
+            const elTopActorMore = document.getElementById('dash-general-top-actor-more');
+            const elTopActorAvg = document.getElementById('dash-general-top-actor-avg');
 
             const elTopDecadeEvents = document.getElementById('dash-general-top-decade-events');
             const elTopDecadeEventsCount = document.getElementById('dash-general-top-decade-events-count');
@@ -13195,8 +13449,12 @@
                 safeHtml(elTopGenreEventsCount, '&nbsp;');
                 safeText(elTopDirectorEvents, v);
                 safeHtml(elTopDirectorEventsCount, '&nbsp;');
+                safeHtml(elTopDirectorAvg, '&nbsp;');
+                safeHtml(elTopDirectorMore, '');
                 safeText(elTopActorEvents, v);
                 safeHtml(elTopActorEventsCount, '&nbsp;');
+                safeHtml(elTopActorAvg, '&nbsp;');
+                safeHtml(elTopActorMore, '');
                 setAvatar(elTopDirectorAvatar, null);
                 setAvatar(elTopActorAvatar, null);
                 safeText(elTopDecadeEvents, v);
@@ -13229,6 +13487,7 @@
                 const trimmed = fixed.endsWith('.0') ? fixed.slice(0, -2) : fixed;
                 return `${trimmed}%`;
             };
+            const useUnique = String(dashboardGeneralMode || '').trim().toLowerCase() === 'unique';
             const renderMostWatchedMovies = async (movies, fallbackMovie) => {
                 if (!elTopMovieGrid) return;
                 const list = Array.isArray(movies) ? movies : [];
@@ -13267,13 +13526,18 @@
                 const tierHtml = tierRaw
                     ? `<span class="dash-tier-pill" data-tier="${escapeHtml(tierRaw)}">${escapeHtml(tierLabel)}</span>`
                     : `<span class="text-gray">Tier —</span>`;
+                const watchCount = Number(first?.watches ?? fallbackMovie?.watches ?? NaN);
+                const watchCountText = (!useUnique && Number.isFinite(watchCount))
+                    ? pluralize(watchCount, 'watch event', 'watch events')
+                    : '';
 
                 const moreHtml = extra > 0
-                    ? `<div class="dash-most-movie-more">+ ${extra} more <span>view all</span></div>`
+                    ? `<div class="dash-kpi-more">+ ${extra} more <span>view all</span></div>`
                     : '';
 
                 safeHtml(elTopMovieGrid, `
                     <div class="dash-most-movie-card">
+                        ${watchCountText ? `<div class="dash-kpi-top-count tabular-nums">${escapeHtml(watchCountText)}</div>` : ''}
                         <div class="dash-most-movie-poster">
                             ${posterUrl
                                 ? `<img src="${escapeHtml(posterUrl)}" alt="${escapeHtml(title)}" loading="lazy">`
@@ -13371,34 +13635,44 @@
                 const directorDisplayName = (useUnique ? directorUniqueName : directorEventsName) || '';
                 safeText(elTopDirectorEvents, directorDisplayName || '—');
                 const directorMovies = useUnique ? topDirectorUnique?.movies : topDirector?.movies;
+                const directorWatches = useUnique ? null : topDirector?.watches;
                 const directorAvg = useUnique ? topDirectorUnique?.avg_overall : topDirector?.avg_overall;
                 const directorExtra = Math.max(0, topDirectors.length - 1);
                 const directorAvgText = formatPct(directorAvg);
-                const directorCountText = pluralize(directorMovies, 'movie', 'movies');
-                const directorMetaParts = [];
-                if (directorAvgText !== '—') directorMetaParts.push(`${directorAvgText} Overall`);
-                if (directorMovies !== undefined && directorMovies !== null) directorMetaParts.push(directorCountText);
-                const directorMetaBase = directorMetaParts.length ? directorMetaParts.join(' • ') : '—';
-                safeText(elTopDirectorEventsCount, directorExtra > 0
-                    ? `${directorMetaBase} • +${directorExtra} more`
-                    : directorMetaBase);
+                const directorCountText = (directorMovies !== undefined && directorMovies !== null)
+                    ? pluralize(directorMovies, 'movie', 'movies')
+                    : '';
+                const directorWatchText = (!useUnique && directorWatches !== undefined && directorWatches !== null)
+                    ? pluralize(directorWatches, 'watch event', 'watch events')
+                    : '';
+                const directorTopParts = [directorCountText, directorWatchText].filter(Boolean);
+                safeText(elTopDirectorEventsCount, directorTopParts.length ? directorTopParts.join(' • ') : '—');
+                safeText(elTopDirectorAvg, directorAvgText === '—' ? '— Overall' : `${directorAvgText} Overall`);
+                safeHtml(elTopDirectorMore, directorExtra > 0
+                    ? `+ ${directorExtra} more <span>view all</span>`
+                    : '');
 
                 const actorEventsName = String(topActor?.name ?? '').trim();
                 const actorUniqueName = String(topActorUnique?.name ?? '').trim();
                 const actorDisplayName = (useUnique ? actorUniqueName : actorEventsName) || '';
                 safeText(elTopActorEvents, actorDisplayName || '—');
                 const actorMovies = useUnique ? topActorUnique?.movies : topActor?.movies;
+                const actorWatches = useUnique ? null : topActor?.watches;
                 const actorAvg = useUnique ? topActorUnique?.avg_acting : topActor?.avg_acting;
                 const actorExtra = Math.max(0, topActors.length - 1);
                 const actorAvgText = formatPct(actorAvg);
-                const actorCountText = pluralize(actorMovies, 'movie', 'movies');
-                const actorMetaParts = [];
-                if (actorAvgText !== '—') actorMetaParts.push(`${actorAvgText} Acting`);
-                if (actorMovies !== undefined && actorMovies !== null) actorMetaParts.push(actorCountText);
-                const actorMetaBase = actorMetaParts.length ? actorMetaParts.join(' • ') : '—';
-                safeText(elTopActorEventsCount, actorExtra > 0
-                    ? `${actorMetaBase} • +${actorExtra} more`
-                    : actorMetaBase);
+                const actorCountText = (actorMovies !== undefined && actorMovies !== null)
+                    ? pluralize(actorMovies, 'movie', 'movies')
+                    : '';
+                const actorWatchText = (!useUnique && actorWatches !== undefined && actorWatches !== null)
+                    ? pluralize(actorWatches, 'watch event', 'watch events')
+                    : '';
+                const actorTopParts = [actorCountText, actorWatchText].filter(Boolean);
+                safeText(elTopActorEventsCount, actorTopParts.length ? actorTopParts.join(' • ') : '—');
+                safeText(elTopActorAvg, actorAvgText === '—' ? '— Acting' : `${actorAvgText} Acting`);
+                safeHtml(elTopActorMore, actorExtra > 0
+                    ? `+ ${actorExtra} more <span>view all</span>`
+                    : '');
 
                 try {
                     if (directorDisplayName) {
