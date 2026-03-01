@@ -347,6 +347,24 @@
             min-height: 44px;
             background: rgba(var(--tier-rgb), 0.22);
         }
+        .tier-btn[data-tier="S-Tier"] { --tier-rgb: var(--tier-s-rgb); }
+        .tier-btn[data-tier="A-Tier"] { --tier-rgb: var(--tier-a-rgb); }
+        .tier-btn[data-tier="B-Tier"] { --tier-rgb: var(--tier-b-rgb); }
+        .tier-btn[data-tier="C-Tier"] { --tier-rgb: var(--tier-c-rgb); }
+        .tier-btn[data-tier="D-Tier"] { --tier-rgb: var(--tier-d-rgb); }
+        .tier-btn[data-tier="F-Tier"] { --tier-rgb: var(--tier-f-rgb); }
+        .tier-btn-group[data-has-selection="true"] .tier-btn {
+            opacity: 0.35;
+            filter: grayscale(0.7) saturate(0.6);
+        }
+        .tier-btn-group[data-has-selection="true"] .tier-btn.selected {
+            opacity: 1;
+            filter: none;
+            background: rgba(var(--tier-rgb), 0.5);
+            border-color: rgba(var(--tier-rgb), 0.85);
+            box-shadow: 0 0 0 2px rgba(var(--tier-rgb), 0.25), 0 10px 18px rgba(0,0,0,0.35);
+            transform: translateY(-1px);
+        }
         .dash-heatmap {
             --heatmap-cell: 16px;
             display: grid;
